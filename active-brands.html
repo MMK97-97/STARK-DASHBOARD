@@ -222,11 +222,22 @@
       cursor: pointer;
     }
 
+    /*
+     * Lead-time editor with Save button.
+     */
+    .lead-time-editor {
+      display: flex;
+      width: 100%;
+      min-width: 280px;
+      align-items: center;
+      gap: 8px;
+    }
+
     .editable-lead-time,
     .lead-time-input {
+      flex: 1 1 auto;
       width: 100%;
-      min-width: 180px;
-      max-width: 320px;
+      min-width: 160px;
       min-height: 39px;
       padding: 8px 10px;
       border: 1px solid #b8c8d8;
@@ -250,11 +261,47 @@
       box-shadow: 0 0 0 3px rgba(11, 143, 135, 0.14);
     }
 
-    .lead-time-saved {
-      margin-left: 8px;
-      color: #09634a;
-      font-size: 0.72rem;
+    .lead-time-save-button {
+      flex: 0 0 auto;
+      min-width: 72px;
+      min-height: 39px;
+      padding: 8px 13px;
+      border: 1px solid #0b8f87;
+      border-radius: 7px;
+      color: #ffffff;
+      background: #0b8f87;
+      font-family: "DM Sans", sans-serif;
+      font-size: 0.78rem;
       font-weight: 700;
+      cursor: pointer;
+      transition:
+        background 0.18s ease,
+        border-color 0.18s ease,
+        opacity 0.18s ease;
+    }
+
+    .lead-time-save-button:hover:not(:disabled) {
+      border-color: #076d67;
+      background: #076d67;
+    }
+
+    .lead-time-save-button:focus-visible {
+      outline: 3px solid rgba(11, 143, 135, 0.25);
+      outline-offset: 2px;
+    }
+
+    .lead-time-save-button:disabled {
+      border-color: #cbd5df;
+      color: #718096;
+      background: #edf2f6;
+      cursor: not-allowed;
+      opacity: 1;
+    }
+
+    .lead-time-save-button.saved {
+      border-color: #09634a;
+      color: #ffffff;
+      background: #09634a;
     }
 
     .custom-brand-empty {
@@ -271,6 +318,14 @@
       line-height: 1.45;
     }
 
+    /*
+     * Give the editable lead-time column enough room
+     * for the input and Save button.
+     */
+    #brands-table td:last-child {
+      min-width: 310px;
+    }
+
     @media (max-width: 760px) {
       .add-brand-form {
         grid-template-columns: 1fr;
@@ -283,6 +338,10 @@
       .added-brand-panel-heading {
         align-items: flex-start;
         flex-direction: column;
+      }
+
+      .lead-time-editor {
+        min-width: 240px;
       }
     }
   </style>
@@ -480,7 +539,7 @@
           <h2>Manually Added Brands</h2>
 
           <p>
-            Lead times can be edited directly in the table.
+            Change a lead time and click Save beside that brand.
           </p>
         </div>
 
@@ -585,9 +644,9 @@
           </div>
 
           <p>
-            Inactive brands remain in the Raw Report but are
-            excluded from the Reorder Report. Click any lead-time
-            field to edit it.
+            Change a lead time and click the Save button beside
+            that brand. Inactive brands remain in the Raw Report
+            but are excluded from the Reorder Report.
           </p>
         </div>
 
@@ -651,6 +710,11 @@
         const customCount =
           document.getElementById(
             "added-brand-count"
+          );
+
+        const regularBrandsTable =
+          document.getElementById(
+            "brands-table"
           );
 
         let dataset = null;
@@ -726,50 +790,28 @@
           );
         }
 
-        function getManuallyAddedBrands() {
+        function saveBrandLeadTime(
+          brand,
+          leadTime
+        ) {
           const settings =
             SI.loadBrandSettings(
               region
             );
 
-          const sourceBrandNames =
-            new Set(
-              sourceBrands.map(
-                brand =>
-                  brand
-                    .trim()
-                    .toLowerCase()
-              )
-            );
+          settings[brand] =
+            settings[brand] || {
+              active: true,
+              leadTime: ""
+            };
 
-          return Object.entries(
+          settings[brand].leadTime =
+            leadTime;
+
+          SI.saveBrandSettings(
+            region,
             settings
-          )
-            .filter(
-              ([brand]) =>
-                !sourceBrandNames.has(
-                  brand
-                    .trim()
-                    .toLowerCase()
-                )
-            )
-            .map(
-              ([brand, values]) => ({
-                brand,
-                active:
-                  values.active !==
-                  false,
-                leadTime:
-                  values.leadTime ||
-                  ""
-              })
-            )
-            .sort(
-              (first, second) =>
-                first.brand.localeCompare(
-                  second.brand
-                )
-            );
+          );
         }
 
         function saveCustomBrand(
@@ -801,6 +843,223 @@
             region,
             settings
           );
+        }
+
+        function setButtonSaved(
+          button
+        ) {
+          button.disabled = true;
+          button.textContent = "Saved";
+          button.classList.add(
+            "saved"
+          );
+
+          window.setTimeout(
+            function () {
+              button.textContent =
+                "Save";
+
+              button.classList.remove(
+                "saved"
+              );
+            },
+            1400
+          );
+        }
+
+        /*
+         * Add Save buttons to all brands generated by
+         * assets/inventory-pages.js.
+         */
+        function decorateRegularBrandLeadTimes() {
+          if (!regularBrandsTable) {
+            return;
+          }
+
+          const inputs =
+            regularBrandsTable
+              .querySelectorAll(
+                "[data-brand-lead]"
+              );
+
+          inputs.forEach(input => {
+            if (
+              input.dataset
+                .saveButtonAdded ===
+              "true"
+            ) {
+              return;
+            }
+
+            input.dataset
+              .saveButtonAdded =
+              "true";
+
+            input.dataset.savedValue =
+              input.value.trim();
+
+            /*
+             * Prevent the old automatic change event from
+             * saving before the new Save button is clicked.
+             */
+            input.addEventListener(
+              "change",
+              function (event) {
+                event.stopImmediatePropagation();
+              },
+              true
+            );
+
+            const parent =
+              input.parentElement;
+
+            const editor =
+              document.createElement(
+                "div"
+              );
+
+            editor.className =
+              "lead-time-editor";
+
+            parent.insertBefore(
+              editor,
+              input
+            );
+
+            editor.appendChild(input);
+
+            const saveButton =
+              document.createElement(
+                "button"
+              );
+
+            saveButton.type =
+              "button";
+
+            saveButton.className =
+              "lead-time-save-button";
+
+            saveButton.textContent =
+              "Save";
+
+            saveButton.disabled = true;
+
+            editor.appendChild(
+              saveButton
+            );
+
+            input.addEventListener(
+              "input",
+              function () {
+                const changed =
+                  input.value.trim() !==
+                  input.dataset
+                    .savedValue;
+
+                saveButton.disabled =
+                  !changed;
+
+                saveButton.textContent =
+                  "Save";
+
+                saveButton.classList.remove(
+                  "saved"
+                );
+              }
+            );
+
+            saveButton.addEventListener(
+              "click",
+              function () {
+                const brand =
+                  input.dataset
+                    .brandLead;
+
+                const newLeadTime =
+                  input.value.trim();
+
+                saveBrandLeadTime(
+                  brand,
+                  newLeadTime
+                );
+
+                input.dataset
+                  .savedValue =
+                  newLeadTime;
+
+                setButtonSaved(
+                  saveButton
+                );
+              }
+            );
+          });
+        }
+
+        const regularTableObserver =
+          new MutationObserver(
+            function () {
+              decorateRegularBrandLeadTimes();
+            }
+          );
+
+        if (regularBrandsTable) {
+          regularTableObserver.observe(
+            regularBrandsTable,
+            {
+              childList: true,
+              subtree: true
+            }
+          );
+
+          decorateRegularBrandLeadTimes();
+        }
+
+        function getManuallyAddedBrands() {
+          const settings =
+            SI.loadBrandSettings(
+              region
+            );
+
+          const sourceBrandNames =
+            new Set(
+              sourceBrands.map(
+                brand =>
+                  brand
+                    .trim()
+                    .toLowerCase()
+              )
+            );
+
+          return Object.entries(
+            settings
+          )
+            .filter(
+              ([brand]) =>
+                !sourceBrandNames.has(
+                  brand
+                    .trim()
+                    .toLowerCase()
+                )
+            )
+            .map(
+              ([brand, values]) => ({
+                brand,
+
+                active:
+                  values.active !==
+                  false,
+
+                leadTime:
+                  values.leadTime ||
+                  ""
+              })
+            )
+            .sort(
+              (first, second) =>
+                first.brand.localeCompare(
+                  second.brand
+                )
+            );
         }
 
         function renderCustomBrands() {
@@ -838,6 +1097,7 @@
                       data-custom-brand-active="${SI.escapeHtml(item.brand)}"
                       ${item.active ? "checked" : ""}
                     >
+
                     <span>Active</span>
                   </label>
                 </td>
@@ -849,18 +1109,25 @@
                 </td>
 
                 <td>
-                  <input
-                    class="editable-lead-time"
-                    type="text"
-                    data-custom-brand-lead="${SI.escapeHtml(item.brand)}"
-                    value="${SI.escapeHtml(item.leadTime)}"
-                    placeholder="Example: 2 weeks"
-                  >
+                  <div class="lead-time-editor">
+                    <input
+                      class="editable-lead-time"
+                      type="text"
+                      data-custom-brand-lead="${SI.escapeHtml(item.brand)}"
+                      data-saved-value="${SI.escapeHtml(item.leadTime)}"
+                      value="${SI.escapeHtml(item.leadTime)}"
+                      placeholder="Example: 2 weeks"
+                    >
 
-                  <span
-                    class="lead-time-saved"
-                    data-custom-save-message="${SI.escapeHtml(item.brand)}"
-                  ></span>
+                    <button
+                      class="lead-time-save-button"
+                      type="button"
+                      data-custom-brand-save="${SI.escapeHtml(item.brand)}"
+                      disabled
+                    >
+                      Save
+                    </button>
+                  </div>
                 </td>
               </tr>
             `).join("");
@@ -893,47 +1160,67 @@
               "[data-custom-brand-lead]"
             )
             .forEach(input => {
-              input.addEventListener(
-                "change",
-                function () {
-                  const brand =
-                    input.dataset
-                      .customBrandLead;
+              const brand =
+                input.dataset
+                  .customBrandLead;
 
-                  const leadTime =
+              const saveButton =
+                Array.from(
+                  document.querySelectorAll(
+                    "[data-custom-brand-save]"
+                  )
+                ).find(
+                  button =>
+                    button.dataset
+                      .customBrandSave ===
+                    brand
+                );
+
+              if (!saveButton) {
+                return;
+              }
+
+              input.addEventListener(
+                "input",
+                function () {
+                  const changed =
+                    input.value.trim() !==
+                    input.dataset
+                      .savedValue;
+
+                  saveButton.disabled =
+                    !changed;
+
+                  saveButton.textContent =
+                    "Save";
+
+                  saveButton.classList.remove(
+                    "saved"
+                  );
+                }
+              );
+
+              saveButton.addEventListener(
+                "click",
+                function () {
+                  const newLeadTime =
                     input.value.trim();
 
                   saveCustomBrand(
                     brand,
                     {
-                      leadTime
+                      leadTime:
+                        newLeadTime
                     }
                   );
 
-                  const savedMessage =
-                    Array.from(
-                      document.querySelectorAll(
-                        "[data-custom-save-message]"
-                      )
-                    ).find(
-                      element =>
-                        element.dataset
-                          .customSaveMessage ===
-                        brand
-                    );
+                  input.dataset
+                    .savedValue =
+                    newLeadTime;
 
-                  if (savedMessage) {
-                    savedMessage.textContent =
-                      "Saved";
-
-                    window.setTimeout(
-                      function () {
-                        savedMessage.textContent =
-                          "";
-                      },
-                      1500
-                    );
-                  }
+                  setButtonSaved(
+                    saveButton
+                  );
                 }
               );
             });
