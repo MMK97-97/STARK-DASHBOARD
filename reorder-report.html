@@ -40,20 +40,21 @@
 
   <style>
     /*
-     * Completely hide:
-     * Earlier start date
-     * Latest End Date
-     * Reorder Reason
+     * Hide these five data columns completely:
+     *
+     * Column 13: Earlier start date
+     * Column 14: Latest End Date
+     * Column 15: Reorder Reason
+     * Column 16: Raw Row
+     * Column 17: Sort Rank
      */
-    #reorder-table td:nth-child(13),
-    #reorder-table td:nth-child(14),
-    #reorder-table td:nth-child(15) {
+    #reorder-table td:nth-child(n + 13) {
       display: none !important;
     }
 
     .report-table-panel .wide-reorder-table {
       width: 100%;
-      min-width: 1550px;
+      min-width: 1400px;
       table-layout: auto;
       border-collapse: collapse;
     }
@@ -82,7 +83,7 @@
 
     .reorder-header-label {
       display: flex;
-      min-height: 36px;
+      min-height: 38px;
       align-items: center;
       justify-content: center;
       color: #ffffff;
@@ -91,32 +92,32 @@
     }
 
     /*
-     * Filter fields inside each header.
+     * Excel-style drop-down filter.
      */
     .reorder-column-filter {
       display: block;
       width: 100%;
-      min-width: 70px;
-      height: 30px;
+      min-width: 80px;
+      height: 31px;
       margin-top: 7px;
-      padding: 5px 7px;
-      border: 1px solid rgba(255, 255, 255, 0.65);
+      padding: 5px 26px 5px 7px;
+      border: 1px solid #d5e0ea;
       border-radius: 5px;
       outline: none;
       color: #10233f;
-      background: #ffffff;
+      background-color: #ffffff;
       font-family: "DM Sans", sans-serif;
       font-size: 0.72rem;
       font-weight: 600;
       line-height: 1;
       text-transform: none;
       letter-spacing: normal;
+      cursor: pointer;
       box-sizing: border-box;
     }
 
-    .reorder-column-filter::placeholder {
-      color: #718096;
-      opacity: 1;
+    .reorder-column-filter:hover {
+      border-color: #72e0d4;
     }
 
     .reorder-column-filter:focus {
@@ -125,7 +126,7 @@
     }
 
     /*
-     * Column widths.
+     * Remaining visible column widths.
      */
     .wide-reorder-table th:nth-child(1) {
       min-width: 125px;
@@ -136,7 +137,7 @@
     }
 
     .wide-reorder-table th:nth-child(3) {
-      min-width: 260px;
+      min-width: 255px;
     }
 
     .wide-reorder-table th:nth-child(4) {
@@ -144,7 +145,7 @@
     }
 
     .wide-reorder-table th:nth-child(5) {
-      min-width: 140px;
+      min-width: 145px;
     }
 
     .wide-reorder-table th:nth-child(6) {
@@ -152,7 +153,7 @@
     }
 
     .wide-reorder-table th:nth-child(7) {
-      min-width: 115px;
+      min-width: 120px;
     }
 
     .wide-reorder-table th:nth-child(8) {
@@ -160,11 +161,11 @@
     }
 
     .wide-reorder-table th:nth-child(9) {
-      min-width: 180px;
+      min-width: 185px;
     }
 
     .wide-reorder-table th:nth-child(10) {
-      min-width: 130px;
+      min-width: 135px;
     }
 
     .wide-reorder-table th:nth-child(11) {
@@ -175,11 +176,6 @@
       min-width: 115px;
     }
 
-    .wide-reorder-table th:nth-child(13),
-    .wide-reorder-table th:nth-child(14) {
-      min-width: 90px;
-    }
-
     .wide-reorder-table tbody td {
       padding: 10px 8px;
       line-height: 1.35;
@@ -187,18 +183,12 @@
     }
 
     .wide-reorder-table tbody td:nth-child(3) {
-      min-width: 260px;
+      min-width: 255px;
     }
 
     .wide-reorder-table tbody td:nth-child(9) {
-      min-width: 180px;
+      min-width: 185px;
       white-space: normal;
-    }
-
-    .wide-reorder-table tbody td:nth-child(16),
-    .wide-reorder-table tbody td:nth-child(17) {
-      min-width: 90px;
-      text-align: center;
     }
   </style>
 
@@ -424,13 +414,13 @@
                     Model#
                   </span>
 
-                  <input
+                  <select
                     class="reorder-column-filter"
                     data-column="0"
-                    type="search"
-                    placeholder="Filter"
                     aria-label="Filter Model number"
                   >
+                    <option value="">All</option>
+                  </select>
                 </th>
 
                 <th>
@@ -438,13 +428,13 @@
                     Brand
                   </span>
 
-                  <input
+                  <select
                     class="reorder-column-filter"
                     data-column="1"
-                    type="search"
-                    placeholder="Filter"
                     aria-label="Filter Brand"
                   >
+                    <option value="">All</option>
+                  </select>
                 </th>
 
                 <th>
@@ -452,13 +442,13 @@
                     Item Title
                   </span>
 
-                  <input
+                  <select
                     class="reorder-column-filter"
                     data-column="2"
-                    type="search"
-                    placeholder="Filter"
                     aria-label="Filter Item Title"
                   >
+                    <option value="">All</option>
+                  </select>
                 </th>
 
                 <th>
@@ -466,13 +456,13 @@
                     Status
                   </span>
 
-                  <input
+                  <select
                     class="reorder-column-filter"
                     data-column="3"
-                    type="search"
-                    placeholder="Filter"
                     aria-label="Filter Status"
                   >
+                    <option value="">All</option>
+                  </select>
                 </th>
 
                 <th>
@@ -480,13 +470,13 @@
                     OPEN ORDERS FROM CLIENT
                   </span>
 
-                  <input
+                  <select
                     class="reorder-column-filter"
                     data-column="4"
-                    type="search"
-                    placeholder="Filter"
                     aria-label="Filter Open Orders From Client"
                   >
+                    <option value="">All</option>
+                  </select>
                 </th>
 
                 <th>
@@ -494,13 +484,13 @@
                     ON HAND
                   </span>
 
-                  <input
+                  <select
                     class="reorder-column-filter"
                     data-column="5"
-                    type="search"
-                    placeholder="Filter"
                     aria-label="Filter On Hand"
                   >
+                    <option value="">All</option>
+                  </select>
                 </th>
 
                 <th>
@@ -508,13 +498,13 @@
                     Stock Available
                   </span>
 
-                  <input
+                  <select
                     class="reorder-column-filter"
                     data-column="6"
-                    type="search"
-                    placeholder="Filter"
                     aria-label="Filter Stock Available"
                   >
+                    <option value="">All</option>
+                  </select>
                 </th>
 
                 <th>
@@ -522,13 +512,13 @@
                     Open Supplier Qty
                   </span>
 
-                  <input
+                  <select
                     class="reorder-column-filter"
                     data-column="7"
-                    type="search"
-                    placeholder="Filter"
                     aria-label="Filter Open Supplier Quantity"
                   >
+                    <option value="">All</option>
+                  </select>
                 </th>
 
                 <th>
@@ -536,13 +526,13 @@
                     Supplier Delivery Window
                   </span>
 
-                  <input
+                  <select
                     class="reorder-column-filter"
                     data-column="8"
-                    type="search"
-                    placeholder="Filter"
                     aria-label="Filter Supplier Delivery Window"
                   >
+                    <option value="">All</option>
+                  </select>
                 </th>
 
                 <th>
@@ -550,13 +540,13 @@
                     Days Until Supplier Delivery
                   </span>
 
-                  <input
+                  <select
                     class="reorder-column-filter"
                     data-column="9"
-                    type="search"
-                    placeholder="Filter"
                     aria-label="Filter Days Until Supplier Delivery"
                   >
+                    <option value="">All</option>
+                  </select>
                 </th>
 
                 <th>
@@ -564,13 +554,13 @@
                     Recommended Reorder Qty
                   </span>
 
-                  <input
+                  <select
                     class="reorder-column-filter"
                     data-column="10"
-                    type="search"
-                    placeholder="Filter"
                     aria-label="Filter Recommended Reorder Quantity"
                   >
+                    <option value="">All</option>
+                  </select>
                 </th>
 
                 <th>
@@ -578,41 +568,13 @@
                     Reorder Status
                   </span>
 
-                  <input
+                  <select
                     class="reorder-column-filter"
                     data-column="11"
-                    type="search"
-                    placeholder="Filter"
                     aria-label="Filter Reorder Status"
                   >
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    Raw Row
-                  </span>
-
-                  <input
-                    class="reorder-column-filter"
-                    data-column="15"
-                    type="search"
-                    placeholder="Filter"
-                    aria-label="Filter Raw Row"
-                  >
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    Sort Rank
-                  </span>
-
-                  <input
-                    class="reorder-column-filter"
-                    data-column="16"
-                    type="search"
-                    placeholder="Filter"
-                    aria-label="Filter Sort Rank"
-                  >
+                    <option value="">All</option>
+                  </select>
                 </th>
               </tr>
             </thead>
@@ -628,28 +590,116 @@
     (function () {
       "use strict";
 
-      const filterInputs = Array.from(
-        document.querySelectorAll(
-          ".reorder-column-filter"
-        )
-      );
-
       const tableBody =
         document.getElementById(
           "reorder-table"
         );
 
-      if (!tableBody) return;
+      const filterSelects =
+        Array.from(
+          document.querySelectorAll(
+            ".reorder-column-filter"
+          )
+        );
+
+      if (
+        !tableBody ||
+        !filterSelects.length
+      ) {
+        return;
+      }
+
+      function getDataRows() {
+        return Array.from(
+          tableBody.rows
+        ).filter(row =>
+          row.cells.length > 1
+        );
+      }
+
+      function sortFilterValues(
+        first,
+        second
+      ) {
+        return first.localeCompare(
+          second,
+          undefined,
+          {
+            numeric: true,
+            sensitivity: "base"
+          }
+        );
+      }
+
+      function populateFilterOptions() {
+        const rows = getDataRows();
+
+        filterSelects.forEach(
+          select => {
+            const column = Number(
+              select.dataset.column
+            );
+
+            const currentValue =
+              select.value;
+
+            const values =
+              Array.from(
+                new Set(
+                  rows
+                    .map(row => {
+                      const cell =
+                        row.cells[column];
+
+                      return cell
+                        ? cell.textContent.trim()
+                        : "";
+                    })
+                    .filter(Boolean)
+                )
+              ).sort(
+                sortFilterValues
+              );
+
+            select.innerHTML =
+              '<option value="">All</option>';
+
+            values.forEach(value => {
+              const option =
+                document.createElement(
+                  "option"
+                );
+
+              option.value = value;
+              option.textContent = value;
+
+              select.appendChild(option);
+            });
+
+            if (
+              currentValue &&
+              values.includes(
+                currentValue
+              )
+            ) {
+              select.value =
+                currentValue;
+            } else {
+              select.value = "";
+            }
+          }
+        );
+      }
 
       function applyHeaderFilters() {
         const activeFilters =
-          filterInputs
-            .map(input => ({
+          filterSelects
+            .map(select => ({
               column: Number(
-                input.dataset.column
+                select.dataset.column
               ),
               value:
-                input.value
+                select.value
                   .trim()
                   .toLowerCase()
             }))
@@ -657,9 +707,7 @@
               filter.value
             );
 
-        Array.from(
-          tableBody.rows
-        ).forEach(row => {
+        getDataRows().forEach(row => {
           const matches =
             activeFilters.every(
               filter => {
@@ -677,7 +725,8 @@
                     .trim()
                     .toLowerCase();
 
-                return cellValue.includes(
+                return (
+                  cellValue ===
                   filter.value
                 );
               }
@@ -687,13 +736,18 @@
         });
       }
 
-      filterInputs.forEach(input => {
-        input.addEventListener(
-          "input",
+      function refreshFilters() {
+        populateFilterOptions();
+        applyHeaderFilters();
+      }
+
+      filterSelects.forEach(select => {
+        select.addEventListener(
+          "change",
           applyHeaderFilters
         );
 
-        input.addEventListener(
+        select.addEventListener(
           "click",
           event => {
             event.stopPropagation();
@@ -703,7 +757,7 @@
 
       const observer =
         new MutationObserver(() => {
-          applyHeaderFilters();
+          refreshFilters();
         });
 
       observer.observe(
@@ -713,7 +767,7 @@
         }
       );
 
-      applyHeaderFilters();
+      refreshFilters();
     })();
   </script>
 </body>
