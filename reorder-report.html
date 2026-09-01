@@ -40,32 +40,165 @@
 
   <style>
     /*
-     * Reorder Report only:
-     * Hide Earlier start date, Latest End Date and Reorder Reason.
+     * Completely hide:
+     * Earlier start date
+     * Latest End Date
+     * Reorder Reason
      */
-    .wide-reorder-table th:nth-child(13),
-    .wide-reorder-table td:nth-child(13),
-    .wide-reorder-table th:nth-child(14),
-    .wide-reorder-table td:nth-child(14),
-    .wide-reorder-table th:nth-child(15),
-    .wide-reorder-table td:nth-child(15) {
-      display: none;
+    #reorder-table td:nth-child(13),
+    #reorder-table td:nth-child(14),
+    #reorder-table td:nth-child(15) {
+      display: none !important;
+    }
+
+    .report-table-panel .wide-reorder-table {
+      width: 100%;
+      min-width: 1550px;
+      table-layout: auto;
+      border-collapse: collapse;
     }
 
     /*
-     * Dark, high-contrast table headers.
+     * Dark, bright and readable headers.
      */
-    .wide-reorder-table thead th {
+    .report-table-panel .wide-reorder-table thead th {
+      padding: 10px 7px;
       color: #ffffff !important;
-      background: #10233f !important;
-      border-right: 1px solid rgba(255, 255, 255, 0.18);
+      background: #0b3158 !important;
+      border-right: 1px solid rgba(255, 255, 255, 0.22);
+      border-bottom: 2px solid #071f38;
+      font-size: 0.72rem;
       font-weight: 700;
+      line-height: 1.25;
+      text-align: center;
+      vertical-align: top;
+      white-space: normal !important;
+      opacity: 1 !important;
+    }
+
+    .report-table-panel .wide-reorder-table thead th:last-child {
+      border-right: 0;
+    }
+
+    .reorder-header-label {
+      display: flex;
+      min-height: 36px;
+      align-items: center;
+      justify-content: center;
+      color: #ffffff;
+      font-weight: 700;
+      text-align: center;
+    }
+
+    /*
+     * Filter fields inside each header.
+     */
+    .reorder-column-filter {
+      display: block;
+      width: 100%;
+      min-width: 70px;
+      height: 30px;
+      margin-top: 7px;
+      padding: 5px 7px;
+      border: 1px solid rgba(255, 255, 255, 0.65);
+      border-radius: 5px;
+      outline: none;
+      color: #10233f;
+      background: #ffffff;
+      font-family: "DM Sans", sans-serif;
+      font-size: 0.72rem;
+      font-weight: 600;
+      line-height: 1;
+      text-transform: none;
+      letter-spacing: normal;
+      box-sizing: border-box;
+    }
+
+    .reorder-column-filter::placeholder {
+      color: #718096;
       opacity: 1;
     }
 
-    .wide-reorder-table thead th:nth-child(n + 16) {
-      color: #ffffff !important;
-      background: #10233f !important;
+    .reorder-column-filter:focus {
+      border-color: #72e0d4;
+      box-shadow: 0 0 0 2px rgba(114, 224, 212, 0.3);
+    }
+
+    /*
+     * Column widths.
+     */
+    .wide-reorder-table th:nth-child(1) {
+      min-width: 125px;
+    }
+
+    .wide-reorder-table th:nth-child(2) {
+      min-width: 130px;
+    }
+
+    .wide-reorder-table th:nth-child(3) {
+      min-width: 260px;
+    }
+
+    .wide-reorder-table th:nth-child(4) {
+      min-width: 105px;
+    }
+
+    .wide-reorder-table th:nth-child(5) {
+      min-width: 140px;
+    }
+
+    .wide-reorder-table th:nth-child(6) {
+      min-width: 90px;
+    }
+
+    .wide-reorder-table th:nth-child(7) {
+      min-width: 115px;
+    }
+
+    .wide-reorder-table th:nth-child(8) {
+      min-width: 125px;
+    }
+
+    .wide-reorder-table th:nth-child(9) {
+      min-width: 180px;
+    }
+
+    .wide-reorder-table th:nth-child(10) {
+      min-width: 130px;
+    }
+
+    .wide-reorder-table th:nth-child(11) {
+      min-width: 145px;
+    }
+
+    .wide-reorder-table th:nth-child(12) {
+      min-width: 115px;
+    }
+
+    .wide-reorder-table th:nth-child(13),
+    .wide-reorder-table th:nth-child(14) {
+      min-width: 90px;
+    }
+
+    .wide-reorder-table tbody td {
+      padding: 10px 8px;
+      line-height: 1.35;
+      vertical-align: middle;
+    }
+
+    .wide-reorder-table tbody td:nth-child(3) {
+      min-width: 260px;
+    }
+
+    .wide-reorder-table tbody td:nth-child(9) {
+      min-width: 180px;
+      white-space: normal;
+    }
+
+    .wide-reorder-table tbody td:nth-child(16),
+    .wide-reorder-table tbody td:nth-child(17) {
+      min-width: 90px;
+      text-align: center;
     }
   </style>
 
@@ -286,47 +419,201 @@
           <table class="wide-reorder-table">
             <thead>
               <tr>
-                <th>Model#</th>
-                <th>Brand</th>
-                <th>Item Title</th>
-                <th>Status</th>
-
                 <th>
-                  OPEN ORDERS FROM CLIENT
-                </th>
+                  <span class="reorder-header-label">
+                    Model#
+                  </span>
 
-                <th>ON HAND</th>
-                <th>Stock Available</th>
-                <th>Open Supplier Qty</th>
-
-                <th>
-                  Supplier Delivery Window
+                  <input
+                    class="reorder-column-filter"
+                    data-column="0"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Model number"
+                  >
                 </th>
 
                 <th>
-                  Days Until Supplier Delivery
+                  <span class="reorder-header-label">
+                    Brand
+                  </span>
+
+                  <input
+                    class="reorder-column-filter"
+                    data-column="1"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Brand"
+                  >
                 </th>
 
                 <th>
-                  Recommended Reorder Qty
-                </th>
+                  <span class="reorder-header-label">
+                    Item Title
+                  </span>
 
-                <th>Reorder Status</th>
+                  <input
+                    class="reorder-column-filter"
+                    data-column="2"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Item Title"
+                  >
+                </th>
 
                 <th>
-                  Earlier start date
+                  <span class="reorder-header-label">
+                    Status
+                  </span>
+
+                  <input
+                    class="reorder-column-filter"
+                    data-column="3"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Status"
+                  >
                 </th>
 
                 <th>
-                  Latest End Date
+                  <span class="reorder-header-label">
+                    OPEN ORDERS FROM CLIENT
+                  </span>
+
+                  <input
+                    class="reorder-column-filter"
+                    data-column="4"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Open Orders From Client"
+                  >
                 </th>
 
                 <th>
-                  Reorder Reason
+                  <span class="reorder-header-label">
+                    ON HAND
+                  </span>
+
+                  <input
+                    class="reorder-column-filter"
+                    data-column="5"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter On Hand"
+                  >
                 </th>
 
-                <th>Raw Row</th>
-                <th>Sort Rank</th>
+                <th>
+                  <span class="reorder-header-label">
+                    Stock Available
+                  </span>
+
+                  <input
+                    class="reorder-column-filter"
+                    data-column="6"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Stock Available"
+                  >
+                </th>
+
+                <th>
+                  <span class="reorder-header-label">
+                    Open Supplier Qty
+                  </span>
+
+                  <input
+                    class="reorder-column-filter"
+                    data-column="7"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Open Supplier Quantity"
+                  >
+                </th>
+
+                <th>
+                  <span class="reorder-header-label">
+                    Supplier Delivery Window
+                  </span>
+
+                  <input
+                    class="reorder-column-filter"
+                    data-column="8"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Supplier Delivery Window"
+                  >
+                </th>
+
+                <th>
+                  <span class="reorder-header-label">
+                    Days Until Supplier Delivery
+                  </span>
+
+                  <input
+                    class="reorder-column-filter"
+                    data-column="9"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Days Until Supplier Delivery"
+                  >
+                </th>
+
+                <th>
+                  <span class="reorder-header-label">
+                    Recommended Reorder Qty
+                  </span>
+
+                  <input
+                    class="reorder-column-filter"
+                    data-column="10"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Recommended Reorder Quantity"
+                  >
+                </th>
+
+                <th>
+                  <span class="reorder-header-label">
+                    Reorder Status
+                  </span>
+
+                  <input
+                    class="reorder-column-filter"
+                    data-column="11"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Reorder Status"
+                  >
+                </th>
+
+                <th>
+                  <span class="reorder-header-label">
+                    Raw Row
+                  </span>
+
+                  <input
+                    class="reorder-column-filter"
+                    data-column="15"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Raw Row"
+                  >
+                </th>
+
+                <th>
+                  <span class="reorder-header-label">
+                    Sort Rank
+                  </span>
+
+                  <input
+                    class="reorder-column-filter"
+                    data-column="16"
+                    type="search"
+                    placeholder="Filter"
+                    aria-label="Filter Sort Rank"
+                  >
+                </th>
               </tr>
             </thead>
 
@@ -336,5 +623,98 @@
       </section>
     </div>
   </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const filterInputs = Array.from(
+        document.querySelectorAll(
+          ".reorder-column-filter"
+        )
+      );
+
+      const tableBody =
+        document.getElementById(
+          "reorder-table"
+        );
+
+      if (!tableBody) return;
+
+      function applyHeaderFilters() {
+        const activeFilters =
+          filterInputs
+            .map(input => ({
+              column: Number(
+                input.dataset.column
+              ),
+              value:
+                input.value
+                  .trim()
+                  .toLowerCase()
+            }))
+            .filter(filter =>
+              filter.value
+            );
+
+        Array.from(
+          tableBody.rows
+        ).forEach(row => {
+          const matches =
+            activeFilters.every(
+              filter => {
+                const cell =
+                  row.cells[
+                    filter.column
+                  ];
+
+                if (!cell) {
+                  return false;
+                }
+
+                const cellValue =
+                  cell.textContent
+                    .trim()
+                    .toLowerCase();
+
+                return cellValue.includes(
+                  filter.value
+                );
+              }
+            );
+
+          row.hidden = !matches;
+        });
+      }
+
+      filterInputs.forEach(input => {
+        input.addEventListener(
+          "input",
+          applyHeaderFilters
+        );
+
+        input.addEventListener(
+          "click",
+          event => {
+            event.stopPropagation();
+          }
+        );
+      });
+
+      const observer =
+        new MutationObserver(() => {
+          applyHeaderFilters();
+        });
+
+      observer.observe(
+        tableBody,
+        {
+          childList: true
+        }
+      );
+
+      applyHeaderFilters();
+    })();
+  </script>
 </body>
 </html>
