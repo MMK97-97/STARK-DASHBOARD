@@ -1,11 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
   <meta
     name="description"
-    content="Regional inventory analysis for Stark Premium"
+    content="Regional raw inventory report for Stark Premium"
   >
 
   <title>Raw Report | Stark Regional Inventory</title>
@@ -19,47 +20,44 @@
   >
 
   <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/inventory-ui.css">
+
+  <script defer src="assets/jszip.min.js"></script>
+  <script defer src="assets/inventory-core.js"></script>
+  <script defer src="assets/inventory-pages.js"></script>
 
   <script
-    src="https://cdn.jsdelivr.net/npm/jszip@3.10.1/dist/jszip.min.js"
     defer
-  ></script>
-
-  <script src="assets/inventory-core.js" defer></script>
-  <script src="assets/inventory-pages.js" defer></script>
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
-    async
+    src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"
   ></script>
 </head>
 
 <body data-page="raw">
-  <header class="inventory-header">
-    <a class="inventory-brand" href="index.html">
-      <span>S</span>
+  <header class="ui-header">
+    <a class="ui-brand" href="index.html">
+      <span class="ui-brand-mark">S</span>
 
-      <div>
+      <span class="ui-brand-copy">
         <small>Stark Premium</small>
         <strong>Regional Inventory</strong>
-      </div>
+      </span>
     </a>
 
-    <div class="inventory-header-actions">
-      <label>
-        Region
+    <div class="ui-header-actions">
+      <label class="ui-region-control">
+        <span>Region</span>
 
         <select id="region-select">
           <option value="US">US</option>
           <option value="EU">EU</option>
-          <option value="Canada">Canada</option>
+          <option value="Canada">CA</option>
         </select>
       </label>
 
-      <span class="region-pill" data-region-code>US</span>
+      <span class="ui-region-pill" data-region-code>US</span>
 
       <a
-        class="button button-secondary"
+        class="ui-header-link"
         data-region-link
         href="index.html"
       >
@@ -68,14 +66,14 @@
     </div>
   </header>
 
-  <main class="inventory-main">
-    <nav class="inventory-nav" aria-label="Inventory analysis pages">
+  <main class="ui-main">
+    <nav class="ui-nav inventory-nav">
       <a
         class="inventory-overview-link"
         data-region-link
-        href="inventory.html"
+        href="index.html"
       >
-        Inventory Analysis
+        ← Back
       </a>
 
       <a
@@ -87,10 +85,10 @@
       </a>
 
       <a
+        class="active"
         data-inventory-page="raw"
         data-region-link
         href="raw-report.html"
-        class="active"
       >
         Raw Report
       </a>
@@ -120,32 +118,41 @@
       </a>
     </nav>
 
-    <section class="inventory-page-heading">
+    <section class="ui-page-hero">
       <div>
-        <p class="eyebrow">
-          Normalized source •
+        <p class="ui-eyebrow">
+          Normalized source ·
           <span data-region-name>United States</span>
         </p>
 
         <h1>Raw Report</h1>
+
+        <p>
+          Upload and review the source inventory data used by the Dashboard,
+          Active Brands and Reorder Report.
+        </p>
       </div>
 
-      <div class="file-status" data-file-status>
-        No Item Sales Report uploaded
-      </div>
+      <aside class="ui-file-card">
+        <small>Current source report</small>
+
+        <strong class="file-status" data-file-status>
+          No Item Sales Report uploaded
+        </strong>
+      </aside>
     </section>
 
-    <section class="inventory-upload-strip">
-      <div>
+    <section class="ui-card ui-source-card">
+      <div class="ui-source-copy">
         <strong>Raw Report Source</strong>
 
         <span>
-          Upload .xls, .xlsx, .csv or .tsv. This file supplies the
-          Reorder Report.
+          Upload an XLS, XLSX, CSV or TSV file. The report is stored
+          separately for the selected region.
         </span>
       </div>
 
-      <div class="upload-actions">
+      <div class="ui-actions">
         <label
           class="button button-primary"
           id="upload-raw-report"
@@ -165,11 +172,11 @@
 
     <section class="data-empty" data-empty-data>
       <strong>No regional inventory data</strong>
-      <p>Upload the source file above.</p>
+      <p>Upload the source report above.</p>
     </section>
 
-    <div data-requires-data class="hidden">
-      <section class="inventory-filter-bar">
+    <div class="hidden" data-requires-data>
+      <section class="ui-filter-bar inventory-filter-bar">
         <label>
           Brand
           <select id="raw-brand"></select>
@@ -185,9 +192,9 @@
 
           <select id="raw-abc">
             <option value="">All classes</option>
-            <option value="A">A</option>
-            <option value="B">B</option>
-            <option value="C">C</option>
+            <option>A</option>
+            <option>B</option>
+            <option>C</option>
           </select>
         </label>
 
