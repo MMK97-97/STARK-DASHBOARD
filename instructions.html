@@ -39,67 +39,199 @@
   >
 
   <style>
-    .editable-instructions-panel {
-      margin-bottom: 16px;
-      padding: 20px;
+    .instructions-command-center {
+      margin-bottom: 18px;
+      overflow: hidden;
       border: 1px solid #d8e1ea;
-      border-radius: 14px;
+      border-radius: 18px;
       background: #ffffff;
-      box-shadow: 0 10px 30px rgba(16, 35, 63, 0.08);
+      box-shadow: 0 18px 45px rgba(16, 35, 63, 0.1);
     }
 
-    .editable-instructions-heading {
+    .instructions-command-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 22px 24px;
+      color: #ffffff;
+      background:
+        radial-gradient(
+          circle at 88% 10%,
+          rgba(63, 210, 198, 0.25),
+          transparent 35%
+        ),
+        linear-gradient(
+          135deg,
+          #0d223d,
+          #174f73
+        );
+    }
+
+    .instructions-command-header h2 {
+      margin: 5px 0 0;
+      color: #ffffff;
+      font-family: "Manrope", sans-serif;
+      font-size: 1.35rem;
+      line-height: 1.25;
+    }
+
+    .instructions-command-header p {
+      max-width: 690px;
+      margin: 8px 0 0;
+      color: rgba(255, 255, 255, 0.75);
+      font-size: 0.88rem;
+      line-height: 1.55;
+    }
+
+    .command-header-eyebrow {
+      display: block;
+      color: #78e1d7;
+      font-size: 0.7rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .command-region-badge {
+      flex: 0 0 auto;
+      min-width: 118px;
+      padding: 11px 14px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.1);
+      text-align: center;
+      backdrop-filter: blur(8px);
+    }
+
+    .command-region-badge small,
+    .command-region-badge strong {
+      display: block;
+    }
+
+    .command-region-badge small {
+      color: rgba(255, 255, 255, 0.7);
+      font-size: 0.68rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .command-region-badge strong {
+      margin-top: 4px;
+      color: #ffffff;
+      font-family: "Manrope", sans-serif;
+      font-size: 0.95rem;
+    }
+
+    .instructions-command-body {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 1.35fr)
+        minmax(340px, 0.85fr);
+      min-height: 480px;
+    }
+
+    .calculation-editor {
+      padding: 22px 24px;
+      border-right: 1px solid #d8e1ea;
+    }
+
+    .section-title-row {
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
-      gap: 20px;
+      gap: 16px;
       margin-bottom: 18px;
     }
 
-    .editable-instructions-heading h2 {
+    .section-title-row h3 {
       margin: 0;
       color: #10233f;
       font-family: "Manrope", sans-serif;
-      font-size: 1.2rem;
+      font-size: 1.08rem;
     }
 
-    .editable-instructions-heading p {
-      max-width: 680px;
-      margin: 7px 0 0;
-      color: #617087;
-      font-size: 0.88rem;
-      line-height: 1.5;
+    .section-title-row p {
+      margin: 5px 0 0;
+      color: #718096;
+      font-size: 0.8rem;
+      line-height: 1.45;
+    }
+
+    .editable-badge {
+      flex: 0 0 auto;
+      padding: 6px 9px;
+      border-radius: 999px;
+      color: #0b6f68;
+      background: #dff5f2;
+      font-size: 0.7rem;
+      font-weight: 700;
     }
 
     .calculation-settings-grid {
       display: grid;
-      grid-template-columns: repeat(4, minmax(160px, 1fr));
-      gap: 14px;
+      grid-template-columns:
+        repeat(2, minmax(180px, 1fr));
+      gap: 13px;
     }
 
     .calculation-setting {
-      display: flex;
-      flex-direction: column;
-      gap: 7px;
-      padding: 15px;
+      position: relative;
+      min-height: 164px;
+      padding: 16px;
       border: 1px solid #d8e1ea;
-      border-radius: 11px;
-      background: #f7fafc;
+      border-radius: 13px;
+      background:
+        linear-gradient(
+          180deg,
+          #ffffff,
+          #f8fafc
+        );
+      transition:
+        border-color 0.18s ease,
+        box-shadow 0.18s ease,
+        transform 0.18s ease;
+    }
+
+    .calculation-setting:focus-within {
+      border-color: #0b8f87;
+      box-shadow: 0 8px 24px rgba(11, 143, 135, 0.12);
+      transform: translateY(-2px);
+    }
+
+    .setting-number {
+      display: grid;
+      width: 29px;
+      height: 29px;
+      margin-bottom: 13px;
+      place-items: center;
+      border-radius: 8px;
+      color: #ffffff;
+      background: #0b3158;
+      font-size: 0.69rem;
+      font-weight: 700;
     }
 
     .calculation-setting label {
+      display: block;
+      margin-bottom: 7px;
       color: #10233f;
       font-size: 0.78rem;
       font-weight: 700;
-      line-height: 1.3;
+      line-height: 1.35;
+    }
+
+    .setting-input-wrap {
+      position: relative;
     }
 
     .calculation-setting input {
       width: 100%;
-      min-height: 42px;
-      padding: 9px 10px;
+      min-height: 44px;
+      padding: 9px 42px 9px 11px;
       border: 1px solid #b8c8d8;
-      border-radius: 7px;
+      border-radius: 8px;
       outline: none;
       color: #10233f;
       background: #ffffff;
@@ -111,20 +243,64 @@
 
     .calculation-setting input:focus {
       border-color: #0b8f87;
-      box-shadow: 0 0 0 3px rgba(11, 143, 135, 0.14);
+      box-shadow: 0 0 0 3px rgba(11, 143, 135, 0.13);
+    }
+
+    .setting-unit {
+      position: absolute;
+      right: 11px;
+      top: 50%;
+      color: #718096;
+      font-size: 0.72rem;
+      font-weight: 700;
+      transform: translateY(-50%);
+      pointer-events: none;
     }
 
     .calculation-setting small {
+      display: block;
+      margin-top: 8px;
       color: #718096;
-      font-size: 0.73rem;
+      font-size: 0.72rem;
       line-height: 1.4;
     }
 
     .instruction-actions {
       display: flex;
       align-items: center;
-      gap: 12px;
+      flex-wrap: wrap;
+      gap: 10px;
       margin-top: 18px;
+      padding-top: 18px;
+      border-top: 1px solid #e1e8ef;
+    }
+
+    .save-instructions-button {
+      min-height: 43px;
+      padding: 10px 18px;
+      border: 0;
+      border-radius: 8px;
+      color: #ffffff;
+      background: #0b8f87;
+      box-shadow: 0 7px 16px rgba(11, 143, 135, 0.22);
+      font-family: "DM Sans", sans-serif;
+      font-size: 0.83rem;
+      font-weight: 700;
+      cursor: pointer;
+      transition:
+        background 0.18s ease,
+        transform 0.18s ease,
+        box-shadow 0.18s ease;
+    }
+
+    .save-instructions-button:hover {
+      background: #08756f;
+      box-shadow: 0 10px 22px rgba(11, 143, 135, 0.28);
+      transform: translateY(-1px);
+    }
+
+    .save-instructions-button:active {
+      transform: translateY(1px);
     }
 
     .instruction-save-status {
@@ -133,7 +309,7 @@
       border-radius: 7px;
       color: #09634a;
       background: #dff5ea;
-      font-size: 0.8rem;
+      font-size: 0.78rem;
       font-weight: 700;
     }
 
@@ -146,70 +322,324 @@
       background: #ffe2e5;
     }
 
-    .editable-rule-list {
+    .instruction-save-status.unsaved {
+      color: #8a5600;
+      background: #fff0c9;
+    }
+
+    .calculation-preview {
+      padding: 22px;
+      color: #ffffff;
+      background:
+        linear-gradient(
+          160deg,
+          #10233f,
+          #173f61
+        );
+    }
+
+    .calculation-preview h3 {
+      margin: 0;
+      color: #ffffff;
+      font-family: "Manrope", sans-serif;
+      font-size: 1.08rem;
+    }
+
+    .calculation-preview > p {
+      margin: 6px 0 18px;
+      color: rgba(255, 255, 255, 0.66);
+      font-size: 0.79rem;
+      line-height: 1.45;
+    }
+
+    .live-rule-list {
       display: grid;
-      gap: 10px;
-      margin: 18px 0 0;
+      gap: 9px;
+      margin: 0;
       padding: 0;
       list-style: none;
     }
 
-    .editable-rule-list li {
+    .live-rule-list li {
       display: grid;
-      grid-template-columns: 34px 1fr;
+      grid-template-columns: 31px 1fr;
       align-items: flex-start;
       gap: 10px;
-      padding: 12px 14px;
-      border: 1px solid #e1e8ef;
-      border-radius: 9px;
-      color: #374151;
+      padding: 11px;
+      border: 1px solid rgba(255, 255, 255, 0.11);
+      border-radius: 10px;
+      background: rgba(255, 255, 255, 0.055);
+    }
+
+    .live-rule-list li > span:first-child {
+      display: grid;
+      width: 27px;
+      height: 27px;
+      place-items: center;
+      border-radius: 7px;
+      color: #10233f;
+      background: #77e0d6;
+      font-size: 0.68rem;
+      font-weight: 700;
+    }
+
+    .live-rule-list li div {
+      color: rgba(255, 255, 255, 0.82);
+      font-size: 0.77rem;
+      line-height: 1.45;
+    }
+
+    .live-rule-list strong,
+    .preview-rule-value {
+      color: #ffffff;
+      font-weight: 700;
+    }
+
+    .preview-statuses {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 7px;
+    }
+
+    .preview-status {
+      padding: 4px 7px;
+      border-radius: 999px;
+      color: #0d3c38;
+      background: #77e0d6;
+      font-size: 0.65rem;
+      font-weight: 700;
+    }
+
+    .preview-status.excluded {
+      color: #7d2a35;
+      background: #ffc4ca;
+    }
+
+    .quick-report-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    .quick-report-links a {
+      display: flex;
+      min-height: 45px;
+      align-items: center;
+      justify-content: center;
+      padding: 8px;
+      border: 1px solid rgba(255, 255, 255, 0.17);
+      border-radius: 8px;
+      color: #ffffff;
+      background: rgba(255, 255, 255, 0.07);
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-align: center;
+      text-decoration: none;
+      transition:
+        background 0.18s ease,
+        border-color 0.18s ease;
+    }
+
+    .quick-report-links a:hover {
+      border-color: #77e0d6;
+      background: rgba(119, 224, 214, 0.13);
+    }
+
+    .workflow-section {
+      margin-bottom: 18px;
+    }
+
+    .workflow-heading {
+      margin-bottom: 13px;
+    }
+
+    .workflow-heading h2 {
+      margin: 0;
+      color: #10233f;
+      font-family: "Manrope", sans-serif;
+      font-size: 1.15rem;
+    }
+
+    .workflow-heading p {
+      margin: 5px 0 0;
+      color: #718096;
+      font-size: 0.82rem;
+    }
+
+    .workflow-grid {
+      display: grid;
+      grid-template-columns:
+        repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .workflow-card {
+      position: relative;
+      min-height: 190px;
+      padding: 18px;
+      overflow: hidden;
+      border: 1px solid #d8e1ea;
+      border-radius: 14px;
       background: #ffffff;
-      font-size: 0.88rem;
+      box-shadow: 0 7px 24px rgba(16, 35, 63, 0.06);
+    }
+
+    .workflow-card::after {
+      content: "";
+      position: absolute;
+      right: -27px;
+      bottom: -27px;
+      width: 90px;
+      height: 90px;
+      border-radius: 50%;
+      background: rgba(11, 143, 135, 0.07);
+    }
+
+    .workflow-number {
+      display: grid;
+      width: 34px;
+      height: 34px;
+      margin-bottom: 27px;
+      place-items: center;
+      border-radius: 9px;
+      color: #ffffff;
+      background: #0b3158;
+      font-size: 0.73rem;
+      font-weight: 700;
+    }
+
+    .workflow-card h3 {
+      position: relative;
+      z-index: 1;
+      margin: 0;
+      color: #10233f;
+      font-family: "Manrope", sans-serif;
+      font-size: 0.96rem;
+    }
+
+    .workflow-card p {
+      position: relative;
+      z-index: 1;
+      margin: 7px 0 0;
+      color: #617087;
+      font-size: 0.8rem;
       line-height: 1.5;
     }
 
-    .editable-rule-list li span {
+    .source-guide {
       display: grid;
-      width: 28px;
-      height: 28px;
-      place-items: center;
-      border-radius: 7px;
-      color: #ffffff;
-      background: #0b3158;
-      font-size: 0.72rem;
-      font-weight: 700;
+      grid-template-columns:
+        minmax(0, 1.2fr)
+        minmax(300px, 0.8fr);
+      gap: 14px;
+      margin-bottom: 20px;
     }
 
-    .rule-value {
-      color: #0b3158;
-      font-weight: 700;
+    .source-guide-card {
+      padding: 19px;
+      border: 1px solid #d8e1ea;
+      border-radius: 14px;
+      background: #ffffff;
+      box-shadow: 0 7px 24px rgba(16, 35, 63, 0.05);
     }
 
-    .instruction-report-links {
+    .source-guide-card h2 {
+      margin: 0;
+      color: #10233f;
+      font-family: "Manrope", sans-serif;
+      font-size: 1.05rem;
+    }
+
+    .source-guide-card p {
+      margin: 7px 0 0;
+      color: #617087;
+      font-size: 0.81rem;
+      line-height: 1.55;
+    }
+
+    .source-column-tags {
       display: flex;
       flex-wrap: wrap;
-      gap: 9px;
-      margin-top: 18px;
+      gap: 7px;
+      margin-top: 13px;
     }
 
-    @media (max-width: 1000px) {
-      .calculation-settings-grid {
-        grid-template-columns: repeat(2, minmax(160px, 1fr));
+    .source-column-tag {
+      padding: 6px 8px;
+      border: 1px solid #d8e1ea;
+      border-radius: 6px;
+      color: #31506d;
+      background: #f6f9fb;
+      font-size: 0.69rem;
+      font-weight: 700;
+    }
+
+    .regional-note {
+      color: #ffffff;
+      background:
+        linear-gradient(
+          145deg,
+          #0b8f87,
+          #0b5f59
+        );
+    }
+
+    .regional-note h2,
+    .regional-note p {
+      color: #ffffff;
+    }
+
+    .regional-note p {
+      color: rgba(255, 255, 255, 0.8);
+    }
+
+    .regional-note strong {
+      color: #ffffff;
+    }
+
+    @media (max-width: 1100px) {
+      .instructions-command-body {
+        grid-template-columns: 1fr;
+      }
+
+      .calculation-editor {
+        border-right: 0;
+        border-bottom: 1px solid #d8e1ea;
+      }
+
+      .workflow-grid {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 620px) {
-      .editable-instructions-heading {
+    @media (max-width: 760px) {
+      .instructions-command-header {
+        align-items: flex-start;
         flex-direction: column;
+      }
+
+      .command-region-badge {
+        min-width: 0;
+        text-align: left;
       }
 
       .calculation-settings-grid {
         grid-template-columns: 1fr;
       }
 
-      .instruction-actions {
-        align-items: flex-start;
-        flex-direction: column;
+      .workflow-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .source-guide {
+        grid-template-columns: 1fr;
+      }
+
+      .quick-report-links {
+        grid-template-columns: 1fr;
       }
     }
   </style>
@@ -342,314 +772,438 @@
       </div>
     </section>
 
-    <section class="editable-instructions-panel">
-      <div class="editable-instructions-heading">
+    <section class="instructions-command-center">
+      <header class="instructions-command-header">
         <div>
+          <span class="command-header-eyebrow">
+            Calculation Control Center
+          </span>
+
           <h2>
-            Editable Calculation Instructions
+            Edit the rules that control your reports
           </h2>
 
           <p>
-            These settings apply only to the selected region.
-            Save the changes and open the Dashboard or Reorder Report
-            to calculate the report using the updated instructions.
+            Update the regional thresholds below and save the
+            instructions. The Dashboard, ABC Analysis and Reorder
+            Report will use the saved values.
           </p>
         </div>
-      </div>
 
-      <div class="calculation-settings-grid">
-        <div class="calculation-setting">
-          <label for="instruction-critical">
-            Critical Stock Threshold
-          </label>
+        <div class="command-region-badge">
+          <small>Selected region</small>
 
-          <input
-            id="instruction-critical"
-            type="number"
-            min="0"
-            step="1"
-            value="3"
-          >
-
-          <small>
-            Reorder when Stock Available plus Open Supplier Qty
-            is at or below this quantity.
-          </small>
+          <strong id="rules-region-name">
+            United States
+          </strong>
         </div>
+      </header>
 
-        <div class="calculation-setting">
-          <label for="instruction-delay">
-            Supplier Delay Days
-          </label>
+      <div class="instructions-command-body">
+        <section class="calculation-editor">
+          <div class="section-title-row">
+            <div>
+              <h3>Editable thresholds</h3>
 
-          <input
-            id="instruction-delay"
-            type="number"
-            min="0"
-            step="1"
-            value="15"
-          >
+              <p>
+                Changes remain pending until Save and Recalculate
+                is clicked.
+              </p>
+            </div>
 
-          <small>
-            Reorder when the supplier delivery date is more than
-            this number of days away.
-          </small>
-        </div>
-
-        <div class="calculation-setting">
-          <label for="instruction-a">
-            ABC Class A Threshold %
-          </label>
-
-          <input
-            id="instruction-a"
-            type="number"
-            min="1"
-            max="99"
-            step="1"
-            value="80"
-          >
-
-          <small>
-            Items within this cumulative sales percentage are
-            classified as Class A.
-          </small>
-        </div>
-
-        <div class="calculation-setting">
-          <label for="instruction-b">
-            ABC Class B Threshold %
-          </label>
-
-          <input
-            id="instruction-b"
-            type="number"
-            min="2"
-            max="100"
-            step="1"
-            value="95"
-          >
-
-          <small>
-            Items between the Class A percentage and this percentage
-            are classified as Class B.
-          </small>
-        </div>
-      </div>
-
-      <div class="instruction-actions">
-        <button
-          class="button button-primary"
-          id="save-instruction-settings"
-          type="button"
-        >
-          Save and Recalculate
-        </button>
-
-        <span
-          class="instruction-save-status"
-          id="instruction-save-status"
-          role="status"
-          aria-live="polite"
-        ></span>
-      </div>
-
-      <ul class="editable-rule-list">
-        <li>
-          <span>01</span>
-
-          <div>
-            Included item statuses:
-            <strong>
-              Live, Fashion and Backorder
-            </strong>.
-          </div>
-        </li>
-
-        <li>
-          <span>02</span>
-
-          <div>
-            Excluded item statuses:
-            <strong>
-              Feeds Only, Internal Use and Presentation
-            </strong>.
-          </div>
-        </li>
-
-        <li>
-          <span>03</span>
-
-          <div>
-            Reorder when Stock Available plus Open Supplier Qty
-            is at or below
-            <span
-              class="rule-value"
-              id="critical-rule-value"
-            >
-              3
-            </span>.
-          </div>
-        </li>
-
-        <li>
-          <span>04</span>
-
-          <div>
-            Reorder when open client orders exceed
-            Stock Available.
-          </div>
-        </li>
-
-        <li>
-          <span>05</span>
-
-          <div>
-            Reorder when the latest supplier delivery exceeds
-            <span
-              class="rule-value"
-              id="delay-rule-value"
-            >
-              15
+            <span class="editable-badge">
+              Editable
             </span>
-            days.
           </div>
-        </li>
 
-        <li>
-          <span>06</span>
+          <div class="calculation-settings-grid">
+            <article class="calculation-setting">
+              <span class="setting-number">01</span>
 
-          <div>
-            Reorder when Avg/PerM Past 3M exceeds
-            Stock Available plus Open Supplier Qty.
+              <label for="instruction-critical">
+                Critical Stock Threshold
+              </label>
+
+              <div class="setting-input-wrap">
+                <input
+                  id="instruction-critical"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value="3"
+                >
+
+                <span class="setting-unit">
+                  units
+                </span>
+              </div>
+
+              <small>
+                Triggers reorder when Available plus Open Supplier
+                Qty is at or below this value.
+              </small>
+            </article>
+
+            <article class="calculation-setting">
+              <span class="setting-number">02</span>
+
+              <label for="instruction-delay">
+                Supplier Delay
+              </label>
+
+              <div class="setting-input-wrap">
+                <input
+                  id="instruction-delay"
+                  type="number"
+                  min="0"
+                  step="1"
+                  value="15"
+                >
+
+                <span class="setting-unit">
+                  days
+                </span>
+              </div>
+
+              <small>
+                Triggers reorder when supplier delivery is farther
+                away than this value.
+              </small>
+            </article>
+
+            <article class="calculation-setting">
+              <span class="setting-number">03</span>
+
+              <label for="instruction-a">
+                ABC Class A Threshold
+              </label>
+
+              <div class="setting-input-wrap">
+                <input
+                  id="instruction-a"
+                  type="number"
+                  min="1"
+                  max="99"
+                  step="1"
+                  value="80"
+                >
+
+                <span class="setting-unit">
+                  %
+                </span>
+              </div>
+
+              <small>
+                Class A contains items through this cumulative
+                sales percentage.
+              </small>
+            </article>
+
+            <article class="calculation-setting">
+              <span class="setting-number">04</span>
+
+              <label for="instruction-b">
+                ABC Class B Threshold
+              </label>
+
+              <div class="setting-input-wrap">
+                <input
+                  id="instruction-b"
+                  type="number"
+                  min="2"
+                  max="100"
+                  step="1"
+                  value="95"
+                >
+
+                <span class="setting-unit">
+                  %
+                </span>
+              </div>
+
+              <small>
+                Class B continues through this cumulative sales
+                percentage. Remaining items are Class C.
+              </small>
+            </article>
           </div>
-        </li>
 
-        <li>
-          <span>07</span>
-
-          <div>
-            Recommended Reorder Qty equals
-            <strong>
-              Avg/PerM Past 3M
-            </strong>.
-          </div>
-        </li>
-
-        <li>
-          <span>08</span>
-
-          <div>
-            ABC Class A covers the first
-            <span
-              class="rule-value"
-              id="a-rule-value"
+          <div class="instruction-actions">
+            <button
+              class="save-instructions-button"
+              id="save-instruction-settings"
+              type="button"
             >
-              80
-            </span>% of cumulative sales.
-            Class B continues through
+              Save and Recalculate
+            </button>
+
             <span
-              class="rule-value"
-              id="b-rule-value"
-            >
-              95
-            </span>%.
-            The remaining items are Class C.
+              class="instruction-save-status"
+              id="instruction-save-status"
+              role="status"
+              aria-live="polite"
+            ></span>
           </div>
-        </li>
-      </ul>
+        </section>
 
-      <div class="instruction-report-links">
-        <a
-          class="button button-secondary"
-          data-region-link
-          href="inventory-dashboard.html"
-        >
-          Open Dashboard
-        </a>
+        <aside class="calculation-preview">
+          <h3>Live calculation preview</h3>
 
-        <a
-          class="button button-secondary"
-          data-region-link
-          href="reorder-report.html"
-        >
-          Open Reorder Report
-        </a>
+          <p>
+            This preview updates while you edit. Reports use the
+            values only after they are saved.
+          </p>
 
-        <a
-          class="button button-secondary"
-          data-region-link
-          href="raw-report.html"
-        >
-          Open Raw Report
-        </a>
+          <ul class="live-rule-list">
+            <li>
+              <span>01</span>
+
+              <div>
+                Included statuses
+
+                <div class="preview-statuses">
+                  <span class="preview-status">
+                    Live
+                  </span>
+
+                  <span class="preview-status">
+                    Fashion
+                  </span>
+
+                  <span class="preview-status">
+                    Backorder
+                  </span>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <span>02</span>
+
+              <div>
+                Excluded statuses
+
+                <div class="preview-statuses">
+                  <span class="preview-status excluded">
+                    Feeds Only
+                  </span>
+
+                  <span class="preview-status excluded">
+                    Internal Use
+                  </span>
+
+                  <span class="preview-status excluded">
+                    Presentation
+                  </span>
+                </div>
+              </div>
+            </li>
+
+            <li>
+              <span>03</span>
+
+              <div>
+                Reorder when Available plus Open Supplier Qty is
+                at or below
+
+                <strong
+                  class="preview-rule-value"
+                  id="critical-rule-value"
+                >
+                  3
+                </strong>
+                units.
+              </div>
+            </li>
+
+            <li>
+              <span>04</span>
+
+              <div>
+                Reorder when open client orders exceed
+                <strong>Stock Available</strong>.
+              </div>
+            </li>
+
+            <li>
+              <span>05</span>
+
+              <div>
+                Reorder when supplier delivery exceeds
+
+                <strong
+                  class="preview-rule-value"
+                  id="delay-rule-value"
+                >
+                  15
+                </strong>
+                days.
+              </div>
+            </li>
+
+            <li>
+              <span>06</span>
+
+              <div>
+                Recommended Reorder Qty equals
+                <strong>Avg/PerM Past 3M</strong>.
+              </div>
+            </li>
+
+            <li>
+              <span>07</span>
+
+              <div>
+                ABC split:
+                A through
+
+                <strong
+                  class="preview-rule-value"
+                  id="a-rule-value"
+                >
+                  80
+                </strong>%,
+                B through
+
+                <strong
+                  class="preview-rule-value"
+                  id="b-rule-value"
+                >
+                  95
+                </strong>%,
+                then C.
+              </div>
+            </li>
+          </ul>
+
+          <div class="quick-report-links">
+            <a
+              data-region-link
+              href="inventory-dashboard.html"
+            >
+              Dashboard
+            </a>
+
+            <a
+              data-region-link
+              href="reorder-report.html"
+            >
+              Reorder Report
+            </a>
+
+            <a
+              data-region-link
+              href="raw-report.html"
+            >
+              Raw Report
+            </a>
+          </div>
+        </aside>
       </div>
     </section>
 
-    <section class="instruction-grid">
-      <article class="instruction-card">
-        <span>01</span>
-
-        <h2>Upload the report</h2>
+    <section class="workflow-section">
+      <div class="workflow-heading">
+        <h2>Inventory workflow</h2>
 
         <p>
-          Open Raw Report and upload the regional Average Item
-          Sales Report. The file is processed locally in the browser.
+          Follow these four steps for each regional report.
         </p>
-      </article>
+      </div>
 
-      <article class="instruction-card">
-        <span>02</span>
+      <div class="workflow-grid">
+        <article class="workflow-card">
+          <span class="workflow-number">
+            01
+          </span>
 
-        <h2>Review Active Brands</h2>
+          <h3>Upload Raw Report</h3>
 
-        <p>
-          Choose which brands are included in reorder analysis
-          and enter the supplier lead time for each brand.
-        </p>
-      </article>
+          <p>
+            Upload the regional Average Item Sales Report. The
+            source file remains stored in the browser for that
+            region.
+          </p>
+        </article>
 
-      <article class="instruction-card">
-        <span>03</span>
+        <article class="workflow-card">
+          <span class="workflow-number">
+            02
+          </span>
 
-        <h2>Check the Raw Report</h2>
+          <h3>Review Active Brands</h3>
 
-        <p>
-          Confirm model numbers, item titles, status,
-          three-month sales, stock, client commitments
-          and supplier orders.
-        </p>
-      </article>
+          <p>
+            Activate the required brands and maintain an editable
+            supplier lead time for each brand.
+          </p>
+        </article>
 
-      <article class="instruction-card">
-        <span>04</span>
+        <article class="workflow-card">
+          <span class="workflow-number">
+            03
+          </span>
 
-        <h2>Use the Reorder Report</h2>
+          <h3>Save Calculation Rules</h3>
 
-        <p>
-          Filter, review and export the active-brand items
-          that meet at least one saved reorder instruction.
-        </p>
-      </article>
+          <p>
+            Adjust the critical stock, supplier-delay and ABC
+            thresholds for the selected region.
+          </p>
+        </article>
+
+        <article class="workflow-card">
+          <span class="workflow-number">
+            04
+          </span>
+
+          <h3>Review Reorder Report</h3>
+
+          <p>
+            Use the header filters, review recommended quantities
+            and export the final report.
+          </p>
+        </article>
+      </div>
     </section>
 
-    <section class="inventory-panel instructions-panel">
-      <h2>Expected source columns</h2>
+    <section class="source-guide">
+      <article class="source-guide-card">
+        <h2>Expected source columns</h2>
 
-      <p>
-        Brand, itemid, Model#, Item Title, Status, ETA,
-        Vol Past 3M, Vol Last 30 Days, Avg/PerM Past 3M,
-        Stock Qty, Stock Available, STOCK difference,
-        OPEN ORDERS FROM CLIENT and OPEN ORDERS TO SUPPLIER.
-      </p>
+        <p>
+          The Raw Report should contain the following fields for
+          accurate inventory and reorder calculations.
+        </p>
 
-      <h2>Regional settings</h2>
+        <div class="source-column-tags">
+          <span class="source-column-tag">Brand</span>
+          <span class="source-column-tag">itemid</span>
+          <span class="source-column-tag">Model#</span>
+          <span class="source-column-tag">Item Title</span>
+          <span class="source-column-tag">Status</span>
+          <span class="source-column-tag">ETA</span>
+          <span class="source-column-tag">Vol Past 3M</span>
+          <span class="source-column-tag">Vol Last 30 Days</span>
+          <span class="source-column-tag">Avg/PerM Past 3M</span>
+          <span class="source-column-tag">Stock Qty</span>
+          <span class="source-column-tag">Stock Available</span>
+          <span class="source-column-tag">STOCK difference</span>
+          <span class="source-column-tag">OPEN ORDERS FROM CLIENT</span>
+          <span class="source-column-tag">OPEN ORDERS TO SUPPLIER</span>
+        </div>
+      </article>
 
-      <p>
-        US, EU and Canada maintain separate calculation
-        instructions. Changing a value in one region does not
-        change the settings for the other regions.
-      </p>
+      <article class="source-guide-card regional-note">
+        <h2>Separate regional instructions</h2>
+
+        <p>
+          US, EU and Canada maintain separate calculation values.
+          Saving instructions for <strong id="regional-note-name">
+          United States</strong> will not change the settings used
+          by the other regions.
+        </p>
+      </article>
     </section>
   </main>
 
@@ -717,6 +1271,39 @@
             "b-rule-value"
           );
 
+        const rulesRegionName =
+          document.getElementById(
+            "rules-region-name"
+          );
+
+        const regionalNoteName =
+          document.getElementById(
+            "regional-note-name"
+          );
+
+        const regionName =
+          SI.regionName(region);
+
+        rulesRegionName.textContent =
+          regionName;
+
+        regionalNoteName.textContent =
+          regionName;
+
+        function updatePreview() {
+          criticalRuleValue.textContent =
+            criticalInput.value || "0";
+
+          delayRuleValue.textContent =
+            delayInput.value || "0";
+
+          aRuleValue.textContent =
+            aInput.value || "0";
+
+          bRuleValue.textContent =
+            bInput.value || "0";
+        }
+
         function displaySettings(
           settings
         ) {
@@ -732,22 +1319,12 @@
           bInput.value =
             settings.b;
 
-          criticalRuleValue.textContent =
-            settings.critical;
-
-          delayRuleValue.textContent =
-            settings.delay;
-
-          aRuleValue.textContent =
-            settings.a;
-
-          bRuleValue.textContent =
-            settings.b;
+          updatePreview();
         }
 
         function showStatus(
           message,
-          isError
+          type
         ) {
           status.textContent =
             message;
@@ -758,9 +1335,35 @@
 
           status.classList.toggle(
             "error",
-            Boolean(isError)
+            type === "error"
+          );
+
+          status.classList.toggle(
+            "unsaved",
+            type === "unsaved"
           );
         }
+
+        function markUnsaved() {
+          updatePreview();
+
+          showStatus(
+            "Unsaved changes",
+            "unsaved"
+          );
+        }
+
+        [
+          criticalInput,
+          delayInput,
+          aInput,
+          bInput
+        ].forEach(input => {
+          input.addEventListener(
+            "input",
+            markUnsaved
+          );
+        });
 
         displaySettings(
           SI.loadSettings(region)
@@ -791,8 +1394,10 @@
             ) {
               showStatus(
                 "Critical Stock Threshold must be zero or greater.",
-                true
+                "error"
               );
+
+              criticalInput.focus();
 
               return;
             }
@@ -802,9 +1407,11 @@
               delay < 0
             ) {
               showStatus(
-                "Supplier Delay Days must be zero or greater.",
-                true
+                "Supplier Delay must be zero or greater.",
+                "error"
               );
+
+              delayInput.focus();
 
               return;
             }
@@ -818,8 +1425,10 @@
             ) {
               showStatus(
                 "ABC thresholds must satisfy A < B and B must not exceed 100%.",
-                true
+                "error"
               );
+
+              aInput.focus();
 
               return;
             }
@@ -845,8 +1454,8 @@
             );
 
             showStatus(
-              `${SI.regionName(region)} calculation instructions saved. The Dashboard and Reorder Report will now use these values.`,
-              false
+              `${regionName} instructions saved. Reports will now use these values.`,
+              "success"
             );
           }
         );
