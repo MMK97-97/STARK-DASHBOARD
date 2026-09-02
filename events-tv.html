@@ -2,7 +2,10 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1, viewport-fit=cover"
+  >
   <meta name="theme-color" content="#031426">
   <title>Events Live Board | Stark Premium</title>
 
@@ -10,16 +13,25 @@
     :root {
       --navy-950: #031426;
       --navy-900: #061d35;
-      --teal: #19d3c5;
-      --text: #eff8ff;
-      --muted: #9db3c7;
-      --line: rgba(179, 214, 235, 0.15);
-      --good: #39d98a;
+      --navy-850: #082746;
+      --navy-800: #0d365c;
+      --navy-700: #174f79;
+      --teal: #24dfd0;
+      --teal-dark: #00a99d;
+      --white: #ffffff;
+      --text: #eef8ff;
+      --muted: #9db4c8;
+      --line: rgba(177, 216, 238, 0.16);
+      --surface: rgba(8, 36, 62, 0.86);
+      --surface-dark: rgba(5, 27, 49, 0.94);
+      --green: #3ade91;
       --amber: #ffc857;
-      --danger: #ff6b78;
-      --blue: #64a8ff;
-      --purple: #c99bff;
-      --shadow: 0 24px 70px rgba(0, 7, 17, 0.36);
+      --red: #ff6174;
+      --blue: #68aaff;
+      --radius-xl: 28px;
+      --radius-lg: 20px;
+      --radius-md: 14px;
+      --shadow: 0 28px 80px rgba(0, 8, 18, 0.32);
     }
 
     * {
@@ -32,18 +44,37 @@
       min-width: 320px;
       min-height: 100%;
       margin: 0;
+    }
+
+    html {
       background: var(--navy-950);
+      font-size: 16px;
     }
 
     body {
-      min-height: 100vh;
+      min-height: 100svh;
       overflow: hidden;
       color: var(--text);
-      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      font-family:
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
       background:
-        radial-gradient(circle at 88% -15%, rgba(25, 211, 197, 0.2), transparent 35%),
-        radial-gradient(circle at -5% 90%, rgba(70, 143, 210, 0.18), transparent 32%),
-        linear-gradient(135deg, #031426, #071e35 50%, #082a45);
+        radial-gradient(
+          circle at 88% -15%,
+          rgba(36, 223, 208, 0.19),
+          transparent 35%
+        ),
+        radial-gradient(
+          circle at -5% 90%,
+          rgba(40, 110, 180, 0.22),
+          transparent 34%
+        ),
+        linear-gradient(135deg, #031426 0%, #061d35 55%, #082a45 100%);
     }
 
     body::before {
@@ -51,11 +82,25 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: 0.2;
+      opacity: 0.22;
       background-image:
-        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
-        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
+        linear-gradient(
+          rgba(255, 255, 255, 0.025) 1px,
+          transparent 1px
+        ),
+        linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.025) 1px,
+          transparent 1px
+        );
       background-size: 64px 64px;
+      mask-image: linear-gradient(
+        to bottom,
+        transparent,
+        #000 18%,
+        #000 82%,
+        transparent
+      );
     }
 
     button,
@@ -64,7 +109,6 @@
     }
 
     button {
-      color: inherit;
       cursor: pointer;
     }
 
@@ -76,50 +120,56 @@
       position: relative;
       z-index: 1;
       width: 100%;
-      height: 100vh;
+      height: 100svh;
       min-height: 620px;
-      padding: 16px clamp(16px, 1.5vw, 30px) 10px;
+      padding: 16px clamp(16px, 1.5vw, 30px) 12px;
       display: grid;
-      grid-template-rows: 68px minmax(0, 1fr) 22px;
-      gap: 12px;
+      grid-template-rows: 70px minmax(0, 1fr) 26px;
+      gap: 13px;
     }
+
+    /* HEADER */
 
     .topbar {
       min-width: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 22px;
     }
 
     .brand {
       min-width: 0;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 15px;
     }
 
     .brand-mark {
-      width: 54px;
-      height: 54px;
-      flex: 0 0 54px;
+      width: 58px;
+      height: 58px;
+      flex: 0 0 58px;
       display: grid;
       place-items: center;
-      border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 17px;
+      border: 1px solid rgba(255, 255, 255, 0.14);
+      border-radius: 18px;
       color: white;
-      font-size: 23px;
+      font-size: 1.45rem;
       font-weight: 950;
       background: linear-gradient(145deg, #0c3b65, #176d87);
       box-shadow:
-        0 14px 34px rgba(0,8,18,0.32),
-        inset 0 1px rgba(255,255,255,0.12);
+        0 14px 34px rgba(0, 8, 18, 0.3),
+        inset 0 1px rgba(255, 255, 255, 0.12);
+    }
+
+    .brand-copy {
+      min-width: 0;
     }
 
     .brand-eyebrow {
       margin: 0 0 3px;
       color: var(--teal);
-      font-size: 11px;
+      font-size: clamp(0.68rem, 0.76vw, 0.9rem);
       font-weight: 900;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -127,40 +177,42 @@
 
     .brand-title {
       margin: 0;
-      font-size: clamp(20px, 1.5vw, 28px);
-      line-height: 1;
+      overflow: hidden;
+      font-size: clamp(1.2rem, 1.5vw, 1.8rem);
+      line-height: 1.05;
       font-weight: 900;
       letter-spacing: -0.035em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
-    .topbar-right {
+    .topbar-actions {
       min-width: 0;
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 9px;
+      gap: 10px;
     }
 
-    .live-pill,
-    .view-switch,
-    .region-control,
-    .clock-panel,
+    .header-panel,
     .header-button,
-    .audio-button {
-      min-height: 46px;
+    .view-switch {
+      min-height: 48px;
       border: 1px solid var(--line);
       border-radius: 15px;
-      background: rgba(5,25,44,0.7);
-      backdrop-filter: blur(16px);
+      color: var(--text);
+      background: rgba(5, 25, 44, 0.7);
+      box-shadow: inset 0 1px rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(14px);
     }
 
     .live-pill {
       padding: 0 15px;
-      display: flex;
+      display: inline-flex;
       align-items: center;
       gap: 9px;
-      color: #dffdf9;
-      font-size: 11px;
+      color: #dffffa;
+      font-size: 0.78rem;
       font-weight: 900;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -169,76 +221,110 @@
     .live-dot {
       width: 9px;
       height: 9px;
-      border-radius: 50%;
-      background: var(--good);
+      border-radius: 999px;
+      background: var(--green);
       box-shadow:
-        0 0 0 6px rgba(57,217,138,0.12),
-        0 0 18px rgba(57,217,138,0.7);
-      animation: pulse 2s infinite;
+        0 0 0 6px rgba(58, 222, 145, 0.12),
+        0 0 18px rgba(58, 222, 145, 0.7);
+      animation: pulse 2s ease-in-out infinite;
     }
 
     @keyframes pulse {
-      50% {
-        opacity: 0.55;
-        transform: scale(0.78);
+      0%,
+      100% {
+        transform: scale(1);
+        opacity: 1;
       }
+
+      50% {
+        transform: scale(0.78);
+        opacity: 0.7;
+      }
+    }
+
+    .audio-button {
+      min-width: 138px;
+      padding: 0 15px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      font-size: 0.78rem;
+      font-weight: 900;
+    }
+
+    .audio-button svg,
+    .fullscreen-button svg,
+    .control-button svg {
+      width: 19px;
+      height: 19px;
+    }
+
+    .audio-button.enabled {
+      border-color: rgba(36, 223, 208, 0.48);
+      color: var(--teal);
+      background: rgba(36, 223, 208, 0.11);
+    }
+
+    .audio-button.speaking {
+      color: #071c31;
+      background: var(--teal);
     }
 
     .view-switch {
       padding: 4px;
       display: flex;
-      gap: 4px;
+      align-items: center;
+      gap: 3px;
     }
 
     .view-button {
-      min-width: 68px;
-      height: 36px;
-      padding: 0 12px;
+      height: 38px;
+      padding: 0 13px;
       border: 0;
       border-radius: 11px;
       color: var(--muted);
+      font-size: 0.76rem;
+      font-weight: 900;
       background: transparent;
-      font-size: 11px;
-      font-weight: 850;
     }
 
     .view-button.active {
-      color: #021a2b;
-      background: var(--teal);
+      color: white;
+      background: var(--navy-700);
     }
 
-    .region-control {
+    .region-panel {
       padding: 0 8px 0 13px;
       display: flex;
       align-items: center;
-      gap: 7px;
+      gap: 6px;
     }
 
-    .region-control label {
+    .region-panel label {
       color: var(--muted);
-      font-size: 10px;
+      font-size: 0.7rem;
       font-weight: 850;
-      letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
-    .region-control select {
-      min-width: 62px;
-      height: 36px;
+    .region-panel select {
+      width: 66px;
+      height: 38px;
       border: 0;
       outline: 0;
       color: white;
-      background: transparent;
       font-weight: 900;
+      background: transparent;
     }
 
-    .region-control option {
-      color: var(--navy-900);
+    .region-panel option {
+      color: #082746;
       background: white;
     }
 
     .clock-panel {
-      min-width: 150px;
+      min-width: 138px;
       padding: 6px 13px;
       display: grid;
       align-content: center;
@@ -246,626 +332,597 @@
     }
 
     .clock-time {
-      font-size: 15px;
+      font-size: 0.96rem;
       line-height: 1;
-      font-weight: 900;
+      font-weight: 950;
     }
 
     .clock-date {
       margin-top: 4px;
       color: var(--muted);
-      font-size: 9px;
+      font-size: 0.65rem;
       font-weight: 750;
     }
 
     .header-button {
-      width: 46px;
-      flex: 0 0 46px;
+      width: 48px;
+      padding: 0;
       display: grid;
       place-items: center;
     }
 
-    .header-button:hover,
-    .header-button:focus-visible {
-      border-color: rgba(25,211,197,0.48);
-      color: var(--teal);
-      outline: none;
-      background: rgba(25,211,197,0.1);
-    }
+    /* EVENT AREA */
 
-    .header-button svg {
-      width: 19px;
-      height: 19px;
-    }
-
-    .audio-button {
-      min-width: 132px;
-      padding: 0 14px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .audio-button svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .audio-button.enabled {
-      border-color: rgba(57,217,138,0.4);
-      color: var(--good);
-      background: rgba(57,217,138,0.11);
-      box-shadow: 0 0 20px rgba(57,217,138,0.1);
-    }
-
-    .audio-button.speaking {
-      border-color: rgba(25,211,197,0.55);
-      color: var(--teal);
-      background: rgba(25,211,197,0.13);
-      animation: audioPulse 0.85s infinite alternate;
-    }
-
-    @keyframes audioPulse {
-      from {
-        box-shadow: 0 0 0 rgba(25,211,197,0);
-      }
-
-      to {
-        box-shadow: 0 0 24px rgba(25,211,197,0.3);
-      }
-    }
-
-    .content-grid {
-      min-width: 0;
-      min-height: 0;
-      display: grid;
-    }
-
-    .spotlight {
+    .board {
       position: relative;
       min-width: 0;
       min-height: 0;
-      overflow-x: hidden;
-      overflow-y: auto;
-      padding: clamp(20px, 1.7vw, 32px);
-      display: grid;
-      grid-template-rows: auto auto minmax(140px, 1fr);
-      gap: 16px;
-      border: 1px solid var(--line);
-      border-radius: 28px;
+      overflow: hidden;
+      border: 1px solid rgba(114, 188, 222, 0.17);
+      border-radius: var(--radius-xl);
       background:
-        radial-gradient(circle at 100% 0%, rgba(25,211,197,0.14), transparent 32rem),
-        linear-gradient(145deg, rgba(13,54,92,0.96), rgba(5,27,47,0.98));
-      box-shadow:
-        var(--shadow),
-        inset 0 1px rgba(255,255,255,0.05);
-      scrollbar-width: thin;
-      scrollbar-color: rgba(25,211,197,0.45) transparent;
+        radial-gradient(
+          circle at 92% 4%,
+          rgba(42, 206, 198, 0.15),
+          transparent 29%
+        ),
+        linear-gradient(
+          135deg,
+          rgba(11, 52, 88, 0.97),
+          rgba(5, 29, 52, 0.98)
+        );
+      box-shadow: var(--shadow);
     }
 
-    .spotlight::-webkit-scrollbar {
-      width: 7px;
-    }
-
-    .spotlight::-webkit-scrollbar-track {
-      background: transparent;
-    }
-
-    .spotlight::-webkit-scrollbar-thumb {
-      border-radius: 99px;
-      background: rgba(25,211,197,0.4);
-    }
-
-    .spotlight::after {
+    .board::after {
       content: "";
       position: absolute;
-      z-index: -1;
-      top: -250px;
-      right: -170px;
-      width: 520px;
-      height: 520px;
-      border: 74px solid rgba(25,211,197,0.045);
+      top: -190px;
+      right: -100px;
+      width: 470px;
+      height: 470px;
+      pointer-events: none;
+      border: 1px solid rgba(113, 225, 230, 0.12);
       border-radius: 50%;
+      box-shadow:
+        0 0 0 70px rgba(70, 198, 205, 0.045),
+        0 0 0 135px rgba(70, 198, 205, 0.025);
     }
 
-    .top-information {
+    .event-screen {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      height: 100%;
+      padding: clamp(18px, 1.4vw, 28px);
+      display: grid;
+      grid-template-rows: auto minmax(0, 1fr);
+      gap: 13px;
+    }
+
+    .event-header {
       min-width: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 16px;
     }
 
     .event-kicker {
       margin: 0;
       color: var(--teal);
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 0.17em;
+      font-size: clamp(0.66rem, 0.75vw, 0.86rem);
+      font-weight: 950;
+      letter-spacing: 0.18em;
       text-transform: uppercase;
     }
 
     .badges {
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       justify-content: flex-end;
-      gap: 8px;
+      flex-wrap: wrap;
+      gap: 7px;
     }
 
-    .badge,
-    .priority-badge {
-      min-height: 34px;
-      padding: 0 13px;
+    .badge {
+      min-height: 30px;
+      padding: 0 12px;
       display: inline-flex;
       align-items: center;
       gap: 7px;
-      border: 1px solid transparent;
+      border: 1px solid var(--line);
       border-radius: 999px;
-      font-size: 9px;
+      color: var(--muted);
+      font-size: 0.64rem;
       font-weight: 950;
       letter-spacing: 0.07em;
       text-transform: uppercase;
-      white-space: nowrap;
+      background: rgba(6, 30, 52, 0.64);
     }
 
-    .badge::before,
-    .priority-badge::before {
+    .badge::before {
       content: "";
       width: 7px;
       height: 7px;
       border-radius: 50%;
       background: currentColor;
-      box-shadow: 0 0 13px currentColor;
+      box-shadow: 0 0 12px currentColor;
     }
 
-    .badge-good,
-    .badge-complete,
-    .badge-shipped,
-    .priority-on-track,
-    .priority-complete {
-      border-color: rgba(57,217,138,0.25);
-      color: var(--good);
-      background: rgba(57,217,138,0.12);
-    }
-
+    .badge-critical,
     .badge-low,
-    .badge-cancelled,
-    .priority-critical {
-      border-color: rgba(255,107,120,0.28);
-      color: var(--danger);
-      background: rgba(255,107,120,0.13);
+    .badge-overdue {
+      border-color: rgba(255, 97, 116, 0.38);
+      color: var(--red);
+      background: rgba(255, 97, 116, 0.12);
     }
 
-    .badge-check,
-    .badge-draft,
-    .priority-urgent {
-      border-color: rgba(255,200,87,0.27);
+    .badge-warning,
+    .badge-due-soon {
+      border-color: rgba(255, 200, 87, 0.38);
       color: var(--amber);
-      background: rgba(255,200,87,0.13);
+      background: rgba(255, 200, 87, 0.12);
+    }
+
+    .badge-available,
+    .badge-complete {
+      border-color: rgba(58, 222, 145, 0.35);
+      color: var(--green);
+      background: rgba(58, 222, 145, 0.11);
     }
 
     .badge-confirmed,
+    .badge-allocating,
     .badge-ready-to-ship,
-    .priority-attention {
-      border-color: rgba(100,168,255,0.27);
+    .badge-shipped {
+      border-color: rgba(104, 170, 255, 0.36);
       color: var(--blue);
-      background: rgba(100,168,255,0.13);
+      background: rgba(104, 170, 255, 0.11);
     }
 
-    .badge-allocating {
-      border-color: rgba(201,155,255,0.27);
-      color: var(--purple);
-      background: rgba(201,155,255,0.13);
-    }
-
-    .primary-information {
+    .event-content {
       min-width: 0;
+      min-height: 0;
       display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      grid-template-rows: auto auto auto;
-      gap: 16px;
+      grid-template-rows: minmax(0, 1fr) auto;
+      gap: 13px;
     }
 
-    .po-card,
-    .date-card,
-    .planning-card,
-    .items-panel {
-      width: 100%;
+    .details-stack {
       min-width: 0;
-      border: 1px solid var(--line);
-      border-radius: 19px;
-      background: rgba(2,19,34,0.44);
-      box-shadow: inset 0 1px rgba(255,255,255,0.035);
+      min-height: 0;
+      display: grid;
+      grid-template-rows: 1.25fr 0.88fr 0.92fr;
+      gap: 11px;
     }
 
-    .po-card,
-    .date-card,
-    .planning-card {
-      padding: 24px 30px;
+    .detail-card {
+      min-width: 0;
+      min-height: 0;
+      padding: clamp(13px, 1.15vw, 22px);
       display: grid;
       align-content: center;
-    }
-
-    .po-card {
-      min-height: 220px;
+      border: 1px solid rgba(156, 207, 234, 0.16);
+      border-radius: var(--radius-lg);
       background:
         linear-gradient(
           135deg,
-          rgba(25,211,197,0.075),
-          rgba(2,19,34,0.48)
+          rgba(6, 32, 56, 0.94),
+          rgba(6, 27, 48, 0.82)
         );
+      box-shadow:
+        inset 0 1px rgba(255, 255, 255, 0.035),
+        0 15px 35px rgba(0, 10, 23, 0.14);
     }
 
-    .date-card {
-      min-height: 180px;
-    }
-
-    .planning-card {
-      min-height: 180px;
-    }
-
-    .field-label {
-      margin: 0 0 13px;
+    .detail-label {
+      margin: 0 0 5px;
       color: var(--teal);
-      font-size: clamp(14px, 1.1vw, 21px);
-      line-height: 1;
+      font-size: clamp(0.62rem, 0.7vw, 0.82rem);
       font-weight: 950;
       letter-spacing: 0.15em;
       text-transform: uppercase;
     }
 
     .po-number {
-      min-width: 0;
       margin: 0;
       overflow: hidden;
       color: white;
-      font-size: clamp(90px, 10vw, 180px);
+      font-size: clamp(3.9rem, 6.5vw, 7.8rem);
       line-height: 0.88;
-      font-weight: 950;
-      letter-spacing: -0.065em;
+      font-weight: 1000;
+      letter-spacing: -0.075em;
       text-overflow: ellipsis;
       white-space: nowrap;
-      text-shadow: 0 16px 40px rgba(0,0,0,0.28);
     }
 
     .customer {
-      margin: 18px 0 0;
+      margin: 8px 0 0;
       overflow: hidden;
-      color: #cde0ee;
-      font-size: clamp(32px, 3vw, 58px);
+      color: #c7d8e7;
+      font-size: clamp(1rem, 1.45vw, 1.8rem);
       line-height: 1;
-      font-weight: 900;
-      letter-spacing: -0.035em;
+      font-weight: 850;
       text-overflow: ellipsis;
+      text-transform: uppercase;
       white-space: nowrap;
     }
 
-    .date-value {
+    .in-hands-date {
       margin: 0;
-      overflow: hidden;
       color: white;
-      font-size: clamp(65px, 7vw, 130px);
-      line-height: 0.92;
-      font-weight: 950;
-      letter-spacing: -0.055em;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font-size: clamp(2.8rem, 4.7vw, 5.7rem);
+      line-height: 0.96;
+      font-weight: 1000;
+      letter-spacing: -0.06em;
     }
 
     .date-message {
-      margin: 16px 0 0;
-      color: var(--teal);
-      font-size: clamp(18px, 1.6vw, 31px);
+      margin: 7px 0 0;
+      color: var(--green);
+      font-size: clamp(0.78rem, 0.95vw, 1.12rem);
       font-weight: 900;
     }
 
-    .date-message.risk {
-      color: var(--danger);
+    .date-message.warning {
+      color: var(--amber);
+    }
+
+    .date-message.danger {
+      color: var(--red);
     }
 
     .planning-value {
       margin: 0;
-      overflow: visible;
+      overflow: hidden;
       color: white;
-      font-size: clamp(52px, 5vw, 95px);
-      line-height: 1.05;
+      font-size: clamp(1.75rem, 3vw, 3.6rem);
+      line-height: 1.04;
       font-weight: 950;
       letter-spacing: -0.045em;
-      white-space: normal;
-      overflow-wrap: anywhere;
+      text-overflow: ellipsis;
     }
+
+    /* SMALL LINE ITEMS TABLE */
 
     .items-panel {
-      min-height: 145px;
+      min-width: 0;
       overflow: hidden;
-      display: grid;
-      grid-template-rows: auto minmax(0, 1fr);
+      border: 1px solid rgba(156, 207, 234, 0.16);
+      border-radius: 16px;
+      background: rgba(5, 27, 48, 0.88);
     }
 
-    .items-head {
-      min-width: 0;
-      min-height: 36px;
-      padding: 6px 14px;
+    .items-header {
+      min-height: 34px;
+      padding: 0 13px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 12px;
       border-bottom: 1px solid var(--line);
-      background: rgba(255,255,255,0.025);
     }
 
     .items-title {
       margin: 0;
       color: white;
-      font-size: 11px;
+      font-size: 0.76rem;
       font-weight: 900;
     }
 
     .items-page {
       color: var(--muted);
-      font-size: 8px;
+      font-size: 0.6rem;
       font-weight: 800;
-      white-space: nowrap;
     }
 
     .table-wrap {
-      min-width: 0;
-      min-height: 0;
       overflow-x: auto;
-      overflow-y: hidden;
     }
 
-    .items-table {
+    table {
       width: 100%;
       border-collapse: collapse;
       table-layout: fixed;
     }
 
-    .items-table th,
-    .items-table td {
+    th,
+    td {
+      padding: 7px 10px;
       overflow: hidden;
-      border-bottom: 1px solid rgba(179,214,235,0.09);
+      text-align: right;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .items-table th {
-      height: 23px;
-      padding: 0 8px;
-      color: #7f9ab1;
-      font-size: 7px;
-      font-weight: 900;
+    th {
+      color: #8fa9bf;
+      font-size: 0.54rem;
+      font-weight: 950;
       letter-spacing: 0.08em;
-      text-align: right;
       text-transform: uppercase;
     }
 
-    .items-table td {
-      height: 28px;
-      padding: 0 8px;
-      color: #e6f2fb;
-      font-size: clamp(8px, 0.58vw, 11px);
-      font-weight: 750;
-      text-align: right;
-      font-variant-numeric: tabular-nums;
+    td {
+      border-top: 1px solid rgba(177, 216, 238, 0.08);
+      color: #e7f3fb;
+      font-size: 0.68rem;
+      font-weight: 800;
     }
 
-    .items-table th:first-child,
-    .items-table td:first-child {
+    th:first-child,
+    td:first-child {
       width: 27%;
-      padding-left: 13px;
       text-align: left;
     }
 
-    .items-table th:last-child,
-    .items-table td:last-child {
-      width: 12%;
-      padding-right: 13px;
+    .balance-low {
+      color: var(--red);
     }
 
-    .model-value {
-      color: white !important;
-      font-weight: 900 !important;
+    .balance-good {
+      color: var(--green);
     }
 
-    .balance-positive {
-      color: var(--good) !important;
-    }
-
-    .balance-negative {
-      color: var(--danger) !important;
-    }
-
-    .mini-status {
-      min-width: 50px;
-      padding: 3px 6px;
+    .item-status {
+      min-width: 58px;
+      min-height: 20px;
+      padding: 0 8px;
       display: inline-flex;
+      align-items: center;
       justify-content: center;
       border-radius: 999px;
-      font-size: 7px;
+      font-size: 0.52rem;
       font-weight: 950;
       letter-spacing: 0.05em;
+      text-transform: uppercase;
     }
 
-    .mini-status.good {
-      color: var(--good);
-      background: rgba(57,217,138,0.12);
+    .status-available {
+      color: var(--green);
+      background: rgba(58, 222, 145, 0.12);
     }
 
-    .mini-status.low {
-      color: var(--danger);
-      background: rgba(255,107,120,0.13);
+    .status-low {
+      color: var(--red);
+      background: rgba(255, 97, 116, 0.12);
     }
 
-    .mini-status.check {
+    .status-check {
       color: var(--amber);
-      background: rgba(255,200,87,0.13);
+      background: rgba(255, 200, 87, 0.12);
     }
 
-    .no-items {
-      min-height: 100px;
-      display: grid;
-      place-items: center;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 750;
-    }
+    /* EMPTY STATE */
 
-    .empty-board {
-      min-height: 100%;
+    .empty-state {
+      width: 100%;
+      height: 100%;
+      padding: 40px;
       display: grid;
       place-items: center;
-      padding: 50px;
-      border: 1px dashed rgba(133,191,221,0.3);
-      border-radius: 28px;
-      background: rgba(7,31,52,0.62);
       text-align: center;
+    }
+
+    .empty-icon {
+      width: 86px;
+      height: 86px;
+      margin: 0 auto 20px;
+      display: grid;
+      place-items: center;
+      border: 1px solid rgba(36, 223, 208, 0.25);
+      border-radius: 26px;
+      color: var(--teal);
+      font-size: 2.2rem;
+      background: rgba(36, 223, 208, 0.09);
     }
 
     .empty-title {
       margin: 0;
-      font-size: clamp(28px, 3vw, 48px);
+      font-size: clamp(2rem, 4vw, 4.5rem);
+      font-weight: 950;
+      letter-spacing: -0.05em;
     }
 
     .empty-copy {
-      max-width: 720px;
-      margin: 14px auto 23px;
+      margin: 10px 0 0;
       color: var(--muted);
-      font-size: 15px;
-      line-height: 1.6;
+      font-size: 1rem;
     }
 
-    .empty-link {
-      min-height: 46px;
-      padding: 0 18px;
-      display: inline-flex;
-      align-items: center;
-      border-radius: 13px;
-      color: #032235;
-      background: var(--teal);
-      font-weight: 900;
-      text-decoration: none;
-    }
+    /* SCHEDULED GREETING */
 
-    .footer-bar {
-      min-height: 22px;
+    .greeting-overlay {
+      position: fixed;
+      z-index: 1000;
+      inset: 0;
+      padding: 6vw;
       display: grid;
-      grid-template-columns: auto minmax(140px, 1fr) auto;
-      align-items: center;
-      gap: 18px;
-      color: var(--muted);
-      font-size: 9px;
-      font-weight: 750;
+      place-items: center;
+      overflow: hidden;
+      text-align: center;
+      background:
+        radial-gradient(
+          circle at 50% 44%,
+          rgba(36, 223, 208, 0.22),
+          transparent 34%
+        ),
+        radial-gradient(
+          circle at 90% 0%,
+          rgba(60, 155, 230, 0.2),
+          transparent 34%
+        ),
+        linear-gradient(135deg, #021326 0%, #073457 58%, #07636c 100%);
+      opacity: 0;
+      visibility: hidden;
+      transform: scale(1.02);
+      transition:
+        opacity 0.65s ease,
+        visibility 0.65s ease,
+        transform 0.65s ease;
     }
 
-    .rotation-track {
+    .greeting-overlay.active {
+      opacity: 1;
+      visibility: visible;
+      transform: scale(1);
+    }
+
+    .greeting-overlay::before,
+    .greeting-overlay::after {
+      content: "";
+      position: absolute;
+      border: 1px solid rgba(111, 240, 231, 0.12);
+      border-radius: 50%;
+    }
+
+    .greeting-overlay::before {
+      top: -24vw;
+      right: -14vw;
+      width: 58vw;
+      height: 58vw;
+      box-shadow:
+        0 0 0 7vw rgba(36, 223, 208, 0.025),
+        0 0 0 14vw rgba(36, 223, 208, 0.018);
+    }
+
+    .greeting-overlay::after {
+      bottom: -24vw;
+      left: -16vw;
+      width: 54vw;
+      height: 54vw;
+      box-shadow: 0 0 0 9vw rgba(75, 167, 236, 0.025);
+    }
+
+    .greeting-content {
+      position: relative;
+      z-index: 1;
+      max-width: 1500px;
+    }
+
+    .greeting-eyebrow {
+      margin: 0 0 20px;
+      color: var(--teal);
+      font-size: clamp(0.8rem, 1.2vw, 1.25rem);
+      font-weight: 950;
+      letter-spacing: 0.3em;
+      text-transform: uppercase;
+    }
+
+    .greeting-primary {
+      margin: 0;
+      color: white;
+      font-size: clamp(4rem, 8.5vw, 10rem);
+      line-height: 0.91;
+      font-weight: 1000;
+      letter-spacing: -0.07em;
+      text-wrap: balance;
+    }
+
+    .greeting-secondary {
+      margin: 28px 0 0;
+      color: #a8fff7;
+      font-size: clamp(2rem, 4vw, 5rem);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.045em;
+    }
+
+    .greeting-time {
+      margin: 28px 0 0;
+      color: rgba(238, 248, 255, 0.62);
+      font-size: clamp(0.8rem, 1vw, 1rem);
+      font-weight: 850;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+    }
+
+    /* FOOTER AND CONTROLS */
+
+    .footer {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: auto minmax(100px, 1fr) auto;
+      align-items: center;
+      gap: 14px;
+      color: var(--muted);
+      font-size: 0.62rem;
+      font-weight: 800;
+    }
+
+    .progress-track {
       height: 3px;
       overflow: hidden;
-      border-radius: 99px;
-      background: rgba(143,184,209,0.14);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.08);
     }
 
-    .rotation-progress {
+    .progress-bar {
       width: 0;
       height: 100%;
       border-radius: inherit;
-      background: linear-gradient(90deg, var(--teal), var(--blue));
-    }
-
-    .sync-copy {
-      text-align: right;
+      background: linear-gradient(90deg, var(--teal), #69aaff);
+      box-shadow: 0 0 12px rgba(36, 223, 208, 0.5);
     }
 
     .floating-controls {
       position: fixed;
-      right: 26px;
-      bottom: 25px;
-      z-index: 20;
-      padding: 6px;
+      z-index: 50;
+      right: 22px;
+      bottom: 47px;
       display: flex;
       gap: 7px;
-      border: 1px solid var(--line);
-      border-radius: 17px;
-      background: rgba(3,19,33,0.86);
-      box-shadow: 0 18px 44px rgba(0,0,0,0.34);
-      backdrop-filter: blur(18px);
+      opacity: 0.14;
+      transition: opacity 0.25s ease;
+    }
+
+    .floating-controls:hover,
+    .floating-controls:focus-within {
+      opacity: 1;
     }
 
     .control-button {
-      width: 39px;
-      height: 39px;
+      width: 42px;
+      height: 42px;
+      padding: 0;
       display: grid;
       place-items: center;
       border: 1px solid var(--line);
-      border-radius: 11px;
+      border-radius: 13px;
       color: white;
-      background: rgba(9,38,63,0.92);
+      background: rgba(5, 25, 44, 0.9);
+      box-shadow: 0 10px 30px rgba(0, 5, 15, 0.25);
     }
 
-    .control-button:hover,
-    .control-button:focus-visible {
-      border-color: rgba(25,211,197,0.55);
-      outline: none;
-      color: var(--teal);
-      background: #10446e;
-    }
-
-    .control-button svg {
-      width: 18px;
-      height: 18px;
-    }
-
-    .floating-controls.paused {
-      border-color: rgba(255,200,87,0.4);
-    }
-
-    .slide-enter {
-      animation: slideEnter 0.42s ease both;
-    }
-
-    @keyframes slideEnter {
-      from {
-        opacity: 0;
-        transform: translateY(9px);
-      }
-
-      to {
-        opacity: 1;
-        transform: none;
-      }
-    }
-
-    @media (max-width: 1200px) {
-      .clock-panel {
+    @media (max-width: 1250px) {
+      .live-pill,
+      .clock-date,
+      .region-panel label {
         display: none;
+      }
+
+      .clock-panel {
+        min-width: 92px;
       }
 
       .audio-button {
-        min-width: 46px;
-        width: 46px;
-        padding: 0;
+        min-width: 50px;
       }
 
-      .audio-label {
+      .audio-button span {
         display: none;
       }
     }
 
-    @media (max-width: 760px) {
+    @media (max-width: 850px) {
       body {
         overflow: auto;
       }
 
       .tv-app {
         height: auto;
-        min-height: 100vh;
-        padding: 11px;
+        min-height: 100svh;
         grid-template-rows: auto auto auto;
       }
 
@@ -873,32 +930,20 @@
         align-items: flex-start;
       }
 
-      .topbar-right {
+      .topbar-actions {
         flex-wrap: wrap;
       }
 
-      .live-pill,
-      .region-control label {
+      .view-switch,
+      .clock-panel {
         display: none;
       }
 
-      .brand-mark {
-        width: 48px;
-        height: 48px;
-        flex-basis: 48px;
+      .board {
+        min-height: 760px;
       }
 
-      .brand-title {
-        font-size: 18px;
-      }
-
-      .spotlight {
-        min-height: 0;
-        padding: 17px;
-        border-radius: 23px;
-      }
-
-      .top-information {
+      .event-header {
         align-items: flex-start;
         flex-direction: column;
       }
@@ -907,49 +952,12 @@
         justify-content: flex-start;
       }
 
-      .po-card,
-      .date-card,
-      .planning-card {
-        min-height: auto;
-        padding: 22px;
+      .details-stack {
+        grid-template-rows: repeat(3, minmax(150px, auto));
       }
 
       .po-number {
-        font-size: 64px;
-      }
-
-      .customer {
-        font-size: 28px;
-      }
-
-      .date-value {
-        font-size: 49px;
-      }
-
-      .date-message {
-        font-size: 17px;
-      }
-
-      .planning-value {
-        font-size: 39px;
-      }
-
-      .items-table {
-        min-width: 700px;
-      }
-
-      .footer-bar {
-        margin-bottom: 65px;
-        grid-template-columns: 1fr;
-      }
-
-      .footer-bar > span {
-        display: none;
-      }
-
-      .floating-controls {
-        right: 14px;
-        bottom: 14px;
+        white-space: normal;
       }
     }
   </style>
@@ -959,25 +967,25 @@
   <main class="tv-app">
     <header class="topbar">
       <div class="brand">
-        <div class="brand-mark">S</div>
+        <div class="brand-mark" aria-hidden="true">S</div>
 
-        <div>
+        <div class="brand-copy">
           <p class="brand-eyebrow">Stark Premium</p>
           <h1 class="brand-title">Events Live Board</h1>
         </div>
       </div>
 
-      <div class="topbar-right">
-        <div class="live-pill">
-          <span class="live-dot"></span>
+      <div class="topbar-actions">
+        <div class="header-panel live-pill">
+          <span class="live-dot" aria-hidden="true"></span>
           Live
         </div>
 
         <button
           id="audioButton"
-          class="audio-button"
+          class="header-button audio-button"
           type="button"
-          title="Enable in-hands date announcement"
+          title="Enable spoken alerts"
         >
           <svg
             id="audioIcon"
@@ -985,82 +993,110 @@
             fill="none"
             stroke="currentColor"
             stroke-width="2"
+            aria-hidden="true"
           >
-            <path d="M11 5 6 9H2v6h4l5 4z"/>
-            <path d="M15 9a4 4 0 0 1 0 6"/>
-            <path d="M18 6a8 8 0 0 1 0 12"/>
+            <path d="M11 5 6 9H2v6h4l5 4V5Z"></path>
+            <path d="M15.5 8.5a5 5 0 0 1 0 7"></path>
+            <path d="M18 6a8.5 8.5 0 0 1 0 12"></path>
           </svg>
-
-          <span id="audioLabel" class="audio-label">
-            Enable audio
-          </span>
+          <span id="audioButtonText">Enable audio</span>
         </button>
 
-        <div class="view-switch">
-          <button id="activeViewButton" class="view-button" type="button">
+        <div class="view-switch" aria-label="Event view">
+          <button
+            id="activeViewButton"
+            class="view-button active"
+            type="button"
+          >
             Active
           </button>
 
-          <button id="allViewButton" class="view-button" type="button">
+          <button
+            id="allViewButton"
+            class="view-button"
+            type="button"
+          >
             All POs
           </button>
         </div>
 
-        <div class="region-control">
+        <div class="header-panel region-panel">
           <label for="regionSelect">Region</label>
-
-          <select id="regionSelect">
+          <select id="regionSelect" aria-label="Select region">
             <option value="US">US</option>
             <option value="EU">EU</option>
             <option value="CA">CA</option>
           </select>
         </div>
 
-        <div class="clock-panel">
-          <span id="clockTime" class="clock-time">--:--</span>
+        <div class="header-panel clock-panel">
+          <span id="clockTime" class="clock-time">--:-- --</span>
           <span id="clockDate" class="clock-date">Loading date</span>
         </div>
 
         <button
           id="fullscreenButton"
-          class="header-button"
+          class="header-button fullscreen-button"
           type="button"
-          title="Enter full screen"
+          title="Enter fullscreen"
+          aria-label="Enter fullscreen"
         >
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/>
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            aria-hidden="true"
+          >
+            <path d="M8 3H3v5"></path>
+            <path d="M16 3h5v5"></path>
+            <path d="M8 21H3v-5"></path>
+            <path d="M16 21h5v-5"></path>
           </svg>
         </button>
       </div>
     </header>
 
-    <section id="contentGrid" class="content-grid">
-      <article id="spotlight" class="spotlight"></article>
+    <section id="board" class="board" aria-live="off">
+      <div id="eventScreen" class="event-screen"></div>
     </section>
 
-    <footer class="footer-bar">
-      <span id="rotationCopy">
-        Auto-rotating every 14 seconds
-      </span>
+    <footer class="footer">
+      <span id="rotationCopy">Auto-rotating every 14 seconds</span>
 
-      <div class="rotation-track">
-        <div id="rotationProgress" class="rotation-progress"></div>
+      <div class="progress-track" aria-hidden="true">
+        <div id="rotationProgress" class="progress-bar"></div>
       </div>
 
-      <span id="syncCopy" class="sync-copy">
-        Waiting for regional data
-      </span>
+      <span id="syncCopy">Waiting for event data</span>
     </footer>
   </main>
 
   <div id="floatingControls" class="floating-controls">
-    <button id="previousButton" class="control-button" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-        <path d="m15 18-6-6 6-6"/>
+    <button
+      id="previousButton"
+      class="control-button"
+      type="button"
+      title="Previous PO"
+      aria-label="Previous PO"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+      >
+        <path d="m15 18-6-6 6-6"></path>
       </svg>
     </button>
 
-    <button id="pauseButton" class="control-button" type="button">
+    <button
+      id="pauseButton"
+      class="control-button"
+      type="button"
+      title="Pause rotation"
+      aria-label="Pause rotation"
+    >
       <svg
         id="pauseIcon"
         viewBox="0 0 24 24"
@@ -1068,22 +1104,56 @@
         stroke="currentColor"
         stroke-width="2.2"
       >
-        <path d="M8 5v14M16 5v14"/>
+        <path d="M8 5v14M16 5v14"></path>
       </svg>
     </button>
 
-    <button id="nextButton" class="control-button" type="button">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
-        <path d="m9 18 6-6-6-6"/>
+    <button
+      id="nextButton"
+      class="control-button"
+      type="button"
+      title="Next PO"
+      aria-label="Next PO"
+    >
+      <svg
+        viewBox="0 0 24 24"
+        fill="none"
+        stroke="currentColor"
+        stroke-width="2.2"
+      >
+        <path d="m9 18 6-6-6-6"></path>
       </svg>
     </button>
   </div>
+
+  <section
+    id="greetingOverlay"
+    class="greeting-overlay"
+    aria-hidden="true"
+  >
+    <div class="greeting-content">
+      <p class="greeting-eyebrow">Stark Premium Team Message</p>
+      <h2 id="greetingPrimary" class="greeting-primary"></h2>
+      <p id="greetingSecondary" class="greeting-secondary"></p>
+      <p id="greetingTime" class="greeting-time"></p>
+    </div>
+  </section>
 
   <script>
     (() => {
       "use strict";
 
-      const REGIONS = ["US", "EU", "CA"];
+      /*
+       * Scheduled greetings use the TV/browser's local clock.
+       *
+       * Morning:
+       * 8:00 AM and 9:00 AM
+       *
+       * Evening:
+       * 4:00 PM and 5:00 PM
+       */
+
+      const VALID_REGIONS = ["US", "EU", "CA"];
 
       const REGION_NAMES = {
         US: "United States",
@@ -1092,36 +1162,60 @@
       };
 
       const LOCATIONS = ["Sarasota", "Texas"];
-      const ITEMS_PER_SLIDE = 7;
+
+      const ITEMS_PER_SLIDE = 5;
       const ROTATION_MS = 14000;
       const REFRESH_MS = 5000;
+      const GREETING_DURATION_MS = 14000;
 
-      const params = new URLSearchParams(window.location.search);
+      const SCHEDULED_GREETINGS = {
+        "08:00": {
+          primary: "GOOD MORNING EVERYONE",
+          secondary: "HAVE A NICE DAY"
+        },
+        "09:00": {
+          primary: "GOOD MORNING EVERYONE",
+          secondary: "HAVE A NICE DAY"
+        },
+        "16:00": {
+          primary: "GOOD NIGHT EVERYONE",
+          secondary: "SEE YOU TOMORROW"
+        },
+        "17:00": {
+          primary: "GOOD NIGHT EVERYONE",
+          secondary: "SEE YOU TOMORROW"
+        }
+      };
 
-      let region = (params.get("region") || "US").toUpperCase();
+      const parameters = new URLSearchParams(window.location.search);
 
-      if (!REGIONS.includes(region)) {
+      let region = (parameters.get("region") || "US").toUpperCase();
+
+      if (!VALID_REGIONS.includes(region)) {
         region = "US";
       }
 
       let viewMode =
-        (params.get("view") || "all").toLowerCase() === "active"
-          ? "active"
-          : "all";
+        (parameters.get("view") || "active").toLowerCase() === "all"
+          ? "all"
+          : "active";
 
       let events = [];
       let visibleEvents = [];
       let slides = [];
       let slideIndex = 0;
+
       let paused = false;
       let rotationStartedAt = Date.now();
       let lastFingerprint = "";
-      let lastAnnouncementKey = "";
 
-      let audioEnabled =
-        localStorage.getItem(
-          `stark_events_tv_audio_${region}`
-        ) === "true";
+      let audioEnabled = false;
+      let selectedVoice = null;
+      let lastAnnouncedEventId = "";
+
+      let greetingActive = false;
+      let greetingTimer = null;
+      let pausedBeforeGreeting = false;
 
       let locationReports = {
         Sarasota: null,
@@ -1133,38 +1227,44 @@
         Texas: new Map()
       };
 
-      const spotlight = document.getElementById("spotlight");
-      const contentGrid = document.getElementById("contentGrid");
+      const eventScreen = document.getElementById("eventScreen");
       const regionSelect = document.getElementById("regionSelect");
-      const activeViewButton = document.getElementById("activeViewButton");
-      const allViewButton = document.getElementById("allViewButton");
+      const activeViewButton =
+        document.getElementById("activeViewButton");
+      const allViewButton =
+        document.getElementById("allViewButton");
       const pauseButton = document.getElementById("pauseButton");
       const pauseIcon = document.getElementById("pauseIcon");
-      const floatingControls = document.getElementById("floatingControls");
+      const progress = document.getElementById("rotationProgress");
       const rotationCopy = document.getElementById("rotationCopy");
-      const rotationProgress = document.getElementById("rotationProgress");
       const syncCopy = document.getElementById("syncCopy");
       const audioButton = document.getElementById("audioButton");
-      const audioLabel = document.getElementById("audioLabel");
-      const audioIcon = document.getElementById("audioIcon");
+      const audioButtonText =
+        document.getElementById("audioButtonText");
+      const greetingOverlay =
+        document.getElementById("greetingOverlay");
+      const greetingPrimary =
+        document.getElementById("greetingPrimary");
+      const greetingSecondary =
+        document.getElementById("greetingSecondary");
+      const greetingTime =
+        document.getElementById("greetingTime");
 
       initialize();
 
       async function initialize() {
         regionSelect.value = region;
 
+        loadAudioPreference();
+        loadVoices();
         configureViewButtons();
-        updateAudioButton();
         bindControls();
-        updateClock();
 
-        window.setInterval(updateClock, 1000);
+        updateClockAndSchedule();
+        window.setInterval(updateClockAndSchedule, 1000);
 
         await refreshData(true);
-
-        window.setInterval(() => {
-          refreshData(false);
-        }, REFRESH_MS);
+        window.setInterval(() => refreshData(false), REFRESH_MS);
 
         window.requestAnimationFrame(updateRotation);
       }
@@ -1174,32 +1274,8 @@
           stopSpeaking();
 
           const nextUrl = new URL(window.location.href);
-
           nextUrl.searchParams.set("region", regionSelect.value);
-
           window.location.href = nextUrl.toString();
-        });
-
-        audioButton.addEventListener("click", () => {
-          audioEnabled = !audioEnabled;
-
-          localStorage.setItem(
-            `stark_events_tv_audio_${region}`,
-            String(audioEnabled)
-          );
-
-          stopSpeaking();
-          updateAudioButton();
-
-          if (
-            audioEnabled &&
-            slides.length
-          ) {
-            announceEvent(
-              slides[slideIndex].event,
-              true
-            );
-          }
         });
 
         activeViewButton.addEventListener("click", () => {
@@ -1224,10 +1300,12 @@
           .getElementById("fullscreenButton")
           .addEventListener("click", toggleFullscreen);
 
-        window.addEventListener("storage", event => {
+        audioButton.addEventListener("click", toggleAudio);
+
+        window.addEventListener("storage", (storageEvent) => {
           if (
-            event.key &&
-            event.key.startsWith("stark_events_v")
+            storageEvent.key &&
+            storageEvent.key.startsWith("stark_events_v")
           ) {
             refreshData(false);
           }
@@ -1238,163 +1316,175 @@
             stopSpeaking();
           } else {
             refreshData(false);
+            updateClockAndSchedule();
           }
         });
 
-        window.addEventListener("beforeunload", () => {
-          stopSpeaking();
-        });
-
-        document.addEventListener("keydown", event => {
-          if (event.key === "ArrowRight") {
+        document.addEventListener("keydown", (keyboardEvent) => {
+          if (keyboardEvent.key === "ArrowRight") {
             nextSlide();
           }
 
-          if (event.key === "ArrowLeft") {
+          if (keyboardEvent.key === "ArrowLeft") {
             previousSlide();
           }
 
-          if (event.key === " ") {
-            event.preventDefault();
+          if (keyboardEvent.key === " ") {
+            keyboardEvent.preventDefault();
             togglePause();
           }
 
-          if (event.key.toLowerCase() === "f") {
+          if (keyboardEvent.key.toLowerCase() === "f") {
             toggleFullscreen();
           }
 
-          if (event.key.toLowerCase() === "a") {
-            audioButton.click();
+          if (keyboardEvent.key.toLowerCase() === "a") {
+            toggleAudio();
           }
         });
+
+        window.addEventListener("beforeunload", stopSpeaking);
+
+        if ("speechSynthesis" in window) {
+          window.speechSynthesis.addEventListener(
+            "voiceschanged",
+            loadVoices
+          );
+        }
       }
 
-      function updateAudioButton() {
-        const supported =
-          "speechSynthesis" in window &&
-          "SpeechSynthesisUtterance" in window;
+      /* AUDIO */
 
-        audioButton.disabled = !supported;
-
-        audioButton.classList.toggle(
-          "enabled",
-          audioEnabled && supported
+      function loadAudioPreference() {
+        const storedValue = localStorage.getItem(
+          `stark_events_tv_audio_${region}`
         );
 
-        audioButton.classList.remove("speaking");
+        audioEnabled =
+          storedValue === "true" &&
+          "speechSynthesis" in window;
 
-        audioLabel.textContent = !supported
-          ? "Audio unavailable"
-          : audioEnabled
-            ? "Audio on"
-            : "Enable audio";
+        updateAudioButton();
 
-        audioButton.title = !supported
-          ? "Speech is unavailable in this browser"
-          : audioEnabled
-            ? "Disable in-hands date announcement"
-            : "Enable in-hands date announcement";
-
-        audioIcon.innerHTML = audioEnabled
-          ? `
-            <path d="M11 5 6 9H2v6h4l5 4z"/>
-            <path d="M15 9a4 4 0 0 1 0 6"/>
-            <path d="M18 6a8 8 0 0 1 0 12"/>
-          `
-          : `
-            <path d="M11 5 6 9H2v6h4l5 4z"/>
-            <path d="m16 9 5 5M21 9l-5 5"/>
-          `;
+        if (!("speechSynthesis" in window)) {
+          audioButton.disabled = true;
+          audioButtonText.textContent = "Audio unavailable";
+        }
       }
 
-      function announceEvent(event, force = false) {
+      function toggleAudio() {
+        if (!("speechSynthesis" in window)) {
+          return;
+        }
+
+        audioEnabled = !audioEnabled;
+
+        localStorage.setItem(
+          `stark_events_tv_audio_${region}`,
+          String(audioEnabled)
+        );
+
+        if (!audioEnabled) {
+          stopSpeaking();
+        }
+
+        updateAudioButton();
+
+        if (audioEnabled) {
+          if (greetingActive) {
+            speakGreeting(
+              greetingPrimary.textContent,
+              greetingSecondary.textContent
+            );
+          } else {
+            lastAnnouncedEventId = "";
+            maybeAnnounceCurrentEvent();
+          }
+        }
+      }
+
+      function updateAudioButton(state = "") {
+        audioButton.classList.toggle("enabled", audioEnabled);
+        audioButton.classList.toggle(
+          "speaking",
+          state === "speaking"
+        );
+
+        if (state === "speaking") {
+          audioButtonText.textContent = "Speaking";
+        } else if (audioEnabled) {
+          audioButtonText.textContent = "Audio on";
+        } else {
+          audioButtonText.textContent = "Enable audio";
+        }
+      }
+
+      function loadVoices() {
+        if (!("speechSynthesis" in window)) {
+          return;
+        }
+
+        const voices = window.speechSynthesis.getVoices();
+
+        selectedVoice =
+          voices.find((voice) => {
+            return (
+              voice.lang === "en-US" &&
+              /Microsoft|Google|Samantha|Ava|Jenny/i.test(
+                voice.name
+              )
+            );
+          }) ||
+          voices.find((voice) => voice.lang === "en-US") ||
+          voices.find((voice) => voice.lang.startsWith("en")) ||
+          null;
+      }
+
+      function speak(
+        message,
+        {
+          rate = 0.82,
+          pitch = 1.02,
+          volume = 1,
+          interrupt = true
+        } = {}
+      ) {
         if (
           !audioEnabled ||
           !("speechSynthesis" in window) ||
-          !("SpeechSynthesisUtterance" in window)
+          !message
         ) {
           return;
         }
 
-        const announcementKey =
-          `${event.id}|${event.inHandsDate}`;
-
-        if (
-          !force &&
-          announcementKey === lastAnnouncementKey
-        ) {
-          return;
+        if (interrupt) {
+          window.speechSynthesis.cancel();
         }
 
-        lastAnnouncementKey = announcementKey;
+        const utterance = new SpeechSynthesisUtterance(message);
 
-        window.speechSynthesis.cancel();
-
-        const inHandsText = event.inHandsDate
-          ? formatDateForSpeech(event.inHandsDate)
-          : "not entered";
-
-        const message =
-          `Attention. ` +
-          `Purchase order ${speakablePo(event.poNumber)}. ` +
-          `In hands date is ${inHandsText}. ` +
-          `I repeat. In hands date is ${inHandsText}.`;
-
-        const utterance =
-          new SpeechSynthesisUtterance(message);
+        if (selectedVoice) {
+          utterance.voice = selectedVoice;
+        }
 
         utterance.lang = "en-US";
-        utterance.volume = 1;
-        utterance.rate = 0.78;
-        utterance.pitch = 1.05;
-
-        const voice = selectPreferredVoice();
-
-        if (voice) {
-          utterance.voice = voice;
-        }
+        utterance.rate = rate;
+        utterance.pitch = pitch;
+        utterance.volume = volume;
 
         utterance.onstart = () => {
-          audioButton.classList.add("speaking");
-          audioLabel.textContent = "Speaking";
+          updateAudioButton("speaking");
         };
 
         utterance.onend = () => {
-          audioButton.classList.remove("speaking");
-          audioLabel.textContent = "Audio on";
+          updateAudioButton();
         };
 
         utterance.onerror = () => {
-          audioButton.classList.remove("speaking");
-          audioLabel.textContent = "Audio on";
+          updateAudioButton();
         };
 
         window.speechSynthesis.speak(utterance);
-      }
-
-      function selectPreferredVoice() {
-        const voices =
-          window.speechSynthesis.getVoices();
-
-        if (!voices.length) {
-          return null;
-        }
-
-        return (
-          voices.find(voice =>
-            voice.lang === "en-US" &&
-            /Microsoft|Google|Samantha|Alex|Zira|Natural/i.test(
-              voice.name
-            )
-          ) ||
-          voices.find(voice =>
-            voice.lang === "en-US"
-          ) ||
-          voices.find(voice =>
-            voice.lang.startsWith("en")
-          ) ||
-          null
-        );
       }
 
       function stopSpeaking() {
@@ -1402,54 +1492,414 @@
           window.speechSynthesis.cancel();
         }
 
-        audioButton.classList.remove("speaking");
-
-        if (audioEnabled) {
-          audioLabel.textContent = "Audio on";
-        }
+        updateAudioButton();
       }
 
-      function speakablePo(value) {
-        return String(value || "")
+      function maybeAnnounceCurrentEvent() {
+        if (
+          !audioEnabled ||
+          greetingActive ||
+          !slides.length
+        ) {
+          return;
+        }
+
+        const currentEvent = slides[slideIndex]?.event;
+
+        if (!currentEvent) {
+          return;
+        }
+
+        /*
+         * Only announce when the in-hands date is
+         * today through seven days away.
+         */
+        const remainingDays = daysUntil(currentEvent.inHandsDate);
+
+        if (
+          remainingDays === null ||
+          remainingDays < 0 ||
+          remainingDays > 7
+        ) {
+          lastAnnouncedEventId = currentEvent.id;
+          return;
+        }
+
+        /*
+         * Prevent additional item pages belonging to the
+         * same PO from repeating the announcement.
+         * The PO can be announced again after the board
+         * rotates to another PO and returns.
+         */
+        if (lastAnnouncedEventId === currentEvent.id) {
+          return;
+        }
+
+        lastAnnouncedEventId = currentEvent.id;
+
+        const spokenPo = String(currentEvent.poNumber)
           .replace(/-/g, " dash ")
-          .replace(/_/g, " ")
-          .replace(/\s+/g, " ")
-          .trim();
-      }
+          .replace(/\//g, " slash ");
 
-      function formatDateForSpeech(value) {
-        const date = parseDate(value);
+        const spokenDate = formatSpokenDate(
+          currentEvent.inHandsDate
+        );
 
-        if (!date) {
-          return "not entered";
+        let urgencyMessage = "";
+
+        if (remainingDays === 0) {
+          urgencyMessage = "The in hands date is today.";
+        } else if (remainingDays === 1) {
+          urgencyMessage = "The in hands date is tomorrow.";
+        } else {
+          urgencyMessage =
+            `There are ${remainingDays} days remaining.`;
         }
 
-        return new Intl.DateTimeFormat(
-          "en-US",
+        speak(
+          `Attention. Purchase order ${spokenPo}. ` +
+          `In hands date is ${spokenDate}. ` +
+          `${urgencyMessage} ` +
+          `I repeat. In hands date is ${spokenDate}.`,
           {
-            weekday: "long",
-            month: "long",
-            day: "numeric",
-            year: "numeric"
+            rate: 0.78,
+            pitch: 1.06,
+            volume: 1
           }
-        ).format(date);
+        );
       }
 
-      function setViewMode(mode) {
-        if (viewMode === mode) {
+      function speakGreeting(primary, secondary) {
+        speak(
+          `${primary}. ${secondary}.`,
+          {
+            rate: 0.75,
+            pitch: 1.05,
+            volume: 1
+          }
+        );
+      }
+
+      /* SCHEDULED GREETINGS */
+
+      function updateClockAndSchedule() {
+        const now = new Date();
+
+        document.getElementById("clockTime").textContent =
+          now.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit",
+            second: "2-digit"
+          });
+
+        document.getElementById("clockDate").textContent =
+          now.toLocaleDateString("en-US", {
+            weekday: "short",
+            month: "short",
+            day: "numeric"
+          });
+
+        checkScheduledGreeting(now);
+      }
+
+      function checkScheduledGreeting(now) {
+        const hours = String(now.getHours()).padStart(2, "0");
+        const minutes = String(now.getMinutes()).padStart(2, "0");
+        const timeKey = `${hours}:${minutes}`;
+
+        const greeting = SCHEDULED_GREETINGS[timeKey];
+
+        if (!greeting || greetingActive) {
+          return;
+        }
+
+        const dateKey = [
+          now.getFullYear(),
+          String(now.getMonth() + 1).padStart(2, "0"),
+          String(now.getDate()).padStart(2, "0")
+        ].join("-");
+
+        const completedKey =
+          `stark_tv_greeting_${dateKey}_${timeKey}`;
+
+        /*
+         * Prevent the same scheduled greeting from replaying
+         * repeatedly during its scheduled minute or after reload.
+         */
+        if (localStorage.getItem(completedKey) === "true") {
+          return;
+        }
+
+        localStorage.setItem(completedKey, "true");
+
+        showScheduledGreeting(
+          greeting.primary,
+          greeting.secondary,
+          now
+        );
+      }
+
+      function showScheduledGreeting(primary, secondary, now) {
+        if (greetingTimer) {
+          window.clearTimeout(greetingTimer);
+        }
+
+        greetingActive = true;
+        pausedBeforeGreeting = paused;
+        paused = true;
+
+        stopSpeaking();
+
+        greetingPrimary.textContent = primary;
+        greetingSecondary.textContent = secondary;
+        greetingTime.textContent =
+          now.toLocaleTimeString("en-US", {
+            hour: "numeric",
+            minute: "2-digit"
+          });
+
+        greetingOverlay.classList.add("active");
+        greetingOverlay.setAttribute("aria-hidden", "false");
+
+        speakGreeting(primary, secondary);
+
+        greetingTimer = window.setTimeout(() => {
+          hideScheduledGreeting();
+        }, GREETING_DURATION_MS);
+      }
+
+      function hideScheduledGreeting() {
+        greetingOverlay.classList.remove("active");
+        greetingOverlay.setAttribute("aria-hidden", "true");
+
+        greetingActive = false;
+        greetingTimer = null;
+        paused = pausedBeforeGreeting;
+
+        resetRotation();
+        updatePauseButton();
+
+        /*
+         * Do not immediately repeat the event announcement
+         * after the greeting. Normal rotation resumes calmly.
+         */
+      }
+
+      /* EVENTS DATA */
+
+      async function refreshData(forceRender) {
+        const previousSlide = slides[slideIndex];
+        const previousEventId =
+          previousSlide?.event?.id || "";
+        const previousItemPage =
+          previousSlide?.itemPage || 0;
+
+        const loadedEvents = normalizeEvents(
+          loadExistingEvents()
+        );
+
+        locationReports = await loadStoredInventory();
+        rebuildLocationMaps();
+
+        events = loadedEvents
+          .map(synchronizeEventInventory)
+          .sort(compareEvents);
+
+        const fingerprint = JSON.stringify({
+          events: events.map((event) => [
+            event.id,
+            event.updatedAt,
+            event.status,
+            event.inHandsDate,
+            event.items
+          ]),
+          reports: LOCATIONS.map((location) => {
+            const report = locationReports[location];
+
+            return [
+              location,
+              report?.uploadedAt || "",
+              report?.rows?.length || 0
+            ];
+          })
+        });
+
+        if (!forceRender && fingerprint === lastFingerprint) {
+          return;
+        }
+
+        lastFingerprint = fingerprint;
+
+        buildSlides();
+
+        const retainedSlideIndex = slides.findIndex((slide) => {
+          return (
+            slide.event.id === previousEventId &&
+            slide.itemPage === previousItemPage
+          );
+        });
+
+        slideIndex =
+          retainedSlideIndex >= 0
+            ? retainedSlideIndex
+            : Math.min(
+                slideIndex,
+                Math.max(0, slides.length - 1)
+              );
+
+        renderCurrentSlide();
+        updateSyncCopy();
+        resetRotation();
+      }
+
+      function loadExistingEvents() {
+        const storageKeys = [
+          `stark_events_v6_${region}`,
+          `stark_events_v5_${region}`,
+          `stark_events_v4_${region}`
+        ];
+
+        for (const storageKey of storageKeys) {
+          try {
+            const rawValue = localStorage.getItem(storageKey);
+            const parsedValue = rawValue
+              ? JSON.parse(rawValue)
+              : null;
+
+            if (Array.isArray(parsedValue)) {
+              return parsedValue;
+            }
+          } catch (error) {
+            console.warn(
+              `Unable to read ${storageKey}.`,
+              error
+            );
+          }
+        }
+
+        return [];
+      }
+
+      function normalizeEvents(records) {
+        if (!Array.isArray(records)) {
+          return [];
+        }
+
+        return records.map((event, index) => {
+          return {
+            id: String(event.id || `event-${index}`),
+            poNumber: String(
+              event.poNumber ||
+              event.po ||
+              "Not entered"
+            ),
+            customer: String(
+              event.customer ||
+              "Customer not entered"
+            ),
+            inHandsDate:
+              event.inHandsDate ||
+              event.inhandsDate ||
+              "",
+            status: String(event.status || "Draft"),
+            planning: String(
+              event.planning ||
+              event.fulfillmentPlanning ||
+              "Planning not confirmed"
+            ),
+            items: Array.isArray(event.items)
+              ? event.items.map((item) => {
+                  return {
+                    model: String(
+                      item.model ||
+                      item.modelNumber ||
+                      ""
+                    ),
+                    quantity: numberValue(
+                      item.quantity ??
+                      item.poQuantity ??
+                      item.qty
+                    ),
+                    sarasota:
+                      numberValue(item.sarasota) ??
+                      numberValue(item.stockSarasota),
+                    texas:
+                      numberValue(item.texas) ??
+                      numberValue(item.stockTexas),
+                    total:
+                      numberValue(item.total) ??
+                      numberValue(item.stock),
+                    matched: item.matched === true
+                  };
+                })
+              : [],
+            createdAt: event.createdAt || "",
+            updatedAt:
+              event.updatedAt ||
+              event.createdAt ||
+              ""
+          };
+        });
+      }
+
+      function compareEvents(firstEvent, secondEvent) {
+        const firstClosed = isClosed(firstEvent) ? 1 : 0;
+        const secondClosed = isClosed(secondEvent) ? 1 : 0;
+
+        if (firstClosed !== secondClosed) {
+          return firstClosed - secondClosed;
+        }
+
+        const firstDate = dateValue(firstEvent.inHandsDate);
+        const secondDate = dateValue(secondEvent.inHandsDate);
+
+        return firstDate - secondDate;
+      }
+
+      function buildSlides() {
+        visibleEvents =
+          viewMode === "active"
+            ? events.filter((event) => !isClosed(event))
+            : [...events];
+
+        slides = visibleEvents.flatMap((event) => {
+          const itemPages = Math.max(
+            1,
+            Math.ceil(
+              event.items.length / ITEMS_PER_SLIDE
+            )
+          );
+
+          return Array.from(
+            { length: itemPages },
+            (_, itemPage) => {
+              return {
+                event,
+                itemPage,
+                itemPages
+              };
+            }
+          );
+        });
+
+        if (slideIndex >= slides.length) {
+          slideIndex = 0;
+        }
+      }
+
+      function setViewMode(nextMode) {
+        if (viewMode === nextMode) {
           return;
         }
 
         stopSpeaking();
 
-        viewMode = mode;
+        viewMode = nextMode;
         slideIndex = 0;
-        lastAnnouncementKey = "";
+        lastAnnouncedEventId = "";
 
         const nextUrl = new URL(window.location.href);
-
-        nextUrl.searchParams.set("view", mode);
-
+        nextUrl.searchParams.set("view", viewMode);
         window.history.replaceState({}, "", nextUrl);
 
         configureViewButtons();
@@ -1470,202 +1920,16 @@
         );
       }
 
-      async function refreshData(forceRender) {
-        const previousSlide = slides[slideIndex];
-        const previousEventId = previousSlide?.event?.id || "";
-        const previousPage = previousSlide?.itemPage || 0;
-
-        const loadedEvents = normalizeEvents(
-          loadExistingEvents()
-        );
-
-        locationReports = await loadStoredInventory();
-
-        rebuildLocationMaps();
-
-        events = loadedEvents
-          .map(synchronizeEventInventory)
-          .sort(compareEvents);
-
-        const fingerprint = JSON.stringify({
-          events: events.map(event => [
-            event.id,
-            event.updatedAt,
-            event.status,
-            event.items
-          ]),
-          inventory: LOCATIONS.map(location => [
-            location,
-            locationReports[location]?.uploadedAt || "",
-            locationReports[location]?.rows?.length || 0
-          ])
-        });
-
-        if (
-          !forceRender &&
-          fingerprint === lastFingerprint
-        ) {
-          return;
-        }
-
-        lastFingerprint = fingerprint;
-
-        buildSlides();
-
-        const retainedIndex = slides.findIndex(slide => {
-          return (
-            slide.event.id === previousEventId &&
-            slide.itemPage === previousPage
-          );
-        });
-
-        slideIndex =
-          retainedIndex >= 0
-            ? retainedIndex
-            : Math.min(
-                slideIndex,
-                Math.max(0, slides.length - 1)
-              );
-
-        renderCurrentSlide();
-        updateSyncCopy();
-        resetRotation();
-      }
-
-      function loadExistingEvents() {
-        const keys = [
-          `stark_events_v6_${region}`,
-          `stark_events_v5_${region}`,
-          `stark_events_v4_${region}`
-        ];
-
-        for (const key of keys) {
-          try {
-            const storedValue =
-              localStorage.getItem(key);
-
-            const parsedValue = storedValue
-              ? JSON.parse(storedValue)
-              : null;
-
-            if (Array.isArray(parsedValue)) {
-              return parsedValue;
-            }
-          } catch (error) {
-            console.warn(
-              `Could not read ${key}.`,
-              error
-            );
-          }
-        }
-
-        return [];
-      }
-
-      function normalizeEvents(records) {
-        if (!Array.isArray(records)) {
-          return [];
-        }
-
-        return records.map((event, index) => ({
-          id: String(event.id || `event-${index}`),
-          poNumber: String(event.poNumber || "Not entered"),
-          customer: String(
-            event.customer || "Customer not entered"
-          ),
-          inHandsDate: event.inHandsDate || "",
-          status: event.status || "Draft",
-          planning:
-            event.planning ||
-            event.fulfillmentPlanning ||
-            "Planning not confirmed",
-          createdAt: event.createdAt || "",
-          updatedAt:
-            event.updatedAt ||
-            event.createdAt ||
-            "",
-          items: Array.isArray(event.items)
-            ? event.items.map(item => ({
-                model: String(item.model || ""),
-                quantity:
-                  numberValue(item.quantity),
-                sarasota:
-                  numberValue(item.sarasota) ??
-                  numberValue(item.stockSarasota),
-                texas:
-                  numberValue(item.texas) ??
-                  numberValue(item.stockTexas),
-                total:
-                  numberValue(item.total) ??
-                  numberValue(item.stock),
-                matched: item.matched === true
-              }))
-            : []
-        }));
-      }
-
-      function compareEvents(first, second) {
-        const closedDifference =
-          Number(isClosed(first)) -
-          Number(isClosed(second));
-
-        if (closedDifference !== 0) {
-          return closedDifference;
-        }
-
-        const priorityDifference =
-          eventPriorityScore(second) -
-          eventPriorityScore(first);
-
-        if (priorityDifference !== 0) {
-          return priorityDifference;
-        }
-
-        return (
-          dateValue(first.inHandsDate) -
-          dateValue(second.inHandsDate)
-        );
-      }
-
-      function buildSlides() {
-        visibleEvents =
-          viewMode === "active"
-            ? events.filter(event => !isClosed(event))
-            : [...events];
-
-        slides = visibleEvents.flatMap(event => {
-          const itemPages = Math.max(
-            1,
-            Math.ceil(
-              event.items.length /
-              ITEMS_PER_SLIDE
-            )
-          );
-
-          return Array.from(
-            { length: itemPages },
-            (_, itemPage) => ({
-              event,
-              itemPage,
-              itemPages
-            })
-          );
-        });
-
-        if (slideIndex >= slides.length) {
-          slideIndex = 0;
-        }
-      }
+      /* INVENTORY SYNCHRONIZATION */
 
       function openInventoryDatabase() {
         return new Promise((resolve, reject) => {
-          if (!("indexedDB" in window)) {
+          if (!window.indexedDB) {
             reject(
               new Error(
-                "Browser inventory storage unavailable."
+                "Browser inventory storage is unavailable."
               )
             );
-
             return;
           }
 
@@ -1684,7 +1948,9 @@
             ) {
               database.createObjectStore(
                 "locationReports",
-                { keyPath: "key" }
+                {
+                  keyPath: "key"
+                }
               );
             }
           };
@@ -1706,16 +1972,14 @@
         };
 
         try {
-          const database =
-            await openInventoryDatabase();
+          const database = await openInventoryDatabase();
 
           const reports = await new Promise(
             (resolve, reject) => {
-              const transaction =
-                database.transaction(
-                  "locationReports",
-                  "readonly"
-                );
+              const transaction = database.transaction(
+                "locationReports",
+                "readonly"
+              );
 
               const request = transaction
                 .objectStore("locationReports")
@@ -1732,19 +1996,17 @@
               transaction.oncomplete = () => {
                 database.close();
               };
+
+              transaction.onerror = () => {
+                database.close();
+              };
             }
           );
 
           reports
-            .filter(report =>
-              report.region === region
-            )
-            .forEach(report => {
-              if (
-                LOCATIONS.includes(
-                  report.location
-                )
-              ) {
+            .filter((report) => report.region === region)
+            .forEach((report) => {
+              if (LOCATIONS.includes(report.location)) {
                 result[report.location] = report;
               }
             });
@@ -1759,11 +2021,10 @@
       }
 
       function rebuildLocationMaps() {
-        LOCATIONS.forEach(location => {
-          locationMaps[location] =
-            createLocationMap(
-              locationReports[location]
-            );
+        LOCATIONS.forEach((location) => {
+          locationMaps[location] = createLocationMap(
+            locationReports[location]
+          );
         });
       }
 
@@ -1777,13 +2038,12 @@
           return map;
         }
 
-        report.rows.forEach(row => {
+        report.rows.forEach((row) => {
           const model = normalizeModel(
             row[report.modelHeader]
           );
 
-          const stock =
-            extractStock(row, report);
+          const stock = extractStockFromRow(row, report);
 
           if (!model || stock === null) {
             return;
@@ -1798,7 +2058,7 @@
         return map;
       }
 
-      function extractStock(row, report) {
+      function extractStockFromRow(row, report) {
         if (report.directStockHeader) {
           return numberValue(
             row[report.directStockHeader]
@@ -1806,21 +2066,14 @@
         }
 
         const onHand = report.onHandHeader
-          ? numberValue(
-              row[report.onHandHeader]
-            )
+          ? numberValue(row[report.onHandHeader])
           : null;
 
         const ats = report.atsHeader
-          ? numberValue(
-              row[report.atsHeader]
-            )
+          ? numberValue(row[report.atsHeader])
           : null;
 
-        if (
-          onHand !== null &&
-          ats !== null
-        ) {
+        if (onHand !== null && ats !== null) {
           return onHand + ats;
         }
 
@@ -1828,21 +2081,10 @@
       }
 
       function synchronizeEventInventory(event) {
-        const inventoryAvailable =
-          LOCATIONS.some(
-            location =>
-              locationReports[location]
-          );
-
-        if (!inventoryAvailable) {
-          return event;
-        }
-
         return {
           ...event,
-          items: event.items.map(item => {
-            const model =
-              normalizeModel(item.model);
+          items: event.items.map((item) => {
+            const model = normalizeModel(item.model);
 
             const sarasotaMatch =
               locationMaps.Sarasota.get(model);
@@ -1869,8 +2111,7 @@
               sarasota,
               texas,
               total: matched
-                ? (sarasota || 0) +
-                  (texas || 0)
+                ? (sarasota || 0) + (texas || 0)
                 : null,
               matched
             };
@@ -1878,90 +2119,53 @@
         };
       }
 
+      /* RENDERING */
+
       function renderCurrentSlide() {
-        document
-          .getElementById("emptyBoard")
-          ?.remove();
-
         if (!slides.length) {
-          spotlight.classList.add("hidden");
-
-          stopSpeaking();
-
-          const emptyState =
-            document.createElement("section");
-
-          emptyState.id = "emptyBoard";
-
-          emptyState.className =
-            "empty-board slide-enter";
-
-          emptyState.innerHTML = `
-            <div>
-              <h2 class="empty-title">
-                No ${viewMode === "active" ? "active " : ""}events to display
-              </h2>
-
-              <p class="empty-copy">
-                Open the ${escapeHtml(REGION_NAMES[region])}
-                Events Control Center in this same browser,
-                add or update a PO, and this screen will
-                refresh automatically.
-              </p>
-
-              <a
-                class="empty-link"
-                href="events.html?region=${encodeURIComponent(region)}"
-              >
-                Open Events Control Center
-              </a>
+          eventScreen.innerHTML = `
+            <div class="empty-state">
+              <div>
+                <div class="empty-icon" aria-hidden="true">◇</div>
+                <h2 class="empty-title">
+                  No ${viewMode === "active" ? "active " : ""}events
+                </h2>
+                <p class="empty-copy">
+                  Event information will appear here automatically.
+                </p>
+              </div>
             </div>
           `;
 
-          contentGrid.appendChild(emptyState);
-
-          rotationCopy.textContent =
-            "Waiting for events";
-
+          rotationCopy.textContent = "No events available";
+          progress.style.width = "0%";
+          lastAnnouncedEventId = "";
           return;
         }
-
-        spotlight.classList.remove(
-          "hidden",
-          "slide-enter"
-        );
-
-        void spotlight.offsetWidth;
-
-        spotlight.classList.add(
-          "slide-enter"
-        );
 
         const slide = slides[slideIndex];
         const event = slide.event;
 
+        const itemStart =
+          slide.itemPage * ITEMS_PER_SLIDE;
+
+        const pageItems = event.items.slice(
+          itemStart,
+          itemStart + ITEMS_PER_SLIDE
+        );
+
         const inventoryStatus =
-          getInventoryStatus(event);
+          getEventInventoryStatus(event);
 
-        const priority =
-          getEventPriority(event);
+        const remainingDays =
+          daysUntil(event.inHandsDate);
 
+        const urgency = getUrgency(event);
         const dateMessage =
           getDateMessage(event);
 
-        const itemsStart =
-          slide.itemPage *
-          ITEMS_PER_SLIDE;
-
-        const pageItems =
-          event.items.slice(
-            itemsStart,
-            itemsStart +
-            ITEMS_PER_SLIDE
-          );
-
-        spotlight.innerHTML = `
-          <div class="top-information">
+        eventScreen.innerHTML = `
+          <header class="event-header">
             <p class="event-kicker">
               ${escapeHtml(REGION_NAMES[region])}
               · Event ${getEventPosition(event)}
@@ -1969,121 +2173,117 @@
             </p>
 
             <div class="badges">
-              <span class="priority-badge priority-${priority.slug}">
-                ${escapeHtml(priority.label)}
+              <span class="badge badge-${urgency.slug}">
+                ${escapeHtml(urgency.label)}
               </span>
 
               <span class="badge badge-${statusSlug(event.status)}">
                 ${escapeHtml(event.status)}
               </span>
 
-              <span class="badge badge-${inventoryStatus.toLowerCase()}">
-                Inventory ${inventoryStatus}
+              <span class="badge badge-${statusSlug(inventoryStatus)}">
+                Inventory ${escapeHtml(inventoryStatus)}
               </span>
             </div>
-          </div>
+          </header>
 
-          <div class="primary-information">
-            <section class="po-card">
-              <p class="field-label">
-                PO
-              </p>
+          <div class="event-content">
+            <div class="details-stack">
+              <section class="detail-card">
+                <p class="detail-label">PO</p>
+                <h2
+                  class="po-number"
+                  title="${escapeHtml(event.poNumber)}"
+                >
+                  ${escapeHtml(event.poNumber)}
+                </h2>
+                <p
+                  class="customer"
+                  title="${escapeHtml(event.customer)}"
+                >
+                  ${escapeHtml(event.customer)}
+                </p>
+              </section>
 
-              <h2
-                class="po-number"
-                title="${escapeHtml(event.poNumber)}"
-              >
-                ${escapeHtml(event.poNumber)}
-              </h2>
+              <section class="detail-card">
+                <p class="detail-label">In-hands date</p>
+                <p class="in-hands-date">
+                  ${escapeHtml(formatDate(event.inHandsDate))}
+                </p>
+                <p class="date-message ${
+                  remainingDays !== null && remainingDays < 0
+                    ? "danger"
+                    : remainingDays !== null && remainingDays <= 7
+                      ? "warning"
+                      : ""
+                }">
+                  ${escapeHtml(dateMessage)}
+                </p>
+              </section>
 
-              <p
-                class="customer"
-                title="${escapeHtml(event.customer)}"
-              >
-                ${escapeHtml(event.customer)}
-              </p>
-            </section>
-
-            <section class="date-card">
-              <p class="field-label">
-                In-hands date
-              </p>
-
-              <p class="date-value">
-                ${formatDate(event.inHandsDate)}
-              </p>
-
-              <p class="date-message ${isAtRisk(event) ? "risk" : ""}">
-                ${escapeHtml(dateMessage)}
-              </p>
-            </section>
-
-            <section class="planning-card">
-              <p class="field-label">
-                Planning
-              </p>
-
-              <p class="planning-value">
-                ${escapeHtml(
-                  event.planning ||
-                  "Planning not confirmed"
-                )}
-              </p>
-            </section>
-          </div>
-
-          <section class="items-panel">
-            <div class="items-head">
-              <h3 class="items-title">
-                PO Line Items
-              </h3>
-
-              <span class="items-page">
-                ${
-                  event.items.length
-                    ? `Items ${itemsStart + 1}–${Math.min(
-                        itemsStart +
-                        pageItems.length,
-                        event.items.length
-                      )} of ${event.items.length}`
-                    : "No items"
-                }
-                ${
-                  slide.itemPages > 1
-                    ? ` · Page ${slide.itemPage + 1} of ${slide.itemPages}`
-                    : ""
-                }
-              </span>
+              <section class="detail-card">
+                <p class="detail-label">Planning</p>
+                <p
+                  class="planning-value"
+                  title="${escapeHtml(event.planning)}"
+                >
+                  ${escapeHtml(event.planning)}
+                </p>
+              </section>
             </div>
 
-            ${renderItemsTable(pageItems)}
-          </section>
+            <section class="items-panel">
+              <div class="items-header">
+                <h3 class="items-title">PO Line Items</h3>
+                <span class="items-page">
+                  ${
+                    event.items.length
+                      ? `Items ${itemStart + 1}–${
+                          Math.min(
+                            itemStart + pageItems.length,
+                            event.items.length
+                          )
+                        } of ${event.items.length}`
+                      : "No line items"
+                  }
+                  ${
+                    slide.itemPages > 1
+                      ? ` · Page ${slide.itemPage + 1} of ${slide.itemPages}`
+                      : ""
+                  }
+                </span>
+              </div>
+
+              ${renderItemsTable(pageItems)}
+            </section>
+          </div>
         `;
 
         rotationCopy.textContent =
           slides.length > 1
-            ? `${
-                paused
-                  ? "Rotation paused"
-                  : "Auto-rotating every 14 seconds"
-              } · Slide ${slideIndex + 1} of ${slides.length}`
+            ? `Auto-rotating every ${ROTATION_MS / 1000} seconds`
             : "Single event view";
 
-        announceEvent(event);
+        maybeAnnounceCurrentEvent();
       }
 
       function renderItemsTable(items) {
         if (!items.length) {
           return `
-            <div class="no-items">
-              No model numbers have been added to this PO.
+            <div style="
+              padding: 13px;
+              color: var(--muted);
+              font-size: 0.72rem;
+              text-align: center;
+            ">
+              No PO line items entered.
             </div>
           `;
         }
 
         return `
           <div class="table-wrap">
-            <table class="items-table">
+            <table>
               <thead>
                 <tr>
                   <th>Model#</th>
@@ -2097,76 +2297,39 @@
               </thead>
 
               <tbody>
-                ${items.map(item => {
-                  const quantity =
-                    numberValue(
-                      item.quantity
-                    );
-
-                  const total =
-                    numberValue(
-                      item.total
-                    );
-
-                  const status =
-                    getItemInventoryStatus(
-                      item
-                    );
+                ${items.map((item) => {
+                  const quantity = numberValue(item.quantity);
+                  const total = numberValue(item.total);
 
                   const balance =
-                    quantity !== null &&
-                    total !== null
+                    quantity !== null && total !== null
                       ? total - quantity
                       : null;
 
+                  const itemStatus =
+                    getItemInventoryStatus(item);
+
                   return `
                     <tr>
-                      <td
-                        class="model-value"
-                        title="${escapeHtml(
-                          item.model ||
-                          "Not entered"
-                        )}"
-                      >
-                        ${escapeHtml(
-                          item.model ||
-                          "Not entered"
-                        )}
+                      <td title="${escapeHtml(item.model)}">
+                        ${escapeHtml(item.model || "Not entered")}
                       </td>
-
-                      <td>
-                        ${numberOrDash(quantity)}
-                      </td>
-
-                      <td>
-                        ${numberOrDash(
-                          item.sarasota
-                        )}
-                      </td>
-
-                      <td>
-                        ${numberOrDash(
-                          item.texas
-                        )}
-                      </td>
-
-                      <td>
-                        ${numberOrDash(total)}
-                      </td>
-
+                      <td>${numberOrDash(quantity)}</td>
+                      <td>${numberOrDash(item.sarasota)}</td>
+                      <td>${numberOrDash(item.texas)}</td>
+                      <td>${numberOrDash(total)}</td>
                       <td class="${
                         balance === null
                           ? ""
                           : balance < 0
-                            ? "balance-negative"
-                            : "balance-positive"
+                            ? "balance-low"
+                            : "balance-good"
                       }">
                         ${numberOrDash(balance)}
                       </td>
-
                       <td>
-                        <span class="mini-status ${status.toLowerCase()}">
-                          ${status}
+                        <span class="item-status status-${statusSlug(itemStatus)}">
+                          ${escapeHtml(itemStatus)}
                         </span>
                       </td>
                     </tr>
@@ -2178,634 +2341,426 @@
         `;
       }
 
-      function getEventPosition(event) {
-        const position =
-          visibleEvents.findIndex(
-            record =>
-              record.id === event.id
-          );
+      function updateSyncCopy() {
+        const latestDate = events
+          .map((event) => event.updatedAt)
+          .filter(Boolean)
+          .sort()
+          .at(-1);
 
-        return position >= 0
-          ? position + 1
-          : 1;
+        syncCopy.textContent = latestDate
+          ? `Synced ${shortDateTime(latestDate)}`
+          : `${visibleEvents.length} PO${
+              visibleEvents.length === 1 ? "" : "s"
+            } visible`;
       }
 
+      /* ROTATION */
+
       function nextSlide() {
-        if (!slides.length) {
+        if (greetingActive || slides.length <= 1) {
           return;
         }
 
         stopSpeaking();
 
         slideIndex =
-          (slideIndex + 1) %
-          slides.length;
+          (slideIndex + 1) % slides.length;
 
         renderCurrentSlide();
         resetRotation();
       }
 
       function previousSlide() {
-        if (!slides.length) {
+        if (greetingActive || slides.length <= 1) {
           return;
         }
 
         stopSpeaking();
 
         slideIndex =
-          (
-            slideIndex -
-            1 +
-            slides.length
-          ) % slides.length;
+          (slideIndex - 1 + slides.length) %
+          slides.length;
 
         renderCurrentSlide();
         resetRotation();
       }
 
       function togglePause() {
+        if (greetingActive) {
+          return;
+        }
+
         paused = !paused;
+        updatePauseButton();
 
-        floatingControls.classList.toggle(
-          "paused",
-          paused
-        );
+        if (!paused) {
+          resetRotation();
+        }
+      }
 
+      function updatePauseButton() {
         pauseButton.title = paused
           ? "Resume rotation"
           : "Pause rotation";
 
-        pauseIcon.innerHTML = paused
-          ? '<path d="m8 5 11 7-11 7z"/>'
-          : '<path d="M8 5v14M16 5v14"/>';
+        pauseButton.setAttribute(
+          "aria-label",
+          pauseButton.title
+        );
 
-        resetRotation();
+        pauseIcon.innerHTML = paused
+          ? '<path d="m8 5 11 7-11 7V5Z"></path>'
+          : '<path d="M8 5v14M16 5v14"></path>';
+
+        rotationCopy.textContent = paused
+          ? "Rotation paused"
+          : slides.length > 1
+            ? `Auto-rotating every ${ROTATION_MS / 1000} seconds`
+            : "Single event view";
       }
 
       function resetRotation() {
-        rotationStartedAt =
-          Date.now();
-
-        rotationProgress.style.width =
-          "0%";
+        rotationStartedAt = Date.now();
+        progress.style.width = "0%";
       }
 
       function updateRotation() {
         if (
           !paused &&
+          !greetingActive &&
           slides.length > 1
         ) {
           const elapsed =
-            Date.now() -
-            rotationStartedAt;
+            Date.now() - rotationStartedAt;
 
-          const percentage =
-            Math.min(
-              100,
-              (
-                elapsed /
-                ROTATION_MS
-              ) * 100
-            );
+          const percentage = Math.min(
+            100,
+            (elapsed / ROTATION_MS) * 100
+          );
 
-          rotationProgress.style.width =
-            `${percentage}%`;
+          progress.style.width = `${percentage}%`;
 
           if (elapsed >= ROTATION_MS) {
             nextSlide();
           }
-        } else {
-          rotationProgress.style.width =
-            "0%";
         }
 
-        window.requestAnimationFrame(
-          updateRotation
-        );
+        window.requestAnimationFrame(updateRotation);
       }
 
       async function toggleFullscreen() {
         try {
-          if (
-            !document.fullscreenElement
-          ) {
-            await document
-              .documentElement
-              .requestFullscreen();
+          if (!document.fullscreenElement) {
+            await document.documentElement.requestFullscreen();
           } else {
-            await document
-              .exitFullscreen();
+            await document.exitFullscreen();
           }
         } catch (error) {
           console.warn(
-            "Full screen is unavailable.",
+            "Fullscreen could not be changed.",
             error
           );
         }
       }
 
-      function updateClock() {
-        const now = new Date();
+      /* EVENT HELPERS */
 
-        document.getElementById(
-          "clockTime"
-        ).textContent =
-          new Intl.DateTimeFormat(
-            undefined,
-            {
-              hour: "numeric",
-              minute: "2-digit",
-              second: "2-digit"
-            }
-          ).format(now);
+      function getEventPosition(event) {
+        const eventIndex = visibleEvents.findIndex(
+          (record) => record.id === event.id
+        );
 
-        document.getElementById(
-          "clockDate"
-        ).textContent =
-          new Intl.DateTimeFormat(
-            undefined,
-            {
-              weekday: "short",
-              month: "short",
-              day: "numeric",
-              year: "numeric"
-            }
-          ).format(now);
+        return eventIndex >= 0
+          ? eventIndex + 1
+          : 1;
       }
 
-      function updateSyncCopy() {
-        const latestUpdate = [
-          ...events.map(
-            event =>
-              event.updatedAt
-          ),
-          ...LOCATIONS.map(
-            location =>
-              locationReports[
-                location
-              ]?.uploadedAt
-          )
-        ]
-          .filter(Boolean)
-          .sort()
-          .pop();
+      function isClosed(event) {
+        const status = event.status.toLowerCase();
 
-        syncCopy.textContent =
-          latestUpdate
-            ? `Data refreshed · Latest update ${shortDateTime(latestUpdate)}`
-            : `Waiting for ${REGION_NAMES[region]} data`;
-      }
-
-      function getEventShortage(event) {
-        return event.items.reduce(
-          (sum, item) => {
-            const quantity =
-              numberValue(
-                item.quantity
-              );
-
-            const total =
-              numberValue(
-                item.total
-              );
-
-            if (
-              quantity === null ||
-              total === null ||
-              item.matched !== true
-            ) {
-              return sum;
-            }
-
-            return (
-              sum +
-              Math.max(
-                0,
-                quantity - total
-              )
-            );
-          },
-          0
+        return (
+          status === "complete" ||
+          status === "cancelled" ||
+          status === "canceled"
         );
       }
 
-      function getEventPriority(event) {
-        if (
-          event.status ===
-          "Cancelled"
-        ) {
-          return {
-            label: "Closed",
-            slug: "complete",
-            rank: 0
-          };
-        }
-
-        if (
-          event.status ===
-          "Complete"
-        ) {
+      function getUrgency(event) {
+        if (isClosed(event)) {
           return {
             label: "Complete",
-            slug: "complete",
-            rank: 0
+            slug: "complete"
           };
         }
 
-        const days =
-          daysUntil(
-            event.inHandsDate
-          );
-
-        const inventoryStatus =
-          getInventoryStatus(
-            event
-          );
+        const remainingDays =
+          daysUntil(event.inHandsDate);
 
         if (
-          days !== null &&
-          days < 0
+          remainingDays !== null &&
+          remainingDays < 0
         ) {
           return {
-            label: "Critical",
-            slug: "critical",
-            rank: 4
+            label: "Overdue",
+            slug: "overdue"
           };
         }
 
         if (
-          inventoryStatus === "LOW" &&
-          (
-            days === null ||
-            days <= 14
-          )
+          remainingDays !== null &&
+          remainingDays <= 7
         ) {
           return {
-            label: "Critical",
-            slug: "critical",
-            rank: 4
+            label: "Due soon",
+            slug: "due-soon"
           };
         }
 
         if (
-          inventoryStatus === "LOW" ||
-          (
-            days !== null &&
-            days <= 7
-          )
+          getEventInventoryStatus(event) === "LOW"
         ) {
           return {
-            label: "Urgent",
-            slug: "urgent",
-            rank: 3
-          };
-        }
-
-        if (
-          inventoryStatus ===
-            "CHECK" ||
-          days === null ||
-          !event.planning ||
-          event.planning ===
-            "Planning not confirmed"
-        ) {
-          return {
-            label: "Attention",
-            slug: "attention",
-            rank: 2
+            label: "Inventory risk",
+            slug: "warning"
           };
         }
 
         return {
-          label: "On track",
-          slug: "on-track",
-          rank: 1
+          label: "On schedule",
+          slug: "available"
         };
       }
 
-      function eventPriorityScore(event) {
-        const priority =
-          getEventPriority(event);
-
-        const days =
-          daysUntil(
-            event.inHandsDate
-          );
-
-        const urgency =
-          days === null
-            ? 0
-            : Math.max(
-                -60,
-                60 - days
-              );
-
-        return (
-          priority.rank * 1000 +
-          urgency +
-          getEventShortage(event)
-        );
-      }
-
-      function getInventoryStatus(event) {
-        if (!event.items.length) {
-          return "CHECK";
-        }
-
-        const statuses =
-          event.items.map(
-            getItemInventoryStatus
-          );
-
-        if (
-          statuses.includes("LOW")
-        ) {
-          return "LOW";
-        }
-
-        if (
-          statuses.includes("CHECK")
-        ) {
-          return "CHECK";
-        }
-
-        return "GOOD";
-      }
-
-      function getItemInventoryStatus(item) {
-        const quantity =
-          numberValue(
-            item.quantity
-          );
-
-        const total =
-          numberValue(
-            item.total
-          );
-
-        if (
-          quantity === null ||
-          total === null ||
-          item.matched !== true
-        ) {
-          return "CHECK";
-        }
-
-        return total >= quantity
-          ? "GOOD"
-          : "LOW";
-      }
-
-      function isClosed(event) {
-        return (
-          event.status ===
-            "Complete" ||
-          event.status ===
-            "Cancelled"
-        );
-      }
-
-      function isAtRisk(event) {
-        if (isClosed(event)) {
-          return false;
-        }
-
-        const days =
-          daysUntil(
-            event.inHandsDate
-          );
-
-        return (
-          days !== null &&
-          (
-            days < 0 ||
-            (
-              days <= 7 &&
-              event.status !==
-                "Shipped"
-            )
-          )
-        );
-      }
-
       function getDateMessage(event) {
-        const days =
-          daysUntil(
-            event.inHandsDate
-          );
+        const remainingDays =
+          daysUntil(event.inHandsDate);
 
-        if (days === null) {
-          return "Date required";
+        if (remainingDays === null) {
+          return "Date not entered";
         }
 
         if (isClosed(event)) {
           return event.status;
         }
 
-        if (days < 0) {
-          return `${Math.abs(days)} day${
-            Math.abs(days) === 1
-              ? ""
-              : "s"
+        if (remainingDays < 0) {
+          const overdueDays = Math.abs(remainingDays);
+
+          return `${overdueDays} day${
+            overdueDays === 1 ? "" : "s"
           } overdue`;
         }
 
-        if (days === 0) {
-          return "Due today";
+        if (remainingDays === 0) {
+          return "In-hands date is today";
         }
 
-        return `${days} day${
-          days === 1
-            ? ""
-            : "s"
-        } remaining`;
-      }
-
-      function daysUntil(value) {
-        const date =
-          parseDate(value);
-
-        if (!date) {
-          return null;
+        if (remainingDays === 1) {
+          return "In-hands date is tomorrow";
         }
 
-        const today =
-          new Date();
-
-        today.setHours(
-          0,
-          0,
-          0,
-          0
-        );
-
-        return Math.ceil(
-          (
-            date.getTime() -
-            today.getTime()
-          ) /
-          86400000
-        );
+        return `${remainingDays} days remaining`;
       }
+
+      function getEventInventoryStatus(event) {
+        if (!event.items.length) {
+          return "CHECK";
+        }
+
+        let hasCheck = false;
+        let hasLow = false;
+
+        event.items.forEach((item) => {
+          const itemStatus =
+            getItemInventoryStatus(item);
+
+          if (itemStatus === "CHECK") {
+            hasCheck = true;
+          }
+
+          if (itemStatus === "LOW") {
+            hasLow = true;
+          }
+        });
+
+        if (hasLow) {
+          return "LOW";
+        }
+
+        if (hasCheck) {
+          return "CHECK";
+        }
+
+        return "AVAILABLE";
+      }
+
+      function getItemInventoryStatus(item) {
+        const quantity = numberValue(item.quantity);
+        const total = numberValue(item.total);
+
+        if (
+          quantity === null ||
+          total === null
+        ) {
+          return "CHECK";
+        }
+
+        return total >= quantity
+          ? "AVAILABLE"
+          : "LOW";
+      }
+
+      /* DATE HELPERS */
 
       function parseDate(value) {
         if (!value) {
           return null;
         }
 
-        const stringValue =
-          String(value);
+        const text = String(value).trim();
 
-        const date =
-          /^\d{4}-\d{2}-\d{2}$/.test(
-            stringValue
-          )
-            ? new Date(
-                `${stringValue}T00:00:00`
-              )
-            : new Date(
-                stringValue
-              );
+        const isoMatch = text.match(
+          /^(\d{4})-(\d{2})-(\d{2})/
+        );
 
-        return Number.isNaN(
-          date.getTime()
-        )
+        let date;
+
+        if (isoMatch) {
+          date = new Date(
+            Number(isoMatch[1]),
+            Number(isoMatch[2]) - 1,
+            Number(isoMatch[3])
+          );
+        } else {
+          date = new Date(text);
+        }
+
+        return Number.isNaN(date.getTime())
           ? null
           : date;
       }
 
-      function dateValue(value) {
-        return (
-          parseDate(
-            value
-          )?.getTime() ||
-          Number.MAX_SAFE_INTEGER
+      function daysUntil(value) {
+        const targetDate = parseDate(value);
+
+        if (!targetDate) {
+          return null;
+        }
+
+        const today = new Date();
+
+        today.setHours(0, 0, 0, 0);
+        targetDate.setHours(0, 0, 0, 0);
+
+        return Math.round(
+          (targetDate - today) / 86400000
         );
+      }
+
+      function dateValue(value) {
+        const date = parseDate(value);
+
+        return date
+          ? date.getTime()
+          : Number.MAX_SAFE_INTEGER;
       }
 
       function formatDate(value) {
-        const date =
-          parseDate(value);
+        const date = parseDate(value);
 
         if (!date) {
-          return "Not entered";
+          return "Date not entered";
         }
 
-        return new Intl.DateTimeFormat(
-          "en-US",
-          {
-            month: "long",
-            day: "numeric",
-            year: "numeric"
-          }
-        ).format(date);
+        return date.toLocaleDateString("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric"
+        });
+      }
+
+      function formatSpokenDate(value) {
+        const date = parseDate(value);
+
+        if (!date) {
+          return "not entered";
+        }
+
+        return date.toLocaleDateString("en-US", {
+          weekday: "long",
+          month: "long",
+          day: "numeric",
+          year: "numeric"
+        });
       }
 
       function shortDateTime(value) {
-        const date =
-          parseDate(value);
-
-        if (!date) {
-          return "Unknown";
+        if (!value) {
+          return "recently";
         }
 
-        return new Intl.DateTimeFormat(
-          "en-US",
-          {
-            month: "short",
-            day: "numeric",
-            hour: "numeric",
-            minute: "2-digit"
-          }
-        ).format(date);
+        const date = new Date(value);
+
+        if (Number.isNaN(date.getTime())) {
+          return "recently";
+        }
+
+        return date.toLocaleString("en-US", {
+          month: "short",
+          day: "numeric",
+          hour: "numeric",
+          minute: "2-digit"
+        });
       }
+
+      /* GENERAL HELPERS */
 
       function numberValue(value) {
         if (
-          value === "" ||
           value === null ||
-          value === undefined
+          value === undefined ||
+          value === ""
         ) {
           return null;
         }
 
-        if (
-          typeof value ===
-          "number"
-        ) {
-          return Number.isFinite(
-            value
-          )
-            ? value
-            : null;
-        }
+        const cleaned = String(value)
+          .replace(/,/g, "")
+          .replace(/[^\d.-]/g, "");
 
-        const cleaned =
-          String(value)
-            .replace(/,/g, "")
-            .replace(
-              /[^\d.-]/g,
-              ""
-            );
-
-        if (
-          !cleaned ||
-          cleaned === "-" ||
-          cleaned === "."
-        ) {
+        if (!cleaned) {
           return null;
         }
 
-        const number =
-          Number(cleaned);
+        const result = Number(cleaned);
 
-        return Number.isFinite(
-          number
-        )
-          ? number
+        return Number.isFinite(result)
+          ? result
           : null;
       }
 
-      function formatNumber(value) {
-        return new Intl.NumberFormat(
-          "en-US",
-          {
-            maximumFractionDigits: 2
-          }
-        ).format(
-          numberValue(value) || 0
-        );
-      }
-
       function numberOrDash(value) {
-        const number =
-          numberValue(value);
+        const number = numberValue(value);
 
         return number === null
           ? "—"
-          : formatNumber(number);
+          : number.toLocaleString("en-US");
       }
 
       function normalizeModel(value) {
         return String(value || "")
           .trim()
           .toUpperCase()
-          .replace(/\s+/g, "");
+          .replace(/[^A-Z0-9]/g, "");
       }
 
       function statusSlug(value) {
-        return String(
-          value || "draft"
-        )
+        return String(value || "")
+          .trim()
           .toLowerCase()
-          .replace(
-            /[^a-z0-9]+/g,
-            "-"
-          )
-          .replace(
-            /^-|-$/g,
-            ""
-          );
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
       }
 
       function escapeHtml(value) {
