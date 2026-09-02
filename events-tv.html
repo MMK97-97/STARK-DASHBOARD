@@ -10,7 +10,6 @@
     :root {
       --navy-950: #031426;
       --navy-900: #061d35;
-      --navy-850: #082746;
       --teal: #19d3c5;
       --text: #eff8ff;
       --muted: #9db3c7;
@@ -79,10 +78,10 @@
       width: 100%;
       height: 100vh;
       min-height: 620px;
-      padding: 18px clamp(18px, 1.6vw, 32px) 12px;
+      padding: 16px clamp(16px, 1.5vw, 30px) 10px;
       display: grid;
-      grid-template-rows: 72px minmax(0, 1fr) 24px;
-      gap: 14px;
+      grid-template-rows: 68px minmax(0, 1fr) 22px;
+      gap: 12px;
     }
 
     .topbar {
@@ -90,26 +89,26 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
+      gap: 20px;
     }
 
     .brand {
       min-width: 0;
       display: flex;
       align-items: center;
-      gap: 15px;
+      gap: 14px;
     }
 
     .brand-mark {
-      width: 58px;
-      height: 58px;
-      flex: 0 0 58px;
+      width: 54px;
+      height: 54px;
+      flex: 0 0 54px;
       display: grid;
       place-items: center;
       border: 1px solid rgba(255,255,255,0.14);
-      border-radius: 18px;
+      border-radius: 17px;
       color: white;
-      font-size: 24px;
+      font-size: 23px;
       font-weight: 950;
       background: linear-gradient(145deg, #0c3b65, #176d87);
       box-shadow:
@@ -120,7 +119,7 @@
     .brand-eyebrow {
       margin: 0 0 3px;
       color: var(--teal);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 900;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -128,7 +127,7 @@
 
     .brand-title {
       margin: 0;
-      font-size: clamp(21px, 1.6vw, 30px);
+      font-size: clamp(20px, 1.5vw, 28px);
       line-height: 1;
       font-weight: 900;
       letter-spacing: -0.035em;
@@ -139,7 +138,7 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 10px;
+      gap: 9px;
     }
 
     .live-pill,
@@ -147,21 +146,20 @@
     .region-control,
     .clock-panel,
     .header-button {
-      min-height: 50px;
+      min-height: 46px;
       border: 1px solid var(--line);
-      border-radius: 16px;
+      border-radius: 15px;
       background: rgba(5,25,44,0.7);
-      box-shadow: inset 0 1px rgba(255,255,255,0.04);
       backdrop-filter: blur(16px);
     }
 
     .live-pill {
-      padding: 0 16px;
+      padding: 0 15px;
       display: flex;
       align-items: center;
       gap: 9px;
       color: #dffdf9;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 900;
       letter-spacing: 0.08em;
       text-transform: uppercase;
@@ -192,41 +190,40 @@
     }
 
     .view-button {
-      min-width: 70px;
-      height: 40px;
-      padding: 0 13px;
+      min-width: 68px;
+      height: 36px;
+      padding: 0 12px;
       border: 0;
-      border-radius: 12px;
+      border-radius: 11px;
       color: var(--muted);
       background: transparent;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 850;
     }
 
     .view-button.active {
       color: #021a2b;
       background: var(--teal);
-      box-shadow: 0 8px 18px rgba(25,211,197,0.18);
     }
 
     .region-control {
-      padding: 0 8px 0 14px;
+      padding: 0 8px 0 13px;
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 7px;
     }
 
     .region-control label {
       color: var(--muted);
-      font-size: 11px;
+      font-size: 10px;
       font-weight: 850;
       letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
     .region-control select {
-      min-width: 65px;
-      height: 38px;
+      min-width: 62px;
+      height: 36px;
       border: 0;
       outline: 0;
       color: white;
@@ -240,53 +237,48 @@
     }
 
     .clock-panel {
-      min-width: 160px;
-      padding: 7px 14px;
+      min-width: 150px;
+      padding: 6px 13px;
       display: grid;
       align-content: center;
       text-align: right;
     }
 
     .clock-time {
-      font-size: 16px;
+      font-size: 15px;
       line-height: 1;
       font-weight: 900;
-      font-variant-numeric: tabular-nums;
     }
 
     .clock-date {
-      margin-top: 5px;
+      margin-top: 4px;
       color: var(--muted);
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 750;
     }
 
     .header-button {
-      width: 50px;
-      flex: 0 0 50px;
+      width: 46px;
+      flex: 0 0 46px;
       display: grid;
       place-items: center;
-      color: var(--text);
     }
 
-    .header-button:hover,
-    .header-button:focus-visible {
+    .header-button:hover {
       border-color: rgba(25,211,197,0.48);
       color: var(--teal);
-      outline: none;
       background: rgba(25,211,197,0.1);
     }
 
     .header-button svg {
-      width: 20px;
-      height: 20px;
+      width: 19px;
+      height: 19px;
     }
 
     .content-grid {
       min-width: 0;
       min-height: 0;
       display: grid;
-      grid-template-columns: minmax(0, 1fr);
     }
 
     .spotlight {
@@ -294,19 +286,18 @@
       min-width: 0;
       min-height: 0;
       overflow: hidden;
-      padding: clamp(24px, 2.2vw, 42px);
+      padding: clamp(20px, 1.7vw, 32px);
       display: grid;
       grid-template-rows: auto auto auto minmax(0, 1fr);
-      gap: clamp(15px, 1.9vh, 24px);
+      gap: clamp(10px, 1.2vh, 15px);
       border: 1px solid var(--line);
-      border-radius: 30px;
+      border-radius: 28px;
       background:
         radial-gradient(circle at 100% 0%, rgba(25,211,197,0.14), transparent 32rem),
         linear-gradient(145deg, rgba(13,54,92,0.96), rgba(5,27,47,0.98));
       box-shadow:
         var(--shadow),
         inset 0 1px rgba(255,255,255,0.05);
-      backdrop-filter: blur(18px);
     }
 
     .spotlight::after {
@@ -321,59 +312,21 @@
       border-radius: 50%;
     }
 
-    .event-head {
+    .top-information {
       min-width: 0;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: start;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
       gap: 20px;
     }
 
     .event-kicker {
-      margin: 0 0 10px;
+      margin: 0;
       color: var(--teal);
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 900;
       letter-spacing: 0.17em;
       text-transform: uppercase;
-    }
-
-    .po-line {
-      min-width: 0;
-      display: flex;
-      align-items: baseline;
-      gap: 16px;
-    }
-
-    .po-label {
-      color: var(--muted);
-      font-size: clamp(18px, 1.35vw, 26px);
-      font-weight: 900;
-    }
-
-    .po-number {
-      min-width: 0;
-      margin: 0;
-      overflow: hidden;
-      color: white;
-      font-size: clamp(60px, 7vw, 126px);
-      line-height: 0.92;
-      font-weight: 950;
-      letter-spacing: -0.065em;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      text-shadow: 0 14px 35px rgba(0,0,0,0.25);
-    }
-
-    .customer {
-      margin: 14px 0 0;
-      overflow: hidden;
-      color: #cde0ee;
-      font-size: clamp(25px, 2vw, 38px);
-      font-weight: 800;
-      letter-spacing: -0.025em;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
 
     .badges {
@@ -385,14 +338,14 @@
 
     .badge,
     .priority-badge {
-      min-height: 38px;
-      padding: 0 14px;
+      min-height: 34px;
+      padding: 0 13px;
       display: inline-flex;
       align-items: center;
       gap: 7px;
       border: 1px solid transparent;
       border-radius: 999px;
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 950;
       letter-spacing: 0.07em;
       text-transform: uppercase;
@@ -449,108 +402,105 @@
       background: rgba(201,155,255,0.13);
     }
 
-    .event-overview {
+    .primary-information {
       min-width: 0;
       display: grid;
-      grid-template-columns: minmax(360px, 0.85fr) minmax(0, 1.5fr);
-      gap: 14px;
+      grid-template-columns: minmax(0, 1.5fr) minmax(310px, 0.85fr) minmax(340px, 1fr);
+      gap: 12px;
     }
 
-    .deadline-card,
+    .po-card,
+    .date-card,
     .planning-card,
-    .notes-card,
     .items-panel {
+      min-width: 0;
       border: 1px solid var(--line);
       border-radius: 18px;
       background: rgba(2,19,34,0.44);
       box-shadow: inset 0 1px rgba(255,255,255,0.035);
     }
 
-    .deadline-card,
+    .po-card,
+    .date-card,
     .planning-card {
-      min-width: 0;
-      min-height: 130px;
-      padding: 20px 24px;
+      min-height: 155px;
+      padding: 18px 20px;
+      display: grid;
+      align-content: center;
     }
 
-    .section-label {
-      margin: 0 0 11px;
-      color: var(--muted);
+    .field-label {
+      margin: 0 0 9px;
+      color: var(--teal);
       font-size: 11px;
       line-height: 1;
-      font-weight: 900;
-      letter-spacing: 0.12em;
+      font-weight: 950;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
     }
 
-    .deadline-date {
+    .po-number {
+      min-width: 0;
       margin: 0;
       overflow: hidden;
       color: white;
-      font-size: clamp(38px, 3.7vw, 70px);
-      line-height: 1;
+      font-size: clamp(58px, 5.6vw, 108px);
+      line-height: 0.9;
       font-weight: 950;
-      letter-spacing: -0.05em;
+      letter-spacing: -0.065em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+      text-shadow: 0 14px 35px rgba(0,0,0,0.25);
+    }
+
+    .customer {
+      margin: 12px 0 0;
+      overflow: hidden;
+      color: #cde0ee;
+      font-size: clamp(20px, 1.5vw, 29px);
+      line-height: 1.1;
+      font-weight: 850;
+      letter-spacing: -0.025em;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .deadline-message {
-      margin: 11px 0 0;
+    .date-value {
+      margin: 0;
+      overflow: hidden;
+      color: white;
+      font-size: clamp(35px, 3vw, 57px);
+      line-height: 0.98;
+      font-weight: 950;
+      letter-spacing: -0.05em;
+      text-overflow: ellipsis;
+    }
+
+    .date-message {
+      margin: 10px 0 0;
       color: var(--teal);
-      font-size: clamp(13px, 1vw, 18px);
+      font-size: 13px;
       font-weight: 900;
     }
 
-    .deadline-message.risk {
+    .date-message.risk {
       color: var(--danger);
-    }
-
-    .planning-card {
-      display: grid;
-      align-content: center;
     }
 
     .planning-value {
       margin: 0;
       display: -webkit-box;
       overflow: hidden;
-      color: #e8f5fe;
-      font-size: clamp(23px, 2vw, 38px);
-      line-height: 1.25;
+      color: white;
+      font-size: clamp(22px, 1.8vw, 34px);
+      line-height: 1.18;
       font-weight: 900;
       letter-spacing: -0.025em;
       -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-    }
-
-    .notes-card {
-      min-width: 0;
-      min-height: 82px;
-      padding: 16px 19px;
-      border-color: rgba(25,211,197,0.2);
-      background:
-        linear-gradient(
-          135deg,
-          rgba(25,211,197,0.08),
-          rgba(2,19,34,0.46)
-        );
-    }
-
-    .notes-value {
-      margin: 0;
-      display: -webkit-box;
-      overflow: hidden;
-      color: #d7e8f4;
-      font-size: clamp(14px, 1vw, 19px);
-      line-height: 1.45;
-      font-weight: 750;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
+      -webkit-line-clamp: 3;
     }
 
     .items-panel {
-      min-width: 0;
       min-height: 0;
       overflow: hidden;
       display: grid;
@@ -559,7 +509,8 @@
 
     .items-head {
       min-width: 0;
-      padding: 12px 17px;
+      min-height: 38px;
+      padding: 7px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -571,13 +522,13 @@
     .items-title {
       margin: 0;
       color: white;
-      font-size: 15px;
+      font-size: 12px;
       font-weight: 900;
     }
 
     .items-page {
       color: var(--muted);
-      font-size: 11px;
+      font-size: 9px;
       font-weight: 800;
       white-space: nowrap;
     }
@@ -603,21 +554,21 @@
     }
 
     .items-table th {
-      height: 34px;
-      padding: 0 12px;
+      height: 26px;
+      padding: 0 9px;
       color: #7f9ab1;
-      font-size: 9px;
+      font-size: 8px;
       font-weight: 900;
-      letter-spacing: 0.09em;
+      letter-spacing: 0.08em;
       text-align: right;
       text-transform: uppercase;
     }
 
     .items-table td {
-      height: clamp(40px, 5vh, 54px);
-      padding: 0 12px;
+      height: clamp(29px, 3.7vh, 37px);
+      padding: 0 9px;
       color: #e6f2fb;
-      font-size: clamp(11px, 0.85vw, 16px);
+      font-size: clamp(9px, 0.67vw, 12px);
       font-weight: 750;
       text-align: right;
       font-variant-numeric: tabular-nums;
@@ -626,14 +577,14 @@
     .items-table th:first-child,
     .items-table td:first-child {
       width: 27%;
-      padding-left: 17px;
+      padding-left: 14px;
       text-align: left;
     }
 
     .items-table th:last-child,
     .items-table td:last-child {
-      width: 13%;
-      padding-right: 17px;
+      width: 12%;
+      padding-right: 14px;
     }
 
     .model-value {
@@ -650,14 +601,14 @@
     }
 
     .mini-status {
-      min-width: 62px;
-      padding: 5px 9px;
+      min-width: 54px;
+      padding: 4px 7px;
       display: inline-flex;
       justify-content: center;
       border-radius: 999px;
-      font-size: 9px;
+      font-size: 7px;
       font-weight: 950;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.05em;
     }
 
     .mini-status.good {
@@ -676,11 +627,11 @@
     }
 
     .no-items {
-      min-height: 140px;
+      min-height: 100px;
       display: grid;
       place-items: center;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 11px;
       font-weight: 750;
     }
 
@@ -690,25 +641,9 @@
       place-items: center;
       padding: 50px;
       border: 1px dashed rgba(133,191,221,0.3);
-      border-radius: 30px;
+      border-radius: 28px;
       background: rgba(7,31,52,0.62);
       text-align: center;
-    }
-
-    .empty-icon {
-      width: 76px;
-      height: 76px;
-      margin: 0 auto 18px;
-      display: grid;
-      place-items: center;
-      border-radius: 23px;
-      color: var(--teal);
-      background: rgba(25,211,197,0.1);
-    }
-
-    .empty-icon svg {
-      width: 34px;
-      height: 34px;
     }
 
     .empty-title {
@@ -737,13 +672,13 @@
     }
 
     .footer-bar {
-      min-height: 24px;
+      min-height: 22px;
       display: grid;
       grid-template-columns: auto minmax(140px, 1fr) auto;
       align-items: center;
       gap: 18px;
       color: var(--muted);
-      font-size: 10px;
+      font-size: 9px;
       font-weight: 750;
     }
 
@@ -767,42 +702,39 @@
 
     .floating-controls {
       position: fixed;
-      right: 28px;
-      bottom: 28px;
+      right: 26px;
+      bottom: 25px;
       z-index: 20;
-      padding: 7px;
+      padding: 6px;
       display: flex;
-      gap: 8px;
+      gap: 7px;
       border: 1px solid var(--line);
-      border-radius: 18px;
+      border-radius: 17px;
       background: rgba(3,19,33,0.86);
       box-shadow: 0 18px 44px rgba(0,0,0,0.34);
       backdrop-filter: blur(18px);
     }
 
     .control-button {
-      width: 42px;
-      height: 42px;
+      width: 39px;
+      height: 39px;
       display: grid;
       place-items: center;
       border: 1px solid var(--line);
-      border-radius: 12px;
+      border-radius: 11px;
       color: white;
       background: rgba(9,38,63,0.92);
     }
 
-    .control-button:hover,
-    .control-button:focus-visible {
+    .control-button:hover {
       border-color: rgba(25,211,197,0.55);
-      outline: none;
       color: var(--teal);
       background: #10446e;
-      transform: translateY(-2px);
     }
 
     .control-button svg {
-      width: 20px;
-      height: 20px;
+      width: 18px;
+      height: 18px;
     }
 
     .floating-controls.paused {
@@ -825,7 +757,7 @@
       }
     }
 
-    @media (max-width: 1180px) {
+    @media (max-width: 1250px) {
       body {
         overflow: auto;
       }
@@ -840,18 +772,22 @@
         display: none;
       }
 
-      .event-overview {
-        grid-template-columns: 1fr;
+      .primary-information {
+        grid-template-columns: 1fr 1fr;
+      }
+
+      .po-card {
+        grid-column: 1 / -1;
       }
 
       .spotlight {
-        min-height: 850px;
+        min-height: 820px;
       }
     }
 
     @media (max-width: 760px) {
       .tv-app {
-        padding: 12px;
+        padding: 11px;
       }
 
       .topbar {
@@ -868,43 +804,48 @@
       }
 
       .brand-mark {
-        width: 50px;
-        height: 50px;
-        flex-basis: 50px;
+        width: 48px;
+        height: 48px;
+        flex-basis: 48px;
       }
 
       .brand-title {
-        font-size: 19px;
+        font-size: 18px;
       }
 
       .spotlight {
         min-height: 0;
-        padding: 19px;
-        border-radius: 24px;
+        padding: 17px;
+        border-radius: 23px;
       }
 
-      .event-head {
-        grid-template-columns: 1fr;
+      .top-information {
+        align-items: flex-start;
+        flex-direction: column;
       }
 
       .badges {
         justify-content: flex-start;
       }
 
-      .po-number {
-        font-size: 55px;
-      }
-
-      .customer {
-        font-size: 23px;
-      }
-
-      .event-overview {
+      .primary-information {
         grid-template-columns: 1fr;
       }
 
-      .deadline-date {
-        font-size: 38px;
+      .po-card {
+        grid-column: auto;
+      }
+
+      .po-number {
+        font-size: 54px;
+      }
+
+      .date-value {
+        font-size: 39px;
+      }
+
+      .planning-value {
+        font-size: 24px;
       }
 
       .table-wrap {
@@ -912,11 +853,11 @@
       }
 
       .items-table {
-        min-width: 780px;
+        min-width: 720px;
       }
 
       .footer-bar {
-        margin-bottom: 70px;
+        margin-bottom: 65px;
         grid-template-columns: 1fr;
       }
 
@@ -925,8 +866,8 @@
       }
 
       .floating-controls {
-        right: 15px;
-        bottom: 15px;
+        right: 14px;
+        bottom: 14px;
       }
     }
   </style>
@@ -1044,7 +985,7 @@
       };
 
       const LOCATIONS = ["Sarasota", "Texas"];
-      const ITEMS_PER_SLIDE = 6;
+      const ITEMS_PER_SLIDE = 7;
       const ROTATION_MS = 14000;
       const REFRESH_MS = 5000;
 
@@ -1294,7 +1235,6 @@
             event.planning ||
             event.fulfillmentPlanning ||
             "Planning not confirmed",
-          notes: String(event.notes || ""),
           createdAt: event.createdAt || "",
           updatedAt:
             event.updatedAt ||
@@ -1577,18 +1517,6 @@
 
           emptyState.innerHTML = `
             <div>
-              <div class="empty-icon">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="1.8"
-                >
-                  <path d="M5 3h11l3 3v15H5z"/>
-                  <path d="M15 3v4h4M8 12h8M8 16h5"/>
-                </svg>
-              </div>
-
               <h2 class="empty-title">
                 No ${viewMode === "active" ? "active " : ""}events to display
               </h2>
@@ -1639,32 +1567,12 @@
         );
 
         spotlight.innerHTML = `
-          <header class="event-head">
-            <div>
-              <p class="event-kicker">
-                ${escapeHtml(REGION_NAMES[region])}
-                · Event ${getEventPosition(event)}
-                of ${visibleEvents.length}
-              </p>
-
-              <div class="po-line">
-                <span class="po-label">PO#</span>
-
-                <h2
-                  class="po-number"
-                  title="${escapeHtml(event.poNumber)}"
-                >
-                  ${escapeHtml(event.poNumber)}
-                </h2>
-              </div>
-
-              <p
-                class="customer"
-                title="${escapeHtml(event.customer)}"
-              >
-                ${escapeHtml(event.customer)}
-              </p>
-            </div>
+          <div class="top-information">
+            <p class="event-kicker">
+              ${escapeHtml(REGION_NAMES[region])}
+              · Event ${getEventPosition(event)}
+              of ${visibleEvents.length}
+            </p>
 
             <div class="badges">
               <span class="priority-badge priority-${priority.slug}">
@@ -1679,27 +1587,41 @@
                 Inventory ${inventoryStatus}
               </span>
             </div>
-          </header>
+          </div>
 
-          <div class="event-overview">
-            <section class="deadline-card">
-              <p class="section-label">
-                In-hands date
+          <div class="primary-information">
+            <section class="po-card">
+              <p class="field-label">PO</p>
+
+              <h2
+                class="po-number"
+                title="${escapeHtml(event.poNumber)}"
+              >
+                ${escapeHtml(event.poNumber)}
+              </h2>
+
+              <p
+                class="customer"
+                title="${escapeHtml(event.customer)}"
+              >
+                ${escapeHtml(event.customer)}
               </p>
+            </section>
 
-              <p class="deadline-date">
+            <section class="date-card">
+              <p class="field-label">In-hands date</p>
+
+              <p class="date-value">
                 ${formatDate(event.inHandsDate)}
               </p>
 
-              <p class="deadline-message ${isAtRisk(event) ? "risk" : ""}">
+              <p class="date-message ${isAtRisk(event) ? "risk" : ""}">
                 ${escapeHtml(dateMessage)}
               </p>
             </section>
 
             <section class="planning-card">
-              <p class="section-label">
-                Fulfillment planning
-              </p>
+              <p class="field-label">Planning</p>
 
               <p class="planning-value">
                 ${escapeHtml(
@@ -1710,23 +1632,10 @@
             </section>
           </div>
 
-          <section class="notes-card">
-            <p class="section-label">
-              Latest notes
-            </p>
-
-            <p class="notes-value">
-              ${escapeHtml(
-                event.notes ||
-                "No notes entered"
-              )}
-            </p>
-          </section>
-
           <section class="items-panel">
             <div class="items-head">
               <h3 class="items-title">
-                PO Items & Live Stock Availability
+                PO Line Items
               </h3>
 
               <span class="items-page">
@@ -2239,7 +2148,7 @@
         return new Intl.DateTimeFormat(
           "en-US",
           {
-            month: "long",
+            month: "short",
             day: "numeric",
             year: "numeric"
           }
