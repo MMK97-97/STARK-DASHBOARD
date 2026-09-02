@@ -3,262 +3,1316 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Regional sales, demand forecasting, ABC and inventory planning dashboard.">
+
+  <meta
+    name="description"
+    content="Regional sales, demand forecasting, ABC and inventory planning dashboard."
+  >
+
   <title>Stark Regional Inventory Intelligence</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap"
+    rel="stylesheet"
+  >
+
   <link rel="stylesheet" href="assets/styles.css">
-  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" defer></script>
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
+
+  <script
+    src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"
+    defer
+  ></script>
+
+  <script
+    src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"
+    defer
+  ></script>
+
   <script src="assets/app.js" defer></script>
 </head>
+
 <body>
   <a class="skip-link" href="#main">Skip to dashboard</a>
+
   <header class="app-header">
     <div class="brand-lockup">
       <div class="brand-mark" aria-hidden="true">S</div>
-      <div><p class="eyebrow">Stark Premium</p><h1>Regional Inventory Intelligence</h1></div>
+
+      <div>
+        <p class="eyebrow">Stark Premium</p>
+        <h1>Regional Inventory Intelligence</h1>
+      </div>
     </div>
+
     <div class="header-actions">
-      <span class="privacy-note"><span aria-hidden="true">●</span> Files stay in this browser</span>
-      <button class="button button-secondary" id="settings-button" type="button">Analysis settings</button>
-      <button class="button button-primary" id="export-workbook" type="button" disabled>Export inventory report</button>
+      <span class="privacy-note">
+        <span aria-hidden="true">●</span>
+        Files stay in this browser
+      </span>
+
+      <button
+        class="button button-secondary"
+        id="settings-button"
+        type="button"
+      >
+        Analysis settings
+      </button>
+
+      <button
+        class="button button-primary"
+        id="export-workbook"
+        type="button"
+        disabled
+      >
+        Export inventory report
+      </button>
     </div>
   </header>
 
   <main id="main">
-    <section class="home-screen" id="home-screen" aria-labelledby="home-title">
+    <section
+      class="home-screen"
+      id="home-screen"
+      aria-labelledby="home-title"
+    >
       <div class="home-copy">
         <p class="eyebrow">Regional analytics platform</p>
         <h2 id="home-title">Choose a market to begin</h2>
-        <p>Each region keeps its Sales Report, Item Sales Report, demand forecast, ABC classification, and inventory output separate.</p>
+
+        <p>
+          Each region keeps its Sales Report, Item Sales Report, demand
+          forecast, ABC classification, and inventory output separate.
+        </p>
       </div>
+
       <div class="country-grid">
-        <button class="country-button country-us" type="button" data-country="US" aria-label="Open United States dashboard">
-          <span class="country-code">US</span><strong>United States</strong><small>Open regional workspace</small><i aria-hidden="true">→</i>
+        <button
+          class="country-button country-us"
+          type="button"
+          data-country="US"
+          aria-label="Open United States dashboard"
+        >
+          <span class="country-code">US</span>
+          <strong>United States</strong>
+          <small>Open regional workspace</small>
+          <i aria-hidden="true">→</i>
         </button>
-        <button class="country-button country-eu" type="button" data-country="EU" aria-label="Open European Union dashboard">
-          <span class="country-code">EU</span><strong>European Union</strong><small>Open regional workspace</small><i aria-hidden="true">→</i>
+
+        <button
+          class="country-button country-eu"
+          type="button"
+          data-country="EU"
+          aria-label="Open European Union dashboard"
+        >
+          <span class="country-code">EU</span>
+          <strong>European Union</strong>
+          <small>Open regional workspace</small>
+          <i aria-hidden="true">→</i>
         </button>
-        <button class="country-button country-ca" type="button" data-country="Canada" aria-label="Open Canada dashboard">
-          <span class="country-code">CA</span><strong>Canada</strong><small>Open regional workspace</small><i aria-hidden="true">→</i>
+
+        <button
+          class="country-button country-ca"
+          type="button"
+          data-country="Canada"
+          aria-label="Open Canada dashboard"
+        >
+          <span class="country-code">CA</span>
+          <strong>Canada</strong>
+          <small>Open regional workspace</small>
+          <i aria-hidden="true">→</i>
         </button>
       </div>
-      <div class="home-note"><span aria-hidden="true">●</span> All uploaded files are processed locally in your browser.</div>
+
+      <div class="home-note">
+        <span aria-hidden="true">●</span>
+        All uploaded files are processed locally in your browser.
+      </div>
     </section>
 
-    <section class="module-screen hidden" id="module-screen" aria-labelledby="module-title">
+    <section
+      class="module-screen hidden"
+      id="module-screen"
+      aria-labelledby="module-title"
+    >
       <div class="module-screen-top">
-        <button class="button button-secondary" id="module-home" type="button">← All regions</button>
+        <button
+          class="button button-secondary"
+          id="module-home"
+          type="button"
+        >
+          ← All regions
+        </button>
+
         <span class="module-region-pill" id="module-region-pill">US</span>
       </div>
+
       <div class="home-copy">
         <p class="eyebrow">Regional command center</p>
         <h2 id="module-title">United States workspace</h2>
-        <p>Choose the analysis area you want to open. Each module uses data stored separately for this region.</p>
+
+        <p>
+          Choose the analysis area you want to open. Each module uses data
+          stored separately for this region.
+        </p>
       </div>
+
       <div class="module-grid">
-        <button class="module-button module-inventory" type="button" data-module="inventory" aria-label="Open Inventory Analysis">
-          <span class="module-code">INV</span><span class="module-icon" aria-hidden="true">▦</span><strong>Inventory Analysis</strong><small>Stock, demand forecast, ABC and reorder planning</small><i aria-hidden="true">→</i>
+        <button
+          class="module-button module-inventory"
+          type="button"
+          data-module="inventory"
+          aria-label="Open Inventory Analysis"
+        >
+          <span class="module-code">INV</span>
+          <span class="module-icon" aria-hidden="true">▦</span>
+          <strong>Inventory Analysis</strong>
+          <small>Stock, demand forecast, ABC and reorder planning</small>
+          <i aria-hidden="true">→</i>
         </button>
-        <button class="module-button module-sales" type="button" data-module="sales" aria-label="Open Sales Analysis">
-          <span class="module-code">SAL</span><span class="module-icon" aria-hidden="true">↗</span><strong>Sales Analysis</strong><small>Revenue, units, margin, brands and products</small><i aria-hidden="true">→</i>
+
+        <button
+          class="module-button module-sales"
+          type="button"
+          data-module="sales"
+          aria-label="Open Sales Analysis"
+        >
+          <span class="module-code">SAL</span>
+          <span class="module-icon" aria-hidden="true">↗</span>
+          <strong>Sales Analysis</strong>
+          <small>Revenue, units, margin, brands and products</small>
+          <i aria-hidden="true">→</i>
         </button>
-        <button class="module-button module-events" type="button" data-module="events" aria-label="Open Events">
-          <span class="module-code">EVT</span><span class="module-icon" aria-hidden="true">◆</span><strong>Events</strong><small>Event demand, allocations, shipments and sales</small><i aria-hidden="true">→</i>
-        </button>
+
+        <a
+          class="module-button module-events"
+          data-module="events"
+          href="events.html?region=US"
+          aria-label="Open Events"
+          onclick="
+            var selectedRegion =
+              document.getElementById('module-region-pill').textContent.trim();
+
+            selectedRegion =
+              selectedRegion === 'CA' ? 'Canada' : selectedRegion;
+
+            this.href =
+              'events.html?region=' +
+              encodeURIComponent(selectedRegion);
+          "
+          style="text-decoration: none;"
+        >
+          <span class="module-code">EVT</span>
+          <span class="module-icon" aria-hidden="true">◆</span>
+          <strong>Events</strong>
+          <small>PO demand and inventory availability</small>
+          <i aria-hidden="true">→</i>
+        </a>
       </div>
-      <div class="home-note"><span aria-hidden="true">●</span> Click a 3D module button to continue.</div>
+
+      <div class="home-note">
+        <span aria-hidden="true">●</span>
+        Click a 3D module button to continue.
+      </div>
     </section>
 
     <div class="regional-app hidden" id="regional-app">
-    <section class="region-switcher" aria-label="Regional datasets">
-      <div>
-        <p class="eyebrow">Reporting region</p>
-        <div class="region-tabs" role="tablist">
-          <button class="region-tab active" type="button" role="tab" aria-selected="true" data-region="US"><span>US</span><small id="region-status-US">No files</small></button>
-          <button class="region-tab" type="button" role="tab" aria-selected="false" data-region="EU"><span>EU</span><small id="region-status-EU">No files</small></button>
-          <button class="region-tab" type="button" role="tab" aria-selected="false" data-region="Canada"><span>Canada</span><small id="region-status-Canada">No files</small></button>
+      <section
+        class="region-switcher"
+        aria-label="Regional datasets"
+      >
+        <div>
+          <p class="eyebrow">Reporting region</p>
+
+          <div class="region-tabs" role="tablist">
+            <button
+              class="region-tab active"
+              type="button"
+              role="tab"
+              aria-selected="true"
+              data-region="US"
+            >
+              <span>US</span>
+              <small id="region-status-US">No files</small>
+            </button>
+
+            <button
+              class="region-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-region="EU"
+            >
+              <span>EU</span>
+              <small id="region-status-EU">No files</small>
+            </button>
+
+            <button
+              class="region-tab"
+              type="button"
+              role="tab"
+              aria-selected="false"
+              data-region="Canada"
+            >
+              <span>Canada</span>
+              <small id="region-status-Canada">No files</small>
+            </button>
+          </div>
         </div>
-      </div>
-      <div class="region-switcher-right"><div><span class="active-module-badge" id="active-module-badge">Inventory Analysis</span><div class="region-summary" id="region-summary">Select a region and upload its reports.</div></div><button class="button button-secondary" id="back-modules" type="button">Modules</button><button class="button button-secondary" id="back-home" type="button">All regions</button></div>
-    </section>
 
-    <section class="upload-center" id="upload-center" aria-labelledby="upload-title">
-      <div class="section-heading">
-        <div><p class="eyebrow">Data center</p><h2 id="upload-title"><span id="upload-region-name">US</span> report uploads</h2></div>
-        <p>Upload each report in its correct category. ABC analysis and the inventory report are generated automatically.</p>
-      </div>
-      <div class="upload-grid">
-        <article class="upload-card module-upload module-upload-sales" data-report="sales">
-          <div class="upload-card-top"><span class="report-number">01</span><span class="upload-status" id="sales-status">Not uploaded</span></div>
-          <h3>Sales Report</h3>
-          <p>Used for revenue, units, margin, product, brand, customer and monthly sales analysis.</p>
-          <div class="accepted-fields">Excel, CSV or TSV</div>
-          <button class="button button-secondary upload-report" type="button" data-type="sales">Upload sales report</button>
-          <input id="sales-file" type="file" accept=".xlsx,.xls,.csv,.tsv" hidden>
-          <p class="file-detail" id="sales-file-detail"></p>
-        </article>
-        <article class="upload-card module-upload module-upload-inventory" data-report="item">
-          <div class="upload-card-top"><span class="report-number">02</span><span class="upload-status" id="item-status">Not uploaded</span></div>
-          <h3>Item Sales Report</h3>
-          <p>Used for average demand, stock availability, client commitments, supplier POs and reorder planning.</p>
-          <div class="accepted-fields">AverageItemSalesReport format supported</div>
-          <button class="button button-secondary upload-report" type="button" data-type="item">Upload item sales report</button>
-          <input id="item-file" type="file" accept=".xlsx,.xls,.csv,.tsv" hidden>
-          <p class="file-detail" id="item-file-detail"></p>
-        </article>
-        <article class="upload-card generated-card module-upload module-upload-generated">
-          <div class="upload-card-top"><span class="report-number">03</span><span class="upload-status generated" id="analysis-status">Waiting for data</span></div>
-          <h3>Generated Analysis</h3>
-          <p>Creates ABC classes, demand forecast, stock coverage and a like-for-like regional inventory report.</p>
-          <div class="accepted-fields">A: 0–80% • B: 80–95% • C: 95–100%</div>
-          <button class="button button-primary" id="analyze-button" type="button" disabled>Generate regional analysis</button>
-          <p class="file-detail">Generated separately for US, EU and Canada.</p>
-        </article>
-      </div>
-    </section>
+        <div class="region-switcher-right">
+          <div>
+            <span
+              class="active-module-badge"
+              id="active-module-badge"
+            >
+              Inventory Analysis
+            </span>
 
-    <section class="events-center hidden" id="events-center" aria-labelledby="events-title">
-      <div class="section-heading">
-        <div><p class="eyebrow">Events data center</p><h2 id="events-title"><span id="events-region-name">United States</span> events</h2></div>
-        <p>Upload a regional event report to compare planned, allocated and shipped quantities, event sales and completion status.</p>
-      </div>
-      <div class="upload-grid events-upload-grid">
-        <article class="upload-card" data-report="events">
-          <div class="upload-card-top"><span class="report-number">01</span><span class="upload-status" id="events-status">Not uploaded</span></div>
-          <h3>Events Report</h3>
-          <p>Recommended columns: Event, Event Date, Customer, Model#, Brand, Planned Qty, Allocated Qty, Shipped Qty, Sales and Status.</p>
-          <div class="accepted-fields">Excel, XLS, CSV or TSV</div>
-          <button class="button button-secondary" id="upload-events" type="button">Upload events report</button>
-          <input id="events-file" type="file" accept=".xlsx,.xls,.csv,.tsv" hidden>
-          <p class="file-detail" id="events-file-detail"></p>
-        </article>
-        <article class="upload-card generated-card event-guide-card">
-          <div class="upload-card-top"><span class="report-number">02</span><span class="upload-status generated" id="events-analysis-status">Waiting for data</span></div>
-          <h3>Regional Event Analysis</h3>
-          <p>Automatically summarizes event count, quantities, fulfillment, sales, upcoming dates and items still requiring action.</p>
-          <div class="accepted-fields">Stored independently by region</div>
-          <button class="button button-primary" id="export-events-csv" type="button" disabled>Export events CSV</button>
-          <p class="file-detail">US, EU and Canada remain separate.</p>
-        </article>
-      </div>
-    </section>
+            <div class="region-summary" id="region-summary">
+              Select a region and upload its reports.
+            </div>
+          </div>
 
-    <section class="events-workspace hidden" id="events-workspace" aria-live="polite">
-      <div class="dashboard-topline">
-        <div><p class="eyebrow" id="events-source-label">United States events</p><h2>Events analysis</h2><p class="data-status" id="events-data-status"></p></div>
-        <div class="topline-actions"><button class="button button-ghost" id="clear-events" type="button">Clear events data</button></div>
-      </div>
-      <section class="filter-bar events-filter-bar" aria-label="Event filters">
-        <label><span>Status</span><select id="event-status-filter"><option value="">All statuses</option></select></label>
-        <label><span>Brand</span><select id="event-brand-filter"><option value="">All brands</option></select></label>
-        <label class="search-field"><span>Event, customer or model</span><input type="search" id="event-search-filter" placeholder="Search events…"></label>
-        <button class="button button-ghost reset-button" id="reset-event-filters" type="button">Reset</button>
+          <button
+            class="button button-secondary"
+            id="back-modules"
+            type="button"
+          >
+            Modules
+          </button>
+
+          <button
+            class="button button-secondary"
+            id="back-home"
+            type="button"
+          >
+            All regions
+          </button>
+        </div>
       </section>
-      <p class="filter-result" id="event-filter-result"></p>
-      <section class="kpi-grid" id="events-kpis"></section>
-      <section class="chart-grid">
-        <article class="panel panel-wide"><div class="panel-heading"><div><p class="eyebrow">Fulfillment</p><h3>Planned vs shipped by event</h3></div></div><div class="chart chart-tall" id="events-fulfillment-chart"></div></article>
-        <article class="panel"><div class="panel-heading"><div><p class="eyebrow">Event status</p><h3>Rows by status</h3></div></div><div class="chart chart-tall" id="events-status-chart"></div></article>
-        <article class="panel panel-full"><div class="panel-heading"><div><p class="eyebrow">Regional event register</p><h3>Event item detail</h3></div><span class="legend-note" id="events-row-count"></span></div><div class="table-wrap data-table-wrap"><table><thead><tr><th>Event Date</th><th>Event</th><th>Customer</th><th>Model#</th><th>Brand</th><th>Item Title</th><th>Status</th><th class="num">Planned</th><th class="num">Allocated</th><th class="num">Shipped</th><th class="num">Remaining</th><th class="num">Sales</th></tr></thead><tbody id="events-table"></tbody></table></div></article>
+
+      <section
+        class="upload-center"
+        id="upload-center"
+        aria-labelledby="upload-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Data center</p>
+
+            <h2 id="upload-title">
+              <span id="upload-region-name">US</span>
+              report uploads
+            </h2>
+          </div>
+
+          <p>
+            Upload each report in its correct category. ABC analysis and the
+            inventory report are generated automatically.
+          </p>
+        </div>
+
+        <div class="upload-grid">
+          <article
+            class="upload-card module-upload module-upload-sales"
+            data-report="sales"
+          >
+            <div class="upload-card-top">
+              <span class="report-number">01</span>
+              <span class="upload-status" id="sales-status">
+                Not uploaded
+              </span>
+            </div>
+
+            <h3>Sales Report</h3>
+
+            <p>
+              Used for revenue, units, margin, product, brand, customer and
+              monthly sales analysis.
+            </p>
+
+            <div class="accepted-fields">Excel, CSV or TSV</div>
+
+            <button
+              class="button button-secondary upload-report"
+              type="button"
+              data-type="sales"
+            >
+              Upload sales report
+            </button>
+
+            <input
+              id="sales-file"
+              type="file"
+              accept=".xlsx,.xls,.csv,.tsv"
+              hidden
+            >
+
+            <p class="file-detail" id="sales-file-detail"></p>
+          </article>
+
+          <article
+            class="upload-card module-upload module-upload-inventory"
+            data-report="item"
+          >
+            <div class="upload-card-top">
+              <span class="report-number">02</span>
+              <span class="upload-status" id="item-status">
+                Not uploaded
+              </span>
+            </div>
+
+            <h3>Item Sales Report</h3>
+
+            <p>
+              Used for average demand, stock availability, client commitments,
+              supplier POs and reorder planning.
+            </p>
+
+            <div class="accepted-fields">
+              AverageItemSalesReport format supported
+            </div>
+
+            <button
+              class="button button-secondary upload-report"
+              type="button"
+              data-type="item"
+            >
+              Upload item sales report
+            </button>
+
+            <input
+              id="item-file"
+              type="file"
+              accept=".xlsx,.xls,.csv,.tsv"
+              hidden
+            >
+
+            <p class="file-detail" id="item-file-detail"></p>
+          </article>
+
+          <article
+            class="upload-card generated-card module-upload module-upload-generated"
+          >
+            <div class="upload-card-top">
+              <span class="report-number">03</span>
+
+              <span
+                class="upload-status generated"
+                id="analysis-status"
+              >
+                Waiting for data
+              </span>
+            </div>
+
+            <h3>Generated Analysis</h3>
+
+            <p>
+              Creates ABC classes, demand forecast, stock coverage and a
+              like-for-like regional inventory report.
+            </p>
+
+            <div class="accepted-fields">
+              A: 0–80% • B: 80–95% • C: 95–100%
+            </div>
+
+            <button
+              class="button button-primary"
+              id="analyze-button"
+              type="button"
+              disabled
+            >
+              Generate regional analysis
+            </button>
+
+            <p class="file-detail">
+              Generated separately for US, EU and Canada.
+            </p>
+          </article>
+        </div>
       </section>
-    </section>
 
-    <section class="workspace hidden" id="workspace" aria-live="polite">
-      <div class="dashboard-topline">
-        <div><p class="eyebrow" id="source-label">US analysis</p><h2 id="dashboard-title">Executive overview</h2><p class="data-status" id="data-status"></p></div>
-        <div class="topline-actions"><button class="button button-secondary" id="export-table" type="button">Export current table CSV</button><button class="button button-ghost" id="clear-region" type="button">Clear region data</button></div>
-      </div>
+      <section
+        class="events-center hidden"
+        id="events-center"
+        aria-labelledby="events-title"
+      >
+        <div class="section-heading">
+          <div>
+            <p class="eyebrow">Events data center</p>
 
-      <nav class="tabs" role="tablist" aria-label="Analysis sections">
-        <button class="tab active" role="tab" aria-selected="true" data-tab="overview">Overview</button>
-        <button class="tab" role="tab" aria-selected="false" data-tab="sales">Sales analysis</button>
-        <button class="tab" role="tab" aria-selected="false" data-tab="forecast">Demand forecast</button>
-        <button class="tab" role="tab" aria-selected="false" data-tab="abc">ABC analysis</button>
-        <button class="tab" role="tab" aria-selected="false" data-tab="reorder">Reorder report</button>
-        <button class="tab" role="tab" aria-selected="false" data-tab="raw">Item data</button>
-      </nav>
+            <h2 id="events-title">
+              <span id="events-region-name">United States</span>
+              events
+            </h2>
+          </div>
 
-      <section class="filter-bar" aria-label="Analysis filters">
-        <label><span>Brand</span><select id="brand-filter"><option value="">All brands</option></select></label>
-        <label><span>Status</span><select id="status-filter"><option value="">All statuses</option></select></label>
-        <label><span>ABC class</span><select id="abc-filter"><option value="">All classes</option><option>A</option><option>B</option><option>C</option></select></label>
-        <label class="search-field"><span>Model or item</span><input type="search" id="search-filter" placeholder="Search model or title…"></label>
-        <button class="button button-ghost reset-button" id="reset-filters" type="button">Reset</button>
+          <p>
+            Upload a regional event report to compare planned, allocated and
+            shipped quantities, event sales and completion status.
+          </p>
+        </div>
+
+        <div class="upload-grid events-upload-grid">
+          <article class="upload-card" data-report="events">
+            <div class="upload-card-top">
+              <span class="report-number">01</span>
+
+              <span class="upload-status" id="events-status">
+                Not uploaded
+              </span>
+            </div>
+
+            <h3>Events Report</h3>
+
+            <p>
+              Recommended columns: Event, Event Date, Customer, Model#, Brand,
+              Planned Qty, Allocated Qty, Shipped Qty, Sales and Status.
+            </p>
+
+            <div class="accepted-fields">
+              Excel, XLS, CSV or TSV
+            </div>
+
+            <button
+              class="button button-secondary"
+              id="upload-events"
+              type="button"
+            >
+              Upload events report
+            </button>
+
+            <input
+              id="events-file"
+              type="file"
+              accept=".xlsx,.xls,.csv,.tsv"
+              hidden
+            >
+
+            <p class="file-detail" id="events-file-detail"></p>
+          </article>
+
+          <article class="upload-card generated-card event-guide-card">
+            <div class="upload-card-top">
+              <span class="report-number">02</span>
+
+              <span
+                class="upload-status generated"
+                id="events-analysis-status"
+              >
+                Waiting for data
+              </span>
+            </div>
+
+            <h3>Regional Event Analysis</h3>
+
+            <p>
+              Automatically summarizes event count, quantities, fulfillment,
+              sales, upcoming dates and items still requiring action.
+            </p>
+
+            <div class="accepted-fields">
+              Stored independently by region
+            </div>
+
+            <button
+              class="button button-primary"
+              id="export-events-csv"
+              type="button"
+              disabled
+            >
+              Export events CSV
+            </button>
+
+            <p class="file-detail">
+              US, EU and Canada remain separate.
+            </p>
+          </article>
+        </div>
       </section>
-      <p class="filter-result" id="filter-result"></p>
 
-      <div class="tab-panel" id="overview-panel">
-        <section class="kpi-grid" id="overview-kpis"></section>
-        <section class="chart-grid">
-          <article class="panel panel-wide"><div class="panel-heading"><div><p class="eyebrow">Portfolio priority</p><h3>ABC contribution</h3></div></div><div class="chart chart-tall" id="overview-abc-chart"></div></article>
-          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">Inventory action</p><h3>Reorder units by brand</h3></div></div><div class="chart chart-tall" id="overview-reorder-chart"></div></article>
-          <article class="panel panel-full"><div class="panel-heading"><div><p class="eyebrow">Management signals</p><h3>What needs attention</h3></div></div><div class="insight-list" id="insight-list"></div></article>
+      <section
+        class="events-workspace hidden"
+        id="events-workspace"
+        aria-live="polite"
+      >
+        <div class="dashboard-topline">
+          <div>
+            <p class="eyebrow" id="events-source-label">
+              United States events
+            </p>
+
+            <h2>Events analysis</h2>
+
+            <p
+              class="data-status"
+              id="events-data-status"
+            ></p>
+          </div>
+
+          <div class="topline-actions">
+            <button
+              class="button button-ghost"
+              id="clear-events"
+              type="button"
+            >
+              Clear events data
+            </button>
+          </div>
+        </div>
+
+        <section
+          class="filter-bar events-filter-bar"
+          aria-label="Event filters"
+        >
+          <label>
+            <span>Status</span>
+
+            <select id="event-status-filter">
+              <option value="">All statuses</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Brand</span>
+
+            <select id="event-brand-filter">
+              <option value="">All brands</option>
+            </select>
+          </label>
+
+          <label class="search-field">
+            <span>Event, customer or model</span>
+
+            <input
+              type="search"
+              id="event-search-filter"
+              placeholder="Search events…"
+            >
+          </label>
+
+          <button
+            class="button button-ghost reset-button"
+            id="reset-event-filters"
+            type="button"
+          >
+            Reset
+          </button>
         </section>
-      </div>
 
-      <div class="tab-panel hidden" id="sales-panel">
-        <section class="kpi-grid" id="sales-kpis"></section>
+        <p class="filter-result" id="event-filter-result"></p>
+
+        <section class="kpi-grid" id="events-kpis"></section>
+
         <section class="chart-grid">
-          <article class="panel panel-wide"><div class="panel-heading"><div><p class="eyebrow">Sales performance</p><h3>Monthly sales trend</h3></div></div><div class="chart chart-tall" id="sales-trend-chart"></div></article>
-          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">Brand mix</p><h3>Sales by brand</h3></div></div><div class="chart chart-tall" id="sales-brand-chart"></div></article>
-          <article class="panel panel-full"><div class="panel-heading"><div><p class="eyebrow">Product ranking</p><h3>Sales contribution by item</h3></div></div><div class="table-wrap"><table><thead><tr><th>Rank</th><th>Model#</th><th>Brand</th><th>Item title</th><th class="num">Units</th><th class="num">Sales</th><th class="num">Gross profit</th><th class="num">Margin</th><th>ABC</th></tr></thead><tbody id="sales-table"></tbody></table></div></article>
+          <article class="panel panel-wide">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Fulfillment</p>
+                <h3>Planned vs shipped by event</h3>
+              </div>
+            </div>
+
+            <div
+              class="chart chart-tall"
+              id="events-fulfillment-chart"
+            ></div>
+          </article>
+
+          <article class="panel">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Event status</p>
+                <h3>Rows by status</h3>
+              </div>
+            </div>
+
+            <div
+              class="chart chart-tall"
+              id="events-status-chart"
+            ></div>
+          </article>
+
+          <article class="panel panel-full">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Regional event register</p>
+                <h3>Event item detail</h3>
+              </div>
+
+              <span
+                class="legend-note"
+                id="events-row-count"
+              ></span>
+            </div>
+
+            <div class="table-wrap data-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Event Date</th>
+                    <th>Event</th>
+                    <th>Customer</th>
+                    <th>Model#</th>
+                    <th>Brand</th>
+                    <th>Item Title</th>
+                    <th>Status</th>
+                    <th class="num">Planned</th>
+                    <th class="num">Allocated</th>
+                    <th class="num">Shipped</th>
+                    <th class="num">Remaining</th>
+                    <th class="num">Sales</th>
+                  </tr>
+                </thead>
+
+                <tbody id="events-table"></tbody>
+              </table>
+            </div>
+          </article>
         </section>
-      </div>
+      </section>
 
-      <div class="tab-panel hidden" id="forecast-panel">
-        <section class="kpi-grid forecast-kpis" id="forecast-kpis"></section>
-        <section class="chart-grid">
-          <article class="panel panel-wide"><div class="panel-heading"><div><p class="eyebrow">Demand outlook</p><h3>Average monthly vs 30-day demand</h3></div></div><div class="chart chart-tall" id="demand-chart"></div></article>
-          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">Three-month plan</p><h3>Highest forecast demand</h3></div></div><div class="chart chart-tall" id="forecast-chart"></div></article>
-          <article class="panel panel-full"><div class="panel-heading"><div><p class="eyebrow">Demand planning detail</p><h3>Item forecast and coverage</h3></div></div><div class="table-wrap"><table><thead><tr><th>Model#</th><th>Brand</th><th>Item title</th><th class="num">Past 3M</th><th class="num">Last 30 days</th><th class="num">Avg/month</th><th class="num">3M forecast</th><th class="num">Available</th><th class="num">Months cover</th><th>Trend</th></tr></thead><tbody id="forecast-table"></tbody></table></div></article>
+      <section
+        class="workspace hidden"
+        id="workspace"
+        aria-live="polite"
+      >
+        <div class="dashboard-topline">
+          <div>
+            <p class="eyebrow" id="source-label">US analysis</p>
+            <h2 id="dashboard-title">Executive overview</h2>
+            <p class="data-status" id="data-status"></p>
+          </div>
+
+          <div class="topline-actions">
+            <button
+              class="button button-secondary"
+              id="export-table"
+              type="button"
+            >
+              Export current table CSV
+            </button>
+
+            <button
+              class="button button-ghost"
+              id="clear-region"
+              type="button"
+            >
+              Clear region data
+            </button>
+          </div>
+        </div>
+
+        <nav
+          class="tabs"
+          role="tablist"
+          aria-label="Analysis sections"
+        >
+          <button
+            class="tab active"
+            role="tab"
+            aria-selected="true"
+            data-tab="overview"
+          >
+            Overview
+          </button>
+
+          <button
+            class="tab"
+            role="tab"
+            aria-selected="false"
+            data-tab="sales"
+          >
+            Sales analysis
+          </button>
+
+          <button
+            class="tab"
+            role="tab"
+            aria-selected="false"
+            data-tab="forecast"
+          >
+            Demand forecast
+          </button>
+
+          <button
+            class="tab"
+            role="tab"
+            aria-selected="false"
+            data-tab="abc"
+          >
+            ABC analysis
+          </button>
+
+          <button
+            class="tab"
+            role="tab"
+            aria-selected="false"
+            data-tab="reorder"
+          >
+            Reorder report
+          </button>
+
+          <button
+            class="tab"
+            role="tab"
+            aria-selected="false"
+            data-tab="raw"
+          >
+            Item data
+          </button>
+        </nav>
+
+        <section
+          class="filter-bar"
+          aria-label="Analysis filters"
+        >
+          <label>
+            <span>Brand</span>
+
+            <select id="brand-filter">
+              <option value="">All brands</option>
+            </select>
+          </label>
+
+          <label>
+            <span>Status</span>
+
+            <select id="status-filter">
+              <option value="">All statuses</option>
+            </select>
+          </label>
+
+          <label>
+            <span>ABC class</span>
+
+            <select id="abc-filter">
+              <option value="">All classes</option>
+              <option>A</option>
+              <option>B</option>
+              <option>C</option>
+            </select>
+          </label>
+
+          <label class="search-field">
+            <span>Model or item</span>
+
+            <input
+              type="search"
+              id="search-filter"
+              placeholder="Search model or title…"
+            >
+          </label>
+
+          <button
+            class="button button-ghost reset-button"
+            id="reset-filters"
+            type="button"
+          >
+            Reset
+          </button>
         </section>
-      </div>
 
-      <div class="tab-panel hidden" id="abc-panel">
-        <section class="kpi-grid abc-kpis" id="abc-kpis"></section>
-        <section class="chart-grid">
-          <article class="panel panel-wide"><div class="panel-heading"><div><p class="eyebrow">Pareto segmentation</p><h3>Cumulative contribution by item</h3></div></div><div class="chart chart-tall" id="pareto-chart"></div></article>
-          <article class="panel"><div class="panel-heading"><div><p class="eyebrow">Class distribution</p><h3>Items by ABC class</h3></div></div><div class="chart chart-tall" id="abc-donut"></div></article>
-          <article class="panel panel-full"><div class="panel-heading"><div><p class="eyebrow">ABC item register</p><h3>Sales-based inventory priority</h3></div></div><div class="table-wrap"><table><thead><tr><th>Rank</th><th>Class</th><th>Model#</th><th>Brand</th><th>Item title</th><th class="num">Sales</th><th class="num">Units</th><th class="num">Contribution</th><th class="num">Cumulative</th><th class="num">Available</th></tr></thead><tbody id="abc-table"></tbody></table></div></article>
-        </section>
-      </div>
+        <p class="filter-result" id="filter-result"></p>
 
-      <div class="tab-panel hidden" id="reorder-panel">
-        <section class="kpi-grid" id="reorder-kpis"></section>
-        <article class="panel panel-full report-panel">
-          <div class="inventory-report-title"><strong>Reorder Report — Active Brands / Status: LIVE, FASHION, BACKORDER / Reorder Required Only</strong><span id="reorder-report-region">US</span></div>
-          <div class="table-wrap report-table-wrap"><table class="reorder-table"><thead><tr><th>Model#</th><th>Brand</th><th>Item Title</th><th>Status</th><th class="num">OPEN ORDERS FROM CLIENT</th><th class="num">ON HAND</th><th class="num">Stock Available</th><th class="num">Open Supplier Qty</th><th>Supplier Delivery Window</th><th class="num">Days Until Supplier Delivery</th><th class="num">Recommended Reorder Qty</th><th>Reorder Status</th><th>Earlier start date</th><th>Latest End Date</th><th>Reorder Reason</th></tr></thead><tbody id="reorder-table"></tbody></table></div>
-        </article>
-      </div>
+        <div class="tab-panel" id="overview-panel">
+          <section
+            class="kpi-grid"
+            id="overview-kpis"
+          ></section>
 
-      <div class="tab-panel hidden" id="raw-panel">
-        <article class="panel panel-full"><div class="panel-heading"><div><p class="eyebrow">Normalized source</p><h3>Item sales and inventory data</h3></div><span class="legend-note" id="raw-count"></span></div><div class="table-wrap data-table-wrap"><table><thead><tr><th>Brand</th><th>Item ID</th><th>Model#</th><th>Item Title</th><th>Status</th><th>ETA</th><th class="num">Vol Past 3M</th><th class="num">Vol Last 30 Days</th><th class="num">Avg/PerM Past 3M</th><th class="num">Stock Qty</th><th class="num">Stock Available</th><th class="num">Open Client</th><th class="num">Open Supplier</th><th>Supplier Window</th></tr></thead><tbody id="raw-table"></tbody></table></div></article>
-      </div>
-    </section>
+          <section class="chart-grid">
+            <article class="panel panel-wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Portfolio priority</p>
+                  <h3>ABC contribution</h3>
+                </div>
+              </div>
+
+              <div
+                class="chart chart-tall"
+                id="overview-abc-chart"
+              ></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Inventory action</p>
+                  <h3>Reorder units by brand</h3>
+                </div>
+              </div>
+
+              <div
+                class="chart chart-tall"
+                id="overview-reorder-chart"
+              ></div>
+            </article>
+
+            <article class="panel panel-full">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Management signals</p>
+                  <h3>What needs attention</h3>
+                </div>
+              </div>
+
+              <div
+                class="insight-list"
+                id="insight-list"
+              ></div>
+            </article>
+          </section>
+        </div>
+
+        <div
+          class="tab-panel hidden"
+          id="sales-panel"
+        >
+          <section
+            class="kpi-grid"
+            id="sales-kpis"
+          ></section>
+
+          <section class="chart-grid">
+            <article class="panel panel-wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Sales performance</p>
+                  <h3>Monthly sales trend</h3>
+                </div>
+              </div>
+
+              <div
+                class="chart chart-tall"
+                id="sales-trend-chart"
+              ></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Brand mix</p>
+                  <h3>Sales by brand</h3>
+                </div>
+              </div>
+
+              <div
+                class="chart chart-tall"
+                id="sales-brand-chart"
+              ></div>
+            </article>
+
+            <article class="panel panel-full">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Product ranking</p>
+                  <h3>Sales contribution by item</h3>
+                </div>
+              </div>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>Model#</th>
+                      <th>Brand</th>
+                      <th>Item title</th>
+                      <th class="num">Units</th>
+                      <th class="num">Sales</th>
+                      <th class="num">Gross profit</th>
+                      <th class="num">Margin</th>
+                      <th>ABC</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="sales-table"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <div
+          class="tab-panel hidden"
+          id="forecast-panel"
+        >
+          <section
+            class="kpi-grid forecast-kpis"
+            id="forecast-kpis"
+          ></section>
+
+          <section class="chart-grid">
+            <article class="panel panel-wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Demand outlook</p>
+                  <h3>Average monthly vs 30-day demand</h3>
+                </div>
+              </div>
+
+              <div
+                class="chart chart-tall"
+                id="demand-chart"
+              ></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Three-month plan</p>
+                  <h3>Highest forecast demand</h3>
+                </div>
+              </div>
+
+              <div
+                class="chart chart-tall"
+                id="forecast-chart"
+              ></div>
+            </article>
+
+            <article class="panel panel-full">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Demand planning detail</p>
+                  <h3>Item forecast and coverage</h3>
+                </div>
+              </div>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Model#</th>
+                      <th>Brand</th>
+                      <th>Item title</th>
+                      <th class="num">Past 3M</th>
+                      <th class="num">Last 30 days</th>
+                      <th class="num">Avg/month</th>
+                      <th class="num">3M forecast</th>
+                      <th class="num">Available</th>
+                      <th class="num">Months cover</th>
+                      <th>Trend</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="forecast-table"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <div
+          class="tab-panel hidden"
+          id="abc-panel"
+        >
+          <section
+            class="kpi-grid abc-kpis"
+            id="abc-kpis"
+          ></section>
+
+          <section class="chart-grid">
+            <article class="panel panel-wide">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Pareto segmentation</p>
+                  <h3>Cumulative contribution by item</h3>
+                </div>
+              </div>
+
+              <div
+                class="chart chart-tall"
+                id="pareto-chart"
+              ></div>
+            </article>
+
+            <article class="panel">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">Class distribution</p>
+                  <h3>Items by ABC class</h3>
+                </div>
+              </div>
+
+              <div
+                class="chart chart-tall"
+                id="abc-donut"
+              ></div>
+            </article>
+
+            <article class="panel panel-full">
+              <div class="panel-heading">
+                <div>
+                  <p class="eyebrow">ABC item register</p>
+                  <h3>Sales-based inventory priority</h3>
+                </div>
+              </div>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Rank</th>
+                      <th>Class</th>
+                      <th>Model#</th>
+                      <th>Brand</th>
+                      <th>Item title</th>
+                      <th class="num">Sales</th>
+                      <th class="num">Units</th>
+                      <th class="num">Contribution</th>
+                      <th class="num">Cumulative</th>
+                      <th class="num">Available</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="abc-table"></tbody>
+                </table>
+              </div>
+            </article>
+          </section>
+        </div>
+
+        <div
+          class="tab-panel hidden"
+          id="reorder-panel"
+        >
+          <section
+            class="kpi-grid"
+            id="reorder-kpis"
+          ></section>
+
+          <article class="panel panel-full report-panel">
+            <div class="inventory-report-title">
+              <strong>
+                Reorder Report — Active Brands / Status: LIVE, FASHION,
+                BACKORDER / Reorder Required Only
+              </strong>
+
+              <span id="reorder-report-region">US</span>
+            </div>
+
+            <div class="table-wrap report-table-wrap">
+              <table class="reorder-table">
+                <thead>
+                  <tr>
+                    <th>Model#</th>
+                    <th>Brand</th>
+                    <th>Item Title</th>
+                    <th>Status</th>
+                    <th class="num">OPEN ORDERS FROM CLIENT</th>
+                    <th class="num">ON HAND</th>
+                    <th class="num">Stock Available</th>
+                    <th class="num">Open Supplier Qty</th>
+                    <th>Supplier Delivery Window</th>
+                    <th class="num">Days Until Supplier Delivery</th>
+                    <th class="num">Recommended Reorder Qty</th>
+                    <th>Reorder Status</th>
+                    <th>Earlier start date</th>
+                    <th>Latest End Date</th>
+                    <th>Reorder Reason</th>
+                  </tr>
+                </thead>
+
+                <tbody id="reorder-table"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+
+        <div
+          class="tab-panel hidden"
+          id="raw-panel"
+        >
+          <article class="panel panel-full">
+            <div class="panel-heading">
+              <div>
+                <p class="eyebrow">Normalized source</p>
+                <h3>Item sales and inventory data</h3>
+              </div>
+
+              <span
+                class="legend-note"
+                id="raw-count"
+              ></span>
+            </div>
+
+            <div class="table-wrap data-table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Brand</th>
+                    <th>Item ID</th>
+                    <th>Model#</th>
+                    <th>Item Title</th>
+                    <th>Status</th>
+                    <th>ETA</th>
+                    <th class="num">Vol Past 3M</th>
+                    <th class="num">Vol Last 30 Days</th>
+                    <th class="num">Avg/PerM Past 3M</th>
+                    <th class="num">Stock Qty</th>
+                    <th class="num">Stock Available</th>
+                    <th class="num">Open Client</th>
+                    <th class="num">Open Supplier</th>
+                    <th>Supplier Window</th>
+                  </tr>
+                </thead>
+
+                <tbody id="raw-table"></tbody>
+              </table>
+            </div>
+          </article>
+        </div>
+      </section>
     </div>
   </main>
 
   <dialog id="settings-dialog">
     <form method="dialog" id="settings-form">
-      <div class="dialog-heading"><div><p class="eyebrow">Regional planning rules</p><h2>Analysis settings</h2></div><button class="icon-button" value="cancel" aria-label="Close settings" type="submit">×</button></div>
-      <p class="dialog-copy">These settings apply independently to the currently selected region.</p>
-      <div class="mapping-grid settings-grid">
-        <label><span>Coverage months</span><input id="setting-coverage" type="number" min="0" step="0.5"></label>
-        <label><span>Safety stock months</span><input id="setting-safety" type="number" min="0" step="0.5"></label>
-        <label><span>Critical stock threshold</span><input id="setting-critical" type="number" min="0" step="1"></label>
-        <label><span>Supplier delay days</span><input id="setting-delay" type="number" min="0" step="1"></label>
-        <label><span>A class cumulative %</span><input id="setting-a" type="number" min="1" max="99" step="1"></label>
-        <label><span>B class cumulative %</span><input id="setting-b" type="number" min="1" max="100" step="1"></label>
-        <label><span>ABC metric</span><select id="setting-abc-metric"><option value="sales">Sales revenue</option><option value="units">Units sold</option></select></label>
-        <label><span>Demand forecast method</span><select id="setting-forecast-method"><option value="weighted">60% last 30 days + 40% 3M average</option><option value="average">Three-month average</option></select></label>
+      <div class="dialog-heading">
+        <div>
+          <p class="eyebrow">Regional planning rules</p>
+          <h2>Analysis settings</h2>
+        </div>
+
+        <button
+          class="icon-button"
+          value="cancel"
+          aria-label="Close settings"
+          type="submit"
+        >
+          ×
+        </button>
       </div>
-      <div class="dialog-actions"><button class="button button-secondary" value="cancel" type="submit">Cancel</button><button class="button button-primary" id="save-settings" value="default" type="submit">Save and recalculate</button></div>
+
+      <p class="dialog-copy">
+        These settings apply independently to the currently selected region.
+      </p>
+
+      <div class="mapping-grid settings-grid">
+        <label>
+          <span>Coverage months</span>
+
+          <input
+            id="setting-coverage"
+            type="number"
+            min="0"
+            step="0.5"
+          >
+        </label>
+
+        <label>
+          <span>Safety stock months</span>
+
+          <input
+            id="setting-safety"
+            type="number"
+            min="0"
+            step="0.5"
+          >
+        </label>
+
+        <label>
+          <span>Critical stock threshold</span>
+
+          <input
+            id="setting-critical"
+            type="number"
+            min="0"
+            step="1"
+          >
+        </label>
+
+        <label>
+          <span>Supplier delay days</span>
+
+          <input
+            id="setting-delay"
+            type="number"
+            min="0"
+            step="1"
+          >
+        </label>
+
+        <label>
+          <span>A class cumulative %</span>
+
+          <input
+            id="setting-a"
+            type="number"
+            min="1"
+            max="99"
+            step="1"
+          >
+        </label>
+
+        <label>
+          <span>B class cumulative %</span>
+
+          <input
+            id="setting-b"
+            type="number"
+            min="1"
+            max="100"
+            step="1"
+          >
+        </label>
+
+        <label>
+          <span>ABC metric</span>
+
+          <select id="setting-abc-metric">
+            <option value="sales">Sales revenue</option>
+            <option value="units">Units sold</option>
+          </select>
+        </label>
+
+        <label>
+          <span>Demand forecast method</span>
+
+          <select id="setting-forecast-method">
+            <option value="weighted">
+              60% last 30 days + 40% 3M average
+            </option>
+
+            <option value="average">
+              Three-month average
+            </option>
+          </select>
+        </label>
+      </div>
+
+      <div class="dialog-actions">
+        <button
+          class="button button-secondary"
+          value="cancel"
+          type="submit"
+        >
+          Cancel
+        </button>
+
+        <button
+          class="button button-primary"
+          id="save-settings"
+          value="default"
+          type="submit"
+        >
+          Save and recalculate
+        </button>
+      </div>
     </form>
   </dialog>
 
-  <div class="tooltip" id="chart-tooltip" role="tooltip" hidden></div>
+  <div
+    class="tooltip"
+    id="chart-tooltip"
+    role="tooltip"
+    hidden
+  ></div>
 </body>
 </html>
