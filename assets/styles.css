@@ -375,3 +375,619 @@ button:disabled { cursor: not-allowed; opacity: .48; transform: none !important;
 @media (max-width: 1180px) { .inventory-menu-grid { grid-template-columns: repeat(3,minmax(0,1fr)); }.inventory-kpi-grid { grid-template-columns: repeat(3,1fr); }.inventory-settings { grid-template-columns: repeat(3,1fr); }.instruction-grid { grid-template-columns: repeat(2,1fr); } }
 @media (max-width: 820px) { .inventory-header { position: static; align-items: flex-start; }.inventory-header-actions label,.inventory-header-actions .region-pill { display:none; }.inventory-page-heading { align-items: flex-start; flex-direction: column; }.file-status { max-width: 100%; }.inventory-menu-grid { grid-template-columns: 1fr 1fr; }.inventory-menu-card { min-height: 200px; }.inventory-dashboard-grid { grid-template-columns: 1fr; }.inventory-panel-full { grid-column: 1; }.inventory-filter-bar,.inventory-filter-bar.reorder-filters,.inventory-filter-bar.brand-filters { grid-template-columns: repeat(2,minmax(0,1fr)); }.wide-filter { grid-column: 1/-1; }.inventory-settings { grid-template-columns: repeat(2,1fr); } }
 @media (max-width: 540px) { .inventory-main { width: calc(100% - 24px); }.inventory-brand div { display:none; }.inventory-header-actions .button { display:none; }.inventory-menu-grid { grid-template-columns: 1fr; }.inventory-menu-card { min-height: 175px; }.inventory-kpi-grid { grid-template-columns: 1fr 1fr; }.inventory-settings,.inventory-filter-bar,.inventory-filter-bar.reorder-filters,.inventory-filter-bar.brand-filters { grid-template-columns: 1fr; }.wide-filter { grid-column: auto; }.instruction-grid { grid-template-columns: 1fr; }.abc-layout { flex-direction: column; }.upload-actions,.inventory-upload-strip { align-items: flex-start; flex-direction: column; } }
+/* PASTE THIS AT THE VERY BOTTOM OF assets/styles.css */
+
+html,
+body {
+  margin: 0 !important;
+  min-width: 320px !important;
+  overflow-x: hidden !important;
+}
+
+body[data-page] {
+  color: #0e2849 !important;
+  background:
+    radial-gradient(
+      circle at 85% 0%,
+      rgba(7, 153, 143, 0.08),
+      transparent 28rem
+    ),
+    #f3f7fb !important;
+  font-family: "DM Sans", system-ui, sans-serif !important;
+  font-size: 16px !important;
+  line-height: 1.5 !important;
+}
+
+body[data-page] * {
+  box-sizing: border-box;
+}
+
+/* HEADER FIX */
+
+body[data-page] .inventory-header {
+  position: sticky !important;
+  top: 0 !important;
+  left: 0 !important;
+  z-index: 100 !important;
+  width: 100% !important;
+  min-height: 82px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-direction: row !important;
+  gap: 24px !important;
+  margin: 0 !important;
+  padding: 14px clamp(18px, 4vw, 60px) !important;
+  border-bottom: 1px solid #d7e2ed !important;
+  background: rgba(255, 255, 255, 0.97) !important;
+  box-shadow: 0 7px 24px rgba(14, 40, 73, 0.05) !important;
+  backdrop-filter: blur(16px);
+}
+
+body[data-page] .inventory-brand {
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-direction: row !important;
+  gap: 13px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  color: #0e2849 !important;
+  text-decoration: none !important;
+}
+
+body[data-page] .inventory-brand > span {
+  width: 48px !important;
+  height: 48px !important;
+  display: grid !important;
+  place-items: center !important;
+  flex: 0 0 48px !important;
+  position: static !important;
+  margin: 0 !important;
+  padding: 0 !important;
+  border-radius: 15px !important;
+  color: #fff !important;
+  background: linear-gradient(145deg, #0d2b4f, #173f69) !important;
+  box-shadow: 0 9px 18px rgba(13, 43, 79, 0.22) !important;
+  font: 700 1rem/1 "Manrope", sans-serif !important;
+  text-decoration: none !important;
+}
+
+body[data-page] .inventory-brand > div {
+  display: block !important;
+  position: static !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body[data-page] .inventory-brand small,
+body[data-page] .inventory-brand strong {
+  display: block !important;
+  position: static !important;
+  margin-left: 0 !important;
+  padding: 0 !important;
+  text-decoration: none !important;
+}
+
+body[data-page] .inventory-brand small {
+  margin-bottom: 2px !important;
+  color: #06766f !important;
+  font-size: 0.72rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.13em !important;
+  text-transform: uppercase !important;
+}
+
+body[data-page] .inventory-brand strong {
+  color: #0e2849 !important;
+  font: 700 1.08rem/1.2 "Manrope", sans-serif !important;
+}
+
+body[data-page] .inventory-header-actions {
+  width: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: flex-end !important;
+  flex-direction: row !important;
+  flex-wrap: nowrap !important;
+  gap: 10px !important;
+  margin: 0 !important;
+  padding: 0 !important;
+}
+
+body[data-page] .inventory-header-actions label {
+  width: auto !important;
+  display: flex !important;
+  align-items: center !important;
+  flex-direction: row !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  color: #66768d !important;
+  font-size: 0.8rem !important;
+  font-weight: 700 !important;
+  text-transform: none !important;
+}
+
+body[data-page] .inventory-header-actions select {
+  width: 92px !important;
+  min-width: 92px !important;
+  min-height: 44px !important;
+  margin: 0 !important;
+  padding: 9px 12px !important;
+  border: 1px solid #cbd9e7 !important;
+  border-radius: 10px !important;
+  color: #0e2849 !important;
+  background: #fff !important;
+}
+
+body[data-page] .region-pill {
+  min-width: 48px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: static !important;
+  margin: 0 !important;
+  padding: 9px 12px !important;
+  border-radius: 999px !important;
+  color: #fff !important;
+  background: #0d2b4f !important;
+  font: 700 0.78rem/1 "Manrope", sans-serif !important;
+}
+
+body[data-page] .inventory-header-actions .button {
+  min-height: 43px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  position: static !important;
+  margin: 0 !important;
+  padding: 10px 16px !important;
+  border: 1px solid #cbd9e7 !important;
+  border-radius: 10px !important;
+  color: #0e2849 !important;
+  background: #fff !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  font-size: 0.86rem !important;
+  font-weight: 700 !important;
+}
+
+/* MAIN CONTAINER */
+
+body[data-page] main.inventory-main {
+  width: min(1500px, calc(100% - clamp(28px, 7vw, 104px))) !important;
+  min-width: 0 !important;
+  max-width: 1500px !important;
+  display: block !important;
+  margin: 0 auto !important;
+  padding: 28px 0 72px !important;
+  overflow: visible !important;
+}
+
+/* TOP NAVIGATION */
+
+body[data-page] .inventory-nav {
+  width: 100% !important;
+  min-width: 0 !important;
+  display: flex !important;
+  align-items: stretch !important;
+  flex-direction: row !important;
+  gap: 8px !important;
+  margin: 0 0 28px !important;
+  padding: 8px !important;
+  overflow-x: auto !important;
+  border: 1px solid #d7e2ed !important;
+  border-radius: 16px !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 10px 30px rgba(14, 40, 73, 0.055) !important;
+}
+
+body[data-page] .inventory-nav a {
+  min-height: 48px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  flex: 1 0 auto !important;
+  position: static !important;
+  margin: 0 !important;
+  padding: 11px 18px !important;
+  border: 0 !important;
+  border-radius: 11px !important;
+  color: #66768d !important;
+  background: transparent !important;
+  text-decoration: none !important;
+  white-space: nowrap !important;
+  font-size: 0.9rem !important;
+  font-weight: 700 !important;
+}
+
+body[data-page] .inventory-nav a:hover {
+  color: #0e2849 !important;
+  background: #eef4f8 !important;
+}
+
+body[data-page] .inventory-nav a.active {
+  color: #fff !important;
+  background: linear-gradient(145deg, #0d2b4f, #174a76) !important;
+  box-shadow: 0 8px 18px rgba(13, 43, 79, 0.18) !important;
+}
+
+body[data-page] .inventory-nav .inventory-overview-link {
+  flex-grow: 0 !important;
+  color: #0e2849 !important;
+  border: 1px solid #cbd9e7 !important;
+  background: #fff !important;
+}
+
+/* PAGE HERO */
+
+body[data-page] .inventory-page-heading {
+  position: relative !important;
+  width: 100% !important;
+  min-height: 180px !important;
+  display: flex !important;
+  align-items: flex-end !important;
+  justify-content: space-between !important;
+  flex-direction: row !important;
+  gap: 24px !important;
+  margin: 0 0 22px !important;
+  padding: clamp(27px, 4vw, 44px) !important;
+  overflow: hidden !important;
+  border: 0 !important;
+  border-radius: 24px !important;
+  color: #fff !important;
+  background:
+    radial-gradient(
+      circle at 88% 18%,
+      rgba(255, 255, 255, 0.17),
+      transparent 18rem
+    ),
+    linear-gradient(
+      135deg,
+      #0b2649 0%,
+      #143f69 60%,
+      #0a8f87 140%
+    ) !important;
+  box-shadow: 0 18px 42px rgba(14, 40, 73, 0.16) !important;
+}
+
+body[data-page="instructions"] .inventory-page-heading {
+  background:
+    radial-gradient(
+      circle at 88% 18%,
+      rgba(255, 255, 255, 0.17),
+      transparent 18rem
+    ),
+    linear-gradient(
+      135deg,
+      #112a4d 0%,
+      #57428e 100%
+    ) !important;
+}
+
+body[data-page] .inventory-page-heading::after {
+  content: "" !important;
+  position: absolute !important;
+  width: 240px !important;
+  height: 240px !important;
+  right: -78px !important;
+  top: -115px !important;
+  border: 1px solid rgba(255, 255, 255, 0.16) !important;
+  border-radius: 50% !important;
+  box-shadow:
+    0 0 0 38px rgba(255, 255, 255, 0.035),
+    0 0 0 80px rgba(255, 255, 255, 0.025) !important;
+}
+
+body[data-page] .inventory-page-heading > * {
+  position: relative !important;
+  z-index: 1 !important;
+}
+
+body[data-page] .inventory-page-heading .eyebrow {
+  margin: 0 0 7px !important;
+  color: #8fe2da !important;
+  font-size: 0.76rem !important;
+  font-weight: 700 !important;
+  letter-spacing: 0.13em !important;
+  text-transform: uppercase !important;
+}
+
+body[data-page] .inventory-page-heading h1 {
+  margin: 0 !important;
+  color: #fff !important;
+  font: 700 clamp(2rem, 4vw, 3.2rem)/1.08 "Manrope", sans-serif !important;
+  letter-spacing: -0.045em !important;
+}
+
+body[data-page] .inventory-page-heading > div > p:not(.eyebrow) {
+  max-width: 850px !important;
+  margin: 12px 0 0 !important;
+  color: rgba(255, 255, 255, 0.76) !important;
+  font-size: 1rem !important;
+}
+
+body[data-page] .file-status {
+  max-width: min(520px, 42vw) !important;
+  display: block !important;
+  position: relative !important;
+  margin: 0 !important;
+  padding: 10px 14px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255, 255, 255, 0.24) !important;
+  border-radius: 999px !important;
+  color: rgba(255, 255, 255, 0.84) !important;
+  background: rgba(255, 255, 255, 0.1) !important;
+  text-overflow: ellipsis !important;
+  white-space: nowrap !important;
+  font-size: 0.84rem !important;
+}
+
+body[data-page] .file-status.ready {
+  color: #d9fff9 !important;
+  border-color: rgba(117, 232, 220, 0.42) !important;
+  background: rgba(7, 153, 143, 0.28) !important;
+}
+
+/* RAW REPORT UPLOAD CARD */
+
+body[data-page] .inventory-upload-strip {
+  width: 100% !important;
+  min-height: 105px !important;
+  display: flex !important;
+  align-items: center !important;
+  justify-content: space-between !important;
+  flex-direction: row !important;
+  gap: 24px !important;
+  margin: 0 0 18px !important;
+  padding: 20px 22px !important;
+  border: 1px solid #d7e2ed !important;
+  border-radius: 17px !important;
+  background: #fff !important;
+  box-shadow: 0 18px 45px rgba(14, 40, 73, 0.09) !important;
+}
+
+body[data-page] .inventory-upload-strip > div {
+  min-width: 0 !important;
+  display: block !important;
+  margin: 0 !important;
+}
+
+body[data-page] .inventory-upload-strip strong,
+body[data-page] .inventory-upload-strip span {
+  display: block !important;
+  position: static !important;
+}
+
+body[data-page] .inventory-upload-strip strong {
+  margin: 0 0 5px !important;
+  color: #0e2849 !important;
+  font: 700 1.05rem/1.3 "Manrope", sans-serif !important;
+}
+
+body[data-page] .inventory-upload-strip span {
+  margin: 0 !important;
+  color: #66768d !important;
+  font-size: 0.9rem !important;
+}
+
+body[data-page] .upload-actions {
+  display: flex !important;
+  align-items: center !important;
+  flex-direction: row !important;
+  gap: 9px !important;
+  margin: 0 !important;
+}
+
+body[data-page] #upload-raw-report {
+  min-height: 45px !important;
+  display: inline-flex !important;
+  align-items: center !important;
+  justify-content: center !important;
+  margin: 0 !important;
+  padding: 11px 18px !important;
+  border: 0 !important;
+  border-radius: 10px !important;
+  color: #fff !important;
+  background: linear-gradient(145deg, #0aa49a, #078078) !important;
+  box-shadow: 0 8px 16px rgba(7, 153, 143, 0.2) !important;
+  cursor: pointer !important;
+  font-size: 0.86rem !important;
+  font-weight: 700 !important;
+}
+
+/* EMPTY STATE */
+
+body[data-page] .data-empty {
+  width: 100% !important;
+  min-height: 310px !important;
+  display: grid !important;
+  place-items: center !important;
+  align-content: center !important;
+  gap: 8px !important;
+  margin: 0 !important;
+  padding: 36px !important;
+  border: 2px dashed #bed0df !important;
+  border-radius: 20px !important;
+  color: #66768d !important;
+  background: rgba(255, 255, 255, 0.94) !important;
+  box-shadow: 0 18px 45px rgba(14, 40, 73, 0.09) !important;
+  text-align: center !important;
+}
+
+body[data-page] .data-empty::before {
+  content: "▦" !important;
+  width: 58px !important;
+  height: 58px !important;
+  display: grid !important;
+  place-items: center !important;
+  position: static !important;
+  margin: 0 0 5px !important;
+  border-radius: 17px !important;
+  color: #06766f !important;
+  background: #e6f5f4 !important;
+  font-size: 1.55rem !important;
+}
+
+body[data-page] .data-empty strong {
+  display: block !important;
+  margin: 0 !important;
+  color: #0e2849 !important;
+  font: 700 1.35rem/1.3 "Manrope", sans-serif !important;
+}
+
+body[data-page] .data-empty p {
+  margin: 0 !important;
+}
+
+body[data-page] .data-empty a {
+  color: #06766f !important;
+  font-weight: 700 !important;
+}
+
+/* INSTRUCTION CARDS */
+
+body[data-page] .instruction-grid {
+  width: 100% !important;
+  display: grid !important;
+  grid-template-columns: repeat(4, minmax(0, 1fr)) !important;
+  gap: 14px !important;
+  margin: 0 0 16px !important;
+}
+
+body[data-page] .instruction-card {
+  position: relative !important;
+  min-height: 235px !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 22px !important;
+  overflow: hidden !important;
+  border: 1px solid rgba(255, 255, 255, 0.13) !important;
+  border-radius: 18px !important;
+  color: #fff !important;
+  background: linear-gradient(145deg, #0d2b4f, #275c84) !important;
+  box-shadow: 0 15px 34px rgba(13, 35, 66, 0.15) !important;
+}
+
+body[data-page] .instruction-card:nth-child(2) {
+  background: linear-gradient(145deg, #0b5260, #0a9b92) !important;
+}
+
+body[data-page] .instruction-card:nth-child(3) {
+  background: linear-gradient(145deg, #4b3b82, #745fbe) !important;
+}
+
+body[data-page] .instruction-card:nth-child(4) {
+  background: linear-gradient(145deg, #8a4b21, #dc8735) !important;
+}
+
+body[data-page] .instruction-card > span {
+  display: block !important;
+  position: static !important;
+  margin: 0 0 48px !important;
+  color: rgba(255, 255, 255, 0.72) !important;
+  font: 700 2rem/1 "Manrope", sans-serif !important;
+}
+
+body[data-page] .instruction-card h2 {
+  margin: 0 !important;
+  color: #fff !important;
+  font: 700 1.16rem/1.3 "Manrope", sans-serif !important;
+}
+
+body[data-page] .instruction-card p {
+  margin: 9px 0 0 !important;
+  color: rgba(255, 255, 255, 0.76) !important;
+  font-size: 0.9rem !important;
+  line-height: 1.58 !important;
+}
+
+body[data-page] .instructions-panel {
+  width: 100% !important;
+  display: block !important;
+  margin: 0 !important;
+  padding: 22px !important;
+  border: 1px solid #d7e2ed !important;
+  border-radius: 18px !important;
+  background: #fff !important;
+  box-shadow: 0 18px 45px rgba(14, 40, 73, 0.09) !important;
+}
+
+/* RESPONSIVE */
+
+@media (max-width: 1000px) {
+  body[data-page] .inventory-header-actions label,
+  body[data-page] .inventory-header-actions .region-pill {
+    display: none !important;
+  }
+
+  body[data-page] .inventory-nav a {
+    flex: 0 0 auto !important;
+  }
+
+  body[data-page] .inventory-page-heading {
+    min-height: 215px !important;
+    align-items: flex-start !important;
+    justify-content: flex-end !important;
+    flex-direction: column !important;
+  }
+
+  body[data-page] .file-status {
+    max-width: 100% !important;
+  }
+
+  body[data-page] .instruction-grid {
+    grid-template-columns: repeat(2, minmax(0, 1fr)) !important;
+  }
+}
+
+@media (max-width: 640px) {
+  body[data-page] .inventory-header {
+    min-height: 70px !important;
+    padding: 11px 14px !important;
+  }
+
+  body[data-page] .inventory-brand > div {
+    display: none !important;
+  }
+
+  body[data-page] .inventory-header-actions .button {
+    display: none !important;
+  }
+
+  body[data-page] main.inventory-main {
+    width: calc(100% - 24px) !important;
+    padding-top: 18px !important;
+  }
+
+  body[data-page] .inventory-nav {
+    margin-bottom: 18px !important;
+    border-radius: 13px !important;
+  }
+
+  body[data-page] .inventory-page-heading {
+    min-height: 225px !important;
+    padding: 25px 22px !important;
+    border-radius: 18px !important;
+  }
+
+  body[data-page] .inventory-page-heading h1 {
+    font-size: 2rem !important;
+  }
+
+  body[data-page] .inventory-upload-strip {
+    align-items: flex-start !important;
+    flex-direction: column !important;
+  }
+
+  body[data-page] .instruction-grid {
+    grid-template-columns: 1fr !important;
+  }
+
+  body[data-page] .data-empty,
+  body[data-page] .inventory-upload-strip,
+  body[data-page] .instruction-card,
+  body[data-page] .instructions-panel {
+    border-radius: 14px !important;
+  }
+}
