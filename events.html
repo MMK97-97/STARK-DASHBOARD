@@ -10,6 +10,10 @@
 
   <title>Events Control Center | Stark Premium</title>
 
+  <script
+    src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
+  ></script>
+
   <style>
     :root {
       --navy: #082746;
@@ -51,10 +55,10 @@
       min-height: 100vh;
       margin: 0;
       overflow-x: hidden;
-      font-family:
-        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
       color: var(--text);
+      font-family:
+        Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
         radial-gradient(
           circle at 92% 0%,
@@ -73,6 +77,11 @@
 
     button {
       cursor: pointer;
+    }
+
+    button:disabled {
+      cursor: wait;
+      opacity: 0.65;
     }
 
     a {
@@ -511,6 +520,11 @@
       box-shadow: 0 0 0 4px rgba(0, 155, 146, 0.11);
     }
 
+    .control[readonly] {
+      color: #41556d;
+      background: #eef4f7;
+    }
+
     textarea.control {
       min-height: 92px;
       resize: vertical;
@@ -535,7 +549,7 @@
 
     table {
       width: 100%;
-      min-width: 1120px;
+      min-width: 1160px;
       border-collapse: collapse;
     }
 
@@ -554,6 +568,7 @@
       letter-spacing: 0.055em;
       text-transform: uppercase;
       background: var(--navy);
+      white-space: nowrap;
     }
 
     tbody tr:hover {
@@ -672,10 +687,6 @@
       border-radius: 11px;
       color: var(--navy);
       background: #ffffff;
-      transition:
-        transform 150ms ease,
-        color 150ms ease,
-        background 150ms ease;
     }
 
     .icon-button:hover {
@@ -718,7 +729,7 @@
     }
 
     dialog {
-      width: min(1060px, calc(100% - 30px));
+      width: min(1080px, calc(100% - 30px));
       max-height: calc(100vh - 30px);
       padding: 0;
       overflow: hidden;
@@ -727,6 +738,10 @@
       color: var(--text);
       background: #ffffff;
       box-shadow: 0 35px 90px rgba(8, 39, 70, 0.28);
+    }
+
+    dialog.inventory-dialog {
+      width: min(1380px, calc(100% - 30px));
     }
 
     dialog::backdrop {
@@ -824,7 +839,146 @@
     }
 
     .items-table {
-      min-width: 780px;
+      min-width: 1020px;
+    }
+
+    .inventory-tabs {
+      margin-bottom: 18px;
+      padding: 6px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 7px;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #edf4f8;
+    }
+
+    .inventory-tab {
+      min-height: 48px;
+      padding: 0 17px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      border: 0;
+      border-radius: 12px;
+      color: var(--muted);
+      font-weight: 850;
+      background: transparent;
+    }
+
+    .inventory-tab.active {
+      color: #ffffff;
+      background: var(--navy);
+      box-shadow: 0 9px 18px rgba(8, 39, 70, 0.18);
+    }
+
+    .tab-count {
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 11px;
+      background: rgba(255, 255, 255, 0.15);
+    }
+
+    .inventory-location {
+      display: none;
+    }
+
+    .inventory-location.active {
+      display: block;
+    }
+
+    .upload-card {
+      padding: 19px;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: center;
+      gap: 20px;
+      border: 1px dashed #a9c4d5;
+      border-radius: 17px;
+      background: #f7fbfd;
+    }
+
+    .upload-title {
+      margin: 0 0 5px;
+      font-size: 18px;
+    }
+
+    .upload-description {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .file-input {
+      display: none;
+    }
+
+    .inventory-meta {
+      margin-top: 14px;
+      padding: 12px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 15px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+      color: var(--muted);
+      font-size: 12px;
+      background: #ffffff;
+    }
+
+    .inventory-list-card {
+      margin-top: 16px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      border-radius: 16px;
+      background: #ffffff;
+    }
+
+    .inventory-list-toolbar {
+      padding: 13px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      border-bottom: 1px solid var(--border);
+      background: #f8fbfd;
+    }
+
+    .inventory-search {
+      max-width: 360px;
+    }
+
+    .inventory-table {
+      min-width: max-content;
+    }
+
+    .inventory-table th,
+    .inventory-table td {
+      min-width: 125px;
+      max-width: 280px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .inventory-table th:first-child,
+    .inventory-table td:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 2;
+    }
+
+    .inventory-table td:first-child {
+      background: #ffffff;
+    }
+
+    .inventory-empty {
+      padding: 55px 20px;
+      color: var(--muted);
+      text-align: center;
     }
 
     .dialog-footer {
@@ -859,7 +1013,7 @@
       right: 22px;
       bottom: 22px;
       z-index: 500;
-      max-width: min(390px, calc(100% - 44px));
+      max-width: min(420px, calc(100% - 44px));
       padding: 14px 17px;
       border-radius: 13px;
       color: #ffffff;
@@ -889,10 +1043,7 @@
         grid-template-columns: repeat(3, minmax(0, 1fr));
       }
 
-      .toolbar {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
+      .toolbar,
       .form-grid {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
@@ -946,13 +1097,18 @@
       .summary-grid,
       .pipeline,
       .toolbar,
-      .form-grid {
+      .form-grid,
+      .inventory-tabs {
         grid-template-columns: 1fr;
       }
 
       .span-2,
       .span-4 {
         grid-column: span 1;
+      }
+
+      .upload-card {
+        grid-template-columns: 1fr;
       }
 
       .dialog-footer {
@@ -1030,22 +1186,33 @@
         <h1>Events Control Center</h1>
 
         <p class="hero-description">
-          Track customer deadlines, inventory availability, PO items,
-          fulfillment planning, follow-ups, shipment status and internal
-          Outlook updates.
+          Track customer deadlines, PO items, current inventory, fulfillment
+          planning, follow-ups, shipping progress and internal Outlook updates.
         </p>
       </div>
 
       <div class="hero-actions">
-        <button id="emailSettingsButton" class="button button-hero">
+        <button
+          id="emailSettingsButton"
+          class="button button-hero"
+          type="button"
+        >
           Outlook settings
         </button>
 
-        <button id="exportButton" class="button button-hero">
-          Export CSV
+        <button
+          id="currentInventoryButton"
+          class="button button-hero"
+          type="button"
+        >
+          Current inventory
         </button>
 
-        <button id="newEventButton" class="button button-primary">
+        <button
+          id="newEventButton"
+          class="button button-primary"
+          type="button"
+        >
           + New event
         </button>
       </div>
@@ -1191,8 +1358,8 @@
       <div class="table-meta">
         <span id="recordCount">0 events</span>
 
-        <span>
-          Use the envelope button to prepare an Outlook update.
+        <span id="inventorySourceStatus">
+          Upload Sarasota and Texas inventory to synchronize stock.
         </span>
       </div>
 
@@ -1223,13 +1390,14 @@
           <h3>No events found</h3>
 
           <p>
-            Create an event to begin tracking its PO, inventory, customer
+            Create an event to begin tracking its inventory, customer
             deadline, fulfillment plan, follow-up and shipment.
           </p>
 
           <button
             id="emptyNewEventButton"
             class="button button-primary"
+            type="button"
           >
             + Create first event
           </button>
@@ -1238,6 +1406,8 @@
     </section>
   </main>
 
+  <!-- EVENT DIALOG -->
+
   <dialog id="eventDialog">
     <form id="eventForm" class="dialog-shell">
       <div class="dialog-header">
@@ -1245,7 +1415,7 @@
           <h2 id="eventDialogTitle">New event</h2>
 
           <p>
-            Enter the latest information used for tracking and email updates.
+            Inventory is synchronized from the Sarasota and Texas reports.
           </p>
         </div>
 
@@ -1315,9 +1485,7 @@
             </div>
 
             <div class="field span-2">
-              <label for="fulfillmentPlanning">
-                Planning *
-              </label>
+              <label for="fulfillmentPlanning">Planning *</label>
 
               <select
                 id="fulfillmentPlanning"
@@ -1381,9 +1549,7 @@
             </div>
 
             <div class="field span-2">
-              <label for="trackingNumber">
-                Tracking number
-              </label>
+              <label for="trackingNumber">Tracking number</label>
 
               <input
                 id="trackingNumber"
@@ -1399,7 +1565,7 @@
               <textarea
                 id="eventNotes"
                 class="control"
-                placeholder="Enter the latest customer update, inventory update, delivery instruction or event note"
+                placeholder="Latest customer update, inventory update, delivery instruction or event note"
               ></textarea>
             </div>
           </div>
@@ -1411,7 +1577,7 @@
               <h3 class="form-section-title">PO items</h3>
 
               <p>
-                Inventory is GOOD when stock available covers PO quantity.
+                Enter the model number to synchronize Sarasota and Texas stock.
               </p>
             </div>
 
@@ -1421,7 +1587,7 @@
                 class="button button-secondary button-small"
                 type="button"
               >
-                Sync inventory
+                Sync all items
               </button>
 
               <button
@@ -1440,9 +1606,11 @@
                 <tr>
                   <th>Model#</th>
                   <th>PO quantity</th>
-                  <th>Stock available</th>
+                  <th>Sarasota</th>
+                  <th>Texas</th>
+                  <th>Total available</th>
                   <th>After allocation</th>
-                  <th>Inventory</th>
+                  <th>Status</th>
                   <th></th>
                 </tr>
               </thead>
@@ -1487,12 +1655,198 @@
     </form>
   </dialog>
 
+  <!-- CURRENT INVENTORY DIALOG -->
+
+  <dialog id="inventoryDialog" class="inventory-dialog">
+    <div class="dialog-shell">
+      <div class="dialog-header">
+        <div>
+          <h2>Current Inventory</h2>
+
+          <p id="inventoryDialogSubtitle">
+            Regional inventory source
+          </p>
+        </div>
+
+        <button
+          class="dialog-close"
+          type="button"
+          data-close-dialog="inventoryDialog"
+        >
+          ×
+        </button>
+      </div>
+
+      <div class="dialog-body">
+        <div class="inventory-tabs">
+          <button
+            class="inventory-tab active"
+            type="button"
+            data-location-tab="Sarasota"
+          >
+            <span>Sarasota</span>
+            <span id="sarasotaTabCount" class="tab-count">0 rows</span>
+          </button>
+
+          <button
+            class="inventory-tab"
+            type="button"
+            data-location-tab="Texas"
+          >
+            <span>Texas</span>
+            <span id="texasTabCount" class="tab-count">0 rows</span>
+          </button>
+        </div>
+
+        <section
+          id="sarasotaInventoryPanel"
+          class="inventory-location active"
+          data-location-panel="Sarasota"
+        >
+          <div class="upload-card">
+            <div>
+              <h3 class="upload-title">Sarasota Inventory</h3>
+
+              <p class="upload-description">
+                Upload the latest Sarasota Excel or CSV inventory report.
+                Uploading a new file replaces the previous Sarasota report.
+              </p>
+            </div>
+
+            <div class="footer-actions">
+              <input
+                id="sarasotaFileInput"
+                class="file-input"
+                type="file"
+                accept=".xlsx,.xls,.csv,.tsv"
+              >
+
+              <label
+                for="sarasotaFileInput"
+                class="button button-primary"
+              >
+                Upload Sarasota file
+              </label>
+
+              <button
+                id="removeSarasotaButton"
+                class="button button-danger hidden"
+                type="button"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+
+          <div id="sarasotaMeta" class="inventory-meta">
+            <span>No Sarasota file uploaded.</span>
+            <span>0 models detected</span>
+          </div>
+
+          <div class="inventory-list-card">
+            <div class="inventory-list-toolbar">
+              <strong>Sarasota data</strong>
+
+              <input
+                id="sarasotaInventorySearch"
+                class="control inventory-search"
+                type="search"
+                placeholder="Search Sarasota inventory"
+              >
+            </div>
+
+            <div id="sarasotaInventoryList"></div>
+          </div>
+        </section>
+
+        <section
+          id="texasInventoryPanel"
+          class="inventory-location"
+          data-location-panel="Texas"
+        >
+          <div class="upload-card">
+            <div>
+              <h3 class="upload-title">Texas Inventory</h3>
+
+              <p class="upload-description">
+                Upload the latest Texas Excel or CSV inventory report.
+                Uploading a new file replaces the previous Texas report.
+              </p>
+            </div>
+
+            <div class="footer-actions">
+              <input
+                id="texasFileInput"
+                class="file-input"
+                type="file"
+                accept=".xlsx,.xls,.csv,.tsv"
+              >
+
+              <label
+                for="texasFileInput"
+                class="button button-primary"
+              >
+                Upload Texas file
+              </label>
+
+              <button
+                id="removeTexasButton"
+                class="button button-danger hidden"
+                type="button"
+              >
+                Remove
+              </button>
+            </div>
+          </div>
+
+          <div id="texasMeta" class="inventory-meta">
+            <span>No Texas file uploaded.</span>
+            <span>0 models detected</span>
+          </div>
+
+          <div class="inventory-list-card">
+            <div class="inventory-list-toolbar">
+              <strong>Texas data</strong>
+
+              <input
+                id="texasInventorySearch"
+                class="control inventory-search"
+                type="search"
+                placeholder="Search Texas inventory"
+              >
+            </div>
+
+            <div id="texasInventoryList"></div>
+          </div>
+        </section>
+      </div>
+
+      <div class="dialog-footer">
+        <span id="inventorySyncMessage">
+          Inventory is stored separately for this region.
+        </span>
+
+        <div class="footer-actions">
+          <button
+            class="button button-primary"
+            type="button"
+            data-close-dialog="inventoryDialog"
+          >
+            Done
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <!-- OUTLOOK SETTINGS -->
+
   <dialog id="emailSettingsDialog">
     <form id="emailSettingsForm" class="dialog-shell">
       <div class="dialog-header">
         <div>
           <h2>Outlook settings</h2>
-          <p>Configure the organization’s internal email details.</p>
+          <p>Configure internal email recipients and signature.</p>
         </div>
 
         <button
@@ -1545,8 +1899,8 @@
           </div>
 
           <p class="email-note">
-            The envelope button opens a prepared email in Outlook. Review the
-            message and click Send. No Outlook password is stored in this page.
+            The email button opens a prepared Outlook message. No Outlook
+            password is stored in this website.
           </p>
         </section>
       </div>
@@ -1573,9 +1927,7 @@
 
   <div id="toast" class="toast"></div>
 
- div>
-
- <script>
+  <script>
     (() => {
       const VALID_REGIONS = ["US", "EU", "CA"];
 
@@ -1584,6 +1936,8 @@
         EU: "European Union",
         CA: "Canada"
       };
+
+      const LOCATIONS = ["Sarasota", "Texas"];
 
       const WORKFLOW = [
         "Draft",
@@ -1604,6 +1958,53 @@
         Cancelled: "No action required"
       };
 
+      const MODEL_ALIASES = [
+        "model",
+        "modelnumber",
+        "modelno",
+        "modelnum",
+        "modelid",
+        "sku",
+        "skunumber",
+        "item",
+        "itemnumber",
+        "itemno",
+        "style",
+        "stylenumber",
+        "styleid",
+        "productcode"
+      ];
+
+      const DIRECT_STOCK_ALIASES = [
+        "actualavailable",
+        "actualavailability",
+        "totalavailable",
+        "availableinventory",
+        "availablestock",
+        "availableqty",
+        "availablequantity",
+        "quantityavailable",
+        "stockavailable",
+        "available"
+      ];
+
+      const ON_HAND_ALIASES = [
+        "onhand",
+        "onhandqty",
+        "onhandquantity",
+        "currentstock",
+        "stock",
+        "inventory",
+        "quantityonhand"
+      ];
+
+      const ATS_ALIASES = [
+        "ats",
+        "availabletosell",
+        "atsqty",
+        "atsquantity"
+      ];
+
       const parameters =
         new URLSearchParams(window.location.search);
 
@@ -1614,18 +2015,27 @@
         region = "US";
       }
 
-      const storageKey = `stark_events_v5_${region}`;
-      const settingsKey =
+      const eventStorageKey = `stark_events_v6_${region}`;
+      const emailSettingsKey =
         "stark_events_outlook_settings_v1";
 
-      let events = loadJson(storageKey, []);
-      let inventoryMap = new Map();
+      let events = loadJson(eventStorageKey, []);
 
-      let emailSettings = loadJson(settingsKey, {
+      let emailSettings = loadJson(emailSettingsKey, {
         organizationDomain: "",
         defaultRecipients: "",
         emailSignature: ""
       });
+
+      let locationReports = {
+        Sarasota: null,
+        Texas: null
+      };
+
+      let locationMaps = {
+        Sarasota: new Map(),
+        Texas: new Map()
+      };
 
       let toastTimer;
 
@@ -1650,11 +2060,11 @@
       const dateFilter =
         document.getElementById("dateFilter");
 
-      const tableContainer =
-        document.getElementById("tableContainer");
-
       const eventsTableBody =
         document.getElementById("eventsTableBody");
+
+      const tableContainer =
+        document.getElementById("tableContainer");
 
       const emptyState =
         document.getElementById("emptyState");
@@ -1665,11 +2075,14 @@
       const eventDialog =
         document.getElementById("eventDialog");
 
+      const inventoryDialog =
+        document.getElementById("inventoryDialog");
+
+      const emailSettingsDialog =
+        document.getElementById("emailSettingsDialog");
+
       const eventForm =
         document.getElementById("eventForm");
-
-      const eventDialogTitle =
-        document.getElementById("eventDialogTitle");
 
       const eventId =
         document.getElementById("eventId");
@@ -1713,24 +2126,25 @@
       const syncInventoryButton =
         document.getElementById("syncInventoryButton");
 
-      const emailSettingsDialog =
-        document.getElementById("emailSettingsDialog");
-
-      const organizationDomain =
-        document.getElementById("organizationDomain");
-
-      const defaultRecipients =
-        document.getElementById("defaultRecipients");
-
-      const emailSignature =
-        document.getElementById("emailSignature");
-
       const toast =
         document.getElementById("toast");
 
       initialize();
 
-      function initialize() {
+      async function initialize() {
+        configureRegion();
+        normalizeEvents();
+        bindEvents();
+
+        await loadStoredInventory();
+        rebuildLocationMaps();
+        synchronizeAllEventInventory(false);
+
+        render();
+        renderInventoryLocations();
+      }
+
+      function configureRegion() {
         regionSelect.value = region;
         regionBadge.textContent = region;
 
@@ -1749,9 +2163,10 @@
         document.getElementById("eventsLink").href =
           `events.html?region=${encodeURIComponent(region)}`;
 
-        normalizeEvents();
-        bindEvents();
-        render();
+        document.getElementById(
+          "inventoryDialogSubtitle"
+        ).textContent =
+          `${REGION_NAMES[region]} inventory by location`;
       }
 
       function bindEvents() {
@@ -1771,20 +2186,20 @@
           .addEventListener("click", openNewEvent);
 
         document
-          .getElementById("addItemButton")
-          .addEventListener("click", () => addItemRow());
-
-        document
-          .getElementById("exportButton")
-          .addEventListener("click", exportEvents);
+          .getElementById("currentInventoryButton")
+          .addEventListener("click", openInventoryDialog);
 
         document
           .getElementById("emailSettingsButton")
           .addEventListener("click", openEmailSettings);
 
+        document
+          .getElementById("addItemButton")
+          .addEventListener("click", () => addItemRow());
+
         syncInventoryButton.addEventListener(
           "click",
-          syncInventory
+          syncDialogItems
         );
 
         searchInput.addEventListener("input", renderTable);
@@ -1814,6 +2229,52 @@
           });
 
         document
+          .getElementById("sarasotaFileInput")
+          .addEventListener("change", (event) => {
+            uploadInventoryFile("Sarasota", event.target.files[0]);
+          });
+
+        document
+          .getElementById("texasFileInput")
+          .addEventListener("change", (event) => {
+            uploadInventoryFile("Texas", event.target.files[0]);
+          });
+
+        document
+          .getElementById("removeSarasotaButton")
+          .addEventListener("click", () => {
+            removeLocationReport("Sarasota");
+          });
+
+        document
+          .getElementById("removeTexasButton")
+          .addEventListener("click", () => {
+            removeLocationReport("Texas");
+          });
+
+        document
+          .getElementById("sarasotaInventorySearch")
+          .addEventListener("input", () => {
+            renderLocationList("Sarasota");
+          });
+
+        document
+          .getElementById("texasInventorySearch")
+          .addEventListener("input", () => {
+            renderLocationList("Texas");
+          });
+
+        document
+          .querySelectorAll("[data-location-tab]")
+          .forEach((button) => {
+            button.addEventListener("click", () => {
+              selectInventoryLocation(
+                button.dataset.locationTab
+              );
+            });
+          });
+
+        document
           .querySelectorAll("[data-close-dialog]")
           .forEach((button) => {
             button.addEventListener("click", () => {
@@ -1836,7 +2297,7 @@
 
       function saveEvents() {
         localStorage.setItem(
-          storageKey,
+          eventStorageKey,
           JSON.stringify(events)
         );
       }
@@ -1866,12 +2327,33 @@
           trackingNumber:
             String(event.trackingNumber || ""),
           notes: String(event.notes || ""),
+
           items: Array.isArray(event.items)
-            ? event.items
+            ? event.items.map((item) => ({
+                model: String(item.model || ""),
+                quantity: numberValue(item.quantity),
+
+                sarasota:
+                  numberValue(item.sarasota) ??
+                  numberValue(item.stockSarasota),
+
+                texas:
+                  numberValue(item.texas) ??
+                  numberValue(item.stockTexas),
+
+                total:
+                  numberValue(item.total) ??
+                  numberValue(item.stock),
+
+                matched:
+                  item.matched === true
+              }))
             : [],
+
           createdAt:
             event.createdAt ||
             new Date().toISOString(),
+
           updatedAt:
             event.updatedAt ||
             new Date().toISOString()
@@ -1894,6 +2376,7 @@
         renderSummary();
         renderPipeline();
         renderTable();
+        renderInventorySourceStatus();
       }
 
       function renderSummary() {
@@ -2053,9 +2536,7 @@
                       class="icon-button"
                       type="button"
                       title="Edit PO"
-                      onclick="window.eventTracker.edit(
-                        '${event.id}'
-                      )"
+                      onclick="window.eventTracker.edit('${event.id}')"
                     >
                       ✎
                     </button>
@@ -2064,9 +2545,7 @@
                       class="icon-button"
                       type="button"
                       title="Prepare Outlook email"
-                      onclick="window.eventTracker.email(
-                        '${event.id}'
-                      )"
+                      onclick="window.eventTracker.email('${event.id}')"
                     >
                       ✉
                     </button>
@@ -2075,9 +2554,7 @@
                       class="icon-button"
                       type="button"
                       title="Move to next status"
-                      onclick="window.eventTracker.advance(
-                        '${event.id}'
-                      )"
+                      onclick="window.eventTracker.advance('${event.id}')"
                     >
                       →
                     </button>
@@ -2156,6 +2633,28 @@
           });
       }
 
+      function renderInventorySourceStatus() {
+        const sarasotaRows =
+          locationReports.Sarasota?.rows?.length || 0;
+
+        const texasRows =
+          locationReports.Texas?.rows?.length || 0;
+
+        const element =
+          document.getElementById("inventorySourceStatus");
+
+        if (!sarasotaRows && !texasRows) {
+          element.textContent =
+            "Upload Sarasota and Texas inventory to synchronize stock.";
+
+          return;
+        }
+
+        element.textContent =
+          `Current inventory: Sarasota ${sarasotaRows.toLocaleString()} rows · ` +
+          `Texas ${texasRows.toLocaleString()} rows`;
+      }
+
       function openNewEvent() {
         eventForm.reset();
         eventId.value = "";
@@ -2164,7 +2663,10 @@
         fulfillmentPlanning.value =
           "Planning not confirmed";
 
-        eventDialogTitle.textContent = "New event";
+        document.getElementById(
+          "eventDialogTitle"
+        ).textContent = "New event";
+
         deleteEventButton.classList.add("hidden");
 
         itemsTableBody.innerHTML = "";
@@ -2187,29 +2689,23 @@
         customer.value = event.customer;
         inHandsDate.value = event.inHandsDate;
         eventStatus.value = event.status;
-
-        fulfillmentPlanning.value =
-          event.planning ||
-          "Planning not confirmed";
-
+        fulfillmentPlanning.value = event.planning;
         customerFollowedUpDate.value =
           event.customerFollowedUpDate || "";
-
         eventOwner.value = event.owner;
         eventRecipients.value = event.recipients;
         trackingNumber.value = event.trackingNumber;
         eventNotes.value = event.notes;
 
-        eventDialogTitle.textContent =
-          `Edit PO ${event.poNumber}`;
+        document.getElementById(
+          "eventDialogTitle"
+        ).textContent = `Edit PO ${event.poNumber}`;
 
         deleteEventButton.classList.remove("hidden");
         itemsTableBody.innerHTML = "";
 
         if (event.items.length) {
-          event.items.forEach((item) => {
-            addItemRow(item);
-          });
+          event.items.forEach((item) => addItemRow(item));
         } else {
           addItemRow();
         }
@@ -2242,20 +2738,27 @@
 
           <td>
             <input
-              class="control item-stock"
+              class="control item-sarasota"
               type="number"
-              min="0"
-              step="1"
-              value="${numberOrBlank(item.stock)}"
+              readonly
+              value="${numberOrBlank(item.sarasota)}"
             >
           </td>
 
+          <td>
+            <input
+              class="control item-texas"
+              type="number"
+              readonly
+              value="${numberOrBlank(item.texas)}"
+            >
+          </td>
+
+          <td class="item-total">—</td>
           <td class="item-balance">—</td>
 
           <td class="item-status">
-            <span class="status status-check">
-              CHECK
-            </span>
+            <span class="status status-check">CHECK</span>
           </td>
 
           <td>
@@ -2275,28 +2778,15 @@
         const quantityInput =
           row.querySelector(".item-quantity");
 
-        const stockInput =
-          row.querySelector(".item-stock");
-
-        quantityInput.addEventListener(
-          "input",
-          () => updateItemRow(row)
-        );
-
-        stockInput.addEventListener(
-          "input",
-          () => updateItemRow(row)
-        );
-
         modelInput.addEventListener("change", () => {
-          const normalized =
-            normalizeModel(modelInput.value);
+          syncItemRow(row);
+        });
 
-          if (inventoryMap.has(normalized)) {
-            stockInput.value =
-              inventoryMap.get(normalized);
-          }
+        modelInput.addEventListener("blur", () => {
+          syncItemRow(row);
+        });
 
+        quantityInput.addEventListener("input", () => {
           updateItemRow(row);
         });
 
@@ -2311,71 +2801,169 @@
           });
 
         itemsTableBody.appendChild(row);
+
+        if (item.model) {
+          syncItemRow(row, false);
+        } else {
+          updateItemRow(row);
+        }
+      }
+
+      function syncItemRow(row, overwrite = true) {
+        const model =
+          normalizeModel(
+            row.querySelector(".item-model").value
+          );
+
+        const sarasotaMatch =
+          locationMaps.Sarasota.get(model);
+
+        const texasMatch =
+          locationMaps.Texas.get(model);
+
+        const sarasotaInput =
+          row.querySelector(".item-sarasota");
+
+        const texasInput =
+          row.querySelector(".item-texas");
+
+        if (sarasotaMatch !== undefined) {
+          sarasotaInput.value = sarasotaMatch;
+        } else if (overwrite) {
+          sarasotaInput.value = "";
+        }
+
+        if (texasMatch !== undefined) {
+          texasInput.value = texasMatch;
+        } else if (overwrite) {
+          texasInput.value = "";
+        }
+
+        row.dataset.matched =
+          sarasotaMatch !== undefined ||
+          texasMatch !== undefined
+            ? "true"
+            : "false";
+
         updateItemRow(row);
       }
 
+      function syncDialogItems() {
+        let matched = 0;
+
+        itemsTableBody
+          .querySelectorAll("tr")
+          .forEach((row) => {
+            syncItemRow(row);
+
+            if (row.dataset.matched === "true") {
+              matched += 1;
+            }
+          });
+
+        showToast(
+          `${matched} model${matched === 1 ? "" : "s"} synchronized.`
+        );
+      }
+
       function updateItemRow(row) {
-        const quantity = numberValue(
-          row.querySelector(".item-quantity").value
-        );
+        const quantity =
+          numberValue(
+            row.querySelector(".item-quantity").value
+          );
 
-        const stock = numberValue(
-          row.querySelector(".item-stock").value
-        );
+        const sarasota =
+          numberValue(
+            row.querySelector(".item-sarasota").value
+          );
 
-        const balance =
+        const texas =
+          numberValue(
+            row.querySelector(".item-texas").value
+          );
+
+        const matched =
+          row.dataset.matched === "true";
+
+        const total =
+          matched
+            ? (sarasota || 0) + (texas || 0)
+            : null;
+
+        const totalCell =
+          row.querySelector(".item-total");
+
+        const balanceCell =
           row.querySelector(".item-balance");
 
-        const status =
+        const statusCell =
           row.querySelector(".item-status");
 
-        if (quantity === null || stock === null) {
-          balance.textContent = "—";
+        totalCell.textContent =
+          total === null ? "—" : formatNumber(total);
 
-          status.innerHTML =
+        if (quantity === null || total === null) {
+          balanceCell.textContent = "—";
+
+          statusCell.innerHTML =
             '<span class="status status-check">CHECK</span>';
 
           return;
         }
 
-        balance.textContent =
-          formatNumber(stock - quantity);
+        balanceCell.textContent =
+          formatNumber(total - quantity);
 
-        const itemStatus =
-          stock >= quantity ? "GOOD" : "LOW";
+        const status =
+          total >= quantity ? "GOOD" : "LOW";
 
-        status.innerHTML = `
-          <span class="status ${
-            inventoryStatusClass(itemStatus)
-          }">
-            ${itemStatus}
+        statusCell.innerHTML = `
+          <span class="status ${inventoryStatusClass(status)}">
+            ${status}
           </span>
         `;
       }
 
       function collectItems() {
         return [...itemsTableBody.querySelectorAll("tr")]
-          .map((row) => ({
-            model:
-              row
-                .querySelector(".item-model")
-                .value.trim(),
-
-            quantity:
+          .map((row) => {
+            const sarasota =
               numberValue(
-                row.querySelector(".item-quantity").value
-              ),
+                row.querySelector(".item-sarasota").value
+              );
 
-            stock:
+            const texas =
               numberValue(
-                row.querySelector(".item-stock").value
-              )
-          }))
+                row.querySelector(".item-texas").value
+              );
+
+            const matched =
+              row.dataset.matched === "true";
+
+            return {
+              model:
+                row.querySelector(".item-model").value.trim(),
+
+              quantity:
+                numberValue(
+                  row.querySelector(".item-quantity").value
+                ),
+
+              sarasota,
+              texas,
+
+              total:
+                matched
+                  ? (sarasota || 0) + (texas || 0)
+                  : null,
+
+              matched
+            };
+          })
           .filter(
             (item) =>
               item.model ||
-              item.quantity !== null ||
-              item.stock !== null
+              item.quantity !== null
           );
       }
 
@@ -2393,10 +2981,7 @@
 
           owner: eventOwner.value.trim(),
           recipients: eventRecipients.value.trim(),
-
-          trackingNumber:
-            trackingNumber.value.trim(),
-
+          trackingNumber: trackingNumber.value.trim(),
           notes: eventNotes.value.trim(),
           items: collectItems(),
           region,
@@ -2408,6 +2993,8 @@
         if (!eventForm.reportValidity()) {
           return;
         }
+
+        syncDialogItems();
 
         const event = buildEvent();
 
@@ -2448,9 +3035,7 @@
           return;
         }
 
-        if (
-          !confirm(`Delete PO ${event.poNumber}?`)
-        ) {
+        if (!confirm(`Delete PO ${event.poNumber}?`)) {
           return;
         }
 
@@ -2507,35 +3092,94 @@
           return "CHECK";
         }
 
-        let check = false;
-        let low = false;
+        let hasCheck = false;
+        let hasLow = false;
 
         event.items.forEach((item) => {
           const quantity =
             numberValue(item.quantity);
 
-          const stock =
-            numberValue(item.stock);
+          const total =
+            numberValue(item.total);
 
           if (
             quantity === null ||
-            stock === null
+            total === null ||
+            item.matched !== true
           ) {
-            check = true;
-          } else if (stock < quantity) {
-            low = true;
+            hasCheck = true;
+          } else if (total < quantity) {
+            hasLow = true;
           }
         });
 
-        if (low) {
+        if (hasLow) {
           return "LOW";
         }
 
-        if (check) {
+        if (hasCheck) {
           return "CHECK";
         }
 
         return "GOOD";
+      }
+
+      function synchronizeAllEventInventory(showMessage = true) {
+        let matchedItems = 0;
+
+        events.forEach((event) => {
+          event.items = event.items.map((item) => {
+            const model = normalizeModel(item.model);
+
+            const sarasotaMatch =
+              locationMaps.Sarasota.get(model);
+
+            const texasMatch =
+              locationMaps.Texas.get(model);
+
+            const matched =
+              sarasotaMatch !== undefined ||
+              texasMatch !== undefined;
+
+            if (matched) {
+              matchedItems += 1;
+            }
+
+            const sarasota =
+              sarasotaMatch !== undefined
+                ? sarasotaMatch
+                : null;
+
+            const texas =
+              texasMatch !== undefined
+                ? texasMatch
+                : null;
+
+            return {
+              ...item,
+              sarasota,
+              texas,
+              total:
+                matched
+                  ? (sarasota || 0) + (texas || 0)
+                  : null,
+              matched
+            };
+          });
+
+          event.updatedAt = new Date().toISOString();
+        });
+
+        saveEvents();
+        render();
+
+        if (showMessage) {
+          showToast(
+            `${matchedItems} event item${
+              matchedItems === 1 ? "" : "s"
+            } synchronized with current inventory.`
+          );
+        }
       }
 
       function inventoryStatusClass(status) {
@@ -2652,7 +3296,9 @@
         }
 
         const number = Number(
-          String(value).replace(/,/g, "")
+          String(value)
+            .replace(/,/g, "")
+            .replace(/[^\d.-]/g, "")
         );
 
         return Number.isFinite(number)
@@ -2672,6 +3318,12 @@
         }).format(value);
       }
 
+      function normalizeKey(value) {
+        return String(value || "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "");
+      }
+
       function normalizeModel(value) {
         return String(value || "")
           .trim()
@@ -2679,295 +3331,80 @@
           .replace(/\s+/g, "");
       }
 
-      async function syncInventory() {
-        syncInventoryButton.disabled = true;
-        syncInventoryButton.textContent =
-          "Searching reports...";
+      function findHeader(headers, aliases) {
+        const lookup = new Map(
+          headers.map((header) => [
+            normalizeKey(header),
+            header
+          ])
+        );
 
-        try {
-          inventoryMap =
-            await buildInventoryMap();
-
-          let matched = 0;
-
-          itemsTableBody
-            .querySelectorAll("tr")
-            .forEach((row) => {
-              const model =
-                normalizeModel(
-                  row.querySelector(".item-model").value
-                );
-
-              if (inventoryMap.has(model)) {
-                row.querySelector(
-                  ".item-stock"
-                ).value = inventoryMap.get(model);
-
-                updateItemRow(row);
-                matched += 1;
-              }
-            });
-
-          showToast(
-            inventoryMap.size
-              ? `${matched} model${
-                  matched === 1 ? "" : "s"
-                } matched to inventory.`
-              : "No inventory report was found. Enter stock manually."
-          );
-        } catch (error) {
-          showToast(
-            "Inventory could not be synchronized."
-          );
-        } finally {
-          syncInventoryButton.disabled = false;
-          syncInventoryButton.textContent =
-            "Sync inventory";
+        for (const alias of aliases) {
+          if (lookup.has(alias)) {
+            return lookup.get(alias);
+          }
         }
+
+        return null;
       }
 
-      async function buildInventoryMap() {
+      function rebuildLocationMaps() {
+        LOCATIONS.forEach((location) => {
+          locationMaps[location] =
+            createLocationMap(locationReports[location]);
+        });
+      }
+
+      function createLocationMap(report) {
         const map = new Map();
 
-        for (
-          let index = 0;
-          index < localStorage.length;
-          index += 1
-        ) {
-          const key = localStorage.key(index);
-
-          if (
-            !key ||
-            key.startsWith("stark_events_")
-          ) {
-            continue;
-          }
-
-          try {
-            collectInventory(
-              JSON.parse(localStorage.getItem(key)),
-              map
-            );
-          } catch (error) {
-            /* Ignore non-JSON values */
-          }
+        if (!report?.rows?.length) {
+          return map;
         }
 
-        if (
-          indexedDB.databases &&
-          typeof indexedDB.databases === "function"
-        ) {
-          try {
-            const databases =
-              await indexedDB.databases();
+        const modelHeader =
+          report.modelHeader ||
+          findHeader(report.headers, MODEL_ALIASES);
 
-            for (const database of databases) {
-              if (database.name) {
-                await readDatabase(
-                  database.name,
-                  map
-                );
-              }
-            }
-          } catch (error) {
-            /* Inventory can still be entered manually */
-          }
+        if (!modelHeader) {
+          return map;
         }
+
+        report.rows.forEach((row) => {
+          const model =
+            normalizeModel(row[modelHeader]);
+
+          const stock =
+            extractStockFromRow(row, report);
+
+          if (!model || stock === null) {
+            return;
+          }
+
+          const existing = map.get(model) || 0;
+
+          map.set(model, existing + stock);
+        });
 
         return map;
       }
 
-      function readDatabase(name, map) {
-        return new Promise((resolve) => {
-          const request = indexedDB.open(name);
-
-          request.onerror = () => resolve();
-
-          request.onsuccess = () => {
-            const database = request.result;
-
-            const stores =
-              Array.from(database.objectStoreNames);
-
-            if (!stores.length) {
-              database.close();
-              resolve();
-              return;
-            }
-
-            let pending = stores.length;
-
-            stores.forEach((storeName) => {
-              try {
-                const transaction =
-                  database.transaction(
-                    storeName,
-                    "readonly"
-                  );
-
-                const requestAll =
-                  transaction
-                    .objectStore(storeName)
-                    .getAll();
-
-                requestAll.onsuccess = () => {
-                  collectInventory(
-                    requestAll.result,
-                    map
-                  );
-                };
-
-                transaction.oncomplete = finish;
-                transaction.onerror = finish;
-                transaction.onabort = finish;
-              } catch (error) {
-                finish();
-              }
-            });
-
-            function finish() {
-              pending -= 1;
-
-              if (pending <= 0) {
-                database.close();
-                resolve();
-              }
-            }
-          };
-        });
-      }
-
-      function collectInventory(
-        value,
-        map,
-        depth = 0
-      ) {
-        if (
-          value === null ||
-          value === undefined ||
-          depth > 7
-        ) {
-          return;
-        }
-
-        if (Array.isArray(value)) {
-          value.forEach((item) => {
-            collectInventory(item, map, depth + 1);
-          });
-
-          return;
-        }
-
-        if (typeof value !== "object") {
-          return;
-        }
-
-        const keys = Object.keys(value);
-
-        const normalizedKeys = new Map(
-          keys.map((key) => [
-            normalizeKey(key),
-            key
-          ])
-        );
-
-        const modelKey = findKey(
-          normalizedKeys,
-          [
-            "model",
-            "modelnumber",
-            "modelno",
-            "sku",
-            "itemnumber",
-            "itemno",
-            "style",
-            "productcode"
-          ]
-        );
-
-        if (modelKey) {
-          const model =
-            normalizeModel(value[modelKey]);
-
-          const available =
-            extractAvailable(
-              value,
-              normalizedKeys
-            );
-
-          if (
-            model &&
-            available !== null
-          ) {
-            map.set(model, available);
-          }
-        }
-
-        keys.forEach((key) => {
-          if (
-            value[key] &&
-            typeof value[key] === "object"
-          ) {
-            collectInventory(
-              value[key],
-              map,
-              depth + 1
-            );
-          }
-        });
-      }
-
-      function extractAvailable(
-        record,
-        normalizedKeys
-      ) {
-        const availableKey = findKey(
-          normalizedKeys,
-          [
-            "actualavailable",
-            "totalavailable",
-            "availableinventory",
-            "availablestock",
-            "availableqty",
-            "quantityavailable",
-            "available",
-            "stockavailable"
-          ]
-        );
-
-        if (availableKey) {
+      function extractStockFromRow(row, report) {
+        if (report.directStockHeader) {
           return numberValue(
-            record[availableKey]
+            row[report.directStockHeader]
           );
         }
 
-        const onHandKey = findKey(
-          normalizedKeys,
-          [
-            "onhand",
-            "onhandqty",
-            "onhandquantity",
-            "currentstock",
-            "stock",
-            "inventory"
-          ]
-        );
+        const onHand =
+          report.onHandHeader
+            ? numberValue(row[report.onHandHeader])
+            : null;
 
-        const atsKey = findKey(
-          normalizedKeys,
-          [
-            "ats",
-            "availabletosell"
-          ]
-        );
-
-        const onHand = onHandKey
-          ? numberValue(record[onHandKey])
-          : null;
-
-        const ats = atsKey
-          ? numberValue(record[atsKey])
-          : null;
+        const ats =
+          report.atsHeader
+            ? numberValue(row[report.atsHeader])
+            : null;
 
         if (onHand !== null && ats !== null) {
           return onHand + ats;
@@ -2976,30 +3413,492 @@
         return onHand ?? ats;
       }
 
-      function normalizeKey(value) {
-        return String(value || "")
-          .toLowerCase()
-          .replace(/[^a-z0-9]/g, "");
+      function openInventoryDialog() {
+        renderInventoryLocations();
+        inventoryDialog.showModal();
       }
 
-      function findKey(map, names) {
-        for (const name of names) {
-          if (map.has(name)) {
-            return map.get(name);
+      function selectInventoryLocation(location) {
+        document
+          .querySelectorAll("[data-location-tab]")
+          .forEach((button) => {
+            button.classList.toggle(
+              "active",
+              button.dataset.locationTab === location
+            );
+          });
+
+        document
+          .querySelectorAll("[data-location-panel]")
+          .forEach((panel) => {
+            panel.classList.toggle(
+              "active",
+              panel.dataset.locationPanel === location
+            );
+          });
+      }
+
+      async function uploadInventoryFile(location, file) {
+        if (!file) {
+          return;
+        }
+
+        if (!window.XLSX) {
+          showToast(
+            "Excel reader could not load. Refresh the page and try again."
+          );
+
+          return;
+        }
+
+        const input =
+          document.getElementById(
+            `${location.toLowerCase()}FileInput`
+          );
+
+        input.disabled = true;
+
+        try {
+          showToast(`Reading ${location} inventory...`);
+
+          const report =
+            await parseInventoryFile(file, location);
+
+          await saveLocationReport(report);
+
+          locationReports[location] = report;
+          rebuildLocationMaps();
+          synchronizeAllEventInventory(false);
+
+          renderInventoryLocations();
+          render();
+
+          showToast(
+            `${location} inventory uploaded. ` +
+            `${report.rows.length.toLocaleString()} rows loaded.`
+          );
+        } catch (error) {
+          showToast(
+            error.message ||
+            `${location} inventory could not be uploaded.`
+          );
+        } finally {
+          input.disabled = false;
+          input.value = "";
+        }
+      }
+
+      async function parseInventoryFile(file, location) {
+        const buffer = await file.arrayBuffer();
+
+        const workbook = XLSX.read(buffer, {
+          type: "array",
+          cellDates: true
+        });
+
+        let selectedSheet = null;
+        let selectedRows = [];
+
+        for (const sheetName of workbook.SheetNames) {
+          const sheet = workbook.Sheets[sheetName];
+
+          const rows = XLSX.utils.sheet_to_json(sheet, {
+            defval: "",
+            raw: false,
+            dateNF: "yyyy-mm-dd"
+          });
+
+          if (rows.length) {
+            selectedSheet = sheetName;
+            selectedRows = rows;
+            break;
           }
         }
 
-        return null;
+        if (!selectedRows.length) {
+          throw new Error(
+            "The selected file does not contain any data rows."
+          );
+        }
+
+        const headers = [];
+
+        selectedRows.forEach((row) => {
+          Object.keys(row).forEach((header) => {
+            if (!headers.includes(header)) {
+              headers.push(header);
+            }
+          });
+        });
+
+        const modelHeader =
+          findHeader(headers, MODEL_ALIASES);
+
+        if (!modelHeader) {
+          throw new Error(
+            "A Model#, SKU, Item# or Style column could not be detected."
+          );
+        }
+
+        const directStockHeader =
+          findHeader(headers, DIRECT_STOCK_ALIASES);
+
+        const onHandHeader =
+          findHeader(headers, ON_HAND_ALIASES);
+
+        const atsHeader =
+          findHeader(headers, ATS_ALIASES);
+
+        if (
+          !directStockHeader &&
+          !onHandHeader &&
+          !atsHeader
+        ) {
+          throw new Error(
+            "An Available, Stock, On Hand or ATS column could not be detected."
+          );
+        }
+
+        return {
+          key: `${region}::${location}`,
+          region,
+          location,
+          fileName: file.name,
+          sheetName: selectedSheet,
+          headers,
+          rows: selectedRows,
+          modelHeader,
+          directStockHeader,
+          onHandHeader,
+          atsHeader,
+          uploadedAt: new Date().toISOString()
+        };
+      }
+
+      function renderInventoryLocations() {
+        LOCATIONS.forEach((location) => {
+          renderLocationMeta(location);
+          renderLocationList(location);
+        });
+
+        document.getElementById(
+          "sarasotaTabCount"
+        ).textContent =
+          `${locationReports.Sarasota?.rows?.length || 0} rows`;
+
+        document.getElementById(
+          "texasTabCount"
+        ).textContent =
+          `${locationReports.Texas?.rows?.length || 0} rows`;
+      }
+
+      function renderLocationMeta(location) {
+        const report = locationReports[location];
+        const idPrefix = location.toLowerCase();
+
+        const meta =
+          document.getElementById(`${idPrefix}Meta`);
+
+        const removeButton =
+          document.getElementById(
+            `remove${location}Button`
+          );
+
+        if (!report) {
+          meta.innerHTML = `
+            <span>No ${location} file uploaded.</span>
+            <span>0 models detected</span>
+          `;
+
+          removeButton.classList.add("hidden");
+          return;
+        }
+
+        const modelCount =
+          locationMaps[location].size;
+
+        meta.innerHTML = `
+          <span>
+            <strong>${escapeHtml(report.fileName)}</strong>
+            · ${escapeHtml(report.sheetName)}
+            · Uploaded ${formatDateTime(report.uploadedAt)}
+          </span>
+
+          <span>
+            ${report.rows.length.toLocaleString()} rows ·
+            ${modelCount.toLocaleString()} models
+          </span>
+        `;
+
+        removeButton.classList.remove("hidden");
+      }
+
+      function renderLocationList(location) {
+        const report = locationReports[location];
+        const idPrefix = location.toLowerCase();
+
+        const container =
+          document.getElementById(
+            `${idPrefix}InventoryList`
+          );
+
+        if (!report?.rows?.length) {
+          container.innerHTML = `
+            <div class="inventory-empty">
+              Upload the ${location} inventory file to view its data.
+            </div>
+          `;
+
+          return;
+        }
+
+        const search =
+          document
+            .getElementById(
+              `${idPrefix}InventorySearch`
+            )
+            .value
+            .trim()
+            .toLowerCase();
+
+        const rows = report.rows.filter((row) => {
+          if (!search) {
+            return true;
+          }
+
+          return Object.values(row)
+            .join(" ")
+            .toLowerCase()
+            .includes(search);
+        });
+
+        const headerHtml = report.headers
+          .map((header) => {
+            const detected =
+              header === report.modelHeader ||
+              header === report.directStockHeader ||
+              header === report.onHandHeader ||
+              header === report.atsHeader;
+
+            return `
+              <th title="${
+                detected
+                  ? "Used for event inventory synchronization"
+                  : ""
+              }">
+                ${escapeHtml(header)}
+                ${detected ? " ✓" : ""}
+              </th>
+            `;
+          })
+          .join("");
+
+        const bodyHtml = rows
+          .map((row) => {
+            return `
+              <tr>
+                ${report.headers
+                  .map((header) => {
+                    return `
+                      <td title="${escapeHtml(row[header])}">
+                        ${escapeHtml(row[header])}
+                      </td>
+                    `;
+                  })
+                  .join("")}
+              </tr>
+            `;
+          })
+          .join("");
+
+        container.innerHTML = `
+          <div class="table-meta">
+            <span>
+              ${rows.length.toLocaleString()} of
+              ${report.rows.length.toLocaleString()} rows
+            </span>
+
+            <span>
+              ✓ indicates a column used for inventory synchronization
+            </span>
+          </div>
+
+          <div class="table-wrap">
+            <table class="inventory-table">
+              <thead>
+                <tr>${headerHtml}</tr>
+              </thead>
+
+              <tbody>${bodyHtml}</tbody>
+            </table>
+          </div>
+        `;
+      }
+
+      async function removeLocationReport(location) {
+        if (
+          !confirm(
+            `Remove the current ${location} inventory report?`
+          )
+        ) {
+          return;
+        }
+
+        await deleteLocationReport(location);
+
+        locationReports[location] = null;
+        rebuildLocationMaps();
+        synchronizeAllEventInventory(false);
+
+        renderInventoryLocations();
+        render();
+
+        showToast(`${location} inventory removed.`);
+      }
+
+      function openInventoryDatabase() {
+        return new Promise((resolve, reject) => {
+          const request =
+            indexedDB.open(
+              "StarkEventsInventoryDB",
+              1
+            );
+
+          request.onupgradeneeded = () => {
+            const database = request.result;
+
+            if (
+              !database.objectStoreNames.contains(
+                "locationReports"
+              )
+            ) {
+              database.createObjectStore(
+                "locationReports",
+                {
+                  keyPath: "key"
+                }
+              );
+            }
+          };
+
+          request.onsuccess = () => {
+            resolve(request.result);
+          };
+
+          request.onerror = () => {
+            reject(request.error);
+          };
+        });
+      }
+
+      async function saveLocationReport(report) {
+        const database =
+          await openInventoryDatabase();
+
+        return new Promise((resolve, reject) => {
+          const transaction =
+            database.transaction(
+              "locationReports",
+              "readwrite"
+            );
+
+          transaction
+            .objectStore("locationReports")
+            .put(report);
+
+          transaction.oncomplete = () => {
+            database.close();
+            resolve();
+          };
+
+          transaction.onerror = () => {
+            database.close();
+            reject(transaction.error);
+          };
+        });
+      }
+
+      async function loadStoredInventory() {
+        const database =
+          await openInventoryDatabase();
+
+        const reports = await new Promise(
+          (resolve, reject) => {
+            const transaction =
+              database.transaction(
+                "locationReports",
+                "readonly"
+              );
+
+            const request =
+              transaction
+                .objectStore("locationReports")
+                .getAll();
+
+            request.onsuccess = () => {
+              resolve(request.result || []);
+            };
+
+            request.onerror = () => {
+              reject(request.error);
+            };
+
+            transaction.oncomplete = () => {
+              database.close();
+            };
+          }
+        );
+
+        reports
+          .filter((report) => report.region === region)
+          .forEach((report) => {
+            if (LOCATIONS.includes(report.location)) {
+              locationReports[report.location] = report;
+            }
+          });
+      }
+
+      async function deleteLocationReport(location) {
+        const database =
+          await openInventoryDatabase();
+
+        return new Promise((resolve, reject) => {
+          const transaction =
+            database.transaction(
+              "locationReports",
+              "readwrite"
+            );
+
+          transaction
+            .objectStore("locationReports")
+            .delete(`${region}::${location}`);
+
+          transaction.oncomplete = () => {
+            database.close();
+            resolve();
+          };
+
+          transaction.onerror = () => {
+            database.close();
+            reject(transaction.error);
+          };
+        });
       }
 
       function openEmailSettings() {
-        organizationDomain.value =
+        document.getElementById(
+          "organizationDomain"
+        ).value =
           emailSettings.organizationDomain || "";
 
-        defaultRecipients.value =
+        document.getElementById(
+          "defaultRecipients"
+        ).value =
           emailSettings.defaultRecipients || "";
 
-        emailSignature.value =
+        document.getElementById(
+          "emailSignature"
+        ).value =
           emailSettings.emailSignature || "";
 
         emailSettingsDialog.showModal();
@@ -3008,20 +3907,28 @@
       function saveEmailSettings() {
         emailSettings = {
           organizationDomain:
-            organizationDomain.value
+            document
+              .getElementById("organizationDomain")
+              .value
               .trim()
               .replace(/^@/, "")
               .toLowerCase(),
 
           defaultRecipients:
-            defaultRecipients.value.trim(),
+            document
+              .getElementById("defaultRecipients")
+              .value
+              .trim(),
 
           emailSignature:
-            emailSignature.value.trim()
+            document
+              .getElementById("emailSignature")
+              .value
+              .trim()
         };
 
         localStorage.setItem(
-          settingsKey,
+          emailSettingsKey,
           JSON.stringify(emailSettings)
         );
 
@@ -3042,32 +3949,6 @@
           .split(/[;,]/)
           .map((address) => address.trim())
           .filter(Boolean);
-
-        if (
-          emailSettings.organizationDomain &&
-          recipientList.length
-        ) {
-          const externalRecipients =
-            recipientList.filter((address) => {
-              return !address
-                .toLowerCase()
-                .endsWith(
-                  `@${emailSettings.organizationDomain}`
-                );
-            });
-
-          if (
-            externalRecipients.length &&
-            !confirm(
-              "Some recipients are outside the organization email domain. Continue?"
-            )
-          ) {
-            return;
-          }
-        }
-
-        const itemsText =
-          buildEmailItems(event.items);
 
         const subject =
           `Event Update | PO ${event.poNumber} | ` +
@@ -3099,7 +3980,7 @@
           "",
           "ITEMS",
           "----------------------------------------",
-          itemsText,
+          buildEmailItems(event.items),
           "",
           "LATEST NOTES",
           "----------------------------------------",
@@ -3148,20 +4029,27 @@
             const quantity =
               numberValue(item.quantity);
 
-            const stock =
-              numberValue(item.stock);
+            const sarasota =
+              numberValue(item.sarasota);
 
-            const afterAllocation =
+            const texas =
+              numberValue(item.texas);
+
+            const total =
+              numberValue(item.total);
+
+            const balance =
               quantity !== null &&
-              stock !== null
-                ? stock - quantity
+              total !== null
+                ? total - quantity
                 : null;
 
             const itemStatus =
               quantity === null ||
-              stock === null
+              total === null ||
+              item.matched !== true
                 ? "CHECK"
-                : stock >= quantity
+                : total >= quantity
                   ? "GOOD"
                   : "LOW";
 
@@ -3169,20 +4057,30 @@
               `${index + 1}. Model#: ${
                 item.model || "Not entered"
               }`,
-              `   Quantity: ${
+              `   PO Quantity: ${
                 quantity === null
                   ? "Not entered"
                   : quantity
               }`,
-              `   Stock Available: ${
-                stock === null
-                  ? "Not entered"
-                  : stock
+              `   Sarasota Stock: ${
+                sarasota === null
+                  ? "Not found"
+                  : sarasota
+              }`,
+              `   Texas Stock: ${
+                texas === null
+                  ? "Not found"
+                  : texas
+              }`,
+              `   Total Stock Available: ${
+                total === null
+                  ? "Not found"
+                  : total
               }`,
               `   Available After Allocation: ${
-                afterAllocation === null
+                balance === null
                   ? "Not available"
-                  : afterAllocation
+                  : balance
               }`,
               `   Inventory Status: ${itemStatus}`
             ].join("\n");
@@ -3190,116 +4088,24 @@
           .join("\n\n");
       }
 
-      function exportEvents() {
-        if (!events.length) {
-          showToast("There are no events to export.");
-          return;
+      function formatDateTime(value) {
+        if (!value) {
+          return "Unknown";
         }
 
-        const rows = [[
-          "Region",
-          "PO#",
-          "Customer",
-          "Inventory Status",
-          "In-Hands Date",
-          "Current Status",
-          "Planning",
-          "Customer Followed-Up Date",
-          "Model#",
-          "PO Quantity",
-          "Stock Available",
-          "Available After Allocation",
-          "Item Inventory Status",
-          "Owner",
-          "Tracking Number",
-          "Latest Notes",
-          "Recipients",
-          "Last Updated"
-        ]];
+        const date = new Date(value);
 
-        events.forEach((event) => {
-          const items =
-            event.items.length
-              ? event.items
-              : [{}];
+        if (Number.isNaN(date.getTime())) {
+          return "Unknown";
+        }
 
-          items.forEach((item) => {
-            const quantity =
-              numberValue(item.quantity);
-
-            const stock =
-              numberValue(item.stock);
-
-            const balance =
-              quantity !== null &&
-              stock !== null
-                ? stock - quantity
-                : "";
-
-            const itemStatus =
-              quantity === null ||
-              stock === null
-                ? "CHECK"
-                : stock >= quantity
-                  ? "GOOD"
-                  : "LOW";
-
-            rows.push([
-              region,
-              event.poNumber,
-              event.customer,
-              getInventoryStatus(event),
-              event.inHandsDate,
-              event.status,
-              event.planning,
-              event.customerFollowedUpDate,
-              item.model || "",
-              quantity ?? "",
-              stock ?? "",
-              balance,
-              itemStatus,
-              event.owner,
-              event.trackingNumber,
-              event.notes,
-              event.recipients,
-              event.updatedAt
-            ]);
-          });
-        });
-
-        const csv = rows
-          .map((row) =>
-            row
-              .map((value) =>
-                `"${String(value ?? "")
-                  .replace(/"/g, '""')}"`
-              )
-              .join(",")
-          )
-          .join("\r\n");
-
-        const blob = new Blob([csv], {
-          type: "text/csv;charset=utf-8"
-        });
-
-        const url =
-          URL.createObjectURL(blob);
-
-        const link =
-          document.createElement("a");
-
-        link.href = url;
-
-        link.download =
-          `Events_${region}_${new Date()
-            .toISOString()
-            .slice(0, 10)}.csv`;
-
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-
-        URL.revokeObjectURL(url);
+        return new Intl.DateTimeFormat("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          hour: "numeric",
+          minute: "2-digit"
+        }).format(date);
       }
 
       function showToast(message) {
@@ -3310,7 +4116,7 @@
 
         toastTimer = setTimeout(() => {
           toast.classList.remove("visible");
-        }, 3200);
+        }, 3400);
       }
 
       function escapeHtml(value) {
