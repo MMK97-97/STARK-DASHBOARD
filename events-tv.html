@@ -10,6 +10,7 @@
     :root {
       --navy-950: #031426;
       --navy-900: #061d35;
+      --navy-850: #082746;
       --teal: #19d3c5;
       --text: #eff8ff;
       --muted: #9db3c7;
@@ -248,6 +249,7 @@
       font-size: 15px;
       line-height: 1;
       font-weight: 900;
+      font-variant-numeric: tabular-nums;
     }
 
     .clock-date {
@@ -264,9 +266,11 @@
       place-items: center;
     }
 
-    .header-button:hover {
+    .header-button:hover,
+    .header-button:focus-visible {
       border-color: rgba(25,211,197,0.48);
       color: var(--teal);
+      outline: none;
       background: rgba(25,211,197,0.1);
     }
 
@@ -285,11 +289,12 @@
       position: relative;
       min-width: 0;
       min-height: 0;
-      overflow: hidden;
+      overflow-x: hidden;
+      overflow-y: auto;
       padding: clamp(20px, 1.7vw, 32px);
       display: grid;
-      grid-template-rows: auto auto auto minmax(0, 1fr);
-      gap: clamp(10px, 1.2vh, 15px);
+      grid-template-rows: auto auto minmax(140px, 1fr);
+      gap: 16px;
       border: 1px solid var(--line);
       border-radius: 28px;
       background:
@@ -298,6 +303,21 @@
       box-shadow:
         var(--shadow),
         inset 0 1px rgba(255,255,255,0.05);
+      scrollbar-width: thin;
+      scrollbar-color: rgba(25,211,197,0.45) transparent;
+    }
+
+    .spotlight::-webkit-scrollbar {
+      width: 7px;
+    }
+
+    .spotlight::-webkit-scrollbar-track {
+      background: transparent;
+    }
+
+    .spotlight::-webkit-scrollbar-thumb {
+      border-radius: 99px;
+      background: rgba(25,211,197,0.4);
     }
 
     .spotlight::after {
@@ -405,17 +425,19 @@
     .primary-information {
       min-width: 0;
       display: grid;
-      grid-template-columns: minmax(0, 1.5fr) minmax(310px, 0.85fr) minmax(340px, 1fr);
-      gap: 12px;
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-rows: auto auto auto;
+      gap: 16px;
     }
 
     .po-card,
     .date-card,
     .planning-card,
     .items-panel {
+      width: 100%;
       min-width: 0;
       border: 1px solid var(--line);
-      border-radius: 18px;
+      border-radius: 19px;
       background: rgba(2,19,34,0.44);
       box-shadow: inset 0 1px rgba(255,255,255,0.035);
     }
@@ -423,19 +445,36 @@
     .po-card,
     .date-card,
     .planning-card {
-      min-height: 155px;
-      padding: 18px 20px;
+      padding: 24px 30px;
       display: grid;
       align-content: center;
     }
 
+    .po-card {
+      min-height: 220px;
+      background:
+        linear-gradient(
+          135deg,
+          rgba(25,211,197,0.075),
+          rgba(2,19,34,0.48)
+        );
+    }
+
+    .date-card {
+      min-height: 180px;
+    }
+
+    .planning-card {
+      min-height: 180px;
+    }
+
     .field-label {
-      margin: 0 0 9px;
+      margin: 0 0 13px;
       color: var(--teal);
-      font-size: 11px;
+      font-size: clamp(14px, 1.1vw, 21px);
       line-height: 1;
       font-weight: 950;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.15em;
       text-transform: uppercase;
     }
 
@@ -444,23 +483,23 @@
       margin: 0;
       overflow: hidden;
       color: white;
-      font-size: clamp(58px, 5.6vw, 108px);
-      line-height: 0.9;
+      font-size: clamp(90px, 10vw, 180px);
+      line-height: 0.88;
       font-weight: 950;
       letter-spacing: -0.065em;
       text-overflow: ellipsis;
       white-space: nowrap;
-      text-shadow: 0 14px 35px rgba(0,0,0,0.25);
+      text-shadow: 0 16px 40px rgba(0,0,0,0.28);
     }
 
     .customer {
-      margin: 12px 0 0;
+      margin: 18px 0 0;
       overflow: hidden;
       color: #cde0ee;
-      font-size: clamp(20px, 1.5vw, 29px);
-      line-height: 1.1;
-      font-weight: 850;
-      letter-spacing: -0.025em;
+      font-size: clamp(32px, 3vw, 58px);
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: -0.035em;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
@@ -469,17 +508,18 @@
       margin: 0;
       overflow: hidden;
       color: white;
-      font-size: clamp(35px, 3vw, 57px);
-      line-height: 0.98;
+      font-size: clamp(65px, 7vw, 130px);
+      line-height: 0.92;
       font-weight: 950;
-      letter-spacing: -0.05em;
+      letter-spacing: -0.055em;
       text-overflow: ellipsis;
+      white-space: nowrap;
     }
 
     .date-message {
-      margin: 10px 0 0;
+      margin: 16px 0 0;
       color: var(--teal);
-      font-size: 13px;
+      font-size: clamp(18px, 1.6vw, 31px);
       font-weight: 900;
     }
 
@@ -489,19 +529,18 @@
 
     .planning-value {
       margin: 0;
-      display: -webkit-box;
-      overflow: hidden;
+      overflow: visible;
       color: white;
-      font-size: clamp(22px, 1.8vw, 34px);
-      line-height: 1.18;
-      font-weight: 900;
-      letter-spacing: -0.025em;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 3;
+      font-size: clamp(52px, 5vw, 95px);
+      line-height: 1.05;
+      font-weight: 950;
+      letter-spacing: -0.045em;
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
 
     .items-panel {
-      min-height: 0;
+      min-height: 145px;
       overflow: hidden;
       display: grid;
       grid-template-rows: auto minmax(0, 1fr);
@@ -509,8 +548,8 @@
 
     .items-head {
       min-width: 0;
-      min-height: 38px;
-      padding: 7px 14px;
+      min-height: 36px;
+      padding: 6px 14px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -522,13 +561,13 @@
     .items-title {
       margin: 0;
       color: white;
-      font-size: 12px;
+      font-size: 11px;
       font-weight: 900;
     }
 
     .items-page {
       color: var(--muted);
-      font-size: 9px;
+      font-size: 8px;
       font-weight: 800;
       white-space: nowrap;
     }
@@ -536,7 +575,8 @@
     .table-wrap {
       min-width: 0;
       min-height: 0;
-      overflow: hidden;
+      overflow-x: auto;
+      overflow-y: hidden;
     }
 
     .items-table {
@@ -554,10 +594,10 @@
     }
 
     .items-table th {
-      height: 26px;
-      padding: 0 9px;
+      height: 23px;
+      padding: 0 8px;
       color: #7f9ab1;
-      font-size: 8px;
+      font-size: 7px;
       font-weight: 900;
       letter-spacing: 0.08em;
       text-align: right;
@@ -565,10 +605,10 @@
     }
 
     .items-table td {
-      height: clamp(29px, 3.7vh, 37px);
-      padding: 0 9px;
+      height: 28px;
+      padding: 0 8px;
       color: #e6f2fb;
-      font-size: clamp(9px, 0.67vw, 12px);
+      font-size: clamp(8px, 0.58vw, 11px);
       font-weight: 750;
       text-align: right;
       font-variant-numeric: tabular-nums;
@@ -577,14 +617,14 @@
     .items-table th:first-child,
     .items-table td:first-child {
       width: 27%;
-      padding-left: 14px;
+      padding-left: 13px;
       text-align: left;
     }
 
     .items-table th:last-child,
     .items-table td:last-child {
       width: 12%;
-      padding-right: 14px;
+      padding-right: 13px;
     }
 
     .model-value {
@@ -601,8 +641,8 @@
     }
 
     .mini-status {
-      min-width: 54px;
-      padding: 4px 7px;
+      min-width: 50px;
+      padding: 3px 6px;
       display: inline-flex;
       justify-content: center;
       border-radius: 999px;
@@ -726,8 +766,10 @@
       background: rgba(9,38,63,0.92);
     }
 
-    .control-button:hover {
+    .control-button:hover,
+    .control-button:focus-visible {
       border-color: rgba(25,211,197,0.55);
+      outline: none;
       color: var(--teal);
       background: #10446e;
     }
@@ -757,7 +799,7 @@
       }
     }
 
-    @media (max-width: 1250px) {
+    @media (max-width: 1000px) {
       body {
         overflow: auto;
       }
@@ -772,16 +814,8 @@
         display: none;
       }
 
-      .primary-information {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .po-card {
-        grid-column: 1 / -1;
-      }
-
       .spotlight {
-        min-height: 820px;
+        min-height: 850px;
       }
     }
 
@@ -828,32 +862,35 @@
         justify-content: flex-start;
       }
 
-      .primary-information {
-        grid-template-columns: 1fr;
-      }
-
-      .po-card {
-        grid-column: auto;
+      .po-card,
+      .date-card,
+      .planning-card {
+        min-height: auto;
+        padding: 22px;
       }
 
       .po-number {
-        font-size: 54px;
+        font-size: 64px;
+      }
+
+      .customer {
+        font-size: 28px;
       }
 
       .date-value {
-        font-size: 39px;
+        font-size: 49px;
+      }
+
+      .date-message {
+        font-size: 17px;
       }
 
       .planning-value {
-        font-size: 24px;
-      }
-
-      .table-wrap {
-        overflow-x: auto;
+        font-size: 39px;
       }
 
       .items-table {
-        min-width: 720px;
+        min-width: 700px;
       }
 
       .footer-bar {
@@ -934,7 +971,9 @@
     </section>
 
     <footer class="footer-bar">
-      <span id="rotationCopy">Auto-rotating every 14 seconds</span>
+      <span id="rotationCopy">
+        Auto-rotating every 14 seconds
+      </span>
 
       <div class="rotation-track">
         <div id="rotationProgress" class="rotation-progress"></div>
@@ -947,13 +986,23 @@
   </main>
 
   <div id="floatingControls" class="floating-controls">
-    <button id="previousButton" class="control-button" type="button">
+    <button
+      id="previousButton"
+      class="control-button"
+      type="button"
+      title="Previous PO"
+    >
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
         <path d="m15 18-6-6 6-6"/>
       </svg>
     </button>
 
-    <button id="pauseButton" class="control-button" type="button">
+    <button
+      id="pauseButton"
+      class="control-button"
+      type="button"
+      title="Pause rotation"
+    >
       <svg
         id="pauseIcon"
         viewBox="0 0 24 24"
@@ -965,7 +1014,12 @@
       </svg>
     </button>
 
-    <button id="nextButton" class="control-button" type="button">
+    <button
+      id="nextButton"
+      class="control-button"
+      type="button"
+      title="Next PO"
+    >
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
         <path d="m9 18 6-6-6-6"/>
       </svg>
@@ -1041,15 +1095,15 @@
         bindControls();
         updateClock();
 
-        setInterval(updateClock, 1000);
+        window.setInterval(updateClock, 1000);
 
         await refreshData(true);
 
-        setInterval(() => {
+        window.setInterval(() => {
           refreshData(false);
         }, REFRESH_MS);
 
-        requestAnimationFrame(updateRotation);
+        window.requestAnimationFrame(updateRotation);
       }
 
       function bindControls() {
@@ -1096,8 +1150,13 @@
         });
 
         document.addEventListener("keydown", event => {
-          if (event.key === "ArrowRight") nextSlide();
-          if (event.key === "ArrowLeft") previousSlide();
+          if (event.key === "ArrowRight") {
+            nextSlide();
+          }
+
+          if (event.key === "ArrowLeft") {
+            previousSlide();
+          }
 
           if (event.key === " ") {
             event.preventDefault();
@@ -1111,7 +1170,9 @@
       }
 
       function setViewMode(mode) {
-        if (viewMode === mode) return;
+        if (viewMode === mode) {
+          return;
+        }
 
         viewMode = mode;
         slideIndex = 0;
@@ -1120,7 +1181,7 @@
 
         nextUrl.searchParams.set("view", mode);
 
-        history.replaceState({}, "", nextUrl);
+        window.history.replaceState({}, "", nextUrl);
 
         configureViewButtons();
         buildSlides();
@@ -1145,7 +1206,9 @@
         const previousEventId = previousSlide?.event?.id || "";
         const previousPage = previousSlide?.itemPage || 0;
 
-        const loadedEvents = normalizeEvents(loadExistingEvents());
+        const loadedEvents = normalizeEvents(
+          loadExistingEvents()
+        );
 
         locationReports = await loadStoredInventory();
 
@@ -1207,6 +1270,7 @@
         for (const key of keys) {
           try {
             const storedValue = localStorage.getItem(key);
+
             const parsedValue = storedValue
               ? JSON.parse(storedValue)
               : null;
@@ -1223,12 +1287,16 @@
       }
 
       function normalizeEvents(records) {
-        if (!Array.isArray(records)) return [];
+        if (!Array.isArray(records)) {
+          return [];
+        }
 
         return records.map((event, index) => ({
           id: String(event.id || `event-${index}`),
           poNumber: String(event.poNumber || "Not entered"),
-          customer: String(event.customer || "Customer not entered"),
+          customer: String(
+            event.customer || "Customer not entered"
+          ),
           inHandsDate: event.inHandsDate || "",
           status: event.status || "Draft",
           planning:
@@ -1312,7 +1380,10 @@
       function openInventoryDatabase() {
         return new Promise((resolve, reject) => {
           if (!("indexedDB" in window)) {
-            reject(new Error("Browser inventory storage unavailable."));
+            reject(
+              new Error("Browser inventory storage unavailable.")
+            );
+
             return;
           }
 
@@ -1422,7 +1493,9 @@
 
           const stock = extractStock(row, report);
 
-          if (!model || stock === null) return;
+          if (!model || stock === null) {
+            return;
+          }
 
           map.set(
             model,
@@ -1503,7 +1576,9 @@
       }
 
       function renderCurrentSlide() {
-        document.getElementById("emptyBoard")?.remove();
+        document
+          .getElementById("emptyBoard")
+          ?.remove();
 
         if (!slides.length) {
           spotlight.classList.add("hidden");
@@ -1512,6 +1587,7 @@
             document.createElement("section");
 
           emptyState.id = "emptyBoard";
+
           emptyState.className =
             "empty-board slide-enter";
 
@@ -1538,7 +1614,9 @@
           `;
 
           contentGrid.appendChild(emptyState);
-          rotationCopy.textContent = "Waiting for events";
+
+          rotationCopy.textContent =
+            "Waiting for events";
 
           return;
         }
@@ -1554,9 +1632,15 @@
 
         const slide = slides[slideIndex];
         const event = slide.event;
-        const inventoryStatus = getInventoryStatus(event);
-        const priority = getEventPriority(event);
-        const dateMessage = getDateMessage(event);
+
+        const inventoryStatus =
+          getInventoryStatus(event);
+
+        const priority =
+          getEventPriority(event);
+
+        const dateMessage =
+          getDateMessage(event);
 
         const itemsStart =
           slide.itemPage * ITEMS_PER_SLIDE;
@@ -1609,7 +1693,9 @@
             </section>
 
             <section class="date-card">
-              <p class="field-label">In-hands date</p>
+              <p class="field-label">
+                In-hands date
+              </p>
 
               <p class="date-value">
                 ${formatDate(event.inHandsDate)}
@@ -1621,7 +1707,9 @@
             </section>
 
             <section class="planning-card">
-              <p class="field-label">Planning</p>
+              <p class="field-label">
+                Planning
+              </p>
 
               <p class="planning-value">
                 ${escapeHtml(
@@ -1723,10 +1811,21 @@
                         )}
                       </td>
 
-                      <td>${numberOrDash(quantity)}</td>
-                      <td>${numberOrDash(item.sarasota)}</td>
-                      <td>${numberOrDash(item.texas)}</td>
-                      <td>${numberOrDash(total)}</td>
+                      <td>
+                        ${numberOrDash(quantity)}
+                      </td>
+
+                      <td>
+                        ${numberOrDash(item.sarasota)}
+                      </td>
+
+                      <td>
+                        ${numberOrDash(item.texas)}
+                      </td>
+
+                      <td>
+                        ${numberOrDash(total)}
+                      </td>
 
                       <td class="${
                         balance === null
@@ -1757,11 +1856,15 @@
           record => record.id === event.id
         );
 
-        return position >= 0 ? position + 1 : 1;
+        return position >= 0
+          ? position + 1
+          : 1;
       }
 
       function nextSlide() {
-        if (!slides.length) return;
+        if (!slides.length) {
+          return;
+        }
 
         slideIndex =
           (slideIndex + 1) % slides.length;
@@ -1771,7 +1874,9 @@
       }
 
       function previousSlide() {
-        if (!slides.length) return;
+        if (!slides.length) {
+          return;
+        }
 
         slideIndex =
           (slideIndex - 1 + slides.length) %
@@ -1788,6 +1893,10 @@
           "paused",
           paused
         );
+
+        pauseButton.title = paused
+          ? "Resume rotation"
+          : "Pause rotation";
 
         pauseIcon.innerHTML = paused
           ? '<path d="m8 5 11 7-11 7z"/>'
@@ -1822,13 +1931,16 @@
           rotationProgress.style.width = "0%";
         }
 
-        requestAnimationFrame(updateRotation);
+        window.requestAnimationFrame(
+          updateRotation
+        );
       }
 
       async function toggleFullscreen() {
         try {
           if (!document.fullscreenElement) {
-            await document.documentElement.requestFullscreen();
+            await document.documentElement
+              .requestFullscreen();
           } else {
             await document.exitFullscreen();
           }
@@ -1903,7 +2015,10 @@
               return sum;
             }
 
-            return sum + Math.max(0, quantity - total);
+            return sum + Math.max(
+              0,
+              quantity - total
+            );
           },
           0
         );
@@ -1932,7 +2047,10 @@
         const inventoryStatus =
           getInventoryStatus(event);
 
-        if (days !== null && days < 0) {
+        if (
+          days !== null &&
+          days < 0
+        ) {
           return {
             label: "Critical",
             slug: "critical",
@@ -1966,7 +2084,8 @@
           inventoryStatus === "CHECK" ||
           days === null ||
           !event.planning ||
-          event.planning === "Planning not confirmed"
+          event.planning ===
+            "Planning not confirmed"
         ) {
           return {
             label: "Attention",
@@ -2082,7 +2201,9 @@
 
         if (days < 0) {
           return `${Math.abs(days)} day${
-            Math.abs(days) === 1 ? "" : "s"
+            Math.abs(days) === 1
+              ? ""
+              : "s"
           } overdue`;
         }
 
@@ -2091,7 +2212,9 @@
         }
 
         return `${days} day${
-          days === 1 ? "" : "s"
+          days === 1
+            ? ""
+            : "s"
         } remaining`;
       }
 
@@ -2123,7 +2246,9 @@
 
         const date =
           /^\d{4}-\d{2}-\d{2}$/.test(stringValue)
-            ? new Date(`${stringValue}T00:00:00`)
+            ? new Date(
+                `${stringValue}T00:00:00`
+              )
             : new Date(stringValue);
 
         return Number.isNaN(date.getTime())
@@ -2148,7 +2273,7 @@
         return new Intl.DateTimeFormat(
           "en-US",
           {
-            month: "short",
+            month: "long",
             day: "numeric",
             year: "numeric"
           }
