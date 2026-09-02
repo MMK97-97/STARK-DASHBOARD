@@ -11,7 +11,6 @@
       --navy-950: #031426;
       --navy-900: #061d35;
       --navy-850: #082746;
-      --navy-800: #0d365c;
       --teal: #19d3c5;
       --text: #eff8ff;
       --muted: #9db3c7;
@@ -295,10 +294,10 @@
       min-width: 0;
       min-height: 0;
       overflow: hidden;
-      padding: clamp(22px, 2vw, 38px);
+      padding: clamp(24px, 2.2vw, 42px);
       display: grid;
       grid-template-rows: auto auto auto minmax(0, 1fr);
-      gap: clamp(14px, 1.8vh, 22px);
+      gap: clamp(15px, 1.9vh, 24px);
       border: 1px solid var(--line);
       border-radius: 30px;
       background:
@@ -331,9 +330,9 @@
     }
 
     .event-kicker {
-      margin: 0 0 8px;
+      margin: 0 0 10px;
       color: var(--teal);
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 900;
       letter-spacing: 0.17em;
       text-transform: uppercase;
@@ -343,13 +342,13 @@
       min-width: 0;
       display: flex;
       align-items: baseline;
-      gap: 12px;
+      gap: 16px;
     }
 
     .po-label {
       color: var(--muted);
-      font-size: clamp(15px, 1vw, 18px);
-      font-weight: 850;
+      font-size: clamp(18px, 1.35vw, 26px);
+      font-weight: 900;
     }
 
     .po-number {
@@ -357,20 +356,22 @@
       margin: 0;
       overflow: hidden;
       color: white;
-      font-size: clamp(36px, 4vw, 70px);
-      line-height: 0.98;
+      font-size: clamp(60px, 7vw, 126px);
+      line-height: 0.92;
       font-weight: 950;
-      letter-spacing: -0.055em;
+      letter-spacing: -0.065em;
       text-overflow: ellipsis;
       white-space: nowrap;
+      text-shadow: 0 14px 35px rgba(0,0,0,0.25);
     }
 
     .customer {
-      margin: 9px 0 0;
+      margin: 14px 0 0;
       overflow: hidden;
       color: #cde0ee;
-      font-size: clamp(18px, 1.5vw, 27px);
-      font-weight: 750;
+      font-size: clamp(25px, 2vw, 38px);
+      font-weight: 800;
+      letter-spacing: -0.025em;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
@@ -451,17 +452,16 @@
     .event-overview {
       min-width: 0;
       display: grid;
-      grid-template-columns: minmax(280px, 0.75fr) minmax(0, 1.6fr);
-      gap: 12px;
+      grid-template-columns: minmax(360px, 0.85fr) minmax(0, 1.5fr);
+      gap: 14px;
     }
 
     .deadline-card,
     .planning-card,
-    .meta-card,
     .notes-card,
     .items-panel {
       border: 1px solid var(--line);
-      border-radius: 16px;
+      border-radius: 18px;
       background: rgba(2,19,34,0.44);
       box-shadow: inset 0 1px rgba(255,255,255,0.035);
     }
@@ -469,14 +469,14 @@
     .deadline-card,
     .planning-card {
       min-width: 0;
-      min-height: 105px;
-      padding: 18px 20px;
+      min-height: 130px;
+      padding: 20px 24px;
     }
 
     .section-label {
-      margin: 0 0 9px;
+      margin: 0 0 11px;
       color: var(--muted);
-      font-size: 10px;
+      font-size: 11px;
       line-height: 1;
       font-weight: 900;
       letter-spacing: 0.12em;
@@ -486,19 +486,20 @@
     .deadline-date {
       margin: 0;
       overflow: hidden;
-      font-size: clamp(22px, 1.9vw, 34px);
-      line-height: 1.1;
-      font-weight: 900;
-      letter-spacing: -0.025em;
+      color: white;
+      font-size: clamp(38px, 3.7vw, 70px);
+      line-height: 1;
+      font-weight: 950;
+      letter-spacing: -0.05em;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     .deadline-message {
-      margin: 8px 0 0;
+      margin: 11px 0 0;
       color: var(--teal);
-      font-size: 12px;
-      font-weight: 850;
+      font-size: clamp(13px, 1vw, 18px);
+      font-weight: 900;
     }
 
     .deadline-message.risk {
@@ -515,53 +516,23 @@
       display: -webkit-box;
       overflow: hidden;
       color: #e8f5fe;
-      font-size: clamp(18px, 1.5vw, 27px);
-      line-height: 1.35;
-      font-weight: 850;
+      font-size: clamp(23px, 2vw, 38px);
+      line-height: 1.25;
+      font-weight: 900;
+      letter-spacing: -0.025em;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
     }
 
-    .details-section {
-      min-width: 0;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr);
-      gap: 10px;
-    }
-
-    .meta-grid {
-      min-width: 0;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 10px;
-    }
-
-    .meta-card {
-      min-width: 0;
-      min-height: 76px;
-      padding: 15px 17px;
-    }
-
-    .meta-value {
-      margin: 0;
-      overflow: hidden;
-      color: #e7f3fb;
-      font-size: clamp(13px, 0.9vw, 17px);
-      line-height: 1.35;
-      font-weight: 850;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
     .notes-card {
       min-width: 0;
-      min-height: 78px;
-      padding: 15px 17px;
-      border-color: rgba(25,211,197,0.19);
+      min-height: 82px;
+      padding: 16px 19px;
+      border-color: rgba(25,211,197,0.2);
       background:
         linear-gradient(
           135deg,
-          rgba(25,211,197,0.07),
+          rgba(25,211,197,0.08),
           rgba(2,19,34,0.46)
         );
     }
@@ -571,9 +542,9 @@
       display: -webkit-box;
       overflow: hidden;
       color: #d7e8f4;
-      font-size: clamp(13px, 0.9vw, 17px);
+      font-size: clamp(14px, 1vw, 19px);
       line-height: 1.45;
-      font-weight: 700;
+      font-weight: 750;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
     }
@@ -588,7 +559,7 @@
 
     .items-head {
       min-width: 0;
-      padding: 11px 16px;
+      padding: 12px 17px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -600,7 +571,7 @@
     .items-title {
       margin: 0;
       color: white;
-      font-size: 14px;
+      font-size: 15px;
       font-weight: 900;
     }
 
@@ -632,7 +603,7 @@
     }
 
     .items-table th {
-      height: 32px;
+      height: 34px;
       padding: 0 12px;
       color: #7f9ab1;
       font-size: 9px;
@@ -643,10 +614,10 @@
     }
 
     .items-table td {
-      height: clamp(38px, 5vh, 52px);
+      height: clamp(40px, 5vh, 54px);
       padding: 0 12px;
       color: #e6f2fb;
-      font-size: clamp(11px, 0.8vw, 15px);
+      font-size: clamp(11px, 0.85vw, 16px);
       font-weight: 750;
       text-align: right;
       font-variant-numeric: tabular-nums;
@@ -655,14 +626,14 @@
     .items-table th:first-child,
     .items-table td:first-child {
       width: 27%;
-      padding-left: 16px;
+      padding-left: 17px;
       text-align: left;
     }
 
     .items-table th:last-child,
     .items-table td:last-child {
       width: 13%;
-      padding-right: 16px;
+      padding-right: 17px;
     }
 
     .model-value {
@@ -873,12 +844,8 @@
         grid-template-columns: 1fr;
       }
 
-      .meta-grid {
-        grid-template-columns: repeat(3, 1fr);
-      }
-
       .spotlight {
-        min-height: 780px;
+        min-height: 850px;
       }
     }
 
@@ -925,12 +892,19 @@
       }
 
       .po-number {
-        font-size: 38px;
+        font-size: 55px;
       }
 
-      .event-overview,
-      .meta-grid {
+      .customer {
+        font-size: 23px;
+      }
+
+      .event-overview {
         grid-template-columns: 1fr;
+      }
+
+      .deadline-date {
+        font-size: 38px;
       }
 
       .table-wrap {
@@ -953,15 +927,6 @@
       .floating-controls {
         right: 15px;
         bottom: 15px;
-      }
-    }
-
-    @media (prefers-reduced-motion: reduce) {
-      *,
-      *::before,
-      *::after {
-        animation-duration: 0.01ms !important;
-        animation-iteration-count: 1 !important;
       }
     }
   </style>
@@ -1041,23 +1006,13 @@
   </main>
 
   <div id="floatingControls" class="floating-controls">
-    <button
-      id="previousButton"
-      class="control-button"
-      type="button"
-      title="Previous PO"
-    >
+    <button id="previousButton" class="control-button" type="button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
         <path d="m15 18-6-6 6-6"/>
       </svg>
     </button>
 
-    <button
-      id="pauseButton"
-      class="control-button"
-      type="button"
-      title="Pause rotation"
-    >
+    <button id="pauseButton" class="control-button" type="button">
       <svg
         id="pauseIcon"
         viewBox="0 0 24 24"
@@ -1069,12 +1024,7 @@
       </svg>
     </button>
 
-    <button
-      id="nextButton"
-      class="control-button"
-      type="button"
-      title="Next PO"
-    >
+    <button id="nextButton" class="control-button" type="button">
       <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
         <path d="m9 18 6-6-6-6"/>
       </svg>
@@ -1150,15 +1100,15 @@
         bindControls();
         updateClock();
 
-        window.setInterval(updateClock, 1000);
+        setInterval(updateClock, 1000);
 
         await refreshData(true);
 
-        window.setInterval(() => {
+        setInterval(() => {
           refreshData(false);
         }, REFRESH_MS);
 
-        window.requestAnimationFrame(updateRotation);
+        requestAnimationFrame(updateRotation);
       }
 
       function bindControls() {
@@ -1205,13 +1155,8 @@
         });
 
         document.addEventListener("keydown", event => {
-          if (event.key === "ArrowRight") {
-            nextSlide();
-          }
-
-          if (event.key === "ArrowLeft") {
-            previousSlide();
-          }
+          if (event.key === "ArrowRight") nextSlide();
+          if (event.key === "ArrowLeft") previousSlide();
 
           if (event.key === " ") {
             event.preventDefault();
@@ -1225,9 +1170,7 @@
       }
 
       function setViewMode(mode) {
-        if (viewMode === mode) {
-          return;
-        }
+        if (viewMode === mode) return;
 
         viewMode = mode;
         slideIndex = 0;
@@ -1236,7 +1179,7 @@
 
         nextUrl.searchParams.set("view", mode);
 
-        window.history.replaceState({}, "", nextUrl);
+        history.replaceState({}, "", nextUrl);
 
         configureViewButtons();
         buildSlides();
@@ -1339,9 +1282,7 @@
       }
 
       function normalizeEvents(records) {
-        if (!Array.isArray(records)) {
-          return [];
-        }
+        if (!Array.isArray(records)) return [];
 
         return records.map((event, index) => ({
           id: String(event.id || `event-${index}`),
@@ -1353,8 +1294,6 @@
             event.planning ||
             event.fulfillmentPlanning ||
             "Planning not confirmed",
-          customerFollowedUpDate:
-            event.customerFollowedUpDate || "",
           notes: String(event.notes || ""),
           createdAt: event.createdAt || "",
           updatedAt:
@@ -1543,9 +1482,7 @@
 
           const stock = extractStock(row, report);
 
-          if (!model || stock === null) {
-            return;
-          }
+          if (!model || stock === null) return;
 
           map.set(
             model,
@@ -1626,12 +1563,7 @@
       }
 
       function renderCurrentSlide() {
-        const existingEmpty =
-          document.getElementById("emptyBoard");
-
-        if (existingEmpty) {
-          existingEmpty.remove();
-        }
+        document.getElementById("emptyBoard")?.remove();
 
         if (!slides.length) {
           spotlight.classList.add("hidden");
@@ -1678,7 +1610,6 @@
           `;
 
           contentGrid.appendChild(emptyState);
-
           rotationCopy.textContent = "Waiting for events";
 
           return;
@@ -1705,13 +1636,6 @@
         const pageItems = event.items.slice(
           itemsStart,
           itemsStart + ITEMS_PER_SLIDE
-        );
-
-        const totalQuantity = event.items.reduce(
-          (sum, item) => {
-            return sum + (numberValue(item.quantity) || 0);
-          },
-          0
         );
 
         spotlight.innerHTML = `
@@ -1786,43 +1710,18 @@
             </section>
           </div>
 
-          <div class="details-section">
-            <div class="meta-grid">
-              ${metaCard(
-                "Customer follow-up",
-                event.customerFollowedUpDate
-                  ? formatDate(event.customerFollowedUpDate)
-                  : "Not recorded"
+          <section class="notes-card">
+            <p class="section-label">
+              Latest notes
+            </p>
+
+            <p class="notes-value">
+              ${escapeHtml(
+                event.notes ||
+                "No notes entered"
               )}
-
-              ${metaCard(
-                "PO quantity",
-                `${formatNumber(totalQuantity)} units · ${event.items.length} model${
-                  event.items.length === 1 ? "" : "s"
-                }`
-              )}
-
-              ${metaCard(
-                "Last updated",
-                event.updatedAt
-                  ? shortDateTime(event.updatedAt)
-                  : "Unknown"
-              )}
-            </div>
-
-            <section class="notes-card">
-              <p class="section-label">
-                Latest notes
-              </p>
-
-              <p class="notes-value">
-                ${escapeHtml(
-                  event.notes ||
-                  "No notes entered"
-                )}
-              </p>
-            </section>
-          </div>
+            </p>
+          </section>
 
           <section class="items-panel">
             <div class="items-head">
@@ -1859,23 +1758,6 @@
                   : "Auto-rotating every 14 seconds"
               } · Slide ${slideIndex + 1} of ${slides.length}`
             : "Single event view";
-      }
-
-      function metaCard(label, value) {
-        return `
-          <section class="meta-card">
-            <p class="section-label">
-              ${escapeHtml(label)}
-            </p>
-
-            <p
-              class="meta-value"
-              title="${escapeHtml(value)}"
-            >
-              ${escapeHtml(value)}
-            </p>
-          </section>
-        `;
       }
 
       function renderItemsTable(items) {
@@ -1970,9 +1852,7 @@
       }
 
       function nextSlide() {
-        if (!slides.length) {
-          return;
-        }
+        if (!slides.length) return;
 
         slideIndex =
           (slideIndex + 1) % slides.length;
@@ -1982,9 +1862,7 @@
       }
 
       function previousSlide() {
-        if (!slides.length) {
-          return;
-        }
+        if (!slides.length) return;
 
         slideIndex =
           (slideIndex - 1 + slides.length) %
@@ -2001,10 +1879,6 @@
           "paused",
           paused
         );
-
-        pauseButton.title = paused
-          ? "Resume rotation"
-          : "Pause rotation";
 
         pauseIcon.innerHTML = paused
           ? '<path d="m8 5 11 7-11 7z"/>'
@@ -2039,7 +1913,7 @@
           rotationProgress.style.width = "0%";
         }
 
-        window.requestAnimationFrame(updateRotation);
+        requestAnimationFrame(updateRotation);
       }
 
       async function toggleFullscreen() {
@@ -2149,10 +2023,7 @@
         const inventoryStatus =
           getInventoryStatus(event);
 
-        if (
-          days !== null &&
-          days < 0
-        ) {
+        if (days !== null && days < 0) {
           return {
             label: "Critical",
             slug: "critical",
