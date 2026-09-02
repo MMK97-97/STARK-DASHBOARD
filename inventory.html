@@ -10,7 +10,7 @@
 
   <meta
     name="description"
-    content="Opening the regional inventory dashboard"
+    content="Opening the regional Inventory Dashboard"
   >
 
   <title>
@@ -37,7 +37,8 @@
           : "US";
 
       window.location.replace(
-        `inventory-dashboard.html?region=${encodeURIComponent(region)}`
+        "inventory-dashboard.html?region=" +
+        encodeURIComponent(region)
       );
     })();
   </script>
@@ -46,36 +47,18 @@
 <body>
   <p>
     Opening Inventory Dashboard…
-
-    <a id="dashboard-fallback" href="inventory-dashboard.html?region=US">
-      Continue to Inventory Dashboard
-    </a>
   </p>
 
-  <script>
-    (function () {
-      const parameters =
-        new URLSearchParams(
-          window.location.search
-        );
+  <noscript>
+    <p>
+      JavaScript is required to open the Inventory Dashboard.
+    </p>
 
-      const requestedRegion =
-        parameters.get("region") ||
-        "US";
-
-      const region =
-        requestedRegion === "EU" ||
-        requestedRegion === "Canada"
-          ? requestedRegion
-          : "US";
-
-      document
-        .getElementById(
-          "dashboard-fallback"
-        )
-        .href =
-          `inventory-dashboard.html?region=${encodeURIComponent(region)}`;
-    })();
-  </script>
+    <p>
+      <a href="inventory-dashboard.html?region=US">
+        Open Inventory Dashboard
+      </a>
+    </p>
+  </noscript>
 </body>
 </html>
