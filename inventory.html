@@ -2,7 +2,11 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <meta
     name="description"
@@ -11,25 +15,55 @@
 
   <title>Inventory Analysis | Stark Regional Inventory</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
 
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap"
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="assets/styles.css">
-  <link rel="stylesheet" href="assets/inventory-ui.css">
+  <link
+    rel="stylesheet"
+    href="assets/styles.css"
+  >
 
-  <script defer src="assets/inventory-core.js"></script>
-  <script defer src="assets/inventory-pages.js"></script>
+  <link
+    rel="stylesheet"
+    href="assets/inventory-ui.css"
+  >
+
+  <script
+    defer
+    src="assets/inventory-core.js"
+  ></script>
+
+  <script
+    defer
+    src="assets/inventory-pages.js"
+  ></script>
 </head>
 
 <body data-page="inventory">
   <header class="ui-header">
-    <a class="ui-brand" href="index.html">
-      <span class="ui-brand-mark">S</span>
+    <a
+      class="ui-brand"
+      href="index.html"
+    >
+      <span
+        class="ui-brand-mark"
+        aria-hidden="true"
+      >
+        S
+      </span>
 
       <span class="ui-brand-copy">
         <small>Stark Premium</small>
@@ -41,14 +75,22 @@
       <label class="ui-region-control">
         <span>Region</span>
 
-        <select id="region-select">
+        <select
+          id="region-select"
+          aria-label="Select inventory region"
+        >
           <option value="US">US</option>
           <option value="EU">EU</option>
           <option value="Canada">CA</option>
         </select>
       </label>
 
-      <span class="ui-region-pill" data-region-code>US</span>
+      <span
+        class="ui-region-pill"
+        data-region-code
+      >
+        US
+      </span>
 
       <a
         class="ui-header-link"
@@ -71,32 +113,49 @@
       </a>
 
       <p class="ui-eyebrow">
-        <span data-region-name>United States</span>
+        <span data-region-name>
+          United States
+        </span>
       </p>
 
       <h1>Inventory Analysis</h1>
 
       <p class="ui-menu-description">
         Choose an inventory page. The uploaded Item Sales Report is shared
-        across Dashboard, Raw Report, Reorder Report and Active Brands for
-        this region.
+        across Dashboard, Raw Report, Reorder Report, Active Brands and
+        Instructions for this region.
       </p>
 
-      <div class="file-status" data-file-status>
+      <div
+        class="file-status"
+        data-file-status
+      >
         No Item Sales Report uploaded
       </div>
     </section>
 
-    <section class="ui-menu-grid">
+    <section
+      class="ui-menu-grid"
+      aria-label="Inventory analysis pages"
+    >
       <a
         class="ui-menu-card ui-menu-dashboard"
         data-region-link
         href="inventory-dashboard.html"
       >
-        <span class="ui-menu-card-number">01</span>
-        <i aria-hidden="true">→</i>
+        <span class="ui-menu-card-number">
+          01
+        </span>
+
+        <i aria-hidden="true">
+          →
+        </i>
+
         <strong>Dashboard</strong>
-        <small>Review inventory KPIs and planning settings</small>
+
+        <small>
+          Review inventory KPIs, ABC distribution and planning settings
+        </small>
       </a>
 
       <a
@@ -104,10 +163,19 @@
         data-region-link
         href="raw-report.html"
       >
-        <span class="ui-menu-card-number">02</span>
-        <i aria-hidden="true">→</i>
+        <span class="ui-menu-card-number">
+          02
+        </span>
+
+        <i aria-hidden="true">
+          →
+        </i>
+
         <strong>Raw Report</strong>
-        <small>Upload and review normalized inventory data</small>
+
+        <small>
+          Upload and review normalized sales, stock and supplier data
+        </small>
       </a>
 
       <a
@@ -115,10 +183,19 @@
         data-region-link
         href="reorder-report.html"
       >
-        <span class="ui-menu-card-number">03</span>
-        <i aria-hidden="true">→</i>
+        <span class="ui-menu-card-number">
+          03
+        </span>
+
+        <i aria-hidden="true">
+          →
+        </i>
+
         <strong>Reorder Report</strong>
-        <small>Review item reorder recommendations</small>
+
+        <small>
+          Review item reorder quantities and inventory action requirements
+        </small>
       </a>
 
       <a
@@ -126,10 +203,19 @@
         data-region-link
         href="active-brands.html"
       >
-        <span class="ui-menu-card-number">04</span>
-        <i aria-hidden="true">→</i>
+        <span class="ui-menu-card-number">
+          04
+        </span>
+
+        <i aria-hidden="true">
+          →
+        </i>
+
         <strong>Active Brands</strong>
-        <small>Control included brands and lead times</small>
+
+        <small>
+          Control included brands and maintain supplier lead times
+        </small>
       </a>
 
       <a
@@ -137,10 +223,19 @@
         data-region-link
         href="instructions.html"
       >
-        <span class="ui-menu-card-number">05</span>
-        <i aria-hidden="true">→</i>
+        <span class="ui-menu-card-number">
+          05
+        </span>
+
+        <i aria-hidden="true">
+          →
+        </i>
+
         <strong>Instructions</strong>
-        <small>Review inventory rules and workflow</small>
+
+        <small>
+          Review inventory rules, source columns and report workflow
+        </small>
       </a>
     </section>
   </main>
