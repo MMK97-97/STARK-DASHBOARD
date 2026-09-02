@@ -1,8 +1,12 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta charset="UTF-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1.0"
+  >
 
   <meta
     name="description"
@@ -20,26 +24,31 @@
   >
 
   <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/home-ui.css">
 
   <script
+    defer
     src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js"
-    defer
   ></script>
 
   <script
-    src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"
     defer
+    src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"
   ></script>
 
-  <script src="assets/app.js" defer></script>
+  <script defer src="assets/app.js"></script>
 </head>
 
 <body>
-  <a class="skip-link" href="#main">Skip to dashboard</a>
+  <a class="skip-link" href="#main">
+    Skip to dashboard
+  </a>
 
   <header class="app-header">
     <div class="brand-lockup">
-      <div class="brand-mark" aria-hidden="true">S</div>
+      <div class="brand-mark" aria-hidden="true">
+        S
+      </div>
 
       <div>
         <p class="eyebrow">Stark Premium</p>
@@ -74,70 +83,93 @@
 
   <main id="main">
     <section
-      class="home-screen"
+      class="home-screen premium-home-screen"
       id="home-screen"
       aria-labelledby="home-title"
     >
-      <div class="home-copy">
-        <p class="eyebrow">Regional analytics platform</p>
-        <h2 id="home-title">Choose a market to begin</h2>
+      <div class="premium-home-layout">
+        <div class="premium-home-copy">
+          <span class="premium-kicker">
+            Operations intelligence
+          </span>
 
-        <p>
-          Each region keeps its Sales Report, Item Sales Report, demand
-          forecast, ABC classification, and inventory output separate.
-        </p>
-      </div>
+          <h2 id="home-title">
+            Regional planning in one clear workspace.
+          </h2>
 
-      <div class="country-grid">
-        <button
-          class="country-button country-us"
-          type="button"
-          data-country="US"
-          aria-label="Open United States dashboard"
-        >
-          <span class="country-code">US</span>
-          <strong>United States</strong>
-          <small>Open regional workspace</small>
-          <i aria-hidden="true">→</i>
-        </button>
+          <p>
+            Select a market to access inventory analysis, sales reporting,
+            demand forecasting, ABC classification and event planning.
+          </p>
 
-        <button
-          class="country-button country-eu"
-          type="button"
-          data-country="EU"
-          aria-label="Open European Union dashboard"
-        >
-          <span class="country-code">EU</span>
-          <strong>European Union</strong>
-          <small>Open regional workspace</small>
-          <i aria-hidden="true">→</i>
-        </button>
+          <div class="premium-home-meta">
+            <span>Browser-only report storage</span>
+            <span>US · EU · CA workspaces</span>
+          </div>
+        </div>
 
-        <button
-          class="country-button country-ca"
-          type="button"
-          data-country="Canada"
-          aria-label="Open Canada dashboard"
-        >
-          <span class="country-code">CA</span>
-          <strong>Canada</strong>
-          <small>Open regional workspace</small>
-          <i aria-hidden="true">→</i>
-        </button>
-      </div>
+        <div class="premium-region-panel">
+          <div class="premium-panel-heading">
+            <div>
+              <small>Regional workspace</small>
+              <h3>Choose a market</h3>
+            </div>
 
-      <div class="home-note">
-        <span aria-hidden="true">●</span>
-        All uploaded files are processed locally in your browser.
+            <span>Data remains separate by region</span>
+          </div>
+
+          <div class="country-grid">
+            <button
+              class="country-button country-us"
+              type="button"
+              data-country="US"
+              aria-label="Open United States dashboard"
+            >
+              <span class="country-code">US</span>
+              <strong>United States</strong>
+              <small>Open regional workspace</small>
+              <i aria-hidden="true">→</i>
+            </button>
+
+            <button
+              class="country-button country-eu"
+              type="button"
+              data-country="EU"
+              aria-label="Open European Union dashboard"
+            >
+              <span class="country-code">EU</span>
+              <strong>European Union</strong>
+              <small>Open regional workspace</small>
+              <i aria-hidden="true">→</i>
+            </button>
+
+            <button
+              class="country-button country-ca"
+              type="button"
+              data-country="Canada"
+              aria-label="Open Canada dashboard"
+            >
+              <span class="country-code">CA</span>
+              <strong>Canada</strong>
+              <small>Open regional workspace</small>
+              <i aria-hidden="true">→</i>
+            </button>
+          </div>
+
+          <div class="premium-home-note">
+            <span aria-hidden="true">●</span>
+            Select a region to continue.
+          </div>
+        </div>
       </div>
     </section>
 
     <section
-      class="module-screen hidden"
+      class="module-screen premium-module-screen hidden"
       id="module-screen"
       aria-labelledby="module-title"
     >
-      <div class="module-screen-top">
+      <div class="module-screen-top premium-module-top">
         <button
           class="button button-secondary"
           id="module-home"
@@ -146,16 +178,26 @@
           ← All regions
         </button>
 
-        <span class="module-region-pill" id="module-region-pill">US</span>
+        <span
+          class="module-region-pill"
+          id="module-region-pill"
+        >
+          US
+        </span>
       </div>
 
-      <div class="home-copy">
-        <p class="eyebrow">Regional command center</p>
-        <h2 id="module-title">United States workspace</h2>
+      <div class="premium-module-heading">
+        <span class="premium-kicker">
+          Regional command center
+        </span>
+
+        <h2 id="module-title">
+          United States workspace
+        </h2>
 
         <p>
           Choose the analysis area you want to open. Each module uses data
-          stored separately for this region.
+          stored separately for the selected region.
         </p>
       </div>
 
@@ -169,7 +211,9 @@
           <span class="module-code">INV</span>
           <span class="module-icon" aria-hidden="true">▦</span>
           <strong>Inventory Analysis</strong>
-          <small>Stock, demand forecast, ABC and reorder planning</small>
+          <small>
+            Stock, demand forecasting, ABC classification and reorder planning
+          </small>
           <i aria-hidden="true">→</i>
         </button>
 
@@ -182,7 +226,9 @@
           <span class="module-code">SAL</span>
           <span class="module-icon" aria-hidden="true">↗</span>
           <strong>Sales Analysis</strong>
-          <small>Revenue, units, margin, brands and products</small>
+          <small>
+            Revenue, units, margins, brands, products and customers
+          </small>
           <i aria-hidden="true">→</i>
         </button>
 
@@ -202,23 +248,22 @@
               'events.html?region=' +
               encodeURIComponent(selectedRegion);
           "
-          style="text-decoration: none;"
         >
           <span class="module-code">EVT</span>
           <span class="module-icon" aria-hidden="true">◆</span>
           <strong>Events</strong>
-          <small>PO demand and inventory availability</small>
+          <small>
+            Event POs, customer demand and inventory availability
+          </small>
           <i aria-hidden="true">→</i>
         </a>
       </div>
-
-      <div class="home-note">
-        <span aria-hidden="true">●</span>
-        Click a 3D module button to continue.
-      </div>
     </section>
 
-    <div class="regional-app hidden" id="regional-app">
+    <div
+      class="regional-app hidden"
+      id="regional-app"
+    >
       <section
         class="region-switcher"
         aria-label="Regional datasets"
@@ -271,7 +316,10 @@
               Inventory Analysis
             </span>
 
-            <div class="region-summary" id="region-summary">
+            <div
+              class="region-summary"
+              id="region-summary"
+            >
               Select a region and upload its reports.
             </div>
           </div>
@@ -322,7 +370,11 @@
           >
             <div class="upload-card-top">
               <span class="report-number">01</span>
-              <span class="upload-status" id="sales-status">
+
+              <span
+                class="upload-status"
+                id="sales-status"
+              >
                 Not uploaded
               </span>
             </div>
@@ -334,7 +386,9 @@
               monthly sales analysis.
             </p>
 
-            <div class="accepted-fields">Excel, CSV or TSV</div>
+            <div class="accepted-fields">
+              Excel, CSV or TSV
+            </div>
 
             <button
               class="button button-secondary upload-report"
@@ -351,7 +405,10 @@
               hidden
             >
 
-            <p class="file-detail" id="sales-file-detail"></p>
+            <p
+              class="file-detail"
+              id="sales-file-detail"
+            ></p>
           </article>
 
           <article
@@ -360,7 +417,11 @@
           >
             <div class="upload-card-top">
               <span class="report-number">02</span>
-              <span class="upload-status" id="item-status">
+
+              <span
+                class="upload-status"
+                id="item-status"
+              >
                 Not uploaded
               </span>
             </div>
@@ -391,7 +452,10 @@
               hidden
             >
 
-            <p class="file-detail" id="item-file-detail"></p>
+            <p
+              class="file-detail"
+              id="item-file-detail"
+            ></p>
           </article>
 
           <article
@@ -445,7 +509,9 @@
             <p class="eyebrow">Events data center</p>
 
             <h2 id="events-title">
-              <span id="events-region-name">United States</span>
+              <span id="events-region-name">
+                United States
+              </span>
               events
             </h2>
           </div>
@@ -457,11 +523,17 @@
         </div>
 
         <div class="upload-grid events-upload-grid">
-          <article class="upload-card" data-report="events">
+          <article
+            class="upload-card"
+            data-report="events"
+          >
             <div class="upload-card-top">
               <span class="report-number">01</span>
 
-              <span class="upload-status" id="events-status">
+              <span
+                class="upload-status"
+                id="events-status"
+              >
                 Not uploaded
               </span>
             </div>
@@ -492,7 +564,10 @@
               hidden
             >
 
-            <p class="file-detail" id="events-file-detail"></p>
+            <p
+              class="file-detail"
+              id="events-file-detail"
+            ></p>
           </article>
 
           <article class="upload-card generated-card event-guide-card">
@@ -541,7 +616,10 @@
       >
         <div class="dashboard-topline">
           <div>
-            <p class="eyebrow" id="events-source-label">
+            <p
+              class="eyebrow"
+              id="events-source-label"
+            >
               United States events
             </p>
 
@@ -603,9 +681,15 @@
           </button>
         </section>
 
-        <p class="filter-result" id="event-filter-result"></p>
+        <p
+          class="filter-result"
+          id="event-filter-result"
+        ></p>
 
-        <section class="kpi-grid" id="events-kpis"></section>
+        <section
+          class="kpi-grid"
+          id="events-kpis"
+        ></section>
 
         <section class="chart-grid">
           <article class="panel panel-wide">
@@ -639,7 +723,10 @@
           <article class="panel panel-full">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow">Regional event register</p>
+                <p class="eyebrow">
+                  Regional event register
+                </p>
+
                 <h3>Event item detail</h3>
               </div>
 
@@ -682,9 +769,21 @@
       >
         <div class="dashboard-topline">
           <div>
-            <p class="eyebrow" id="source-label">US analysis</p>
-            <h2 id="dashboard-title">Executive overview</h2>
-            <p class="data-status" id="data-status"></p>
+            <p
+              class="eyebrow"
+              id="source-label"
+            >
+              US analysis
+            </p>
+
+            <h2 id="dashboard-title">
+              Executive overview
+            </h2>
+
+            <p
+              class="data-status"
+              id="data-status"
+            ></p>
           </div>
 
           <div class="topline-actions">
@@ -816,9 +915,15 @@
           </button>
         </section>
 
-        <p class="filter-result" id="filter-result"></p>
+        <p
+          class="filter-result"
+          id="filter-result"
+        ></p>
 
-        <div class="tab-panel" id="overview-panel">
+        <div
+          class="tab-panel"
+          id="overview-panel"
+        >
           <section
             class="kpi-grid"
             id="overview-kpis"
@@ -828,7 +933,10 @@
             <article class="panel panel-wide">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">Portfolio priority</p>
+                  <p class="eyebrow">
+                    Portfolio priority
+                  </p>
+
                   <h3>ABC contribution</h3>
                 </div>
               </div>
@@ -842,7 +950,10 @@
             <article class="panel">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">Inventory action</p>
+                  <p class="eyebrow">
+                    Inventory action
+                  </p>
+
                   <h3>Reorder units by brand</h3>
                 </div>
               </div>
@@ -856,7 +967,10 @@
             <article class="panel panel-full">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">Management signals</p>
+                  <p class="eyebrow">
+                    Management signals
+                  </p>
+
                   <h3>What needs attention</h3>
                 </div>
               </div>
@@ -882,7 +996,10 @@
             <article class="panel panel-wide">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">Sales performance</p>
+                  <p class="eyebrow">
+                    Sales performance
+                  </p>
+
                   <h3>Monthly sales trend</h3>
                 </div>
               </div>
@@ -910,7 +1027,10 @@
             <article class="panel panel-full">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">Product ranking</p>
+                  <p class="eyebrow">
+                    Product ranking
+                  </p>
+
                   <h3>Sales contribution by item</h3>
                 </div>
               </div>
@@ -951,8 +1071,13 @@
             <article class="panel panel-wide">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">Demand outlook</p>
-                  <h3>Average monthly vs 30-day demand</h3>
+                  <p class="eyebrow">
+                    Demand outlook
+                  </p>
+
+                  <h3>
+                    Average monthly vs 30-day demand
+                  </h3>
                 </div>
               </div>
 
@@ -965,7 +1090,10 @@
             <article class="panel">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">Three-month plan</p>
+                  <p class="eyebrow">
+                    Three-month plan
+                  </p>
+
                   <h3>Highest forecast demand</h3>
                 </div>
               </div>
@@ -979,7 +1107,10 @@
             <article class="panel panel-full">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">Demand planning detail</p>
+                  <p class="eyebrow">
+                    Demand planning detail
+                  </p>
+
                   <h3>Item forecast and coverage</h3>
                 </div>
               </div>
@@ -1021,7 +1152,10 @@
             <article class="panel panel-wide">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">Pareto segmentation</p>
+                  <p class="eyebrow">
+                    Pareto segmentation
+                  </p>
+
                   <h3>Cumulative contribution by item</h3>
                 </div>
               </div>
@@ -1035,7 +1169,10 @@
             <article class="panel">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">Class distribution</p>
+                  <p class="eyebrow">
+                    Class distribution
+                  </p>
+
                   <h3>Items by ABC class</h3>
                 </div>
               </div>
@@ -1049,7 +1186,10 @@
             <article class="panel panel-full">
               <div class="panel-heading">
                 <div>
-                  <p class="eyebrow">ABC item register</p>
+                  <p class="eyebrow">
+                    ABC item register
+                  </p>
+
                   <h3>Sales-based inventory priority</h3>
                 </div>
               </div>
@@ -1094,7 +1234,9 @@
                 BACKORDER / Reorder Required Only
               </strong>
 
-              <span id="reorder-report-region">US</span>
+              <span id="reorder-report-region">
+                US
+              </span>
             </div>
 
             <div class="table-wrap report-table-wrap">
@@ -1105,13 +1247,19 @@
                     <th>Brand</th>
                     <th>Item Title</th>
                     <th>Status</th>
-                    <th class="num">OPEN ORDERS FROM CLIENT</th>
+                    <th class="num">
+                      OPEN ORDERS FROM CLIENT
+                    </th>
                     <th class="num">ON HAND</th>
                     <th class="num">Stock Available</th>
                     <th class="num">Open Supplier Qty</th>
                     <th>Supplier Delivery Window</th>
-                    <th class="num">Days Until Supplier Delivery</th>
-                    <th class="num">Recommended Reorder Qty</th>
+                    <th class="num">
+                      Days Until Supplier Delivery
+                    </th>
+                    <th class="num">
+                      Recommended Reorder Qty
+                    </th>
                     <th>Reorder Status</th>
                     <th>Earlier start date</th>
                     <th>Latest End Date</th>
@@ -1132,7 +1280,10 @@
           <article class="panel panel-full">
             <div class="panel-heading">
               <div>
-                <p class="eyebrow">Normalized source</p>
+                <p class="eyebrow">
+                  Normalized source
+                </p>
+
                 <h3>Item sales and inventory data</h3>
               </div>
 
@@ -1173,10 +1324,16 @@
   </main>
 
   <dialog id="settings-dialog">
-    <form method="dialog" id="settings-form">
+    <form
+      method="dialog"
+      id="settings-form"
+    >
       <div class="dialog-heading">
         <div>
-          <p class="eyebrow">Regional planning rules</p>
+          <p class="eyebrow">
+            Regional planning rules
+          </p>
+
           <h2>Analysis settings</h2>
         </div>
 
@@ -1267,8 +1424,13 @@
           <span>ABC metric</span>
 
           <select id="setting-abc-metric">
-            <option value="sales">Sales revenue</option>
-            <option value="units">Units sold</option>
+            <option value="sales">
+              Sales revenue
+            </option>
+
+            <option value="units">
+              Units sold
+            </option>
           </select>
         </label>
 
