@@ -16,7 +16,6 @@
       --text: #eff8ff;
       --muted: #9db3c7;
       --line: rgba(179, 214, 235, 0.15);
-      --surface: rgba(10, 39, 66, 0.88);
       --good: #39d98a;
       --amber: #ffc857;
       --danger: #ff6b78;
@@ -296,10 +295,10 @@
       min-width: 0;
       min-height: 0;
       overflow: hidden;
-      padding: clamp(20px, 1.8vw, 34px);
+      padding: clamp(22px, 2vw, 38px);
       display: grid;
       grid-template-rows: auto auto auto minmax(0, 1fr);
-      gap: clamp(12px, 1.5vh, 19px);
+      gap: clamp(14px, 1.8vh, 22px);
       border: 1px solid var(--line);
       border-radius: 30px;
       background:
@@ -405,7 +404,6 @@
       width: 7px;
       height: 7px;
       border-radius: 50%;
-      color: inherit;
       background: currentColor;
       box-shadow: 0 0 13px currentColor;
     }
@@ -453,15 +451,13 @@
     .event-overview {
       min-width: 0;
       display: grid;
-      grid-template-columns: minmax(220px, 0.75fr) minmax(190px, 0.65fr) minmax(300px, 1.4fr);
+      grid-template-columns: minmax(280px, 0.75fr) minmax(0, 1.6fr);
       gap: 12px;
     }
 
     .deadline-card,
-    .readiness-card,
     .planning-card,
     .meta-card,
-    .next-action-card,
     .notes-card,
     .items-panel {
       border: 1px solid var(--line);
@@ -471,14 +467,14 @@
     }
 
     .deadline-card,
-    .readiness-card,
     .planning-card {
       min-width: 0;
-      padding: 16px 18px;
+      min-height: 105px;
+      padding: 18px 20px;
     }
 
     .section-label {
-      margin: 0 0 8px;
+      margin: 0 0 9px;
       color: var(--muted);
       font-size: 10px;
       line-height: 1;
@@ -490,7 +486,7 @@
     .deadline-date {
       margin: 0;
       overflow: hidden;
-      font-size: clamp(20px, 1.7vw, 30px);
+      font-size: clamp(22px, 1.9vw, 34px);
       line-height: 1.1;
       font-weight: 900;
       letter-spacing: -0.025em;
@@ -499,7 +495,7 @@
     }
 
     .deadline-message {
-      margin: 7px 0 0;
+      margin: 8px 0 0;
       color: var(--teal);
       font-size: 12px;
       font-weight: 850;
@@ -509,55 +505,9 @@
       color: var(--danger);
     }
 
-    .readiness-card {
+    .planning-card {
       display: grid;
-      grid-template-columns: auto minmax(0, 1fr);
-      align-items: center;
-      gap: 14px;
-    }
-
-    .readiness-ring {
-      --score: 0;
-      --ring-color: var(--teal);
-      position: relative;
-      width: 68px;
-      height: 68px;
-      display: grid;
-      place-items: center;
-      border-radius: 50%;
-      background:
-        conic-gradient(
-          var(--ring-color) calc(var(--score) * 1%),
-          rgba(255,255,255,0.08) 0
-        );
-    }
-
-    .readiness-ring::after {
-      content: "";
-      position: absolute;
-      inset: 6px;
-      border-radius: 50%;
-      background: #08243e;
-    }
-
-    .readiness-number {
-      position: relative;
-      z-index: 1;
-      font-size: 15px;
-      font-weight: 950;
-    }
-
-    .readiness-label {
-      margin: 0;
-      font-size: 17px;
-      font-weight: 900;
-    }
-
-    .readiness-detail {
-      margin: 5px 0 0;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 700;
+      align-content: center;
     }
 
     .planning-value {
@@ -565,79 +515,67 @@
       display: -webkit-box;
       overflow: hidden;
       color: #e8f5fe;
-      font-size: clamp(16px, 1.25vw, 22px);
+      font-size: clamp(18px, 1.5vw, 27px);
       line-height: 1.35;
-      font-weight: 800;
+      font-weight: 850;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
+    }
+
+    .details-section {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(0, 1fr);
+      gap: 10px;
     }
 
     .meta-grid {
       min-width: 0;
       display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 9px;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
     }
 
     .meta-card {
       min-width: 0;
-      padding: 13px 14px;
+      min-height: 76px;
+      padding: 15px 17px;
     }
 
     .meta-value {
       margin: 0;
       overflow: hidden;
       color: #e7f3fb;
-      font-size: clamp(12px, 0.8vw, 15px);
-      line-height: 1.3;
-      font-weight: 800;
+      font-size: clamp(13px, 0.9vw, 17px);
+      line-height: 1.35;
+      font-weight: 850;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .action-notes-grid {
-      min-width: 0;
-      margin-top: 9px;
-      display: grid;
-      grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.8fr);
-      gap: 9px;
-    }
-
-    .next-action-card,
     .notes-card {
       min-width: 0;
-      padding: 13px 15px;
-    }
-
-    .next-action-card {
-      border-color: rgba(25,211,197,0.22);
+      min-height: 78px;
+      padding: 15px 17px;
+      border-color: rgba(25,211,197,0.19);
       background:
         linear-gradient(
           135deg,
-          rgba(25,211,197,0.12),
+          rgba(25,211,197,0.07),
           rgba(2,19,34,0.46)
         );
     }
 
-    .next-action-value,
     .notes-value {
       margin: 0;
       display: -webkit-box;
       overflow: hidden;
-      font-size: clamp(12px, 0.8vw, 15px);
-      line-height: 1.4;
+      color: #d7e8f4;
+      font-size: clamp(13px, 0.9vw, 17px);
+      line-height: 1.45;
+      font-weight: 700;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
-    }
-
-    .next-action-value {
-      color: white;
-      font-weight: 850;
-    }
-
-    .notes-value {
-      color: #d7e8f4;
-      font-weight: 650;
     }
 
     .items-panel {
@@ -705,7 +643,7 @@
     }
 
     .items-table td {
-      height: clamp(36px, 5vh, 50px);
+      height: clamp(38px, 5vh, 52px);
       padding: 0 12px;
       color: #e6f2fb;
       font-size: clamp(11px, 0.8vw, 15px);
@@ -767,7 +705,7 @@
     }
 
     .no-items {
-      min-height: 130px;
+      min-height: 140px;
       display: grid;
       place-items: center;
       color: var(--muted);
@@ -932,11 +870,7 @@
       }
 
       .event-overview {
-        grid-template-columns: 1fr 1fr;
-      }
-
-      .planning-card {
-        grid-column: 1 / -1;
+        grid-template-columns: 1fr;
       }
 
       .meta-grid {
@@ -995,13 +929,8 @@
       }
 
       .event-overview,
-      .meta-grid,
-      .action-notes-grid {
+      .meta-grid {
         grid-template-columns: 1fr;
-      }
-
-      .planning-card {
-        grid-column: auto;
       }
 
       .table-wrap {
@@ -1017,8 +946,7 @@
         grid-template-columns: 1fr;
       }
 
-      .rotation-copy,
-      .sync-copy {
+      .footer-bar > span {
         display: none;
       }
 
@@ -1166,16 +1094,6 @@
       };
 
       const LOCATIONS = ["Sarasota", "Texas"];
-
-      const WORKFLOW = [
-        "Draft",
-        "Confirmed",
-        "Allocating",
-        "Ready to Ship",
-        "Shipped",
-        "Complete"
-      ];
-
       const ITEMS_PER_SLIDE = 6;
       const ROTATION_MS = 14000;
       const REFRESH_MS = 5000;
@@ -1428,9 +1346,7 @@
         return records.map((event, index) => ({
           id: String(event.id || `event-${index}`),
           poNumber: String(event.poNumber || "Not entered"),
-          customer: String(
-            event.customer || "Customer not entered"
-          ),
+          customer: String(event.customer || "Customer not entered"),
           inHandsDate: event.inHandsDate || "",
           status: event.status || "Draft",
           planning:
@@ -1439,9 +1355,6 @@
             "Planning not confirmed",
           customerFollowedUpDate:
             event.customerFollowedUpDate || "",
-          owner: String(event.owner || ""),
-          recipients: String(event.recipients || ""),
-          trackingNumber: String(event.trackingNumber || ""),
           notes: String(event.notes || ""),
           createdAt: event.createdAt || "",
           updatedAt:
@@ -1520,10 +1433,7 @@
       function openInventoryDatabase() {
         return new Promise((resolve, reject) => {
           if (!("indexedDB" in window)) {
-            reject(
-              new Error("Browser inventory storage unavailable.")
-            );
-
+            reject(new Error("Browser inventory storage unavailable."));
             return;
           }
 
@@ -1769,8 +1679,7 @@
 
           contentGrid.appendChild(emptyState);
 
-          rotationCopy.textContent =
-            "Waiting for events";
+          rotationCopy.textContent = "Waiting for events";
 
           return;
         }
@@ -1786,18 +1695,9 @@
 
         const slide = slides[slideIndex];
         const event = slide.event;
-        const inventoryStatus =
-          getInventoryStatus(event);
-        const priority =
-          getEventPriority(event);
-        const readiness =
-          calculateReadiness(event);
-        const readinessState =
-          getReadinessState(readiness);
-        const nextAction =
-          getNextAction(event);
-        const dateMessage =
-          getDateMessage(event);
+        const inventoryStatus = getInventoryStatus(event);
+        const priority = getEventPriority(event);
+        const dateMessage = getDateMessage(event);
 
         const itemsStart =
           slide.itemPage * ITEMS_PER_SLIDE;
@@ -1809,10 +1709,7 @@
 
         const totalQuantity = event.items.reduce(
           (sum, item) => {
-            return (
-              sum +
-              (numberValue(item.quantity) || 0)
-            );
+            return sum + (numberValue(item.quantity) || 0);
           },
           0
         );
@@ -1875,34 +1772,6 @@
               </p>
             </section>
 
-            <section class="readiness-card">
-              <div
-                class="readiness-ring"
-                style="
-                  --score:${readiness};
-                  --ring-color:${readinessState.color}
-                "
-              >
-                <span class="readiness-number">
-                  ${readiness}%
-                </span>
-              </div>
-
-              <div>
-                <p class="section-label">
-                  Readiness
-                </p>
-
-                <p class="readiness-label">
-                  ${escapeHtml(readinessState.label)}
-                </p>
-
-                <p class="readiness-detail">
-                  Inventory, planning and follow-up
-                </p>
-              </div>
-            </section>
-
             <section class="planning-card">
               <p class="section-label">
                 Fulfillment planning
@@ -1917,42 +1786,20 @@
             </section>
           </div>
 
-          <div>
+          <div class="details-section">
             <div class="meta-grid">
-              ${metaCard(
-                "Event owner",
-                event.owner || "Not assigned"
-              )}
-
               ${metaCard(
                 "Customer follow-up",
                 event.customerFollowedUpDate
-                  ? formatDate(
-                      event.customerFollowedUpDate
-                    )
+                  ? formatDate(event.customerFollowedUpDate)
                   : "Not recorded"
               )}
 
               ${metaCard(
-                "Tracking number",
-                event.trackingNumber ||
-                "Not entered"
-              )}
-
-              ${metaCard(
                 "PO quantity",
-                `${formatNumber(totalQuantity)} units ·
-                 ${event.items.length} model${
-                   event.items.length === 1
-                     ? ""
-                     : "s"
-                 }`
-              )}
-
-              ${metaCard(
-                "Internal recipients",
-                event.recipients ||
-                "Not entered"
+                `${formatNumber(totalQuantity)} units · ${event.items.length} model${
+                  event.items.length === 1 ? "" : "s"
+                }`
               )}
 
               ${metaCard(
@@ -1963,30 +1810,18 @@
               )}
             </div>
 
-            <div class="action-notes-grid">
-              <section class="next-action-card">
-                <p class="section-label">
-                  Next required action
-                </p>
+            <section class="notes-card">
+              <p class="section-label">
+                Latest notes
+              </p>
 
-                <p class="next-action-value">
-                  ${escapeHtml(nextAction)}
-                </p>
-              </section>
-
-              <section class="notes-card">
-                <p class="section-label">
-                  Latest notes
-                </p>
-
-                <p class="notes-value">
-                  ${escapeHtml(
-                    event.notes ||
-                    "No notes entered"
-                  )}
-                </p>
-              </section>
-            </div>
+              <p class="notes-value">
+                ${escapeHtml(
+                  event.notes ||
+                  "No notes entered"
+                )}
+              </p>
+            </section>
           </div>
 
           <section class="items-panel">
@@ -1998,19 +1833,15 @@
               <span class="items-page">
                 ${
                   event.items.length
-                    ? `Items ${itemsStart + 1}–${
-                        Math.min(
-                          itemsStart + pageItems.length,
-                          event.items.length
-                        )
-                      } of ${event.items.length}`
+                    ? `Items ${itemsStart + 1}–${Math.min(
+                        itemsStart + pageItems.length,
+                        event.items.length
+                      )} of ${event.items.length}`
                     : "No items"
                 }
                 ${
                   slide.itemPages > 1
-                    ? ` · Page ${
-                        slide.itemPage + 1
-                      } of ${slide.itemPages}`
+                    ? ` · Page ${slide.itemPage + 1} of ${slide.itemPages}`
                     : ""
                 }
               </span>
@@ -2101,21 +1932,10 @@
                         )}
                       </td>
 
-                      <td>
-                        ${numberOrDash(quantity)}
-                      </td>
-
-                      <td>
-                        ${numberOrDash(item.sarasota)}
-                      </td>
-
-                      <td>
-                        ${numberOrDash(item.texas)}
-                      </td>
-
-                      <td>
-                        ${numberOrDash(total)}
-                      </td>
+                      <td>${numberOrDash(quantity)}</td>
+                      <td>${numberOrDash(item.sarasota)}</td>
+                      <td>${numberOrDash(item.texas)}</td>
+                      <td>${numberOrDash(total)}</td>
 
                       <td class="${
                         balance === null
@@ -2146,9 +1966,7 @@
           record => record.id === event.id
         );
 
-        return position >= 0
-          ? position + 1
-          : 1;
+        return position >= 0 ? position + 1 : 1;
       }
 
       function nextSlide() {
@@ -2202,10 +2020,7 @@
       }
 
       function updateRotation() {
-        if (
-          !paused &&
-          slides.length > 1
-        ) {
+        if (!paused && slides.length > 1) {
           const elapsed =
             Date.now() - rotationStartedAt;
 
@@ -2224,16 +2039,13 @@
           rotationProgress.style.width = "0%";
         }
 
-        window.requestAnimationFrame(
-          updateRotation
-        );
+        window.requestAnimationFrame(updateRotation);
       }
 
       async function toggleFullscreen() {
         try {
           if (!document.fullscreenElement) {
-            await document.documentElement
-              .requestFullscreen();
+            await document.documentElement.requestFullscreen();
           } else {
             await document.exitFullscreen();
           }
@@ -2287,12 +2099,8 @@
           .pop();
 
         syncCopy.textContent = latestUpdate
-          ? `Data refreshed · Latest update ${
-              shortDateTime(latestUpdate)
-            }`
-          : `Waiting for ${
-              REGION_NAMES[region]
-            } data`;
+          ? `Data refreshed · Latest update ${shortDateTime(latestUpdate)}`
+          : `Waiting for ${REGION_NAMES[region]} data`;
       }
 
       function getEventShortage(event) {
@@ -2312,100 +2120,10 @@
               return sum;
             }
 
-            return (
-              sum +
-              Math.max(0, quantity - total)
-            );
+            return sum + Math.max(0, quantity - total);
           },
           0
         );
-      }
-
-      function calculateReadiness(event) {
-        if (event.status === "Complete") {
-          return 100;
-        }
-
-        if (event.status === "Cancelled") {
-          return 0;
-        }
-
-        let score = 0;
-
-        const inventoryStatus =
-          getInventoryStatus(event);
-
-        const workflowIndex = Math.max(
-          0,
-          WORKFLOW.indexOf(event.status)
-        );
-
-        if (event.items.length) score += 8;
-        if (event.inHandsDate) score += 7;
-        if (inventoryStatus === "GOOD") score += 25;
-        if (inventoryStatus === "CHECK") score += 8;
-
-        if (
-          event.planning &&
-          event.planning !==
-            "Planning not confirmed"
-        ) {
-          score += 15;
-        }
-
-        if (event.owner) score += 10;
-        if (event.customerFollowedUpDate) score += 10;
-        if (event.notes) score += 5;
-
-        if (
-          event.status === "Shipped" ||
-          event.status === "Complete"
-        ) {
-          if (event.trackingNumber) {
-            score += 10;
-          }
-        } else {
-          score += 10;
-        }
-
-        score += Math.round(
-          (workflowIndex /
-            (WORKFLOW.length - 1)) *
-            10
-        );
-
-        return Math.max(
-          0,
-          Math.min(100, Math.round(score))
-        );
-      }
-
-      function getReadinessState(score) {
-        if (score >= 85) {
-          return {
-            label: "Ready",
-            color: "#39d98a"
-          };
-        }
-
-        if (score >= 65) {
-          return {
-            label: "Progressing",
-            color: "#19d3c5"
-          };
-        }
-
-        if (score >= 40) {
-          return {
-            label: "Needs attention",
-            color: "#ffc857"
-          };
-        }
-
-        return {
-          label: "At risk",
-          color: "#ff6b78"
-        };
       }
 
       function getEventPriority(event) {
@@ -2467,10 +2185,8 @@
         if (
           inventoryStatus === "CHECK" ||
           days === null ||
-          !event.owner ||
           !event.planning ||
-          event.planning ===
-            "Planning not confirmed"
+          event.planning === "Planning not confirmed"
         ) {
           return {
             label: "Attention",
@@ -2502,77 +2218,6 @@
           priority.rank * 1000 +
           urgency +
           getEventShortage(event)
-        );
-      }
-
-      function getNextAction(event) {
-        if (event.status === "Cancelled") {
-          return "No action required — PO cancelled";
-        }
-
-        if (event.status === "Complete") {
-          return "No action required — event complete";
-        }
-
-        const inventoryStatus =
-          getInventoryStatus(event);
-
-        const days =
-          daysUntil(event.inHandsDate);
-
-        if (!event.inHandsDate) {
-          return "Enter and confirm the customer in-hands date";
-        }
-
-        if (
-          days !== null &&
-          days < 0
-        ) {
-          return "Escalate the overdue delivery and confirm a recovery plan";
-        }
-
-        if (inventoryStatus === "LOW") {
-          return `Resolve the ${formatNumber(
-            getEventShortage(event)
-          )}-unit inventory shortage`;
-        }
-
-        if (inventoryStatus === "CHECK") {
-          return "Match PO models with current Sarasota and Texas inventory";
-        }
-
-        if (
-          !event.planning ||
-          event.planning ===
-            "Planning not confirmed"
-        ) {
-          return "Confirm direct shipment or warehouse fulfillment planning";
-        }
-
-        if (!event.owner) {
-          return "Assign an owner responsible for this event";
-        }
-
-        if (!event.customerFollowedUpDate) {
-          return "Follow up with the customer and record the follow-up date";
-        }
-
-        const actions = {
-          Draft:
-            "Confirm the PO, customer requirements and event scope",
-          Confirmed:
-            "Allocate available inventory to the PO",
-          Allocating:
-            "Complete allocation and prepare the shipment",
-          "Ready to Ship":
-            "Ship the order and enter the tracking number",
-          Shipped:
-            "Monitor tracking and confirm delivery with the customer"
-        };
-
-        return (
-          actions[event.status] ||
-          "Review the latest notes and confirm the next milestone"
         );
       }
 
