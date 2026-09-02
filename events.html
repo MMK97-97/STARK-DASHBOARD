@@ -13,21 +13,23 @@
   <style>
     :root {
       --navy: #082746;
-      --navy-2: #164d77;
+      --navy-2: #174f79;
       --teal: #009b92;
       --teal-dark: #007d76;
-      --teal-light: #dff6f4;
-      --blue: #377eb8;
-      --purple: #7550a0;
+      --teal-light: #e1f6f4;
       --green: #198754;
       --green-light: #e6f6ee;
       --amber: #b66a09;
       --amber-light: #fff3da;
       --red: #c93f50;
       --red-light: #fdebed;
+      --purple: #7550a0;
+      --purple-light: #f0e9f7;
+      --blue: #25689e;
+      --blue-light: #e7f1fb;
       --background: #eef4f8;
       --surface: #ffffff;
-      --surface-2: #f7fafc;
+      --surface-2: #f8fbfd;
       --border: #d4e1ea;
       --text: #0b294b;
       --muted: #64758c;
@@ -189,7 +191,6 @@
       border-radius: 20px;
       background: rgba(255, 255, 255, 0.94);
       box-shadow: var(--shadow);
-      scrollbar-width: thin;
     }
 
     .nav-link {
@@ -203,10 +204,6 @@
       color: var(--muted);
       font-size: 14px;
       font-weight: 850;
-      transition:
-        color 160ms ease,
-        background 160ms ease,
-        transform 160ms ease;
     }
 
     .nav-link:hover {
@@ -228,7 +225,7 @@
 
     .hero {
       position: relative;
-      min-height: 210px;
+      min-height: 205px;
       margin-top: 24px;
       overflow: hidden;
       padding: 35px 40px;
@@ -295,7 +292,7 @@
     }
 
     .button {
-      min-height: 45px;
+      min-height: 44px;
       padding: 0 17px;
       display: inline-flex;
       align-items: center;
@@ -339,7 +336,6 @@
       color: #ffffff;
       border-color: rgba(255, 255, 255, 0.24);
       background: rgba(255, 255, 255, 0.12);
-      backdrop-filter: blur(8px);
     }
 
     .button-danger {
@@ -363,7 +359,6 @@
     }
 
     .summary-card {
-      min-width: 0;
       padding: 19px;
       border: 1px solid var(--border);
       border-radius: 19px;
@@ -381,7 +376,6 @@
     .summary-icon {
       width: 38px;
       height: 38px;
-      flex: 0 0 38px;
       display: grid;
       place-items: center;
       border-radius: 12px;
@@ -397,11 +391,6 @@
     .summary-icon.danger {
       color: var(--red);
       background: var(--red-light);
-    }
-
-    .summary-icon.success {
-      color: var(--green);
-      background: var(--green-light);
     }
 
     .summary-value {
@@ -429,23 +418,17 @@
 
     .section-header {
       margin-bottom: 18px;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 20px;
     }
 
     .section-header h2 {
       margin: 0;
       font-size: 20px;
-      letter-spacing: -0.025em;
     }
 
     .section-header p {
       margin: 5px 0 0;
       color: var(--muted);
       font-size: 13px;
-      line-height: 1.5;
     }
 
     .pipeline {
@@ -455,7 +438,6 @@
     }
 
     .pipeline-step {
-      min-width: 0;
       padding: 13px;
       border: 1px solid var(--border);
       border-radius: 14px;
@@ -491,7 +473,9 @@
     .toolbar {
       padding: 18px;
       display: grid;
-      grid-template-columns: minmax(230px, 1fr) repeat(3, minmax(145px, 190px));
+      grid-template-columns:
+        minmax(230px, 1fr)
+        repeat(3, minmax(145px, 190px));
       gap: 12px;
       border-bottom: 1px solid var(--border);
       background: #fbfdfe;
@@ -520,9 +504,6 @@
       outline: none;
       color: var(--text);
       background: #ffffff;
-      transition:
-        border-color 160ms ease,
-        box-shadow 160ms ease;
     }
 
     .control:focus {
@@ -531,7 +512,7 @@
     }
 
     textarea.control {
-      min-height: 90px;
+      min-height: 92px;
       resize: vertical;
     }
 
@@ -567,19 +548,12 @@
     }
 
     th {
-      position: sticky;
-      top: 0;
-      z-index: 2;
       color: #ffffff;
       font-size: 11px;
       font-weight: 900;
       letter-spacing: 0.055em;
       text-transform: uppercase;
       background: var(--navy);
-    }
-
-    tbody tr {
-      transition: background 140ms ease;
     }
 
     tbody tr:hover {
@@ -622,7 +596,6 @@
       border-radius: 999px;
       font-size: 11px;
       font-weight: 900;
-      letter-spacing: 0.025em;
       text-transform: uppercase;
     }
 
@@ -640,14 +613,12 @@
       background: var(--green-light);
     }
 
-    .status-low,
-    .status-overdue {
+    .status-low {
       color: var(--red);
       background: var(--red-light);
     }
 
-    .status-check,
-    .status-risk {
+    .status-check {
       color: var(--amber);
       background: var(--amber-light);
     }
@@ -657,24 +628,20 @@
       background: #edf1f5;
     }
 
-    .status-confirmed {
-      color: #225f9b;
-      background: #e7f1fb;
+    .status-confirmed,
+    .status-shipped {
+      color: var(--blue);
+      background: var(--blue-light);
     }
 
     .status-allocating {
-      color: #7c4da0;
-      background: #f0e9f7;
+      color: var(--purple);
+      background: var(--purple-light);
     }
 
     .status-ready {
-      color: #007d76;
+      color: var(--teal-dark);
       background: var(--teal-light);
-    }
-
-    .status-shipped {
-      color: #25689e;
-      background: #e6f2fa;
     }
 
     .status-cancelled {
@@ -683,8 +650,7 @@
     }
 
     .next-action {
-      max-width: 165px;
-      color: var(--text);
+      max-width: 170px;
       font-size: 12px;
       font-weight: 750;
       line-height: 1.4;
@@ -693,27 +659,27 @@
     .row-actions {
       display: flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
     }
 
     .icon-button {
-      width: 35px;
-      height: 35px;
-      flex: 0 0 35px;
+      width: 38px;
+      height: 38px;
+      flex: 0 0 38px;
       display: grid;
       place-items: center;
-      border: 1px solid #d1dfe8;
-      border-radius: 10px;
-      color: var(--text);
+      border: 1px solid #cedee8;
+      border-radius: 11px;
+      color: var(--navy);
       background: #ffffff;
       transition:
+        transform 150ms ease,
         color 150ms ease,
-        background 150ms ease,
-        transform 150ms ease;
+        background 150ms ease;
     }
 
     .icon-button:hover {
-      transform: translateY(-1px);
+      transform: translateY(-2px);
       color: var(--teal-dark);
       background: var(--teal-light);
     }
@@ -752,7 +718,7 @@
     }
 
     dialog {
-      width: min(1040px, calc(100% - 30px));
+      width: min(1060px, calc(100% - 30px));
       max-height: calc(100vh - 30px);
       padding: 0;
       overflow: hidden;
@@ -835,11 +801,11 @@
       gap: 14px;
     }
 
-    .form-grid .span-2 {
+    .span-2 {
       grid-column: span 2;
     }
 
-    .form-grid .span-4 {
+    .span-4 {
       grid-column: span 4;
     }
 
@@ -859,14 +825,6 @@
 
     .items-table {
       min-width: 780px;
-    }
-
-    .items-table input {
-      min-width: 110px;
-    }
-
-    .item-status {
-      min-width: 78px;
     }
 
     .dialog-footer {
@@ -939,7 +897,7 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .form-grid .span-4 {
+      .span-4 {
         grid-column: span 2;
       }
     }
@@ -948,10 +906,6 @@
       .header-inner,
       .page {
         width: min(100% - 24px, var(--page-width));
-      }
-
-      .header-inner {
-        min-height: 76px;
       }
 
       .brand-mark {
@@ -975,10 +929,6 @@
         min-width: 78px;
       }
 
-      .page {
-        padding-top: 18px;
-      }
-
       .hero {
         min-height: auto;
         padding: 29px 23px;
@@ -1000,8 +950,8 @@
         grid-template-columns: 1fr;
       }
 
-      .form-grid .span-2,
-      .form-grid .span-4 {
+      .span-2,
+      .span-4 {
         grid-column: span 1;
       }
 
@@ -1012,6 +962,7 @@
 
       .footer-actions {
         width: 100%;
+        flex-wrap: wrap;
       }
 
       .footer-actions .button {
@@ -1052,24 +1003,20 @@
   </header>
 
   <main class="page">
-    <nav class="nav-shell" aria-label="Regional navigation">
-      <a id="backLink" class="nav-link back" href="index.html?region=US">
+    <nav class="nav-shell">
+      <a id="backLink" class="nav-link back" href="#">
         ← Regional modules
       </a>
 
-      <a
-        id="dashboardLink"
-        class="nav-link"
-        href="inventory-dashboard.html?region=US"
-      >
+      <a id="dashboardLink" class="nav-link" href="#">
         Inventory Dashboard
       </a>
 
-      <a id="salesLink" class="nav-link" href="sales-analysis.html?region=US">
+      <a id="salesLink" class="nav-link" href="#">
         Sales Analysis
       </a>
 
-      <a id="eventsLink" class="nav-link active" href="events.html?region=US">
+      <a id="eventsLink" class="nav-link active" href="#">
         Events
       </a>
     </nav>
@@ -1077,33 +1024,34 @@
     <section class="hero">
       <div class="hero-copy">
         <p id="heroEyebrow" class="hero-eyebrow">
-          Events Operations · United States
+          Events Operations
         </p>
 
         <h1>Events Control Center</h1>
 
         <p class="hero-description">
-          Track purchase orders, in-hands dates, customer requirements,
-          inventory allocation, shipping progress and internal updates.
+          Track customer deadlines, inventory availability, PO items,
+          fulfillment planning, follow-ups, shipment status and internal
+          Outlook updates.
         </p>
       </div>
 
       <div class="hero-actions">
-        <button id="emailSettingsButton" class="button button-hero" type="button">
+        <button id="emailSettingsButton" class="button button-hero">
           Outlook settings
         </button>
 
-        <button id="exportButton" class="button button-hero" type="button">
+        <button id="exportButton" class="button button-hero">
           Export CSV
         </button>
 
-        <button id="newEventButton" class="button button-primary" type="button">
+        <button id="newEventButton" class="button button-primary">
           + New event
         </button>
       </div>
     </section>
 
-    <section class="summary-grid" aria-label="Event summary">
+    <section class="summary-grid">
       <article class="summary-card">
         <div class="summary-card-top">
           <p class="summary-label">Active events</p>
@@ -1131,7 +1079,7 @@
         </div>
 
         <p id="riskEventsValue" class="summary-value">0</p>
-        <p class="summary-label">Late or approaching deadline</p>
+        <p class="summary-label">Late or within seven days</p>
       </article>
 
       <article class="summary-card">
@@ -1141,19 +1089,18 @@
         </div>
 
         <p id="lowInventoryValue" class="summary-value">0</p>
-        <p class="summary-label">Events requiring inventory action</p>
+        <p class="summary-label">Events needing inventory action</p>
       </article>
     </section>
 
     <section class="workflow-card">
       <div class="section-header">
-        <div>
-          <h2>Event workflow</h2>
-          <p>
-            Move each event through the same controlled process from
-            confirmation to completion.
-          </p>
-        </div>
+        <h2>Event workflow</h2>
+
+        <p>
+          Confirm requirements, allocate inventory, prepare shipment, ship,
+          confirm delivery and complete the event.
+        </p>
       </div>
 
       <div class="pipeline">
@@ -1203,17 +1150,17 @@
         </div>
 
         <div class="field">
-          <label for="statusFilter">Event status</label>
+          <label for="statusFilter">Current status</label>
 
           <select id="statusFilter" class="control">
             <option value="">All statuses</option>
-            <option value="Draft">Draft</option>
-            <option value="Confirmed">Confirmed</option>
-            <option value="Allocating">Allocating</option>
-            <option value="Ready to Ship">Ready to ship</option>
-            <option value="Shipped">Shipped</option>
-            <option value="Complete">Complete</option>
-            <option value="Cancelled">Cancelled</option>
+            <option>Draft</option>
+            <option>Confirmed</option>
+            <option>Allocating</option>
+            <option>Ready to Ship</option>
+            <option>Shipped</option>
+            <option>Complete</option>
+            <option>Cancelled</option>
           </select>
         </div>
 
@@ -1243,44 +1190,46 @@
 
       <div class="table-meta">
         <span id="recordCount">0 events</span>
-        <span>Inventory status is calculated from event quantity vs stock.</span>
+
+        <span>
+          Use the envelope button to prepare an Outlook update.
+        </span>
       </div>
 
-      <div id="tableContainer">
-        <div class="table-wrap">
-          <table>
-            <thead>
-              <tr>
-                <th>PO#</th>
-                <th>Customer</th>
-                <th>In-hands date</th>
-                <th>Items</th>
-                <th>Inventory</th>
-                <th>Event status</th>
-                <th>Owner</th>
-                <th>Next action</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
+      <div id="tableContainer" class="table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>PO#</th>
+              <th>Customer</th>
+              <th>In-hands date</th>
+              <th>Items</th>
+              <th>Inventory</th>
+              <th>Current status</th>
+              <th>Planning</th>
+              <th>Owner</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
 
-            <tbody id="eventsTableBody"></tbody>
-          </table>
-        </div>
+          <tbody id="eventsTableBody"></tbody>
+        </table>
       </div>
 
       <div id="emptyState" class="empty-state hidden">
         <div>
           <div class="empty-icon">◇</div>
+
           <h3>No events found</h3>
+
           <p>
-            Create an event to begin tracking its PO, inventory allocation,
-            customer deadline, shipment and internal updates.
+            Create an event to begin tracking its PO, inventory, customer
+            deadline, fulfillment plan, follow-up and shipment.
           </p>
 
           <button
             id="emptyNewEventButton"
             class="button button-primary"
-            type="button"
           >
             + Create first event
           </button>
@@ -1294,8 +1243,9 @@
       <div class="dialog-header">
         <div>
           <h2 id="eventDialogTitle">New event</h2>
+
           <p>
-            Enter the event details and confirm inventory for every model.
+            Enter the latest information used for tracking and email updates.
           </p>
         </div>
 
@@ -1303,7 +1253,6 @@
           class="dialog-close"
           type="button"
           data-close-dialog="eventDialog"
-          aria-label="Close"
         >
           ×
         </button>
@@ -1352,17 +1301,59 @@
             </div>
 
             <div class="field">
-              <label for="eventStatus">Event status</label>
+              <label for="eventStatus">Current status</label>
 
               <select id="eventStatus" class="control">
-                <option value="Draft">Draft</option>
-                <option value="Confirmed">Confirmed</option>
-                <option value="Allocating">Allocating</option>
-                <option value="Ready to Ship">Ready to ship</option>
-                <option value="Shipped">Shipped</option>
-                <option value="Complete">Complete</option>
-                <option value="Cancelled">Cancelled</option>
+                <option>Draft</option>
+                <option>Confirmed</option>
+                <option>Allocating</option>
+                <option>Ready to Ship</option>
+                <option>Shipped</option>
+                <option>Complete</option>
+                <option>Cancelled</option>
               </select>
+            </div>
+
+            <div class="field span-2">
+              <label for="fulfillmentPlanning">
+                Planning *
+              </label>
+
+              <select
+                id="fulfillmentPlanning"
+                class="control"
+                required
+              >
+                <option value="">Select fulfillment plan</option>
+
+                <option value="Shipping direct to the customer">
+                  Shipping direct to the customer
+                </option>
+
+                <option value="Bringing the items to our warehouse">
+                  Bringing the items to our warehouse
+                </option>
+
+                <option value="Part direct and part through our warehouse">
+                  Part direct and part through our warehouse
+                </option>
+
+                <option value="Planning not confirmed">
+                  Planning not confirmed
+                </option>
+              </select>
+            </div>
+
+            <div class="field">
+              <label for="customerFollowedUpDate">
+                Customer followed-up date
+              </label>
+
+              <input
+                id="customerFollowedUpDate"
+                class="control"
+                type="date"
+              >
             </div>
 
             <div class="field">
@@ -1377,7 +1368,9 @@
             </div>
 
             <div class="field span-2">
-              <label for="eventRecipients">Internal update recipients</label>
+              <label for="eventRecipients">
+                Internal email recipients
+              </label>
 
               <input
                 id="eventRecipients"
@@ -1387,8 +1380,10 @@
               >
             </div>
 
-            <div class="field">
-              <label for="trackingNumber">Tracking number</label>
+            <div class="field span-2">
+              <label for="trackingNumber">
+                Tracking number
+              </label>
 
               <input
                 id="trackingNumber"
@@ -1399,12 +1394,12 @@
             </div>
 
             <div class="field span-4">
-              <label for="eventNotes">Notes</label>
+              <label for="eventNotes">Latest notes</label>
 
               <textarea
                 id="eventNotes"
                 class="control"
-                placeholder="Customer requirements, delivery instructions, special handling or current update"
+                placeholder="Enter the latest customer update, inventory update, delivery instruction or event note"
               ></textarea>
             </div>
           </div>
@@ -1414,8 +1409,9 @@
           <div class="items-toolbar">
             <div>
               <h3 class="form-section-title">PO items</h3>
+
               <p>
-                Inventory status is GOOD when stock covers the PO quantity.
+                Inventory is GOOD when stock available covers PO quantity.
               </p>
             </div>
 
@@ -1446,7 +1442,7 @@
                   <th>PO quantity</th>
                   <th>Stock available</th>
                   <th>After allocation</th>
-                  <th>Status</th>
+                  <th>Inventory</th>
                   <th></th>
                 </tr>
               </thead>
@@ -1495,7 +1491,7 @@
     <form id="emailSettingsForm" class="dialog-shell">
       <div class="dialog-header">
         <div>
-          <h2>Outlook update settings</h2>
+          <h2>Outlook settings</h2>
           <p>Configure the organization’s internal email details.</p>
         </div>
 
@@ -1503,7 +1499,6 @@
           class="dialog-close"
           type="button"
           data-close-dialog="emailSettingsDialog"
-          aria-label="Close"
         >
           ×
         </button>
@@ -1513,24 +1508,28 @@
         <section class="form-section">
           <div class="form-grid">
             <div class="field span-4">
-              <label for="organizationDomain">Organization email domain</label>
+              <label for="organizationDomain">
+                Organization email domain
+              </label>
 
               <input
                 id="organizationDomain"
                 class="control"
                 type="text"
-                placeholder="example.com"
+                placeholder="starkpremium.com"
               >
             </div>
 
             <div class="field span-4">
-              <label for="defaultRecipients">Default internal recipients</label>
+              <label for="defaultRecipients">
+                Default internal recipients
+              </label>
 
               <input
                 id="defaultRecipients"
                 class="control"
                 type="text"
-                placeholder="operations@example.com, sales@example.com"
+                placeholder="operations@company.com, sales@company.com"
               >
             </div>
 
@@ -1540,15 +1539,14 @@
               <textarea
                 id="emailSignature"
                 class="control"
-                placeholder="Thank you,&#10;Operations Team"
+                placeholder="Thank you,&#10;Manoj"
               ></textarea>
             </div>
           </div>
 
           <p class="email-note">
-            The Email Update button opens a prepared message in Outlook.
-            The employee can review the update before clicking Send. No email
-            password or secret is stored in this website.
+            The envelope button opens a prepared email in Outlook. Review the
+            message and click Send. No Outlook password is stored in this page.
           </p>
         </section>
       </div>
@@ -1573,9 +1571,11 @@
     </form>
   </dialog>
 
-  <div id="toast" class="toast" role="status"></div>
+  <div id="toast" class="toast"></div>
 
-  <script>
+ div>
+
+ <script>
     (() => {
       const VALID_REGIONS = ["US", "EU", "CA"];
 
@@ -1585,109 +1585,148 @@
         CA: "Canada"
       };
 
-      const EVENT_STATUSES = [
+      const WORKFLOW = [
         "Draft",
         "Confirmed",
         "Allocating",
         "Ready to Ship",
         "Shipped",
-        "Complete",
-        "Cancelled"
+        "Complete"
       ];
 
       const NEXT_ACTIONS = {
-        Draft: "Confirm event requirements",
-        Confirmed: "Allocate event inventory",
-        Allocating: "Resolve stock and prepare shipment",
-        "Ready to Ship": "Ship and enter tracking",
-        Shipped: "Confirm delivery",
+        Draft: "Confirm customer and event requirements",
+        Confirmed: "Confirm inventory allocation",
+        Allocating: "Resolve inventory and fulfillment plan",
+        "Ready to Ship": "Ship and enter tracking information",
+        Shipped: "Follow up and confirm delivery",
         Complete: "No action required",
         Cancelled: "No action required"
       };
 
-      const params = new URLSearchParams(window.location.search);
-      let region = (params.get("region") || "US").toUpperCase();
+      const parameters =
+        new URLSearchParams(window.location.search);
+
+      let region =
+        (parameters.get("region") || "US").toUpperCase();
 
       if (!VALID_REGIONS.includes(region)) {
         region = "US";
       }
 
-      const storageKey = `stark_events_v4_${region}`;
-      const settingsKey = "stark_events_outlook_settings_v1";
+      const storageKey = `stark_events_v5_${region}`;
+      const settingsKey =
+        "stark_events_outlook_settings_v1";
 
       let events = loadJson(storageKey, []);
+      let inventoryMap = new Map();
+
       let emailSettings = loadJson(settingsKey, {
         organizationDomain: "",
         defaultRecipients: "",
         emailSignature: ""
       });
 
-      let currentInventoryMap = new Map();
       let toastTimer;
 
-      const regionSelect = document.getElementById("regionSelect");
-      const regionBadge = document.getElementById("regionBadge");
-      const heroEyebrow = document.getElementById("heroEyebrow");
+      const regionSelect =
+        document.getElementById("regionSelect");
 
-      const backLink = document.getElementById("backLink");
-      const dashboardLink = document.getElementById("dashboardLink");
-      const salesLink = document.getElementById("salesLink");
-      const eventsLink = document.getElementById("eventsLink");
+      const regionBadge =
+        document.getElementById("regionBadge");
 
-      const newEventButton = document.getElementById("newEventButton");
-      const emptyNewEventButton =
-        document.getElementById("emptyNewEventButton");
-      const exportButton = document.getElementById("exportButton");
-      const emailSettingsButton =
-        document.getElementById("emailSettingsButton");
+      const heroEyebrow =
+        document.getElementById("heroEyebrow");
 
-      const searchInput = document.getElementById("searchInput");
-      const statusFilter = document.getElementById("statusFilter");
-      const inventoryFilter = document.getElementById("inventoryFilter");
-      const dateFilter = document.getElementById("dateFilter");
+      const searchInput =
+        document.getElementById("searchInput");
 
-      const tableContainer = document.getElementById("tableContainer");
-      const eventsTableBody = document.getElementById("eventsTableBody");
-      const emptyState = document.getElementById("emptyState");
-      const recordCount = document.getElementById("recordCount");
+      const statusFilter =
+        document.getElementById("statusFilter");
 
-      const eventDialog = document.getElementById("eventDialog");
-      const eventForm = document.getElementById("eventForm");
+      const inventoryFilter =
+        document.getElementById("inventoryFilter");
+
+      const dateFilter =
+        document.getElementById("dateFilter");
+
+      const tableContainer =
+        document.getElementById("tableContainer");
+
+      const eventsTableBody =
+        document.getElementById("eventsTableBody");
+
+      const emptyState =
+        document.getElementById("emptyState");
+
+      const recordCount =
+        document.getElementById("recordCount");
+
+      const eventDialog =
+        document.getElementById("eventDialog");
+
+      const eventForm =
+        document.getElementById("eventForm");
+
       const eventDialogTitle =
         document.getElementById("eventDialogTitle");
-      const eventId = document.getElementById("eventId");
-      const poNumber = document.getElementById("poNumber");
-      const customer = document.getElementById("customer");
-      const inHandsDate = document.getElementById("inHandsDate");
-      const eventStatus = document.getElementById("eventStatus");
-      const eventOwner = document.getElementById("eventOwner");
+
+      const eventId =
+        document.getElementById("eventId");
+
+      const poNumber =
+        document.getElementById("poNumber");
+
+      const customer =
+        document.getElementById("customer");
+
+      const inHandsDate =
+        document.getElementById("inHandsDate");
+
+      const eventStatus =
+        document.getElementById("eventStatus");
+
+      const fulfillmentPlanning =
+        document.getElementById("fulfillmentPlanning");
+
+      const customerFollowedUpDate =
+        document.getElementById("customerFollowedUpDate");
+
+      const eventOwner =
+        document.getElementById("eventOwner");
+
       const eventRecipients =
         document.getElementById("eventRecipients");
+
       const trackingNumber =
         document.getElementById("trackingNumber");
-      const eventNotes = document.getElementById("eventNotes");
+
+      const eventNotes =
+        document.getElementById("eventNotes");
+
       const itemsTableBody =
         document.getElementById("itemsTableBody");
-      const addItemButton = document.getElementById("addItemButton");
-      const syncInventoryButton =
-        document.getElementById("syncInventoryButton");
+
       const deleteEventButton =
         document.getElementById("deleteEventButton");
-      const saveAndEmailButton =
-        document.getElementById("saveAndEmailButton");
+
+      const syncInventoryButton =
+        document.getElementById("syncInventoryButton");
 
       const emailSettingsDialog =
         document.getElementById("emailSettingsDialog");
-      const emailSettingsForm =
-        document.getElementById("emailSettingsForm");
+
       const organizationDomain =
         document.getElementById("organizationDomain");
+
       const defaultRecipients =
         document.getElementById("defaultRecipients");
+
       const emailSignature =
         document.getElementById("emailSignature");
 
-      const toast = document.getElementById("toast");
+      const toast =
+        document.getElementById("toast");
 
       initialize();
 
@@ -1698,19 +1737,19 @@
         heroEyebrow.textContent =
           `Events Operations · ${REGION_NAMES[region]}`;
 
-        backLink.href =
+        document.getElementById("backLink").href =
           `index.html?region=${encodeURIComponent(region)}`;
 
-        dashboardLink.href =
+        document.getElementById("dashboardLink").href =
           `inventory-dashboard.html?region=${encodeURIComponent(region)}`;
 
-        salesLink.href =
+        document.getElementById("salesLink").href =
           `sales-analysis.html?region=${encodeURIComponent(region)}`;
 
-        eventsLink.href =
+        document.getElementById("eventsLink").href =
           `events.html?region=${encodeURIComponent(region)}`;
 
-        normalizeStoredEvents();
+        normalizeEvents();
         bindEvents();
         render();
       }
@@ -1718,17 +1757,34 @@
       function bindEvents() {
         regionSelect.addEventListener("change", () => {
           window.location.href =
-            `events.html?region=${encodeURIComponent(regionSelect.value)}`;
+            `events.html?region=${encodeURIComponent(
+              regionSelect.value
+            )}`;
         });
 
-        newEventButton.addEventListener("click", openNewEvent);
-        emptyNewEventButton.addEventListener("click", openNewEvent);
+        document
+          .getElementById("newEventButton")
+          .addEventListener("click", openNewEvent);
 
-        exportButton.addEventListener("click", exportEvents);
+        document
+          .getElementById("emptyNewEventButton")
+          .addEventListener("click", openNewEvent);
 
-        emailSettingsButton.addEventListener(
+        document
+          .getElementById("addItemButton")
+          .addEventListener("click", () => addItemRow());
+
+        document
+          .getElementById("exportButton")
+          .addEventListener("click", exportEvents);
+
+        document
+          .getElementById("emailSettingsButton")
+          .addEventListener("click", openEmailSettings);
+
+        syncInventoryButton.addEventListener(
           "click",
-          openEmailSettings
+          syncInventory
         );
 
         searchInput.addEventListener("input", renderTable);
@@ -1736,65 +1792,56 @@
         inventoryFilter.addEventListener("change", renderTable);
         dateFilter.addEventListener("change", renderTable);
 
-        addItemButton.addEventListener("click", () => addItemRow());
-
-        syncInventoryButton.addEventListener(
-          "click",
-          syncDraftInventory
-        );
-
         eventForm.addEventListener("submit", (event) => {
           event.preventDefault();
           saveEvent(false);
         });
 
-        saveAndEmailButton.addEventListener("click", () => {
-          saveEvent(true);
-        });
+        document
+          .getElementById("saveAndEmailButton")
+          .addEventListener("click", () => saveEvent(true));
 
         deleteEventButton.addEventListener(
           "click",
           deleteCurrentEvent
         );
 
-        emailSettingsForm.addEventListener("submit", (event) => {
-          event.preventDefault();
-          saveEmailSettings();
-        });
+        document
+          .getElementById("emailSettingsForm")
+          .addEventListener("submit", (event) => {
+            event.preventDefault();
+            saveEmailSettings();
+          });
 
         document
           .querySelectorAll("[data-close-dialog]")
           .forEach((button) => {
             button.addEventListener("click", () => {
-              const dialog =
-                document.getElementById(
-                  button.dataset.closeDialog
-                );
-
-              dialog.close();
+              document
+                .getElementById(button.dataset.closeDialog)
+                .close();
             });
           });
       }
 
       function loadJson(key, fallback) {
         try {
-          const stored = localStorage.getItem(key);
+          const value = localStorage.getItem(key);
 
-          if (!stored) {
-            return fallback;
-          }
-
-          return JSON.parse(stored);
+          return value ? JSON.parse(value) : fallback;
         } catch (error) {
           return fallback;
         }
       }
 
-      function saveData() {
-        localStorage.setItem(storageKey, JSON.stringify(events));
+      function saveEvents() {
+        localStorage.setItem(
+          storageKey,
+          JSON.stringify(events)
+        );
       }
 
-      function normalizeStoredEvents() {
+      function normalizeEvents() {
         if (!Array.isArray(events)) {
           events = [];
         }
@@ -1804,27 +1851,43 @@
           poNumber: String(event.poNumber || ""),
           customer: String(event.customer || ""),
           inHandsDate: event.inHandsDate || "",
-          status: EVENT_STATUSES.includes(event.status)
-            ? event.status
-            : "Draft",
+          status: event.status || "Draft",
+
+          planning:
+            event.planning ||
+            event.fulfillmentPlanning ||
+            "Planning not confirmed",
+
+          customerFollowedUpDate:
+            event.customerFollowedUpDate || "",
+
           owner: String(event.owner || ""),
           recipients: String(event.recipients || ""),
-          trackingNumber: String(event.trackingNumber || ""),
+          trackingNumber:
+            String(event.trackingNumber || ""),
           notes: String(event.notes || ""),
-          items: Array.isArray(event.items) ? event.items : [],
-          createdAt: event.createdAt || new Date().toISOString(),
-          updatedAt: event.updatedAt || new Date().toISOString()
+          items: Array.isArray(event.items)
+            ? event.items
+            : [],
+          createdAt:
+            event.createdAt ||
+            new Date().toISOString(),
+          updatedAt:
+            event.updatedAt ||
+            new Date().toISOString()
         }));
 
-        saveData();
+        saveEvents();
       }
 
       function createId() {
-        if (window.crypto && crypto.randomUUID) {
+        if (crypto.randomUUID) {
           return crypto.randomUUID();
         }
 
-        return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+        return `${Date.now()}-${Math.random()
+          .toString(16)
+          .slice(2)}`;
       }
 
       function render() {
@@ -1833,46 +1896,53 @@
         renderTable();
       }
 
-      function getActiveEvents() {
-        return events.filter(
+      function renderSummary() {
+        const active = events.filter(
           (event) =>
             event.status !== "Complete" &&
             event.status !== "Cancelled"
         );
-      }
-
-      function renderSummary() {
-        const active = getActiveEvents();
 
         const upcoming = active.filter((event) => {
           const days = daysUntil(event.inHandsDate);
-          return days >= 0 && days <= 14;
+
+          return days !== null && days >= 0 && days <= 14;
         });
 
         const risk = active.filter((event) => {
-          const riskState = getScheduleRisk(event);
-          return riskState === "OVERDUE" || riskState === "AT RISK";
+          const days = daysUntil(event.inHandsDate);
+
+          return (
+            days !== null &&
+            (days < 0 ||
+              (days <= 7 && event.status !== "Shipped"))
+          );
         });
 
-        const lowInventory = active.filter(
-          (event) => getEventInventoryStatus(event) === "LOW"
+        const low = active.filter(
+          (event) =>
+            getInventoryStatus(event) === "LOW"
         );
 
-        document.getElementById("activeEventsValue").textContent =
-          active.length;
+        document.getElementById(
+          "activeEventsValue"
+        ).textContent = active.length;
 
-        document.getElementById("upcomingEventsValue").textContent =
-          upcoming.length;
+        document.getElementById(
+          "upcomingEventsValue"
+        ).textContent = upcoming.length;
 
-        document.getElementById("riskEventsValue").textContent =
-          risk.length;
+        document.getElementById(
+          "riskEventsValue"
+        ).textContent = risk.length;
 
-        document.getElementById("lowInventoryValue").textContent =
-          lowInventory.length;
+        document.getElementById(
+          "lowInventoryValue"
+        ).textContent = low.length;
       }
 
       function renderPipeline() {
-        const mapping = {
+        const statusElements = {
           Draft: "draftCount",
           Confirmed: "confirmedCount",
           Allocating: "allocatingCount",
@@ -1881,10 +1951,14 @@
           Complete: "completeCount"
         };
 
-        Object.entries(mapping).forEach(([status, elementId]) => {
-          document.getElementById(elementId).textContent =
-            events.filter((event) => event.status === status).length;
-        });
+        Object.entries(statusElements).forEach(
+          ([status, id]) => {
+            document.getElementById(id).textContent =
+              events.filter(
+                (event) => event.status === status
+              ).length;
+          }
+        );
       }
 
       function renderTable() {
@@ -1892,7 +1966,9 @@
 
         recordCount.textContent =
           `${filteredEvents.length} ${
-            filteredEvents.length === 1 ? "event" : "events"
+            filteredEvents.length === 1
+              ? "event"
+              : "events"
           }`;
 
         if (!filteredEvents.length) {
@@ -1907,11 +1983,7 @@
         eventsTableBody.innerHTML = filteredEvents
           .map((event) => {
             const inventoryStatus =
-              getEventInventoryStatus(event);
-
-            const scheduleRisk = getScheduleRisk(event);
-            const dateSubtext = getDateSubtext(event);
-            const itemCount = event.items.length;
+              getInventoryStatus(event);
 
             return `
               <tr>
@@ -1936,13 +2008,17 @@
                   </div>
 
                   <div class="date-secondary">
-                    ${escapeHtml(dateSubtext)}
+                    ${escapeHtml(getDateMessage(event))}
                   </div>
                 </td>
 
                 <td>
-                  <strong>${itemCount}</strong>
-                  ${itemCount === 1 ? " model" : " models"}
+                  <strong>${event.items.length}</strong>
+                  ${
+                    event.items.length === 1
+                      ? " model"
+                      : " models"
+                  }
                 </td>
 
                 <td>
@@ -1954,9 +2030,17 @@
                 </td>
 
                 <td>
-                  <span class="status ${eventStatusClass(event.status)}">
+                  <span class="status ${
+                    eventStatusClass(event.status)
+                  }">
                     ${escapeHtml(event.status)}
                   </span>
+                </td>
+
+                <td>
+                  <div class="next-action">
+                    ${escapeHtml(event.planning)}
+                  </div>
                 </td>
 
                 <td>
@@ -1964,22 +2048,14 @@
                 </td>
 
                 <td>
-                  <div class="next-action">
-                    ${
-                      scheduleRisk === "OVERDUE"
-                        ? "Escalate overdue delivery"
-                        : NEXT_ACTIONS[event.status]
-                    }
-                  </div>
-                </td>
-
-                <td>
                   <div class="row-actions">
                     <button
                       class="icon-button"
                       type="button"
-                      title="Edit event"
-                      onclick="window.eventTracker.edit('${event.id}')"
+                      title="Edit PO"
+                      onclick="window.eventTracker.edit(
+                        '${event.id}'
+                      )"
                     >
                       ✎
                     </button>
@@ -1987,8 +2063,10 @@
                     <button
                       class="icon-button"
                       type="button"
-                      title="Email Outlook update"
-                      onclick="window.eventTracker.email('${event.id}')"
+                      title="Prepare Outlook email"
+                      onclick="window.eventTracker.email(
+                        '${event.id}'
+                      )"
                     >
                       ✉
                     </button>
@@ -1996,8 +2074,10 @@
                     <button
                       class="icon-button"
                       type="button"
-                      title="Move to next stage"
-                      onclick="window.eventTracker.advance('${event.id}')"
+                      title="Move to next status"
+                      onclick="window.eventTracker.advance(
+                        '${event.id}'
+                      )"
                     >
                       →
                     </button>
@@ -2010,10 +2090,8 @@
       }
 
       function getFilteredEvents() {
-        const query = searchInput.value.trim().toLowerCase();
-        const selectedStatus = statusFilter.value;
-        const selectedInventory = inventoryFilter.value;
-        const selectedDate = dateFilter.value;
+        const query =
+          searchInput.value.trim().toLowerCase();
 
         return [...events]
           .filter((event) => {
@@ -2022,6 +2100,7 @@
               event.customer,
               event.owner,
               event.notes,
+              event.planning,
               event.trackingNumber,
               ...event.items.map((item) => item.model)
             ]
@@ -2033,29 +2112,35 @@
             }
 
             if (
-              selectedStatus &&
-              event.status !== selectedStatus
+              statusFilter.value &&
+              event.status !== statusFilter.value
             ) {
               return false;
             }
 
             if (
-              selectedInventory &&
-              getEventInventoryStatus(event) !== selectedInventory
+              inventoryFilter.value &&
+              getInventoryStatus(event) !==
+                inventoryFilter.value
             ) {
               return false;
             }
 
-            if (selectedDate) {
+            if (dateFilter.value) {
               const days = daysUntil(event.inHandsDate);
 
-              if (selectedDate === "overdue" && days >= 0) {
+              if (
+                dateFilter.value === "overdue" &&
+                (days === null || days >= 0)
+              ) {
                 return false;
               }
 
               if (
-                selectedDate !== "overdue" &&
-                (days < 0 || days > Number(selectedDate))
+                dateFilter.value !== "overdue" &&
+                (days === null ||
+                  days < 0 ||
+                  days > Number(dateFilter.value))
               ) {
                 return false;
               }
@@ -2064,24 +2149,22 @@
             return true;
           })
           .sort((first, second) => {
-            const firstDate =
-              parseDate(first.inHandsDate)?.getTime() ||
-              Number.MAX_SAFE_INTEGER;
-
-            const secondDate =
-              parseDate(second.inHandsDate)?.getTime() ||
-              Number.MAX_SAFE_INTEGER;
-
-            return firstDate - secondDate;
+            return (
+              dateValue(first.inHandsDate) -
+              dateValue(second.inHandsDate)
+            );
           });
       }
 
       function openNewEvent() {
         eventForm.reset();
-
         eventId.value = "";
-        eventDialogTitle.textContent = "New event";
         eventStatus.value = "Draft";
+
+        fulfillmentPlanning.value =
+          "Planning not confirmed";
+
+        eventDialogTitle.textContent = "New event";
         deleteEventButton.classList.add("hidden");
 
         itemsTableBody.innerHTML = "";
@@ -2091,7 +2174,9 @@
       }
 
       function editEvent(id) {
-        const event = events.find((record) => record.id === id);
+        const event = events.find(
+          (record) => record.id === id
+        );
 
         if (!event) {
           return;
@@ -2102,18 +2187,29 @@
         customer.value = event.customer;
         inHandsDate.value = event.inHandsDate;
         eventStatus.value = event.status;
+
+        fulfillmentPlanning.value =
+          event.planning ||
+          "Planning not confirmed";
+
+        customerFollowedUpDate.value =
+          event.customerFollowedUpDate || "";
+
         eventOwner.value = event.owner;
         eventRecipients.value = event.recipients;
         trackingNumber.value = event.trackingNumber;
         eventNotes.value = event.notes;
 
-        eventDialogTitle.textContent = `Edit PO ${event.poNumber}`;
-        deleteEventButton.classList.remove("hidden");
+        eventDialogTitle.textContent =
+          `Edit PO ${event.poNumber}`;
 
+        deleteEventButton.classList.remove("hidden");
         itemsTableBody.innerHTML = "";
 
         if (event.items.length) {
-          event.items.forEach((item) => addItemRow(item));
+          event.items.forEach((item) => {
+            addItemRow(item);
+          });
         } else {
           addItemRow();
         }
@@ -2154,31 +2250,33 @@
             >
           </td>
 
-          <td class="item-after-allocation">—</td>
+          <td class="item-balance">—</td>
 
           <td class="item-status">
-            <span class="status status-check">CHECK</span>
+            <span class="status status-check">
+              CHECK
+            </span>
           </td>
 
           <td>
             <button
               class="icon-button item-remove"
               type="button"
-              title="Remove model"
+              title="Remove item"
             >
               ×
             </button>
           </td>
         `;
 
+        const modelInput =
+          row.querySelector(".item-model");
+
         const quantityInput =
           row.querySelector(".item-quantity");
 
         const stockInput =
           row.querySelector(".item-stock");
-
-        const modelInput =
-          row.querySelector(".item-model");
 
         quantityInput.addEventListener(
           "input",
@@ -2191,10 +2289,12 @@
         );
 
         modelInput.addEventListener("change", () => {
-          const model = normalizeModel(modelInput.value);
+          const normalized =
+            normalizeModel(modelInput.value);
 
-          if (currentInventoryMap.has(model)) {
-            stockInput.value = currentInventoryMap.get(model);
+          if (inventoryMap.has(normalized)) {
+            stockInput.value =
+              inventoryMap.get(normalized);
           }
 
           updateItemRow(row);
@@ -2215,61 +2315,62 @@
       }
 
       function updateItemRow(row) {
-        const quantity =
-          numberValue(row.querySelector(".item-quantity").value);
+        const quantity = numberValue(
+          row.querySelector(".item-quantity").value
+        );
 
-        const stock =
-          numberValue(row.querySelector(".item-stock").value);
+        const stock = numberValue(
+          row.querySelector(".item-stock").value
+        );
 
-        const afterCell =
-          row.querySelector(".item-after-allocation");
+        const balance =
+          row.querySelector(".item-balance");
 
-        const statusCell =
+        const status =
           row.querySelector(".item-status");
 
         if (quantity === null || stock === null) {
-          afterCell.textContent = "—";
+          balance.textContent = "—";
 
-          statusCell.innerHTML =
+          status.innerHTML =
             '<span class="status status-check">CHECK</span>';
 
           return;
         }
 
-        const balance = stock - quantity;
-        afterCell.textContent = formatNumber(balance);
+        balance.textContent =
+          formatNumber(stock - quantity);
 
-        const status = stock >= quantity ? "GOOD" : "LOW";
+        const itemStatus =
+          stock >= quantity ? "GOOD" : "LOW";
 
-        statusCell.innerHTML = `
-          <span class="status ${inventoryStatusClass(status)}">
-            ${status}
+        status.innerHTML = `
+          <span class="status ${
+            inventoryStatusClass(itemStatus)
+          }">
+            ${itemStatus}
           </span>
         `;
       }
 
       function collectItems() {
         return [...itemsTableBody.querySelectorAll("tr")]
-          .map((row) => {
-            const model =
-              row.querySelector(".item-model").value.trim();
+          .map((row) => ({
+            model:
+              row
+                .querySelector(".item-model")
+                .value.trim(),
 
-            const quantity =
+            quantity:
               numberValue(
                 row.querySelector(".item-quantity").value
-              );
+              ),
 
-            const stock =
+            stock:
               numberValue(
                 row.querySelector(".item-stock").value
-              );
-
-            return {
-              model,
-              quantity,
-              stock
-            };
-          })
+              )
+          }))
           .filter(
             (item) =>
               item.model ||
@@ -2278,16 +2379,24 @@
           );
       }
 
-      function buildEventFromForm() {
+      function buildEvent() {
         return {
           id: eventId.value || createId(),
           poNumber: poNumber.value.trim(),
           customer: customer.value.trim(),
           inHandsDate: inHandsDate.value,
           status: eventStatus.value,
+          planning: fulfillmentPlanning.value,
+
+          customerFollowedUpDate:
+            customerFollowedUpDate.value,
+
           owner: eventOwner.value.trim(),
           recipients: eventRecipients.value.trim(),
-          trackingNumber: trackingNumber.value.trim(),
+
+          trackingNumber:
+            trackingNumber.value.trim(),
+
           notes: eventNotes.value.trim(),
           items: collectItems(),
           region,
@@ -2295,55 +2404,61 @@
         };
       }
 
-      function saveEvent(emailAfterSaving) {
+      function saveEvent(emailAfterSave) {
         if (!eventForm.reportValidity()) {
           return;
         }
 
-        const record = buildEventFromForm();
+        const event = buildEvent();
+
         const existingIndex =
-          events.findIndex((event) => event.id === record.id);
+          events.findIndex(
+            (record) => record.id === event.id
+          );
 
         if (existingIndex >= 0) {
-          record.createdAt = events[existingIndex].createdAt;
-          events[existingIndex] = record;
+          event.createdAt =
+            events[existingIndex].createdAt;
+
+          events[existingIndex] = event;
         } else {
-          record.createdAt = new Date().toISOString();
-          events.push(record);
+          event.createdAt =
+            new Date().toISOString();
+
+          events.push(event);
         }
 
-        saveData();
+        saveEvents();
         render();
         eventDialog.close();
 
-        showToast(`PO ${record.poNumber} saved.`);
+        showToast(`PO ${event.poNumber} saved.`);
 
-        if (emailAfterSaving) {
-          openOutlook(record);
+        if (emailAfterSave) {
+          openOutlookEmail(event);
         }
       }
 
       function deleteCurrentEvent() {
-        const id = eventId.value;
+        const event = events.find(
+          (record) => record.id === eventId.value
+        );
 
-        if (!id) {
+        if (!event) {
           return;
         }
-
-        const record = events.find((event) => event.id === id);
 
         if (
-          !window.confirm(
-            `Delete event PO ${record?.poNumber || ""}?`
-          )
+          !confirm(`Delete PO ${event.poNumber}?`)
         ) {
           return;
-;
         }
 
-        events = events.filter((event) => event.id !== id);
+        events = events.filter(
+          (record) => record.id !== event.id
+        );
 
-        saveData();
+        saveEvents();
         render();
         eventDialog.close();
 
@@ -2351,35 +2466,35 @@
       }
 
       function advanceEvent(id) {
-        const event = events.find((record) => record.id === id);
+        const event = events.find(
+          (record) => record.id === id
+        );
 
         if (!event) {
           return;
         }
 
-        const workflow = [
-          "Draft",
-          "Confirmed",
-          "Allocating",
-          "Ready to Ship",
-          "Shipped",
-          "Complete"
-        ];
-
-        const currentIndex = workflow.indexOf(event.status);
+        const currentIndex =
+          WORKFLOW.indexOf(event.status);
 
         if (
           currentIndex < 0 ||
-          currentIndex === workflow.length - 1
+          currentIndex === WORKFLOW.length - 1
         ) {
-          showToast("This event cannot be advanced further.");
+          showToast(
+            "This event cannot be advanced further."
+          );
+
           return;
         }
 
-        event.status = workflow[currentIndex + 1];
-        event.updatedAt = new Date().toISOString();
+        event.status =
+          WORKFLOW[currentIndex + 1];
 
-        saveData();
+        event.updatedAt =
+          new Date().toISOString();
+
+        saveEvents();
         render();
 
         showToast(
@@ -2387,89 +2502,40 @@
         );
       }
 
-      function getEventInventoryStatus(event) {
+      function getInventoryStatus(event) {
         if (!event.items.length) {
           return "CHECK";
         }
 
-        let hasCheck = false;
-        let hasLow = false;
+        let check = false;
+        let low = false;
 
         event.items.forEach((item) => {
-          const quantity = numberValue(item.quantity);
-          const stock = numberValue(item.stock);
+          const quantity =
+            numberValue(item.quantity);
 
-          if (quantity === null || stock === null) {
-            hasCheck = true;
+          const stock =
+            numberValue(item.stock);
+
+          if (
+            quantity === null ||
+            stock === null
+          ) {
+            check = true;
           } else if (stock < quantity) {
-            hasLow = true;
+            low = true;
           }
         });
 
-        if (hasLow) {
+        if (low) {
           return "LOW";
         }
 
-        if (hasCheck) {
+        if (check) {
           return "CHECK";
         }
 
         return "GOOD";
-      }
-
-      function getScheduleRisk(event) {
-        if (
-          event.status === "Complete" ||
-          event.status === "Cancelled"
-        ) {
-          return "COMPLETE";
-        }
-
-        const days = daysUntil(event.inHandsDate);
-
-        if (days === null) {
-          return "CHECK";
-        }
-
-        if (days < 0) {
-          return "OVERDUE";
-        }
-
-        if (
-          days <= 7 &&
-          event.status !== "Shipped"
-        ) {
-          return "AT RISK";
-        }
-
-        return "ON TRACK";
-      }
-
-      function getDateSubtext(event) {
-        const days = daysUntil(event.inHandsDate);
-
-        if (days === null) {
-          return "Date required";
-        }
-
-        if (
-          event.status === "Complete" ||
-          event.status === "Cancelled"
-        ) {
-          return event.status;
-        }
-
-        if (days < 0) {
-          return `${Math.abs(days)} day${
-            Math.abs(days) === 1 ? "" : "s"
-          } overdue`;
-        }
-
-        if (days === 0) {
-          return "Due today";
-        }
-
-        return `${days} day${days === 1 ? "" : "s"} remaining`;
       }
 
       function inventoryStatusClass(status) {
@@ -2510,8 +2576,37 @@
 
         return Math.ceil(
           (date.getTime() - today.getTime()) /
-            (1000 * 60 * 60 * 24)
+            86400000
         );
+      }
+
+      function getDateMessage(event) {
+        const days = daysUntil(event.inHandsDate);
+
+        if (days === null) {
+          return "Date required";
+        }
+
+        if (
+          event.status === "Complete" ||
+          event.status === "Cancelled"
+        ) {
+          return event.status;
+        }
+
+        if (days < 0) {
+          return `${Math.abs(days)} day${
+            Math.abs(days) === 1 ? "" : "s"
+          } overdue`;
+        }
+
+        if (days === 0) {
+          return "Due today";
+        }
+
+        return `${days} day${
+          days === 1 ? "" : "s"
+        } remaining`;
       }
 
       function parseDate(value) {
@@ -2521,18 +2616,27 @@
 
         const date = new Date(`${value}T00:00:00`);
 
-        return Number.isNaN(date.getTime()) ? null : date;
+        return Number.isNaN(date.getTime())
+          ? null
+          : date;
+      }
+
+      function dateValue(value) {
+        return (
+          parseDate(value)?.getTime() ||
+          Number.MAX_SAFE_INTEGER
+        );
       }
 
       function formatDate(value) {
         const date = parseDate(value);
 
         if (!date) {
-          return "—";
+          return "Not entered";
         }
 
         return new Intl.DateTimeFormat("en-US", {
-          month: "short",
+          month: "long",
           day: "numeric",
           year: "numeric"
         }).format(date);
@@ -2551,11 +2655,14 @@
           String(value).replace(/,/g, "")
         );
 
-        return Number.isFinite(number) ? number : null;
+        return Number.isFinite(number)
+          ? number
+          : null;
       }
 
       function numberOrBlank(value) {
         const number = numberValue(value);
+
         return number === null ? "" : number;
       }
 
@@ -2572,65 +2679,61 @@
           .replace(/\s+/g, "");
       }
 
-      function normalizeKey(value) {
-        return String(value || "")
-          .toLowerCase()
-          .replace(/[^a-z0-9]/g, "");
-      }
-
-      async function syncDraftInventory() {
+      async function syncInventory() {
         syncInventoryButton.disabled = true;
-        syncInventoryButton.textContent = "Searching reports...";
+        syncInventoryButton.textContent =
+          "Searching reports...";
 
         try {
-          currentInventoryMap =
-            await buildInventoryMapFromBrowser();
+          inventoryMap =
+            await buildInventoryMap();
 
           let matched = 0;
 
-          itemsTableBody.querySelectorAll("tr").forEach((row) => {
-            const modelInput =
-              row.querySelector(".item-model");
+          itemsTableBody
+            .querySelectorAll("tr")
+            .forEach((row) => {
+              const model =
+                normalizeModel(
+                  row.querySelector(".item-model").value
+                );
 
-            const stockInput =
-              row.querySelector(".item-stock");
+              if (inventoryMap.has(model)) {
+                row.querySelector(
+                  ".item-stock"
+                ).value = inventoryMap.get(model);
 
-            const model = normalizeModel(modelInput.value);
+                updateItemRow(row);
+                matched += 1;
+              }
+            });
 
-            if (model && currentInventoryMap.has(model)) {
-              stockInput.value =
-                currentInventoryMap.get(model);
-
-              updateItemRow(row);
-              matched += 1;
-            }
-          });
-
-          if (!currentInventoryMap.size) {
-            showToast(
-              "No inventory source was found. Enter stock available manually."
-            );
-          } else {
-            showToast(
-              `${matched} event model${
-                matched === 1 ? "" : "s"
-              } matched to inventory data.`
-            );
-          }
+          showToast(
+            inventoryMap.size
+              ? `${matched} model${
+                  matched === 1 ? "" : "s"
+                } matched to inventory.`
+              : "No inventory report was found. Enter stock manually."
+          );
         } catch (error) {
           showToast(
-            "Inventory could not be synchronized. Enter stock manually."
+            "Inventory could not be synchronized."
           );
         } finally {
           syncInventoryButton.disabled = false;
-          syncInventoryButton.textContent = "Sync inventory";
+          syncInventoryButton.textContent =
+            "Sync inventory";
         }
       }
 
-      async function buildInventoryMapFromBrowser() {
-        const inventoryMap = new Map();
+      async function buildInventoryMap() {
+        const map = new Map();
 
-        for (let index = 0; index < localStorage.length; index += 1) {
+        for (
+          let index = 0;
+          index < localStorage.length;
+          index += 1
+        ) {
           const key = localStorage.key(index);
 
           if (
@@ -2641,41 +2744,40 @@
           }
 
           try {
-            const value =
-              JSON.parse(localStorage.getItem(key));
-
-            collectInventoryRecords(value, inventoryMap);
+            collectInventory(
+              JSON.parse(localStorage.getItem(key)),
+              map
+            );
           } catch (error) {
-            /* Non-JSON local storage value */
+            /* Ignore non-JSON values */
           }
         }
 
         if (
-          window.indexedDB &&
+          indexedDB.databases &&
           typeof indexedDB.databases === "function"
         ) {
           try {
-            const databases = await indexedDB.databases();
+            const databases =
+              await indexedDB.databases();
 
-            for (const databaseInfo of databases) {
-              if (!databaseInfo.name) {
-                continue;
+            for (const database of databases) {
+              if (database.name) {
+                await readDatabase(
+                  database.name,
+                  map
+                );
               }
-
-              await readIndexedDatabase(
-                databaseInfo.name,
-                inventoryMap
-              );
             }
           } catch (error) {
-            /* Browser may restrict database enumeration */
+            /* Inventory can still be entered manually */
           }
         }
 
-        return inventoryMap;
+        return map;
       }
 
-      function readIndexedDatabase(name, inventoryMap) {
+      function readDatabase(name, map) {
         return new Promise((resolve) => {
           const request = indexedDB.open(name);
 
@@ -2683,31 +2785,35 @@
 
           request.onsuccess = () => {
             const database = request.result;
-            const storeNames =
+
+            const stores =
               Array.from(database.objectStoreNames);
 
-            if (!storeNames.length) {
+            if (!stores.length) {
               database.close();
               resolve();
               return;
             }
 
-            let remaining = storeNames.length;
+            let pending = stores.length;
 
-            storeNames.forEach((storeName) => {
+            stores.forEach((storeName) => {
               try {
                 const transaction =
-                  database.transaction(storeName, "readonly");
+                  database.transaction(
+                    storeName,
+                    "readonly"
+                  );
 
-                const store =
-                  transaction.objectStore(storeName);
+                const requestAll =
+                  transaction
+                    .objectStore(storeName)
+                    .getAll();
 
-                const getAllRequest = store.getAll();
-
-                getAllRequest.onsuccess = () => {
-                  collectInventoryRecords(
-                    getAllRequest.result,
-                    inventoryMap
+                requestAll.onsuccess = () => {
+                  collectInventory(
+                    requestAll.result,
+                    map
                   );
                 };
 
@@ -2720,9 +2826,9 @@
             });
 
             function finish() {
-              remaining -= 1;
+              pending -= 1;
 
-              if (remaining <= 0) {
+              if (pending <= 0) {
                 database.close();
                 resolve();
               }
@@ -2731,9 +2837,9 @@
         });
       }
 
-      function collectInventoryRecords(
+      function collectInventory(
         value,
-        inventoryMap,
+        map,
         depth = 0
       ) {
         if (
@@ -2746,11 +2852,7 @@
 
         if (Array.isArray(value)) {
           value.forEach((item) => {
-            collectInventoryRecords(
-              item,
-              inventoryMap,
-              depth + 1
-            );
+            collectInventory(item, map, depth + 1);
           });
 
           return;
@@ -2761,116 +2863,129 @@
         }
 
         const keys = Object.keys(value);
-        const keyLookup = new Map(
-          keys.map((key) => [normalizeKey(key), key])
+
+        const normalizedKeys = new Map(
+          keys.map((key) => [
+            normalizeKey(key),
+            key
+          ])
         );
 
-        const modelKey = findFirstKey(keyLookup, [
-          "model",
-          "modelnumber",
-          "modelno",
-          "modelnum",
-          "sku",
-          "itemnumber",
-          "itemno",
-          "style",
-          "styleid",
-          "productcode"
-        ]);
+        const modelKey = findKey(
+          normalizedKeys,
+          [
+            "model",
+            "modelnumber",
+            "modelno",
+            "sku",
+            "itemnumber",
+            "itemno",
+            "style",
+            "productcode"
+          ]
+        );
 
         if (modelKey) {
-          const model = normalizeModel(value[modelKey]);
+          const model =
+            normalizeModel(value[modelKey]);
+
           const available =
-            extractAvailableInventory(value, keyLookup);
+            extractAvailable(
+              value,
+              normalizedKeys
+            );
 
           if (
             model &&
             available !== null
           ) {
-            const existing = inventoryMap.get(model);
-
-            if (
-              existing === undefined ||
-              available > existing
-            ) {
-              inventoryMap.set(model, available);
-            }
+            map.set(model, available);
           }
         }
 
         keys.forEach((key) => {
-          const nested = value[key];
-
           if (
-            nested &&
-            typeof nested === "object"
+            value[key] &&
+            typeof value[key] === "object"
           ) {
-            collectInventoryRecords(
-              nested,
-              inventoryMap,
+            collectInventory(
+              value[key],
+              map,
               depth + 1
             );
           }
         });
       }
 
-      function extractAvailableInventory(record, keyLookup) {
-        const directKey = findFirstKey(keyLookup, [
-          "actualavailable",
-          "actualavailability",
-          "totalavailable",
-          "availableinventory",
-          "availablestock",
-          "availableqty",
-          "quantityavailable",
-          "available",
-          "stockavailable"
-        ]);
+      function extractAvailable(
+        record,
+        normalizedKeys
+      ) {
+        const availableKey = findKey(
+          normalizedKeys,
+          [
+            "actualavailable",
+            "totalavailable",
+            "availableinventory",
+            "availablestock",
+            "availableqty",
+            "quantityavailable",
+            "available",
+            "stockavailable"
+          ]
+        );
 
-        if (directKey) {
-          return numberValue(record[directKey]);
+        if (availableKey) {
+          return numberValue(
+            record[availableKey]
+          );
         }
 
-        const onHandKey = findFirstKey(keyLookup, [
-          "onhand",
-          "onhandqty",
-          "onhandquantity",
-          "stock",
-          "currentstock",
-          "inventory"
-        ]);
+        const onHandKey = findKey(
+          normalizedKeys,
+          [
+            "onhand",
+            "onhandqty",
+            "onhandquantity",
+            "currentstock",
+            "stock",
+            "inventory"
+          ]
+        );
 
-        const atsKey = findFirstKey(keyLookup, [
-          "ats",
-          "availabletosell",
-          "atsonhand"
-        ]);
+        const atsKey = findKey(
+          normalizedKeys,
+          [
+            "ats",
+            "availabletosell"
+          ]
+        );
 
-        const onHand =
-          onHandKey ? numberValue(record[onHandKey]) : null;
+        const onHand = onHandKey
+          ? numberValue(record[onHandKey])
+          : null;
 
-        const ats =
-          atsKey ? numberValue(record[atsKey]) : null;
+        const ats = atsKey
+          ? numberValue(record[atsKey])
+          : null;
 
         if (onHand !== null && ats !== null) {
           return onHand + ats;
         }
 
-        if (onHand !== null) {
-          return onHand;
-        }
-
-        if (ats !== null) {
-          return ats;
-        }
-
-        return null;
+        return onHand ?? ats;
       }
 
-      function findFirstKey(keyLookup, aliases) {
-        for (const alias of aliases) {
-          if (keyLookup.has(alias)) {
-            return keyLookup.get(alias);
+      function normalizeKey(value) {
+        return String(value || "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "");
+      }
+
+      function findKey(map, names) {
+        for (const name of names) {
+          if (map.has(name)) {
+            return map.get(name);
           }
         }
 
@@ -2914,7 +3029,10 @@
         showToast("Outlook settings saved.");
       }
 
-      function openOutlook(event) {
+      function openOutlookEmail(event) {
+        const inventoryStatus =
+          getInventoryStatus(event);
+
         const recipients =
           event.recipients ||
           emailSettings.defaultRecipients ||
@@ -2929,7 +3047,7 @@
           emailSettings.organizationDomain &&
           recipientList.length
         ) {
-          const invalidRecipients =
+          const externalRecipients =
             recipientList.filter((address) => {
               return !address
                 .toLowerCase()
@@ -2939,106 +3057,77 @@
             });
 
           if (
-            invalidRecipients.length &&
-            !window.confirm(
-              "Some recipients are outside the configured organization domain. Continue?"
+            externalRecipients.length &&
+            !confirm(
+              "Some recipients are outside the organization email domain. Continue?"
             )
           ) {
             return;
           }
         }
 
-        const inventoryStatus =
-          getEventInventoryStatus(event);
+        const itemsText =
+          buildEmailItems(event.items);
 
-        const lowItems = event.items.filter((item) => {
-          const quantity = numberValue(item.quantity);
-          const stock = numberValue(item.stock);
-
-          return (
-            quantity !== null &&
-            stock !== null &&
-            stock < quantity
-          );
-        });
-
-        const itemLines = event.items.length
-          ? event.items
-              .map((item) => {
-                const quantity =
-                  numberValue(item.quantity);
-
-                const stock =
-                  numberValue(item.stock);
-
-                const balance =
-                  quantity !== null && stock !== null
-                    ? stock - quantity
-                    : null;
-
-                return [
-                  `• Model#: ${item.model || "Not entered"}`,
-                  `  PO Quantity: ${
-                    quantity === null ? "Not entered" : quantity
-                  }`,
-                  `  Stock Available: ${
-                    stock === null ? "Not entered" : stock
-                  }`,
-                  `  After Allocation: ${
-                    balance === null ? "Not available" : balance
-                  }`,
-                  `  Inventory Status: ${
-                    quantity === null || stock === null
-                      ? "CHECK"
-                      : stock >= quantity
-                        ? "GOOD"
-                        : "LOW"
-                  }`
-                ].join("\n");
-              })
-              .join("\n\n")
-          : "No PO items entered.";
-
-        const subject = [
-          `Event Update`,
-          `PO ${event.poNumber}`,
-          event.customer,
-          formatDate(event.inHandsDate)
-        ].join(" | ");
+        const subject =
+          `Event Update | PO ${event.poNumber} | ` +
+          `${event.customer} | ${formatDate(
+            event.inHandsDate
+          )}`;
 
         const body = [
           "Hello,",
           "",
           "Please find the latest event update below.",
           "",
-          `Region: ${REGION_NAMES[region]}`,
+          "EVENT DETAILS",
+          "----------------------------------------",
           `PO#: ${event.poNumber}`,
           `Customer: ${event.customer}`,
-          `In-Hands Date: ${formatDate(event.inHandsDate)}`,
-          `Event Status: ${event.status}`,
           `Inventory Status: ${inventoryStatus}`,
-          `Owner: ${event.owner || "Not assigned"}`,
-          `Tracking Number: ${
-            event.trackingNumber || "Not available"
+          `In-Hands Date: ${formatDate(
+            event.inHandsDate
+          )}`,
+          `Current Status: ${event.status}`,
+          `Planning: ${
+            event.planning ||
+            "Planning not confirmed"
           }`,
+          `Customer Followed-Up Date: ${formatDate(
+            event.customerFollowedUpDate
+          )}`,
           "",
-          "PO ITEMS",
-          itemLines,
+          "ITEMS",
+          "----------------------------------------",
+          itemsText,
           "",
-          `Next Action: ${NEXT_ACTIONS[event.status]}`,
-          lowItems.length
-            ? `Inventory Attention Required: ${lowItems.length} low-stock model(s)`
-            : "Inventory Attention Required: None",
+          "LATEST NOTES",
+          "----------------------------------------",
+          event.notes || "No latest notes entered.",
           "",
-          "NOTES",
-          event.notes || "No additional notes.",
+          "ADDITIONAL INFORMATION",
+          "----------------------------------------",
+          `Region: ${REGION_NAMES[region]}`,
+          `Event Owner: ${
+            event.owner || "Not assigned"
+          }`,
+          `Tracking Number: ${
+            event.trackingNumber ||
+            "Not available"
+          }`,
+          `Next Action: ${
+            NEXT_ACTIONS[event.status] ||
+            "Review current event status"
+          }`,
           "",
           emailSettings.emailSignature || ""
         ].join("\n");
 
         const outlookUrl =
           "https://outlook.office.com/mail/deeplink/compose" +
-          `?to=${encodeURIComponent(recipientList.join(";"))}` +
+          `?to=${encodeURIComponent(
+            recipientList.join(";")
+          )}` +
           `&subject=${encodeURIComponent(subject)}` +
           `&body=${encodeURIComponent(body)}`;
 
@@ -3049,49 +3138,107 @@
         );
       }
 
+      function buildEmailItems(items) {
+        if (!items.length) {
+          return "No items entered.";
+        }
+
+        return items
+          .map((item, index) => {
+            const quantity =
+              numberValue(item.quantity);
+
+            const stock =
+              numberValue(item.stock);
+
+            const afterAllocation =
+              quantity !== null &&
+              stock !== null
+                ? stock - quantity
+                : null;
+
+            const itemStatus =
+              quantity === null ||
+              stock === null
+                ? "CHECK"
+                : stock >= quantity
+                  ? "GOOD"
+                  : "LOW";
+
+            return [
+              `${index + 1}. Model#: ${
+                item.model || "Not entered"
+              }`,
+              `   Quantity: ${
+                quantity === null
+                  ? "Not entered"
+                  : quantity
+              }`,
+              `   Stock Available: ${
+                stock === null
+                  ? "Not entered"
+                  : stock
+              }`,
+              `   Available After Allocation: ${
+                afterAllocation === null
+                  ? "Not available"
+                  : afterAllocation
+              }`,
+              `   Inventory Status: ${itemStatus}`
+            ].join("\n");
+          })
+          .join("\n\n");
+      }
+
       function exportEvents() {
         if (!events.length) {
           showToast("There are no events to export.");
           return;
         }
 
-        const rows = [
-          [
-            "Region",
-            "PO#",
-            "Customer",
-            "In-Hands Date",
-            "Event Status",
-            "Inventory Status",
-            "Owner",
-            "Tracking Number",
-            "Model#",
-            "PO Quantity",
-            "Stock Available",
-            "After Allocation",
-            "Item Status",
-            "Recipients",
-            "Notes",
-            "Last Updated"
-          ]
-        ];
+        const rows = [[
+          "Region",
+          "PO#",
+          "Customer",
+          "Inventory Status",
+          "In-Hands Date",
+          "Current Status",
+          "Planning",
+          "Customer Followed-Up Date",
+          "Model#",
+          "PO Quantity",
+          "Stock Available",
+          "Available After Allocation",
+          "Item Inventory Status",
+          "Owner",
+          "Tracking Number",
+          "Latest Notes",
+          "Recipients",
+          "Last Updated"
+        ]];
 
         events.forEach((event) => {
-          const items = event.items.length
-            ? event.items
-            : [{}];
+          const items =
+            event.items.length
+              ? event.items
+              : [{}];
 
           items.forEach((item) => {
-            const quantity = numberValue(item.quantity);
-            const stock = numberValue(item.stock);
+            const quantity =
+              numberValue(item.quantity);
+
+            const stock =
+              numberValue(item.stock);
 
             const balance =
-              quantity !== null && stock !== null
+              quantity !== null &&
+              stock !== null
                 ? stock - quantity
                 : "";
 
             const itemStatus =
-              quantity === null || stock === null
+              quantity === null ||
+              stock === null
                 ? "CHECK"
                 : stock >= quantity
                   ? "GOOD"
@@ -3101,18 +3248,20 @@
               region,
               event.poNumber,
               event.customer,
+              getInventoryStatus(event),
               event.inHandsDate,
               event.status,
-              getEventInventoryStatus(event),
-              event.owner,
-              event.trackingNumber,
+              event.planning,
+              event.customerFollowedUpDate,
               item.model || "",
               quantity ?? "",
               stock ?? "",
               balance,
               itemStatus,
-              event.recipients,
+              event.owner,
+              event.trackingNumber,
               event.notes,
+              event.recipients,
               event.updatedAt
             ]);
           });
@@ -3120,7 +3269,12 @@
 
         const csv = rows
           .map((row) =>
-            row.map(csvValue).join(",")
+            row
+              .map((value) =>
+                `"${String(value ?? "")
+                  .replace(/"/g, '""')}"`
+              )
+              .join(",")
           )
           .join("\r\n");
 
@@ -3128,10 +3282,14 @@
           type: "text/csv;charset=utf-8"
         });
 
-        const url = URL.createObjectURL(blob);
-        const link = document.createElement("a");
+        const url =
+          URL.createObjectURL(blob);
+
+        const link =
+          document.createElement("a");
 
         link.href = url;
+
         link.download =
           `Events_${region}_${new Date()
             .toISOString()
@@ -3142,12 +3300,6 @@
         link.remove();
 
         URL.revokeObjectURL(url);
-      }
-
-      function csvValue(value) {
-        const text = String(value ?? "");
-
-        return `"${text.replace(/"/g, '""')}"`;
       }
 
       function showToast(message) {
@@ -3172,15 +3324,17 @@
 
       window.eventTracker = {
         edit: editEvent,
+
         email(id) {
           const event = events.find(
             (record) => record.id === id
           );
 
           if (event) {
-            openOutlook(event);
+            openOutlookEmail(event);
           }
         },
+
         advance: advanceEvent
       };
     })();
