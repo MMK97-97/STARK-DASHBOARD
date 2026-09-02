@@ -1,396 +1,57 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1"
-  >
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <meta
     name="description"
-    content="Regional active brand and lead-time settings for Stark Premium"
+    content="Regional active brands and lead times for Stark Premium"
   >
 
-  <title>
-    Active Brands | Stark Regional Inventory
-  </title>
+  <title>Active Brands | Stark Regional Inventory</title>
 
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  >
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap"
     rel="stylesheet"
   >
 
-  <link
-    rel="stylesheet"
-    href="assets/styles.css"
-  >
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/inventory-ui.css">
 
-  <style>
-    .add-brand-panel {
-      margin-bottom: 16px;
-      padding: 18px;
-      border: 1px solid #d8e1ea;
-      border-radius: 14px;
-      background: #ffffff;
-      box-shadow: 0 10px 30px rgba(16, 35, 63, 0.08);
-    }
-
-    .add-brand-heading {
-      margin-bottom: 15px;
-    }
-
-    .add-brand-heading h2 {
-      margin: 0;
-      color: #10233f;
-      font-family: "Manrope", sans-serif;
-      font-size: 1.15rem;
-    }
-
-    .add-brand-heading p {
-      max-width: 720px;
-      margin: 6px 0 0;
-      color: #617087;
-      font-size: 0.84rem;
-      line-height: 1.5;
-    }
-
-    .add-brand-form {
-      display: grid;
-      grid-template-columns:
-        minmax(220px, 1.5fr)
-        minmax(180px, 1fr)
-        auto;
-      align-items: end;
-      gap: 10px;
-    }
-
-    .add-brand-form label {
-      display: flex;
-      flex-direction: column;
-      gap: 6px;
-      color: #617087;
-      font-size: 0.75rem;
-      font-weight: 700;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .add-brand-form input {
-      width: 100%;
-      min-height: 43px;
-      padding: 9px 11px;
-      border: 1px solid #b8c8d8;
-      border-radius: 7px;
-      outline: none;
-      color: #10233f;
-      background: #ffffff;
-      font-family: "DM Sans", sans-serif;
-      font-size: 0.9rem;
-      box-sizing: border-box;
-    }
-
-    .add-brand-form input:focus {
-      border-color: #0b8f87;
-      box-shadow: 0 0 0 3px rgba(11, 143, 135, 0.14);
-    }
-
-    .brand-form-status {
-      display: none;
-      margin: 12px 0 0;
-      padding: 9px 11px;
-      border-radius: 7px;
-      color: #09634a;
-      background: #dff5ea;
-      font-size: 0.8rem;
-      font-weight: 700;
-    }
-
-    .brand-form-status.visible {
-      display: block;
-    }
-
-    .brand-form-status.error {
-      color: #9a3440;
-      background: #ffe2e5;
-    }
-
-    .added-brand-panel {
-      margin-bottom: 16px;
-      padding: 0;
-      overflow: hidden;
-      border: 1px solid #d8e1ea;
-      border-radius: 14px;
-      background: #ffffff;
-      box-shadow: 0 10px 30px rgba(16, 35, 63, 0.08);
-    }
-
-    .added-brand-panel-heading {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-      padding: 16px 18px;
-      border-bottom: 1px solid #d8e1ea;
-    }
-
-    .added-brand-panel-heading h2 {
-      margin: 0;
-      color: #10233f;
-      font-family: "Manrope", sans-serif;
-      font-size: 1.05rem;
-    }
-
-    .added-brand-panel-heading p {
-      margin: 5px 0 0;
-      color: #617087;
-      font-size: 0.8rem;
-    }
-
-    .added-brand-count {
-      flex: 0 0 auto;
-      padding: 7px 10px;
-      border-radius: 999px;
-      color: #0b5f59;
-      background: #dff5f2;
-      font-size: 0.76rem;
-      font-weight: 700;
-    }
-
-    .added-brand-table-wrap {
-      width: 100%;
-      overflow-x: auto;
-    }
-
-    .added-brand-table {
-      width: 100%;
-      border-collapse: collapse;
-    }
-
-    .added-brand-table th {
-      padding: 11px 12px;
-      color: #ffffff;
-      background: #0b3158;
-      font-size: 0.72rem;
-      font-weight: 700;
-      text-align: left;
-      text-transform: uppercase;
-      letter-spacing: 0.05em;
-    }
-
-    .added-brand-table td {
-      padding: 11px 12px;
-      border-bottom: 1px solid #e1e8ef;
-      color: #10233f;
-      font-size: 0.84rem;
-      vertical-align: middle;
-    }
-
-    .added-brand-table tbody tr:last-child td {
-      border-bottom: 0;
-    }
-
-    .added-brand-table tbody tr:hover {
-      background: #f7fafc;
-    }
-
-    .added-brand-active {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: #10233f;
-      font-weight: 700;
-      cursor: pointer;
-    }
-
-    .added-brand-active input {
-      width: 18px;
-      height: 18px;
-      accent-color: #0b8f87;
-      cursor: pointer;
-    }
-
-    /*
-     * Lead-time editor with Save button.
-     */
-    .lead-time-editor {
-      display: flex;
-      width: 100%;
-      min-width: 280px;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .editable-lead-time,
-    .lead-time-input {
-      flex: 1 1 auto;
-      width: 100%;
-      min-width: 160px;
-      min-height: 39px;
-      padding: 8px 10px;
-      border: 1px solid #b8c8d8;
-      border-radius: 7px;
-      outline: none;
-      color: #10233f;
-      background: #ffffff;
-      font-family: "DM Sans", sans-serif;
-      font-size: 0.85rem;
-      box-sizing: border-box;
-    }
-
-    .editable-lead-time:hover,
-    .lead-time-input:hover {
-      border-color: #7892aa;
-    }
-
-    .editable-lead-time:focus,
-    .lead-time-input:focus {
-      border-color: #0b8f87;
-      box-shadow: 0 0 0 3px rgba(11, 143, 135, 0.14);
-    }
-
-    .lead-time-save-button {
-      flex: 0 0 auto;
-      min-width: 72px;
-      min-height: 39px;
-      padding: 8px 13px;
-      border: 1px solid #0b8f87;
-      border-radius: 7px;
-      color: #ffffff;
-      background: #0b8f87;
-      font-family: "DM Sans", sans-serif;
-      font-size: 0.78rem;
-      font-weight: 700;
-      cursor: pointer;
-      transition:
-        background 0.18s ease,
-        border-color 0.18s ease,
-        opacity 0.18s ease;
-    }
-
-    .lead-time-save-button:hover:not(:disabled) {
-      border-color: #076d67;
-      background: #076d67;
-    }
-
-    .lead-time-save-button:focus-visible {
-      outline: 3px solid rgba(11, 143, 135, 0.25);
-      outline-offset: 2px;
-    }
-
-    .lead-time-save-button:disabled {
-      border-color: #cbd5df;
-      color: #718096;
-      background: #edf2f6;
-      cursor: not-allowed;
-      opacity: 1;
-    }
-
-    .lead-time-save-button.saved {
-      border-color: #09634a;
-      color: #ffffff;
-      background: #09634a;
-    }
-
-    .custom-brand-empty {
-      padding: 24px;
-      color: #718096;
-      text-align: center;
-      font-size: 0.84rem;
-    }
-
-    .existing-brand-note {
-      margin: 10px 0 0;
-      color: #617087;
-      font-size: 0.78rem;
-      line-height: 1.45;
-    }
-
-    /*
-     * Give the editable lead-time column enough room
-     * for the input and Save button.
-     */
-    #brands-table td:last-child {
-      min-width: 310px;
-    }
-
-    @media (max-width: 760px) {
-      .add-brand-form {
-        grid-template-columns: 1fr;
-      }
-
-      .add-brand-form .button {
-        width: 100%;
-      }
-
-      .added-brand-panel-heading {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .lead-time-editor {
-        min-width: 240px;
-      }
-    }
-  </style>
-
-  <script
-    src="assets/inventory-core.js"
-    defer
-  ></script>
-
-  <script
-    src="assets/inventory-pages.js"
-    defer
-  ></script>
+  <script defer src="assets/inventory-core.js"></script>
+  <script defer src="assets/inventory-pages.js"></script>
 </head>
 
 <body data-page="brands">
-  <header class="inventory-header">
-    <a
-      class="inventory-brand"
-      href="index.html"
-    >
-      <span>S</span>
+  <header class="ui-header">
+    <a class="ui-brand" href="index.html">
+      <span class="ui-brand-mark">S</span>
 
-      <div>
+      <span class="ui-brand-copy">
         <small>Stark Premium</small>
         <strong>Regional Inventory</strong>
-      </div>
+      </span>
     </a>
 
-    <div class="inventory-header-actions">
-      <label>
-        Region
+    <div class="ui-header-actions">
+      <label class="ui-region-control">
+        <span>Region</span>
 
         <select id="region-select">
           <option value="US">US</option>
           <option value="EU">EU</option>
-          <option value="Canada">Canada</option>
+          <option value="Canada">CA</option>
         </select>
       </label>
 
-      <span
-        class="region-pill"
-        data-region-code
-      >
-        US
-      </span>
+      <span class="ui-region-pill" data-region-code>US</span>
 
       <a
-        class="button button-secondary"
+        class="ui-header-link"
         data-region-link
         href="index.html"
       >
@@ -399,17 +60,14 @@
     </div>
   </header>
 
-  <main class="inventory-main">
-    <nav
-      class="inventory-nav"
-      aria-label="Inventory analysis pages"
-    >
+  <main class="ui-main">
+    <nav class="ui-nav inventory-nav">
       <a
         class="inventory-overview-link"
         data-region-link
-        href="inventory.html"
+        href="index.html"
       >
-        Inventory Analysis
+        ← Back
       </a>
 
       <a
@@ -437,10 +95,10 @@
       </a>
 
       <a
+        class="active"
         data-inventory-page="brands"
         data-region-link
         href="active-brands.html"
-        class="active"
       >
         Active Brands
       </a>
@@ -454,142 +112,43 @@
       </a>
     </nav>
 
-    <section class="inventory-page-heading">
+    <section class="ui-page-hero">
       <div>
-        <p class="eyebrow">
-          Reorder scope •
-          <span data-region-name>
-            United States
-          </span>
+        <p class="ui-eyebrow">
+          Reorder scope ·
+          <span data-region-name>United States</span>
         </p>
 
         <h1>Active Brands</h1>
-      </div>
-
-      <div
-        class="file-status"
-        data-file-status
-      >
-        No Item Sales Report uploaded
-      </div>
-    </section>
-
-    <section class="add-brand-panel">
-      <div class="add-brand-heading">
-        <h2>Add a New Brand</h2>
 
         <p>
-          Add a brand and its supplier lead time for the selected
-          region. If the brand appears in a future Raw Report,
-          these settings will be applied automatically.
+          Control which brands are included in reorder analysis and maintain
+          the supplier lead time for each brand.
         </p>
       </div>
 
-      <div class="add-brand-form">
-        <label for="new-brand-name">
-          Brand Name
+      <aside class="ui-file-card">
+        <small>Current source report</small>
 
-          <input
-            id="new-brand-name"
-            type="text"
-            placeholder="Enter brand name"
-            autocomplete="off"
-          >
-        </label>
-
-        <label for="new-brand-lead-time">
-          Lead Time
-
-          <input
-            id="new-brand-lead-time"
-            type="text"
-            placeholder="Example: 2 weeks"
-            autocomplete="off"
-          >
-        </label>
-
-        <button
-          class="button button-primary"
-          id="add-new-brand"
-          type="button"
-        >
-          Add Brand
-        </button>
-      </div>
-
-      <p class="existing-brand-note">
-        If the brand already exists, entering it again will update
-        its lead time.
-      </p>
-
-      <div
-        class="brand-form-status"
-        id="brand-form-status"
-        role="status"
-        aria-live="polite"
-      ></div>
+        <strong class="file-status" data-file-status>
+          No Item Sales Report uploaded
+        </strong>
+      </aside>
     </section>
 
-    <section
-      class="added-brand-panel"
-      id="added-brand-panel"
-    >
-      <div class="added-brand-panel-heading">
-        <div>
-          <h2>Manually Added Brands</h2>
-
-          <p>
-            Change a lead time and click Save beside that brand.
-          </p>
-        </div>
-
-        <span
-          class="added-brand-count"
-          id="added-brand-count"
-        >
-          0 brands
-        </span>
-      </div>
-
-      <div class="added-brand-table-wrap">
-        <table class="added-brand-table">
-          <thead>
-            <tr>
-              <th>Included</th>
-              <th>Brand</th>
-              <th>Editable Lead Time</th>
-            </tr>
-          </thead>
-
-          <tbody id="added-brands-table"></tbody>
-        </table>
-      </div>
-    </section>
-
-    <section
-      class="data-empty"
-      data-empty-data
-    >
-      <strong>
-        No regional inventory data
-      </strong>
+    <section class="data-empty" data-empty-data>
+      <strong>No regional inventory data</strong>
 
       <p>
-        <a
-          data-region-link
-          href="raw-report.html"
-        >
-          Upload the Item Sales Report on the Raw Report page.
+        <a data-region-link href="raw-report.html">
+          Upload the source report on Raw Report.
         </a>
       </p>
     </section>
 
-    <div
-      data-requires-data
-      class="hidden"
-    >
+    <div class="hidden" data-requires-data>
       <section
-        class="inventory-filter-bar brand-filters"
+        class="ui-filter-bar inventory-filter-bar brand-filters"
       >
         <label class="wide-filter">
           Brand
@@ -626,27 +185,18 @@
         </button>
       </section>
 
-      <p
-        class="result-count"
-        id="brand-result-count"
-      ></p>
+      <p class="result-count" id="brand-result-count"></p>
 
       <section class="inventory-panel">
-        <div class="panel-heading">
+        <div class="ui-panel-heading">
           <div>
-            <p class="eyebrow">
-              Reorder eligibility
-            </p>
-
-            <h2>
-              Brand Controls and Editable Lead Times
-            </h2>
+            <p class="eyebrow">Reorder eligibility</p>
+            <h2>Brand Controls and Lead Times</h2>
           </div>
 
           <p>
-            Change a lead time and click the Save button beside
-            that brand. Inactive brands remain in the Raw Report
-            but are excluded from the Reorder Report.
+            Inactive brands remain visible in the Raw Report but are
+            excluded from the Reorder Report.
           </p>
         </div>
 
@@ -657,7 +207,7 @@
                 <th>Included</th>
                 <th>Active Brand</th>
                 <th class="num">Items</th>
-                <th>Editable Lead Time</th>
+                <th>Lead Time / Save</th>
               </tr>
             </thead>
 
@@ -667,692 +217,5 @@
       </section>
     </div>
   </main>
-
-  <script>
-    document.addEventListener(
-      "DOMContentLoaded",
-      async function () {
-        "use strict";
-
-        const SI =
-          window.StarkInventory;
-
-        if (!SI) return;
-
-        const region =
-          SI.getRegion();
-
-        const brandNameInput =
-          document.getElementById(
-            "new-brand-name"
-          );
-
-        const leadTimeInput =
-          document.getElementById(
-            "new-brand-lead-time"
-          );
-
-        const addButton =
-          document.getElementById(
-            "add-new-brand"
-          );
-
-        const status =
-          document.getElementById(
-            "brand-form-status"
-          );
-
-        const customTable =
-          document.getElementById(
-            "added-brands-table"
-          );
-
-        const customCount =
-          document.getElementById(
-            "added-brand-count"
-          );
-
-        const regularBrandsTable =
-          document.getElementById(
-            "brands-table"
-          );
-
-        let dataset = null;
-        let sourceBrands = [];
-
-        try {
-          dataset =
-            await SI.loadDataset(region);
-
-          sourceBrands = dataset
-            ? SI.unique(
-                dataset.rows.map(
-                  row => row.brand
-                )
-              )
-            : [];
-        } catch (_) {
-          dataset = null;
-          sourceBrands = [];
-        }
-
-        function showStatus(
-          message,
-          isError
-        ) {
-          status.textContent =
-            message;
-
-          status.classList.add(
-            "visible"
-          );
-
-          status.classList.toggle(
-            "error",
-            Boolean(isError)
-          );
-        }
-
-        function sourceBrandMatch(
-          brandName
-        ) {
-          const normalized =
-            brandName
-              .trim()
-              .toLowerCase();
-
-          return sourceBrands.find(
-            brand =>
-              brand
-                .trim()
-                .toLowerCase() ===
-              normalized
-          );
-        }
-
-        function savedBrandMatch(
-          settings,
-          brandName
-        ) {
-          const normalized =
-            brandName
-              .trim()
-              .toLowerCase();
-
-          return Object.keys(
-            settings
-          ).find(
-            brand =>
-              brand
-                .trim()
-                .toLowerCase() ===
-              normalized
-          );
-        }
-
-        function saveBrandLeadTime(
-          brand,
-          leadTime
-        ) {
-          const settings =
-            SI.loadBrandSettings(
-              region
-            );
-
-          settings[brand] =
-            settings[brand] || {
-              active: true,
-              leadTime: ""
-            };
-
-          settings[brand].leadTime =
-            leadTime;
-
-          SI.saveBrandSettings(
-            region,
-            settings
-          );
-        }
-
-        function saveCustomBrand(
-          brand,
-          changes
-        ) {
-          const settings =
-            SI.loadBrandSettings(
-              region
-            );
-
-          settings[brand] = {
-            active:
-              settings[brand]
-                ? settings[brand]
-                    .active !== false
-                : true,
-
-            leadTime:
-              settings[brand]
-                ? settings[brand]
-                    .leadTime || ""
-                : "",
-
-            ...changes
-          };
-
-          SI.saveBrandSettings(
-            region,
-            settings
-          );
-        }
-
-        function setButtonSaved(
-          button
-        ) {
-          button.disabled = true;
-          button.textContent = "Saved";
-          button.classList.add(
-            "saved"
-          );
-
-          window.setTimeout(
-            function () {
-              button.textContent =
-                "Save";
-
-              button.classList.remove(
-                "saved"
-              );
-            },
-            1400
-          );
-        }
-
-        /*
-         * Add Save buttons to all brands generated by
-         * assets/inventory-pages.js.
-         */
-        function decorateRegularBrandLeadTimes() {
-          if (!regularBrandsTable) {
-            return;
-          }
-
-          const inputs =
-            regularBrandsTable
-              .querySelectorAll(
-                "[data-brand-lead]"
-              );
-
-          inputs.forEach(input => {
-            if (
-              input.dataset
-                .saveButtonAdded ===
-              "true"
-            ) {
-              return;
-            }
-
-            input.dataset
-              .saveButtonAdded =
-              "true";
-
-            input.dataset.savedValue =
-              input.value.trim();
-
-            /*
-             * Prevent the old automatic change event from
-             * saving before the new Save button is clicked.
-             */
-            input.addEventListener(
-              "change",
-              function (event) {
-                event.stopImmediatePropagation();
-              },
-              true
-            );
-
-            const parent =
-              input.parentElement;
-
-            const editor =
-              document.createElement(
-                "div"
-              );
-
-            editor.className =
-              "lead-time-editor";
-
-            parent.insertBefore(
-              editor,
-              input
-            );
-
-            editor.appendChild(input);
-
-            const saveButton =
-              document.createElement(
-                "button"
-              );
-
-            saveButton.type =
-              "button";
-
-            saveButton.className =
-              "lead-time-save-button";
-
-            saveButton.textContent =
-              "Save";
-
-            saveButton.disabled = true;
-
-            editor.appendChild(
-              saveButton
-            );
-
-            input.addEventListener(
-              "input",
-              function () {
-                const changed =
-                  input.value.trim() !==
-                  input.dataset
-                    .savedValue;
-
-                saveButton.disabled =
-                  !changed;
-
-                saveButton.textContent =
-                  "Save";
-
-                saveButton.classList.remove(
-                  "saved"
-                );
-              }
-            );
-
-            saveButton.addEventListener(
-              "click",
-              function () {
-                const brand =
-                  input.dataset
-                    .brandLead;
-
-                const newLeadTime =
-                  input.value.trim();
-
-                saveBrandLeadTime(
-                  brand,
-                  newLeadTime
-                );
-
-                input.dataset
-                  .savedValue =
-                  newLeadTime;
-
-                setButtonSaved(
-                  saveButton
-                );
-              }
-            );
-          });
-        }
-
-        const regularTableObserver =
-          new MutationObserver(
-            function () {
-              decorateRegularBrandLeadTimes();
-            }
-          );
-
-        if (regularBrandsTable) {
-          regularTableObserver.observe(
-            regularBrandsTable,
-            {
-              childList: true,
-              subtree: true
-            }
-          );
-
-          decorateRegularBrandLeadTimes();
-        }
-
-        function getManuallyAddedBrands() {
-          const settings =
-            SI.loadBrandSettings(
-              region
-            );
-
-          const sourceBrandNames =
-            new Set(
-              sourceBrands.map(
-                brand =>
-                  brand
-                    .trim()
-                    .toLowerCase()
-              )
-            );
-
-          return Object.entries(
-            settings
-          )
-            .filter(
-              ([brand]) =>
-                !sourceBrandNames.has(
-                  brand
-                    .trim()
-                    .toLowerCase()
-                )
-            )
-            .map(
-              ([brand, values]) => ({
-                brand,
-
-                active:
-                  values.active !==
-                  false,
-
-                leadTime:
-                  values.leadTime ||
-                  ""
-              })
-            )
-            .sort(
-              (first, second) =>
-                first.brand.localeCompare(
-                  second.brand
-                )
-            );
-        }
-
-        function renderCustomBrands() {
-          const brands =
-            getManuallyAddedBrands();
-
-          customCount.textContent =
-            `${brands.length} ${
-              brands.length === 1
-                ? "brand"
-                : "brands"
-            }`;
-
-          if (!brands.length) {
-            customTable.innerHTML = `
-              <tr>
-                <td colspan="3">
-                  <div class="custom-brand-empty">
-                    No manually added brands for this region.
-                  </div>
-                </td>
-              </tr>
-            `;
-
-            return;
-          }
-
-          customTable.innerHTML =
-            brands.map(item => `
-              <tr>
-                <td>
-                  <label class="added-brand-active">
-                    <input
-                      type="checkbox"
-                      data-custom-brand-active="${SI.escapeHtml(item.brand)}"
-                      ${item.active ? "checked" : ""}
-                    >
-
-                    <span>Active</span>
-                  </label>
-                </td>
-
-                <td>
-                  <strong>
-                    ${SI.escapeHtml(item.brand)}
-                  </strong>
-                </td>
-
-                <td>
-                  <div class="lead-time-editor">
-                    <input
-                      class="editable-lead-time"
-                      type="text"
-                      data-custom-brand-lead="${SI.escapeHtml(item.brand)}"
-                      data-saved-value="${SI.escapeHtml(item.leadTime)}"
-                      value="${SI.escapeHtml(item.leadTime)}"
-                      placeholder="Example: 2 weeks"
-                    >
-
-                    <button
-                      class="lead-time-save-button"
-                      type="button"
-                      data-custom-brand-save="${SI.escapeHtml(item.brand)}"
-                      disabled
-                    >
-                      Save
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            `).join("");
-
-          document
-            .querySelectorAll(
-              "[data-custom-brand-active]"
-            )
-            .forEach(input => {
-              input.addEventListener(
-                "change",
-                function () {
-                  const brand =
-                    input.dataset
-                      .customBrandActive;
-
-                  saveCustomBrand(
-                    brand,
-                    {
-                      active:
-                        input.checked
-                    }
-                  );
-                }
-              );
-            });
-
-          document
-            .querySelectorAll(
-              "[data-custom-brand-lead]"
-            )
-            .forEach(input => {
-              const brand =
-                input.dataset
-                  .customBrandLead;
-
-              const saveButton =
-                Array.from(
-                  document.querySelectorAll(
-                    "[data-custom-brand-save]"
-                  )
-                ).find(
-                  button =>
-                    button.dataset
-                      .customBrandSave ===
-                    brand
-                );
-
-              if (!saveButton) {
-                return;
-              }
-
-              input.addEventListener(
-                "input",
-                function () {
-                  const changed =
-                    input.value.trim() !==
-                    input.dataset
-                      .savedValue;
-
-                  saveButton.disabled =
-                    !changed;
-
-                  saveButton.textContent =
-                    "Save";
-
-                  saveButton.classList.remove(
-                    "saved"
-                  );
-                }
-              );
-
-              saveButton.addEventListener(
-                "click",
-                function () {
-                  const newLeadTime =
-                    input.value.trim();
-
-                  saveCustomBrand(
-                    brand,
-                    {
-                      leadTime:
-                        newLeadTime
-                    }
-                  );
-
-                  input.dataset
-                    .savedValue =
-                    newLeadTime;
-
-                  setButtonSaved(
-                    saveButton
-                  );
-                }
-              );
-            });
-        }
-
-        function addOrUpdateBrand() {
-          const enteredBrand =
-            brandNameInput
-              .value
-              .trim();
-
-          const enteredLeadTime =
-            leadTimeInput
-              .value
-              .trim();
-
-          if (!enteredBrand) {
-            showStatus(
-              "Enter a brand name.",
-              true
-            );
-
-            brandNameInput.focus();
-
-            return;
-          }
-
-          if (!enteredLeadTime) {
-            showStatus(
-              "Enter the supplier lead time.",
-              true
-            );
-
-            leadTimeInput.focus();
-
-            return;
-          }
-
-          const settings =
-            SI.loadBrandSettings(
-              region
-            );
-
-          const sourceMatch =
-            sourceBrandMatch(
-              enteredBrand
-            );
-
-          const savedMatch =
-            savedBrandMatch(
-              settings,
-              enteredBrand
-            );
-
-          const brandName =
-            sourceMatch ||
-            savedMatch ||
-            enteredBrand;
-
-          settings[brandName] = {
-            active:
-              settings[brandName]
-                ? settings[brandName]
-                    .active !== false
-                : true,
-
-            leadTime:
-              enteredLeadTime
-          };
-
-          SI.saveBrandSettings(
-            region,
-            settings
-          );
-
-          brandNameInput.value = "";
-          leadTimeInput.value = "";
-
-          if (sourceMatch) {
-            showStatus(
-              `${sourceMatch} lead time updated to ${enteredLeadTime}.`,
-              false
-            );
-
-            window.setTimeout(
-              function () {
-                location.reload();
-              },
-              500
-            );
-
-            return;
-          }
-
-          showStatus(
-            `${brandName} added with a lead time of ${enteredLeadTime}.`,
-            false
-          );
-
-          renderCustomBrands();
-
-          brandNameInput.focus();
-        }
-
-        addButton.addEventListener(
-          "click",
-          addOrUpdateBrand
-        );
-
-        brandNameInput.addEventListener(
-          "keydown",
-          function (event) {
-            if (event.key === "Enter") {
-              event.preventDefault();
-              addOrUpdateBrand();
-            }
-          }
-        );
-
-        leadTimeInput.addEventListener(
-          "keydown",
-          function (event) {
-            if (event.key === "Enter") {
-              event.preventDefault();
-              addOrUpdateBrand();
-            }
-          }
-        );
-
-        renderCustomBrands();
-      }
-    );
-  </script>
 </body>
 </html>
