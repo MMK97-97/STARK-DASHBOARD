@@ -1,247 +1,63 @@
 <!doctype html>
 <html lang="en">
 <head>
-  <meta charset="utf-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width,initial-scale=1"
-  >
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <meta
     name="description"
-    content="Regional inventory analysis for Stark Premium"
+    content="Regional reorder report for Stark Premium"
   >
 
-  <title>
-    Reorder Report | Stark Regional Inventory
-  </title>
+  <title>Reorder Report | Stark Regional Inventory</title>
 
-  <link
-    rel="preconnect"
-    href="https://fonts.googleapis.com"
-  >
-
-  <link
-    rel="preconnect"
-    href="https://fonts.gstatic.com"
-    crossorigin
-  >
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap"
     rel="stylesheet"
   >
 
-  <link
-    rel="stylesheet"
-    href="assets/styles.css"
-  >
+  <link rel="stylesheet" href="assets/styles.css">
+  <link rel="stylesheet" href="assets/inventory-ui.css">
 
-  <style>
-    /*
-     * Hide these five data columns completely:
-     *
-     * Column 13: Earlier start date
-     * Column 14: Latest End Date
-     * Column 15: Reorder Reason
-     * Column 16: Raw Row
-     * Column 17: Sort Rank
-     */
-    #reorder-table td:nth-child(n + 13) {
-      display: none !important;
-    }
-
-    .report-table-panel .wide-reorder-table {
-      width: 100%;
-      min-width: 1400px;
-      table-layout: auto;
-      border-collapse: collapse;
-    }
-
-    /*
-     * Dark, bright and readable headers.
-     */
-    .report-table-panel .wide-reorder-table thead th {
-      padding: 10px 7px;
-      color: #ffffff !important;
-      background: #0b3158 !important;
-      border-right: 1px solid rgba(255, 255, 255, 0.22);
-      border-bottom: 2px solid #071f38;
-      font-size: 0.72rem;
-      font-weight: 700;
-      line-height: 1.25;
-      text-align: center;
-      vertical-align: top;
-      white-space: normal !important;
-      opacity: 1 !important;
-    }
-
-    .report-table-panel .wide-reorder-table thead th:last-child {
-      border-right: 0;
-    }
-
-    .reorder-header-label {
-      display: flex;
-      min-height: 38px;
-      align-items: center;
-      justify-content: center;
-      color: #ffffff;
-      font-weight: 700;
-      text-align: center;
-    }
-
-    /*
-     * Excel-style drop-down filter.
-     */
-    .reorder-column-filter {
-      display: block;
-      width: 100%;
-      min-width: 80px;
-      height: 31px;
-      margin-top: 7px;
-      padding: 5px 26px 5px 7px;
-      border: 1px solid #d5e0ea;
-      border-radius: 5px;
-      outline: none;
-      color: #10233f;
-      background-color: #ffffff;
-      font-family: "DM Sans", sans-serif;
-      font-size: 0.72rem;
-      font-weight: 600;
-      line-height: 1;
-      text-transform: none;
-      letter-spacing: normal;
-      cursor: pointer;
-      box-sizing: border-box;
-    }
-
-    .reorder-column-filter:hover {
-      border-color: #72e0d4;
-    }
-
-    .reorder-column-filter:focus {
-      border-color: #72e0d4;
-      box-shadow: 0 0 0 2px rgba(114, 224, 212, 0.3);
-    }
-
-    /*
-     * Remaining visible column widths.
-     */
-    .wide-reorder-table th:nth-child(1) {
-      min-width: 125px;
-    }
-
-    .wide-reorder-table th:nth-child(2) {
-      min-width: 130px;
-    }
-
-    .wide-reorder-table th:nth-child(3) {
-      min-width: 255px;
-    }
-
-    .wide-reorder-table th:nth-child(4) {
-      min-width: 105px;
-    }
-
-    .wide-reorder-table th:nth-child(5) {
-      min-width: 145px;
-    }
-
-    .wide-reorder-table th:nth-child(6) {
-      min-width: 90px;
-    }
-
-    .wide-reorder-table th:nth-child(7) {
-      min-width: 120px;
-    }
-
-    .wide-reorder-table th:nth-child(8) {
-      min-width: 125px;
-    }
-
-    .wide-reorder-table th:nth-child(9) {
-      min-width: 185px;
-    }
-
-    .wide-reorder-table th:nth-child(10) {
-      min-width: 135px;
-    }
-
-    .wide-reorder-table th:nth-child(11) {
-      min-width: 145px;
-    }
-
-    .wide-reorder-table th:nth-child(12) {
-      min-width: 115px;
-    }
-
-    .wide-reorder-table tbody td {
-      padding: 10px 8px;
-      line-height: 1.35;
-      vertical-align: middle;
-    }
-
-    .wide-reorder-table tbody td:nth-child(3) {
-      min-width: 255px;
-    }
-
-    .wide-reorder-table tbody td:nth-child(9) {
-      min-width: 185px;
-      white-space: normal;
-    }
-  </style>
+  <script defer src="assets/jszip.min.js"></script>
+  <script defer src="assets/inventory-core.js"></script>
+  <script defer src="assets/inventory-pages.js"></script>
 
   <script
-    src="assets/inventory-core.js"
     defer
-  ></script>
-
-  <script
-    src="assets/inventory-pages.js"
-    defer
-  ></script>
-
-  <script
-    src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
-    async
+    src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"
   ></script>
 </head>
 
 <body data-page="reorder">
-  <header class="inventory-header">
-    <a
-      class="inventory-brand"
-      href="index.html"
-    >
-      <span>S</span>
+  <header class="ui-header">
+    <a class="ui-brand" href="index.html">
+      <span class="ui-brand-mark">S</span>
 
-      <div>
+      <span class="ui-brand-copy">
         <small>Stark Premium</small>
         <strong>Regional Inventory</strong>
-      </div>
+      </span>
     </a>
 
-    <div class="inventory-header-actions">
-      <label>
-        Region
+    <div class="ui-header-actions">
+      <label class="ui-region-control">
+        <span>Region</span>
 
         <select id="region-select">
           <option value="US">US</option>
           <option value="EU">EU</option>
-          <option value="Canada">Canada</option>
+          <option value="Canada">CA</option>
         </select>
       </label>
 
-      <span
-        class="region-pill"
-        data-region-code
-      >
-        US
-      </span>
+      <span class="ui-region-pill" data-region-code>US</span>
 
       <a
-        class="button button-secondary"
+        class="ui-header-link"
         data-region-link
         href="index.html"
       >
@@ -250,17 +66,14 @@
     </div>
   </header>
 
-  <main class="inventory-main">
-    <nav
-      class="inventory-nav"
-      aria-label="Inventory analysis pages"
-    >
+  <main class="ui-main">
+    <nav class="ui-nav inventory-nav">
       <a
         class="inventory-overview-link"
         data-region-link
-        href="inventory.html"
+        href="index.html"
       >
-        Inventory Analysis
+        ← Back
       </a>
 
       <a
@@ -280,10 +93,10 @@
       </a>
 
       <a
+        class="active"
         data-inventory-page="reorder"
         data-region-link
         href="reorder-report.html"
-        class="active"
       >
         Reorder Report
       </a>
@@ -305,54 +118,46 @@
       </a>
     </nav>
 
-    <section class="inventory-page-heading">
+    <section class="ui-page-hero">
       <div>
-        <p class="eyebrow">
-          Inventory action •
-          <span data-region-name>
-            United States
-          </span>
+        <p class="ui-eyebrow">
+          Inventory action ·
+          <span data-region-name>United States</span>
         </p>
 
         <h1>Reorder Report</h1>
+
+        <p>
+          Review active-brand items that meet the configured stock, demand
+          or supplier delivery reorder rules.
+        </p>
       </div>
 
-      <div
-        class="file-status"
-        data-file-status
-      >
-        No Item Sales Report uploaded
-      </div>
+      <aside class="ui-file-card">
+        <small>Current source report</small>
+
+        <strong class="file-status" data-file-status>
+          No Item Sales Report uploaded
+        </strong>
+      </aside>
     </section>
 
-    <section
-      class="data-empty"
-      data-empty-data
-    >
-      <strong>
-        No regional inventory data
-      </strong>
+    <section class="data-empty" data-empty-data>
+      <strong>No regional inventory data</strong>
 
       <p>
-        <a
-          data-region-link
-          href="raw-report.html"
-        >
+        <a data-region-link href="raw-report.html">
           Upload the source file on Raw Report.
         </a>
       </p>
     </section>
 
-    <div
-      data-requires-data
-      class="hidden"
-    >
+    <div class="hidden" data-requires-data>
       <section
-        class="inventory-filter-bar reorder-filters"
+        class="ui-filter-bar inventory-filter-bar reorder-filters"
       >
         <label>
           Brand
-
           <select id="reorder-brand"></select>
         </label>
 
@@ -383,199 +188,40 @@
         </button>
       </section>
 
-      <p
-        class="result-count"
-        id="reorder-result-count"
-      ></p>
+      <p class="result-count" id="reorder-result-count"></p>
 
-      <section
-        class="inventory-panel report-table-panel"
-      >
-        <div class="reorder-title">
-          Reorder Report - Dynamic Active Brands /
-          Status: LIVE, FASHION, BACKORDER /
-          Reorder Required Only
+      <section class="inventory-panel report-table-panel">
+        <div class="ui-report-banner">
+          Reorder Report — Active Brands / Status: LIVE, FASHION,
+          BACKORDER / Reorder Required Only
         </div>
 
-        <div class="reorder-note">
-          Add brands in ACTIVE BRANDS column A.
-          Report updates dynamically from RAW REPORT
-          after recalculation.
+        <div class="ui-report-note">
+          Active Brands controls which brands are included. The report
+          recalculates from the current Raw Report and regional settings.
         </div>
 
-        <div
-          class="inventory-table-wrap inventory-long-table"
-        >
+        <div class="inventory-table-wrap inventory-long-table">
           <table class="wide-reorder-table">
             <thead>
               <tr>
-                <th>
-                  <span class="reorder-header-label">
-                    Model#
-                  </span>
-
-                  <select
-                    class="reorder-column-filter"
-                    data-column="0"
-                    aria-label="Filter Model number"
-                  >
-                    <option value="">All</option>
-                  </select>
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    Brand
-                  </span>
-
-                  <select
-                    class="reorder-column-filter"
-                    data-column="1"
-                    aria-label="Filter Brand"
-                  >
-                    <option value="">All</option>
-                  </select>
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    Item Title
-                  </span>
-
-                  <select
-                    class="reorder-column-filter"
-                    data-column="2"
-                    aria-label="Filter Item Title"
-                  >
-                    <option value="">All</option>
-                  </select>
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    Status
-                  </span>
-
-                  <select
-                    class="reorder-column-filter"
-                    data-column="3"
-                    aria-label="Filter Status"
-                  >
-                    <option value="">All</option>
-                  </select>
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    OPEN ORDERS FROM CLIENT
-                  </span>
-
-                  <select
-                    class="reorder-column-filter"
-                    data-column="4"
-                    aria-label="Filter Open Orders From Client"
-                  >
-                    <option value="">All</option>
-                  </select>
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    ON HAND
-                  </span>
-
-                  <select
-                    class="reorder-column-filter"
-                    data-column="5"
-                    aria-label="Filter On Hand"
-                  >
-                    <option value="">All</option>
-                  </select>
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    Stock Available
-                  </span>
-
-                  <select
-                    class="reorder-column-filter"
-                    data-column="6"
-                    aria-label="Filter Stock Available"
-                  >
-                    <option value="">All</option>
-                  </select>
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    Open Supplier Qty
-                  </span>
-
-                  <select
-                    class="reorder-column-filter"
-                    data-column="7"
-                    aria-label="Filter Open Supplier Quantity"
-                  >
-                    <option value="">All</option>
-                  </select>
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    Supplier Delivery Window
-                  </span>
-
-                  <select
-                    class="reorder-column-filter"
-                    data-column="8"
-                    aria-label="Filter Supplier Delivery Window"
-                  >
-                    <option value="">All</option>
-                  </select>
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    Days Until Supplier Delivery
-                  </span>
-
-                  <select
-                    class="reorder-column-filter"
-                    data-column="9"
-                    aria-label="Filter Days Until Supplier Delivery"
-                  >
-                    <option value="">All</option>
-                  </select>
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    Recommended Reorder Qty
-                  </span>
-
-                  <select
-                    class="reorder-column-filter"
-                    data-column="10"
-                    aria-label="Filter Recommended Reorder Quantity"
-                  >
-                    <option value="">All</option>
-                  </select>
-                </th>
-
-                <th>
-                  <span class="reorder-header-label">
-                    Reorder Status
-                  </span>
-
-                  <select
-                    class="reorder-column-filter"
-                    data-column="11"
-                    aria-label="Filter Reorder Status"
-                  >
-                    <option value="">All</option>
-                  </select>
-                </th>
+                <th>Model#</th>
+                <th>Brand</th>
+                <th>Item Title</th>
+                <th>Status</th>
+                <th>OPEN ORDERS FROM CLIENT</th>
+                <th>ON HAND</th>
+                <th>Stock Available</th>
+                <th>Open Supplier Qty</th>
+                <th>Supplier Delivery Window</th>
+                <th>Days Until Supplier Delivery</th>
+                <th>Recommended Reorder Qty</th>
+                <th>Reorder Status</th>
+                <th>Earlier start date</th>
+                <th>Latest End Date</th>
+                <th>Reorder Reason</th>
+                <th>Raw Row</th>
+                <th>Sort Rank</th>
               </tr>
             </thead>
 
@@ -585,190 +231,5 @@
       </section>
     </div>
   </main>
-
-  <script>
-    (function () {
-      "use strict";
-
-      const tableBody =
-        document.getElementById(
-          "reorder-table"
-        );
-
-      const filterSelects =
-        Array.from(
-          document.querySelectorAll(
-            ".reorder-column-filter"
-          )
-        );
-
-      if (
-        !tableBody ||
-        !filterSelects.length
-      ) {
-        return;
-      }
-
-      function getDataRows() {
-        return Array.from(
-          tableBody.rows
-        ).filter(row =>
-          row.cells.length > 1
-        );
-      }
-
-      function sortFilterValues(
-        first,
-        second
-      ) {
-        return first.localeCompare(
-          second,
-          undefined,
-          {
-            numeric: true,
-            sensitivity: "base"
-          }
-        );
-      }
-
-      function populateFilterOptions() {
-        const rows = getDataRows();
-
-        filterSelects.forEach(
-          select => {
-            const column = Number(
-              select.dataset.column
-            );
-
-            const currentValue =
-              select.value;
-
-            const values =
-              Array.from(
-                new Set(
-                  rows
-                    .map(row => {
-                      const cell =
-                        row.cells[column];
-
-                      return cell
-                        ? cell.textContent.trim()
-                        : "";
-                    })
-                    .filter(Boolean)
-                )
-              ).sort(
-                sortFilterValues
-              );
-
-            select.innerHTML =
-              '<option value="">All</option>';
-
-            values.forEach(value => {
-              const option =
-                document.createElement(
-                  "option"
-                );
-
-              option.value = value;
-              option.textContent = value;
-
-              select.appendChild(option);
-            });
-
-            if (
-              currentValue &&
-              values.includes(
-                currentValue
-              )
-            ) {
-              select.value =
-                currentValue;
-            } else {
-              select.value = "";
-            }
-          }
-        );
-      }
-
-      function applyHeaderFilters() {
-        const activeFilters =
-          filterSelects
-            .map(select => ({
-              column: Number(
-                select.dataset.column
-              ),
-              value:
-                select.value
-                  .trim()
-                  .toLowerCase()
-            }))
-            .filter(filter =>
-              filter.value
-            );
-
-        getDataRows().forEach(row => {
-          const matches =
-            activeFilters.every(
-              filter => {
-                const cell =
-                  row.cells[
-                    filter.column
-                  ];
-
-                if (!cell) {
-                  return false;
-                }
-
-                const cellValue =
-                  cell.textContent
-                    .trim()
-                    .toLowerCase();
-
-                return (
-                  cellValue ===
-                  filter.value
-                );
-              }
-            );
-
-          row.hidden = !matches;
-        });
-      }
-
-      function refreshFilters() {
-        populateFilterOptions();
-        applyHeaderFilters();
-      }
-
-      filterSelects.forEach(select => {
-        select.addEventListener(
-          "change",
-          applyHeaderFilters
-        );
-
-        select.addEventListener(
-          "click",
-          event => {
-            event.stopPropagation();
-          }
-        );
-      });
-
-      const observer =
-        new MutationObserver(() => {
-          refreshFilters();
-        });
-
-      observer.observe(
-        tableBody,
-        {
-          childList: true
-        }
-      );
-
-      refreshFilters();
-    })();
-  </script>
 </body>
 </html>
