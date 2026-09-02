@@ -2,62 +2,27 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1, viewport-fit=cover"
-  >
-
-  <meta name="theme-color" content="#06182d">
-
-  <title>Events Live Command Center | Stark Premium</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <meta name="theme-color" content="#031426">
+  <title>Events Live Board | Stark Premium</title>
 
   <style>
     :root {
-      --navy-1000: #020d1a;
-      --navy-950: #041426;
+      --navy-950: #031426;
       --navy-900: #061d35;
       --navy-850: #082746;
-      --navy-800: #0c3459;
-      --navy-700: #164f78;
-
-      --teal: #1ed8c8;
-      --teal-dark: #00a99d;
-      --teal-soft: rgba(30, 216, 200, 0.12);
-
-      --cyan: #64e8f2;
-      --blue: #69aaff;
-      --purple: #c89bff;
-      --green: #3cde8d;
-      --amber: #ffc95b;
-      --red: #ff6c7b;
-
-      --text: #f2f8fc;
-      --text-soft: #d2e2ee;
-      --muted: #8fa9be;
-      --muted-2: #68869e;
-
-      --surface:
-        rgba(10, 37, 64, 0.82);
-
-      --surface-dark:
-        rgba(2, 18, 33, 0.5);
-
-      --surface-light:
-        rgba(255, 255, 255, 0.045);
-
-      --line:
-        rgba(180, 215, 236, 0.14);
-
-      --line-strong:
-        rgba(180, 215, 236, 0.22);
-
-      --shadow:
-        0 24px 70px rgba(0, 6, 16, 0.34);
-
-      --radius-xl: 26px;
-      --radius-lg: 20px;
-      --radius-md: 14px;
+      --navy-800: #0d365c;
+      --teal: #19d3c5;
+      --text: #eff8ff;
+      --muted: #9db3c7;
+      --line: rgba(179, 214, 235, 0.15);
+      --surface: rgba(10, 39, 66, 0.88);
+      --good: #39d98a;
+      --amber: #ffc857;
+      --danger: #ff6b78;
+      --blue: #64a8ff;
+      --purple: #c99bff;
+      --shadow: 0 24px 70px rgba(0, 7, 17, 0.36);
     }
 
     * {
@@ -70,42 +35,18 @@
       min-width: 320px;
       min-height: 100%;
       margin: 0;
-    }
-
-    html {
-      background: var(--navy-1000);
+      background: var(--navy-950);
     }
 
     body {
       min-height: 100vh;
-      min-height: 100svh;
       overflow: hidden;
       color: var(--text);
-      font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
+      font-family: Inter, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
-        radial-gradient(
-          circle at 87% -10%,
-          rgba(30, 216, 200, 0.19),
-          transparent 34%
-        ),
-        radial-gradient(
-          circle at -8% 90%,
-          rgba(64, 123, 189, 0.2),
-          transparent 32%
-        ),
-        linear-gradient(
-          135deg,
-          #020d1a 0%,
-          #061a30 48%,
-          #082a46 100%
-        );
+        radial-gradient(circle at 88% -15%, rgba(25, 211, 197, 0.2), transparent 35%),
+        radial-gradient(circle at -5% 90%, rgba(70, 143, 210, 0.18), transparent 32%),
+        linear-gradient(135deg, #031426, #071e35 50%, #082a45);
     }
 
     body::before {
@@ -113,26 +54,11 @@
       position: fixed;
       inset: 0;
       pointer-events: none;
-      opacity: 0.22;
+      opacity: 0.2;
       background-image:
-        linear-gradient(
-          rgba(255, 255, 255, 0.025) 1px,
-          transparent 1px
-        ),
-        linear-gradient(
-          90deg,
-          rgba(255, 255, 255, 0.025) 1px,
-          transparent 1px
-        );
+        linear-gradient(rgba(255,255,255,0.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,0.025) 1px, transparent 1px);
       background-size: 64px 64px;
-      mask-image:
-        linear-gradient(
-          to bottom,
-          transparent,
-          #000 15%,
-          #000 85%,
-          transparent
-        );
     }
 
     button,
@@ -141,6 +67,7 @@
     }
 
     button {
+      color: inherit;
       cursor: pointer;
     }
 
@@ -153,71 +80,49 @@
       z-index: 1;
       width: 100%;
       height: 100vh;
-      height: 100svh;
-      min-height: 640px;
-      padding:
-        12px
-        clamp(16px, 1.4vw, 28px)
-        10px;
+      min-height: 620px;
+      padding: 18px clamp(18px, 1.6vw, 32px) 12px;
       display: grid;
-      grid-template-rows:
-        66px
-        38px
-        102px
-        minmax(0, 1fr)
-        22px;
-      gap: 10px;
+      grid-template-rows: 72px minmax(0, 1fr) 24px;
+      gap: 14px;
     }
-
-    /* HEADER */
 
     .topbar {
       min-width: 0;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 20px;
+      gap: 24px;
     }
 
     .brand {
       min-width: 0;
       display: flex;
       align-items: center;
-      gap: 14px;
+      gap: 15px;
     }
 
     .brand-mark {
-      width: 54px;
-      height: 54px;
-      flex: 0 0 54px;
+      width: 58px;
+      height: 58px;
+      flex: 0 0 58px;
       display: grid;
       place-items: center;
-      border:
-        1px solid rgba(255, 255, 255, 0.14);
-      border-radius: 17px;
-      color: #ffffff;
-      font-size: 22px;
+      border: 1px solid rgba(255,255,255,0.14);
+      border-radius: 18px;
+      color: white;
+      font-size: 24px;
       font-weight: 950;
-      background:
-        linear-gradient(
-          145deg,
-          #0b3b65,
-          #167188
-        );
+      background: linear-gradient(145deg, #0c3b65, #176d87);
       box-shadow:
-        0 14px 34px rgba(0, 7, 17, 0.3),
-        inset 0 1px rgba(255, 255, 255, 0.12);
-    }
-
-    .brand-copy {
-      min-width: 0;
+        0 14px 34px rgba(0,8,18,0.32),
+        inset 0 1px rgba(255,255,255,0.12);
     }
 
     .brand-eyebrow {
       margin: 0 0 3px;
       color: var(--teal);
       font-size: 12px;
-      line-height: 1;
       font-weight: 900;
       letter-spacing: 0.2em;
       text-transform: uppercase;
@@ -225,40 +130,39 @@
 
     .brand-title {
       margin: 0;
-      overflow: hidden;
-      font-size: clamp(20px, 1.5vw, 29px);
-      line-height: 1.06;
-      font-weight: 880;
+      font-size: clamp(21px, 1.6vw, 30px);
+      line-height: 1;
+      font-weight: 900;
       letter-spacing: -0.035em;
-      text-overflow: ellipsis;
-      white-space: nowrap;
     }
 
-    .header-controls {
+    .topbar-right {
       min-width: 0;
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      gap: 9px;
+      gap: 10px;
     }
 
-    .header-surface {
-      min-height: 46px;
+    .live-pill,
+    .view-switch,
+    .region-control,
+    .clock-panel,
+    .header-button {
+      min-height: 50px;
       border: 1px solid var(--line);
-      border-radius: 14px;
-      background:
-        rgba(3, 20, 36, 0.7);
-      box-shadow:
-        inset 0 1px rgba(255, 255, 255, 0.04);
+      border-radius: 16px;
+      background: rgba(5,25,44,0.7);
+      box-shadow: inset 0 1px rgba(255,255,255,0.04);
       backdrop-filter: blur(16px);
     }
 
-    .live-status {
-      padding: 0 14px;
-      display: inline-flex;
+    .live-pill {
+      padding: 0 16px;
+      display: flex;
       align-items: center;
       gap: 9px;
-      color: #dffef9;
+      color: #dffdf9;
       font-size: 12px;
       font-weight: 900;
       letter-spacing: 0.08em;
@@ -268,59 +172,47 @@
     .live-dot {
       width: 9px;
       height: 9px;
-      border-radius: 999px;
-      background: var(--green);
+      border-radius: 50%;
+      background: var(--good);
       box-shadow:
-        0 0 0 6px rgba(60, 222, 141, 0.12),
-        0 0 17px rgba(60, 222, 141, 0.7);
-      animation:
-        livePulse
-        2s
-        ease-in-out
-        infinite;
+        0 0 0 6px rgba(57,217,138,0.12),
+        0 0 18px rgba(57,217,138,0.7);
+      animation: pulse 2s infinite;
     }
 
-    @keyframes livePulse {
-      0%,
-      100% {
-        opacity: 1;
-        transform: scale(1);
-      }
-
+    @keyframes pulse {
       50% {
-        opacity: 0.65;
-        transform: scale(0.75);
+        opacity: 0.55;
+        transform: scale(0.78);
       }
     }
 
     .view-switch {
       padding: 4px;
       display: flex;
-      align-items: center;
-      gap: 3px;
+      gap: 4px;
     }
 
     .view-button {
-      min-width: 65px;
-      height: 36px;
-      padding: 0 12px;
+      min-width: 70px;
+      height: 40px;
+      padding: 0 13px;
       border: 0;
-      border-radius: 10px;
+      border-radius: 12px;
       color: var(--muted);
+      background: transparent;
       font-size: 12px;
       font-weight: 850;
-      background: transparent;
     }
 
     .view-button.active {
-      color: var(--navy-1000);
+      color: #021a2b;
       background: var(--teal);
-      box-shadow:
-        0 8px 20px rgba(30, 216, 200, 0.2);
+      box-shadow: 0 8px 18px rgba(25,211,197,0.18);
     }
 
     .region-control {
-      padding: 0 9px 0 13px;
+      padding: 0 8px 0 14px;
       display: flex;
       align-items: center;
       gap: 8px;
@@ -330,36 +222,35 @@
       color: var(--muted);
       font-size: 11px;
       font-weight: 850;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.08em;
       text-transform: uppercase;
     }
 
     .region-control select {
-      min-width: 62px;
-      height: 36px;
+      min-width: 65px;
+      height: 38px;
       border: 0;
       outline: 0;
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 900;
+      color: white;
       background: transparent;
+      font-weight: 900;
     }
 
     .region-control option {
-      color: var(--navy-850);
-      background: #ffffff;
+      color: var(--navy-900);
+      background: white;
     }
 
     .clock-panel {
-      min-width: 145px;
-      padding: 6px 13px;
+      min-width: 160px;
+      padding: 7px 14px;
       display: grid;
       align-content: center;
       text-align: right;
     }
 
     .clock-time {
-      font-size: 15px;
+      font-size: 16px;
       line-height: 1;
       font-weight: 900;
       font-variant-numeric: tabular-nums;
@@ -369,646 +260,416 @@
       margin-top: 5px;
       color: var(--muted);
       font-size: 10px;
-      font-weight: 700;
+      font-weight: 750;
     }
 
-    .icon-button {
-      width: 46px;
-      flex: 0 0 46px;
+    .header-button {
+      width: 50px;
+      flex: 0 0 50px;
       display: grid;
       place-items: center;
-      border: 1px solid var(--line);
       color: var(--text);
     }
 
-    .icon-button:hover,
-    .icon-button:focus-visible {
-      border-color:
-        rgba(30, 216, 200, 0.4);
+    .header-button:hover,
+    .header-button:focus-visible {
+      border-color: rgba(25,211,197,0.48);
+      color: var(--teal);
       outline: none;
-      color: var(--teal);
-      background:
-        rgba(30, 216, 200, 0.1);
+      background: rgba(25,211,197,0.1);
     }
 
-    .icon-button svg {
-      width: 19px;
-      height: 19px;
+    .header-button svg {
+      width: 20px;
+      height: 20px;
     }
-
-    /* ALERT BAR */
-
-    .alert-bar {
-      min-width: 0;
-      overflow: hidden;
-      display: grid;
-      grid-template-columns:
-        auto
-        minmax(0, 1fr)
-        auto;
-      align-items: center;
-      gap: 12px;
-      border:
-        1px solid rgba(255, 201, 91, 0.18);
-      border-radius: 12px;
-      background:
-        linear-gradient(
-          90deg,
-          rgba(255, 201, 91, 0.11),
-          rgba(255, 108, 123, 0.07),
-          rgba(3, 20, 36, 0.48)
-        );
-    }
-
-    .alert-label {
-      height: 100%;
-      padding: 0 14px;
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      color: var(--amber);
-      font-size: 11px;
-      font-weight: 950;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
-      background:
-        rgba(255, 201, 91, 0.08);
-    }
-
-    .alert-label::before {
-      content: "";
-      width: 7px;
-      height: 7px;
-      border-radius: 999px;
-      background: currentColor;
-      box-shadow:
-        0 0 12px currentColor;
-    }
-
-    .alert-message {
-      min-width: 0;
-      margin: 0;
-      overflow: hidden;
-      color: var(--text-soft);
-      font-size: 12px;
-      font-weight: 720;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .alert-count {
-      padding-right: 13px;
-      color: var(--muted);
-      font-size: 11px;
-      font-weight: 800;
-      white-space: nowrap;
-    }
-
-    /* KPI */
-
-    .kpi-strip {
-      min-width: 0;
-      display: grid;
-      grid-template-columns:
-        repeat(6, minmax(0, 1fr));
-      overflow: hidden;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background:
-        rgba(7, 28, 49, 0.78);
-      box-shadow:
-        var(--shadow),
-        inset 0 1px rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(16px);
-    }
-
-    .kpi {
-      min-width: 0;
-      padding: 12px clamp(12px, 1vw, 20px);
-      display: grid;
-      grid-template-columns:
-        minmax(0, 1fr)
-        auto;
-      align-items: center;
-      gap: 10px;
-    }
-
-    .kpi + .kpi {
-      border-left: 1px solid var(--line);
-    }
-
-    .kpi-label {
-      margin: 0 0 6px;
-      overflow: hidden;
-      color: var(--muted);
-      font-size: clamp(10px, 0.62vw, 12px);
-      line-height: 1;
-      font-weight: 850;
-      letter-spacing: 0.08em;
-      text-overflow: ellipsis;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    .kpi-value {
-      margin: 0;
-      color: #ffffff;
-      font-size: clamp(25px, 1.8vw, 35px);
-      line-height: 0.9;
-      font-weight: 920;
-      letter-spacing: -0.05em;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .kpi-sub {
-      margin: 7px 0 0;
-      overflow: hidden;
-      color: var(--muted-2);
-      font-size: clamp(10px, 0.56vw, 11px);
-      font-weight: 740;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .kpi-icon {
-      width: 39px;
-      height: 39px;
-      display: grid;
-      place-items: center;
-      border-radius: 13px;
-      color: var(--teal);
-      background: var(--teal-soft);
-    }
-
-    .kpi-icon.blue {
-      color: var(--blue);
-      background:
-        rgba(105, 170, 255, 0.13);
-    }
-
-    .kpi-icon.amber {
-      color: var(--amber);
-      background:
-        rgba(255, 201, 91, 0.13);
-    }
-
-    .kpi-icon.red {
-      color: var(--red);
-      background:
-        rgba(255, 108, 123, 0.13);
-    }
-
-    .kpi-icon.green {
-      color: var(--green);
-      background:
-        rgba(60, 222, 141, 0.13);
-    }
-
-    .kpi-icon svg {
-      width: 19px;
-      height: 19px;
-    }
-
-    /* CONTENT */
 
     .content-grid {
       min-width: 0;
       min-height: 0;
       display: grid;
-      grid-template-columns:
-        minmax(0, 1.83fr)
-        minmax(315px, 0.7fr);
-      gap: 10px;
+      grid-template-columns: minmax(0, 1fr);
     }
-
-    .premium-card {
-      border: 1px solid var(--line);
-      background: var(--surface);
-      box-shadow:
-        var(--shadow),
-        inset 0 1px rgba(255, 255, 255, 0.04);
-      backdrop-filter: blur(18px);
-    }
-
-    /* EVENT SPOTLIGHT */
 
     .spotlight {
       position: relative;
       min-width: 0;
       min-height: 0;
       overflow: hidden;
-      padding: clamp(15px, 1.2vw, 23px);
+      padding: clamp(20px, 1.8vw, 34px);
       display: grid;
-      grid-template-rows:
-        auto
-        auto
-        auto
-        minmax(0, 1fr);
-      gap: clamp(9px, 1vh, 14px);
-      border-radius: var(--radius-xl);
+      grid-template-rows: auto auto auto minmax(0, 1fr);
+      gap: clamp(12px, 1.5vh, 19px);
+      border: 1px solid var(--line);
+      border-radius: 30px;
+      background:
+        radial-gradient(circle at 100% 0%, rgba(25,211,197,0.14), transparent 32rem),
+        linear-gradient(145deg, rgba(13,54,92,0.96), rgba(5,27,47,0.98));
+      box-shadow:
+        var(--shadow),
+        inset 0 1px rgba(255,255,255,0.05);
+      backdrop-filter: blur(18px);
     }
 
     .spotlight::after {
       content: "";
       position: absolute;
       z-index: -1;
-      top: -220px;
-      right: -180px;
-      width: 500px;
-      height: 500px;
-      border:
-        70px solid rgba(30, 216, 200, 0.045);
+      top: -250px;
+      right: -170px;
+      width: 520px;
+      height: 520px;
+      border: 74px solid rgba(25,211,197,0.045);
       border-radius: 50%;
     }
 
-    .event-header {
+    .event-head {
       min-width: 0;
       display: grid;
-      grid-template-columns:
-        minmax(0, 1fr)
-        auto
-        auto;
-      align-items: center;
-      gap: 15px;
+      grid-template-columns: minmax(0, 1fr) auto;
+      align-items: start;
+      gap: 20px;
     }
 
     .event-kicker {
-      margin: 0 0 6px;
+      margin: 0 0 8px;
       color: var(--teal);
       font-size: 11px;
       font-weight: 900;
-      letter-spacing: 0.15em;
+      letter-spacing: 0.17em;
       text-transform: uppercase;
     }
 
-    .po-row {
+    .po-line {
       min-width: 0;
       display: flex;
       align-items: baseline;
-      gap: 10px;
+      gap: 12px;
     }
 
-    .po-prefix {
+    .po-label {
       color: var(--muted);
-      font-size: clamp(14px, 0.9vw, 17px);
-      font-weight: 800;
+      font-size: clamp(15px, 1vw, 18px);
+      font-weight: 850;
     }
 
     .po-number {
       min-width: 0;
       margin: 0;
       overflow: hidden;
-      font-size: clamp(31px, 2.65vw, 51px);
-      line-height: 0.95;
+      color: white;
+      font-size: clamp(36px, 4vw, 70px);
+      line-height: 0.98;
       font-weight: 950;
       letter-spacing: -0.055em;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .customer-name {
-      margin: 7px 0 0;
+    .customer {
+      margin: 9px 0 0;
       overflow: hidden;
-      color: #cfe2ef;
-      font-size: clamp(15px, 1vw, 19px);
-      font-weight: 730;
+      color: #cde0ee;
+      font-size: clamp(18px, 1.5vw, 27px);
+      font-weight: 750;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
-    .event-badges {
-      max-width: 320px;
+    .badges {
       display: flex;
       flex-wrap: wrap;
       justify-content: flex-end;
-      gap: 7px;
+      gap: 8px;
     }
 
-    .badge {
-      min-height: 33px;
-      padding: 0 11px;
+    .badge,
+    .priority-badge {
+      min-height: 38px;
+      padding: 0 14px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       border: 1px solid transparent;
       border-radius: 999px;
       font-size: 10px;
-      font-weight: 900;
-      letter-spacing: 0.05em;
+      font-weight: 950;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
       white-space: nowrap;
     }
 
-    .badge::before {
+    .badge::before,
+    .priority-badge::before {
       content: "";
-      width: 6px;
-      height: 6px;
-      border-radius: 999px;
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      color: inherit;
       background: currentColor;
-      box-shadow:
-        0 0 11px currentColor;
+      box-shadow: 0 0 13px currentColor;
     }
 
     .badge-good,
     .badge-complete,
     .badge-shipped,
-    .badge-on-track {
-      border-color:
-        rgba(60, 222, 141, 0.24);
-      color: var(--green);
-      background:
-        rgba(60, 222, 141, 0.12);
+    .priority-on-track,
+    .priority-complete {
+      border-color: rgba(57,217,138,0.25);
+      color: var(--good);
+      background: rgba(57,217,138,0.12);
     }
 
     .badge-low,
-    .badge-critical,
-    .badge-cancelled {
-      border-color:
-        rgba(255, 108, 123, 0.26);
-      color: var(--red);
-      background:
-        rgba(255, 108, 123, 0.13);
+    .badge-cancelled,
+    .priority-critical {
+      border-color: rgba(255,107,120,0.28);
+      color: var(--danger);
+      background: rgba(255,107,120,0.13);
     }
 
     .badge-check,
     .badge-draft,
-    .badge-urgent {
-      border-color:
-        rgba(255, 201, 91, 0.26);
+    .priority-urgent {
+      border-color: rgba(255,200,87,0.27);
       color: var(--amber);
-      background:
-        rgba(255, 201, 91, 0.13);
+      background: rgba(255,200,87,0.13);
     }
 
     .badge-confirmed,
     .badge-ready-to-ship,
-    .badge-attention {
-      border-color:
-        rgba(105, 170, 255, 0.25);
+    .priority-attention {
+      border-color: rgba(100,168,255,0.27);
       color: var(--blue);
-      background:
-        rgba(105, 170, 255, 0.13);
+      background: rgba(100,168,255,0.13);
     }
 
     .badge-allocating {
-      border-color:
-        rgba(200, 155, 255, 0.25);
+      border-color: rgba(201,155,255,0.27);
       color: var(--purple);
-      background:
-        rgba(200, 155, 255, 0.13);
+      background: rgba(201,155,255,0.13);
     }
 
-    /* READINESS RING */
+    .event-overview {
+      min-width: 0;
+      display: grid;
+      grid-template-columns: minmax(220px, 0.75fr) minmax(190px, 0.65fr) minmax(300px, 1.4fr);
+      gap: 12px;
+    }
 
-    .readiness {
-      min-width: 95px;
-      display: flex;
+    .deadline-card,
+    .readiness-card,
+    .planning-card,
+    .meta-card,
+    .next-action-card,
+    .notes-card,
+    .items-panel {
+      border: 1px solid var(--line);
+      border-radius: 16px;
+      background: rgba(2,19,34,0.44);
+      box-shadow: inset 0 1px rgba(255,255,255,0.035);
+    }
+
+    .deadline-card,
+    .readiness-card,
+    .planning-card {
+      min-width: 0;
+      padding: 16px 18px;
+    }
+
+    .section-label {
+      margin: 0 0 8px;
+      color: var(--muted);
+      font-size: 10px;
+      line-height: 1;
+      font-weight: 900;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+    }
+
+    .deadline-date {
+      margin: 0;
+      overflow: hidden;
+      font-size: clamp(20px, 1.7vw, 30px);
+      line-height: 1.1;
+      font-weight: 900;
+      letter-spacing: -0.025em;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .deadline-message {
+      margin: 7px 0 0;
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 850;
+    }
+
+    .deadline-message.risk {
+      color: var(--danger);
+    }
+
+    .readiness-card {
+      display: grid;
+      grid-template-columns: auto minmax(0, 1fr);
       align-items: center;
-      justify-content: flex-end;
-      gap: 9px;
+      gap: 14px;
     }
 
     .readiness-ring {
       --score: 0;
       --ring-color: var(--teal);
       position: relative;
-      width: 58px;
-      height: 58px;
-      flex: 0 0 58px;
+      width: 68px;
+      height: 68px;
       display: grid;
       place-items: center;
-      border-radius: 999px;
+      border-radius: 50%;
       background:
         conic-gradient(
-          var(--ring-color)
-          calc(var(--score) * 1%),
-          rgba(255, 255, 255, 0.08) 0
+          var(--ring-color) calc(var(--score) * 1%),
+          rgba(255,255,255,0.08) 0
         );
-      box-shadow:
-        0 0 25px
-        rgba(30, 216, 200, 0.12);
     }
 
     .readiness-ring::after {
       content: "";
       position: absolute;
-      inset: 5px;
-      border-radius: inherit;
-      background: #08233d;
+      inset: 6px;
+      border-radius: 50%;
+      background: #08243e;
     }
 
-    .readiness-score {
+    .readiness-number {
       position: relative;
       z-index: 1;
-      font-size: 12px;
+      font-size: 15px;
       font-weight: 950;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .readiness-copy {
-      min-width: 0;
     }
 
     .readiness-label {
       margin: 0;
-      color: var(--muted);
-      font-size: 9px;
-      font-weight: 850;
-      letter-spacing: 0.08em;
-      text-transform: uppercase;
+      font-size: 17px;
+      font-weight: 900;
     }
 
-    .readiness-state {
-      margin: 4px 0 0;
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 850;
-      white-space: nowrap;
-    }
-
-    /* EVENT OVERVIEW */
-
-    .overview-grid {
-      min-width: 0;
-      display: grid;
-      grid-template-columns:
-        minmax(190px, 0.66fr)
-        minmax(0, 1.25fr)
-        minmax(210px, 0.82fr);
-      gap: 8px;
-    }
-
-    .info-card {
-      min-width: 0;
-      padding: 11px 13px;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      background: var(--surface-dark);
-    }
-
-    .info-card.action {
-      border-color:
-        rgba(30, 216, 200, 0.22);
-      background:
-        linear-gradient(
-          135deg,
-          rgba(30, 216, 200, 0.12),
-          rgba(2, 18, 33, 0.48)
-        );
-    }
-
-    .label {
-      margin: 0 0 6px;
+    .readiness-detail {
+      margin: 5px 0 0;
       color: var(--muted);
       font-size: 10px;
-      line-height: 1;
-      font-weight: 850;
-      letter-spacing: 0.1em;
-      text-transform: uppercase;
+      font-weight: 700;
     }
 
-    .deadline-value {
-      margin: 0;
-      overflow: hidden;
-      font-size: clamp(16px, 1.2vw, 22px);
-      line-height: 1.1;
-      font-weight: 880;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .deadline-status {
-      margin: 5px 0 0;
-      color: var(--teal);
-      font-size: 12px;
-      font-weight: 820;
-    }
-
-    .deadline-status.risk {
-      color: var(--red);
-    }
-
-    .planning-value,
-    .action-value {
+    .planning-value {
       margin: 0;
       display: -webkit-box;
       overflow: hidden;
-      color: var(--text-soft);
-      font-size: clamp(12px, 0.75vw, 14px);
-      line-height: 1.4;
-      font-weight: 700;
+      color: #e8f5fe;
+      font-size: clamp(16px, 1.25vw, 22px);
+      line-height: 1.35;
+      font-weight: 800;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
-    }
-
-    .action-value {
-      color: #ffffff;
-      font-weight: 820;
-    }
-
-    /* META AND NOTES */
-
-    .details-area {
-      min-width: 0;
     }
 
     .meta-grid {
       min-width: 0;
       display: grid;
-      grid-template-columns:
-        repeat(5, minmax(0, 1fr));
-      gap: 7px;
+      grid-template-columns: repeat(6, minmax(0, 1fr));
+      gap: 9px;
     }
 
     .meta-card {
       min-width: 0;
-      padding: 9px 11px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--surface-dark);
+      padding: 13px 14px;
     }
 
     .meta-value {
       margin: 0;
       overflow: hidden;
-      color: var(--text-soft);
-      font-size: clamp(11px, 0.67vw, 13px);
+      color: #e7f3fb;
+      font-size: clamp(12px, 0.8vw, 15px);
       line-height: 1.3;
-      font-weight: 740;
+      font-weight: 800;
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
+    .action-notes-grid {
+      min-width: 0;
+      margin-top: 9px;
+      display: grid;
+      grid-template-columns: minmax(300px, 0.8fr) minmax(0, 1.8fr);
+      gap: 9px;
+    }
+
+    .next-action-card,
     .notes-card {
       min-width: 0;
-      margin-top: 7px;
-      padding: 9px 12px;
-      display: grid;
-      grid-template-columns:
-        auto
-        minmax(0, 1fr);
-      align-items: start;
-      gap: 12px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--surface-dark);
+      padding: 13px 15px;
     }
 
-    .notes-card .label {
-      margin: 3px 0 0;
-      white-space: nowrap;
+    .next-action-card {
+      border-color: rgba(25,211,197,0.22);
+      background:
+        linear-gradient(
+          135deg,
+          rgba(25,211,197,0.12),
+          rgba(2,19,34,0.46)
+        );
     }
 
+    .next-action-value,
     .notes-value {
       margin: 0;
       display: -webkit-box;
       overflow: hidden;
-      color: #d6e7f2;
-      font-size: clamp(11px, 0.67vw, 13px);
+      font-size: clamp(12px, 0.8vw, 15px);
       line-height: 1.4;
-      font-weight: 620;
       -webkit-box-orient: vertical;
       -webkit-line-clamp: 2;
     }
 
-    /* ITEMS TABLE */
+    .next-action-value {
+      color: white;
+      font-weight: 850;
+    }
+
+    .notes-value {
+      color: #d7e8f4;
+      font-weight: 650;
+    }
 
     .items-panel {
       min-width: 0;
       min-height: 0;
       overflow: hidden;
       display: grid;
-      grid-template-rows:
-        auto
-        minmax(0, 1fr);
-      border: 1px solid var(--line);
-      border-radius: var(--radius-md);
-      background: var(--surface-dark);
+      grid-template-rows: auto minmax(0, 1fr);
     }
 
-    .items-header {
+    .items-head {
       min-width: 0;
-      min-height: 38px;
-      padding: 0 12px;
+      padding: 11px 16px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 14px;
+      gap: 16px;
       border-bottom: 1px solid var(--line);
-      background: var(--surface-light);
+      background: rgba(255,255,255,0.025);
     }
 
     .items-title {
       margin: 0;
-      color: #ffffff;
-      font-size: 13px;
-      font-weight: 850;
+      color: white;
+      font-size: 14px;
+      font-weight: 900;
     }
 
     .items-page {
       color: var(--muted);
-      font-size: 10px;
-      font-weight: 750;
+      font-size: 11px;
+      font-weight: 800;
       white-space: nowrap;
     }
 
@@ -1027,29 +688,28 @@
     .items-table th,
     .items-table td {
       overflow: hidden;
-      border-bottom:
-        1px solid rgba(180, 215, 236, 0.09);
+      border-bottom: 1px solid rgba(179,214,235,0.09);
       text-overflow: ellipsis;
       white-space: nowrap;
     }
 
     .items-table th {
-      height: 29px;
-      padding: 0 9px;
-      color: #7795ac;
+      height: 32px;
+      padding: 0 12px;
+      color: #7f9ab1;
       font-size: 9px;
-      font-weight: 850;
-      letter-spacing: 0.08em;
+      font-weight: 900;
+      letter-spacing: 0.09em;
       text-align: right;
       text-transform: uppercase;
     }
 
     .items-table td {
-      height: clamp(32px, 3.75vh, 40px);
-      padding: 0 9px;
-      color: #dfedf6;
-      font-size: clamp(11px, 0.67vw, 13px);
-      font-weight: 700;
+      height: clamp(36px, 5vh, 50px);
+      padding: 0 12px;
+      color: #e6f2fb;
+      font-size: clamp(11px, 0.8vw, 15px);
+      font-weight: 750;
       text-align: right;
       font-variant-numeric: tabular-nums;
     }
@@ -1057,324 +717,73 @@
     .items-table th:first-child,
     .items-table td:first-child {
       width: 27%;
-      padding-left: 12px;
+      padding-left: 16px;
       text-align: left;
     }
 
     .items-table th:last-child,
     .items-table td:last-child {
-      width: 12%;
-      padding-right: 12px;
+      width: 13%;
+      padding-right: 16px;
     }
 
     .model-value {
-      color: #ffffff;
-      font-weight: 850;
+      color: white !important;
+      font-weight: 900 !important;
     }
 
-    .positive {
-      color: var(--green) !important;
+    .balance-positive {
+      color: var(--good) !important;
     }
 
-    .negative {
-      color: var(--red) !important;
+    .balance-negative {
+      color: var(--danger) !important;
     }
 
-    .item-status {
-      min-width: 51px;
-      padding: 4px 7px;
+    .mini-status {
+      min-width: 62px;
+      padding: 5px 9px;
       display: inline-flex;
-      align-items: center;
       justify-content: center;
       border-radius: 999px;
       font-size: 9px;
       font-weight: 950;
-      letter-spacing: 0.04em;
+      letter-spacing: 0.06em;
     }
 
-    .item-status.good {
-      color: var(--green);
-      background:
-        rgba(60, 222, 141, 0.13);
+    .mini-status.good {
+      color: var(--good);
+      background: rgba(57,217,138,0.12);
     }
 
-    .item-status.low {
-      color: var(--red);
-      background:
-        rgba(255, 108, 123, 0.13);
+    .mini-status.low {
+      color: var(--danger);
+      background: rgba(255,107,120,0.13);
     }
 
-    .item-status.check {
+    .mini-status.check {
       color: var(--amber);
-      background:
-        rgba(255, 201, 91, 0.13);
+      background: rgba(255,200,87,0.13);
     }
 
     .no-items {
-      min-height: 80px;
-      height: 100%;
+      min-height: 130px;
       display: grid;
       place-items: center;
       color: var(--muted);
-      font-size: 12px;
-      font-weight: 700;
-    }
-
-    /* SIDE PANEL */
-
-    .side-panel {
-      min-width: 0;
-      min-height: 0;
-      display: grid;
-      grid-template-rows:
-        minmax(0, 1.35fr)
-        auto
-        auto;
-      gap: 8px;
-    }
-
-    .rail-card {
-      min-width: 0;
-      overflow: hidden;
-      border-radius: var(--radius-lg);
-    }
-
-    .rail-header {
-      min-height: 40px;
-      padding: 0 13px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 10px;
-      border-bottom: 1px solid var(--line);
-      background: var(--surface-light);
-    }
-
-    .rail-title {
-      margin: 0;
-      color: #ffffff;
       font-size: 13px;
-      font-weight: 850;
-    }
-
-    .rail-meta {
-      color: var(--muted);
-      font-size: 10px;
       font-weight: 750;
-      white-space: nowrap;
     }
-
-    /* EVENT QUEUE */
-
-    .event-queue {
-      min-height: 0;
-      padding: 5px;
-      display: grid;
-      align-content: start;
-      gap: 4px;
-      overflow: hidden;
-    }
-
-    .queue-item {
-      width: 100%;
-      min-width: 0;
-      min-height: 50px;
-      padding: 7px 8px;
-      display: grid;
-      grid-template-columns:
-        minmax(0, 1fr)
-        auto;
-      align-items: center;
-      gap: 8px;
-      border: 1px solid transparent;
-      border-radius: 11px;
-      color: inherit;
-      text-align: left;
-      background: transparent;
-    }
-
-    .queue-item:hover,
-    .queue-item:focus-visible {
-      border-color:
-        rgba(30, 216, 200, 0.24);
-      outline: none;
-      background:
-        rgba(30, 216, 200, 0.07);
-    }
-
-    .queue-item.current {
-      border-color:
-        rgba(30, 216, 200, 0.32);
-      background:
-        rgba(30, 216, 200, 0.1);
-    }
-
-    .queue-po {
-      margin: 0 0 2px;
-      overflow: hidden;
-      color: #ffffff;
-      font-size: 12px;
-      font-weight: 880;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .queue-customer {
-      margin: 0 0 3px;
-      overflow: hidden;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 650;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .queue-priority {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      color: var(--muted);
-      font-size: 9px;
-      font-weight: 850;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
-    .queue-priority::before {
-      content: "";
-      width: 5px;
-      height: 5px;
-      border-radius: 999px;
-      background: currentColor;
-    }
-
-    .queue-priority.critical {
-      color: var(--red);
-    }
-
-    .queue-priority.urgent {
-      color: var(--amber);
-    }
-
-    .queue-priority.attention {
-      color: var(--blue);
-    }
-
-    .queue-priority.on-track,
-    .queue-priority.complete {
-      color: var(--green);
-    }
-
-    .queue-date {
-      color: #c9dce9;
-      font-size: 10px;
-      line-height: 1.35;
-      font-weight: 800;
-      text-align: right;
-      white-space: nowrap;
-    }
-
-    .queue-date.risk {
-      color: var(--red);
-    }
-
-    /* INVENTORY */
-
-    .inventory-grid {
-      padding: 8px;
-      display: grid;
-      grid-template-columns:
-        repeat(2, minmax(0, 1fr));
-      gap: 7px;
-    }
-
-    .location-card {
-      min-width: 0;
-      padding: 9px 10px;
-      border: 1px solid var(--line);
-      border-radius: 12px;
-      background: var(--surface-dark);
-    }
-
-    .location-name {
-      margin: 0;
-      color: var(--muted);
-      font-size: 10px;
-      font-weight: 850;
-      letter-spacing: 0.06em;
-      text-transform: uppercase;
-    }
-
-    .location-value {
-      margin: 5px 0 0;
-      color: #ffffff;
-      font-size: clamp(16px, 1.05vw, 20px);
-      line-height: 1;
-      font-weight: 920;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .location-detail {
-      margin: 5px 0 0;
-      overflow: hidden;
-      color: var(--muted-2);
-      font-size: 9px;
-      font-weight: 680;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    /* WORKFLOW */
-
-    .pipeline {
-      padding: 8px;
-      display: grid;
-      grid-template-columns:
-        repeat(3, minmax(0, 1fr));
-      gap: 5px;
-    }
-
-    .pipeline-step {
-      min-width: 0;
-      padding: 7px 5px;
-      border: 1px solid var(--line);
-      border-radius: 10px;
-      text-align: center;
-      background: var(--surface-dark);
-    }
-
-    .pipeline-count {
-      margin: 0;
-      color: #ffffff;
-      font-size: 16px;
-      line-height: 1;
-      font-weight: 920;
-      font-variant-numeric: tabular-nums;
-    }
-
-    .pipeline-name {
-      margin: 4px 0 0;
-      overflow: hidden;
-      color: var(--muted);
-      font-size: 8px;
-      font-weight: 770;
-      text-overflow: ellipsis;
-      text-transform: uppercase;
-      white-space: nowrap;
-    }
-
-    /* EMPTY */
 
     .empty-board {
-      grid-column: 1 / -1;
-      min-height: 0;
+      min-height: 100%;
       display: grid;
       place-items: center;
-      border: 1px solid var(--line);
-      border-radius: var(--radius-xl);
+      padding: 50px;
+      border: 1px dashed rgba(133,191,221,0.3);
+      border-radius: 30px;
+      background: rgba(7,31,52,0.62);
       text-align: center;
-      background: var(--surface);
-      box-shadow: var(--shadow);
     }
 
     .empty-icon {
@@ -1383,11 +792,9 @@
       margin: 0 auto 18px;
       display: grid;
       place-items: center;
-      border:
-        1px solid rgba(30, 216, 200, 0.2);
-      border-radius: 24px;
+      border-radius: 23px;
       color: var(--teal);
-      background: var(--teal-soft);
+      background: rgba(25,211,197,0.1);
     }
 
     .empty-icon svg {
@@ -1397,198 +804,119 @@
 
     .empty-title {
       margin: 0;
-      font-size: clamp(25px, 2.4vw, 45px);
-      font-weight: 920;
-      letter-spacing: -0.045em;
+      font-size: clamp(28px, 3vw, 48px);
     }
 
     .empty-copy {
-      max-width: 650px;
-      margin: 12px auto 22px;
+      max-width: 720px;
+      margin: 14px auto 23px;
       color: var(--muted);
-      font-size: clamp(14px, 0.9vw, 17px);
-      line-height: 1.55;
+      font-size: 15px;
+      line-height: 1.6;
     }
 
     .empty-link {
       min-height: 46px;
-      padding: 0 19px;
+      padding: 0 18px;
       display: inline-flex;
       align-items: center;
-      justify-content: center;
       border-radius: 13px;
-      color: var(--navy-1000);
-      font-size: 13px;
+      color: #032235;
+      background: var(--teal);
       font-weight: 900;
       text-decoration: none;
-      background: var(--teal);
     }
 
-    /* FOOTER */
-
-    .footer {
-      min-width: 0;
+    .footer-bar {
+      min-height: 24px;
       display: grid;
-      grid-template-columns:
-        auto
-        minmax(120px, 1fr)
-        auto;
+      grid-template-columns: auto minmax(140px, 1fr) auto;
       align-items: center;
-      gap: 12px;
-    }
-
-    .footer-copy {
-      color: var(--muted-2);
-      font-size: 9px;
+      gap: 18px;
+      color: var(--muted);
+      font-size: 10px;
       font-weight: 750;
-      white-space: nowrap;
     }
 
-    .progress-track {
-      height: 4px;
+    .rotation-track {
+      height: 3px;
       overflow: hidden;
-      border-radius: 999px;
-      background:
-        rgba(255, 255, 255, 0.08);
+      border-radius: 99px;
+      background: rgba(143,184,209,0.14);
     }
 
-    .progress-value {
+    .rotation-progress {
       width: 0;
       height: 100%;
       border-radius: inherit;
-      background:
-        linear-gradient(
-          90deg,
-          var(--teal),
-          var(--cyan)
-        );
-      box-shadow:
-        0 0 15px rgba(30, 216, 200, 0.6);
+      background: linear-gradient(90deg, var(--teal), var(--blue));
     }
 
-    /* CONTROLS */
+    .sync-copy {
+      text-align: right;
+    }
 
     .floating-controls {
       position: fixed;
-      z-index: 50;
-      right: clamp(16px, 1.4vw, 28px);
-      bottom: 32px;
-      padding: 4px;
+      right: 28px;
+      bottom: 28px;
+      z-index: 20;
+      padding: 7px;
       display: flex;
-      align-items: center;
-      gap: 4px;
+      gap: 8px;
       border: 1px solid var(--line);
-      border-radius: 14px;
-      background:
-        rgba(2, 16, 30, 0.9);
-      box-shadow:
-        0 14px 35px rgba(0, 6, 16, 0.4);
-      backdrop-filter: blur(14px);
-      opacity: 0.22;
-      transition:
-        opacity 180ms ease,
-        transform 180ms ease;
-    }
-
-    .floating-controls:hover,
-    .floating-controls:focus-within,
-    .floating-controls.paused {
-      opacity: 1;
-      transform: translateY(-2px);
+      border-radius: 18px;
+      background: rgba(3,19,33,0.86);
+      box-shadow: 0 18px 44px rgba(0,0,0,0.34);
+      backdrop-filter: blur(18px);
     }
 
     .control-button {
-      width: 36px;
-      height: 36px;
+      width: 42px;
+      height: 42px;
       display: grid;
       place-items: center;
-      border: 0;
-      border-radius: 10px;
-      color: var(--text-soft);
-      background: transparent;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      color: white;
+      background: rgba(9,38,63,0.92);
     }
 
     .control-button:hover,
     .control-button:focus-visible {
+      border-color: rgba(25,211,197,0.55);
       outline: none;
       color: var(--teal);
-      background: var(--teal-soft);
+      background: #10446e;
+      transform: translateY(-2px);
     }
 
     .control-button svg {
-      width: 16px;
-      height: 16px;
+      width: 20px;
+      height: 20px;
+    }
+
+    .floating-controls.paused {
+      border-color: rgba(255,200,87,0.4);
     }
 
     .slide-enter {
-      animation:
-        slideEnter
-        420ms
-        cubic-bezier(0.22, 0.8, 0.2, 1)
-        both;
+      animation: slideEnter 0.42s ease both;
     }
 
     @keyframes slideEnter {
       from {
         opacity: 0;
-        transform: translateY(7px);
+        transform: translateY(9px);
       }
 
       to {
         opacity: 1;
-        transform: translateY(0);
+        transform: none;
       }
     }
 
-    @media (max-height: 780px),
-           (max-width: 1420px) {
-      .tv-app {
-        grid-template-rows:
-          58px
-          34px
-          88px
-          minmax(0, 1fr)
-          18px;
-        gap: 8px;
-        padding-top: 8px;
-      }
-
-      .brand-mark {
-        width: 48px;
-        height: 48px;
-        flex-basis: 48px;
-      }
-
-      .header-surface {
-        min-height: 42px;
-      }
-
-      .kpi {
-        padding-top: 8px;
-        padding-bottom: 8px;
-      }
-
-      .spotlight {
-        padding: 13px;
-        gap: 8px;
-      }
-
-      .info-card,
-      .meta-card {
-        padding-top: 8px;
-        padding-bottom: 8px;
-      }
-
-      .items-table td {
-        height: 29px;
-      }
-
-      .queue-item {
-        min-height: 43px;
-      }
-    }
-
-    @media (max-width: 1120px) {
+    @media (max-width: 1180px) {
       body {
         overflow: auto;
       }
@@ -1596,117 +924,107 @@
       .tv-app {
         height: auto;
         min-height: 100vh;
-        grid-template-rows:
-          auto
-          auto
-          auto
-          auto
-          auto;
+        grid-template-rows: auto auto auto;
       }
 
-      .topbar,
-      .header-controls {
-        flex-wrap: wrap;
-      }
-
-      .live-status,
       .clock-panel {
         display: none;
       }
 
-      .kpi-strip {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
-
-      .kpi + .kpi {
-        border-left: 0;
-      }
-
-      .kpi:nth-child(even) {
-        border-left: 1px solid var(--line);
-      }
-
-      .kpi:nth-child(n + 3) {
-        border-top: 1px solid var(--line);
-      }
-
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .spotlight {
-        min-height: 720px;
-      }
-
-      .side-panel {
+      .event-overview {
         grid-template-columns: 1fr 1fr;
-        grid-template-rows: auto auto;
       }
 
-      .side-panel .rail-card:first-child {
+      .planning-card {
         grid-column: 1 / -1;
       }
 
-      .event-queue {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
+      .meta-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+
+      .spotlight {
+        min-height: 780px;
       }
     }
 
     @media (max-width: 760px) {
       .tv-app {
-        padding-left: 9px;
-        padding-right: 9px;
+        padding: 12px;
       }
 
-      .alert-count {
+      .topbar {
+        align-items: flex-start;
+      }
+
+      .topbar-right {
+        flex-wrap: wrap;
+      }
+
+      .live-pill,
+      .region-control label {
         display: none;
       }
 
-      .event-header,
-      .overview-grid {
-        grid-template-columns: 1fr;
+      .brand-mark {
+        width: 50px;
+        height: 50px;
+        flex-basis: 50px;
       }
 
-      .event-badges {
-        justify-content: flex-start;
-      }
-
-      .readiness {
-        justify-content: flex-start;
-      }
-
-      .meta-grid {
-        grid-template-columns:
-          repeat(2, minmax(0, 1fr));
-      }
-
-      .side-panel {
-        grid-template-columns: 1fr;
-      }
-
-      .side-panel .rail-card:first-child {
-        grid-column: auto;
+      .brand-title {
+        font-size: 19px;
       }
 
       .spotlight {
-        min-height: 900px;
+        min-height: 0;
+        padding: 19px;
+        border-radius: 24px;
       }
 
-      .items-table th:nth-child(3),
-      .items-table td:nth-child(3),
-      .items-table th:nth-child(4),
-      .items-table td:nth-child(4) {
-        display: none;
-      }
-
-      .footer {
+      .event-head {
         grid-template-columns: 1fr;
       }
 
-      .footer-copy {
+      .badges {
+        justify-content: flex-start;
+      }
+
+      .po-number {
+        font-size: 38px;
+      }
+
+      .event-overview,
+      .meta-grid,
+      .action-notes-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .planning-card {
+        grid-column: auto;
+      }
+
+      .table-wrap {
+        overflow-x: auto;
+      }
+
+      .items-table {
+        min-width: 780px;
+      }
+
+      .footer-bar {
+        margin-bottom: 70px;
+        grid-template-columns: 1fr;
+      }
+
+      .rotation-copy,
+      .sync-copy {
         display: none;
+      }
+
+      .floating-controls {
+        right: 15px;
+        bottom: 15px;
       }
     }
 
@@ -1727,45 +1045,30 @@
       <div class="brand">
         <div class="brand-mark">S</div>
 
-        <div class="brand-copy">
-          <p class="brand-eyebrow">
-            Stark Premium
-          </p>
-
-          <h1 class="brand-title">
-            Events Live Command Center
-          </h1>
+        <div>
+          <p class="brand-eyebrow">Stark Premium</p>
+          <h1 class="brand-title">Events Live Board</h1>
         </div>
       </div>
 
-      <div class="header-controls">
-        <div class="header-surface live-status">
+      <div class="topbar-right">
+        <div class="live-pill">
           <span class="live-dot"></span>
           Live
         </div>
 
-        <div class="header-surface view-switch">
-          <button
-            id="activeViewButton"
-            class="view-button"
-            type="button"
-          >
+        <div class="view-switch">
+          <button id="activeViewButton" class="view-button" type="button">
             Active
           </button>
 
-          <button
-            id="allViewButton"
-            class="view-button active"
-            type="button"
-          >
+          <button id="allViewButton" class="view-button" type="button">
             All POs
           </button>
         </div>
 
-        <div class="header-surface region-control">
-          <label for="regionSelect">
-            Region
-          </label>
+        <div class="region-control">
+          <label for="regionSelect">Region</label>
 
           <select id="regionSelect">
             <option value="US">US</option>
@@ -1774,397 +1077,50 @@
           </select>
         </div>
 
-        <div class="header-surface clock-panel">
-          <span
-            id="clockTime"
-            class="clock-time"
-          >
-            --:--
-          </span>
-
-          <span
-            id="clockDate"
-            class="clock-date"
-          >
-            Loading date
-          </span>
+        <div class="clock-panel">
+          <span id="clockTime" class="clock-time">--:--</span>
+          <span id="clockDate" class="clock-date">Loading date</span>
         </div>
 
         <button
           id="fullscreenButton"
-          class="header-surface icon-button"
+          class="header-button"
           type="button"
-          title="Full screen"
-          aria-label="Full screen"
+          title="Enter full screen"
         >
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M8 3H3v5"></path>
-            <path d="M16 3h5v5"></path>
-            <path d="M8 21H3v-5"></path>
-            <path d="M16 21h5v-5"></path>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M8 3H3v5M16 3h5v5M8 21H3v-5M16 21h5v-5"/>
           </svg>
         </button>
       </div>
     </header>
 
-    <section class="alert-bar">
-      <span class="alert-label">
-        Priority monitor
-      </span>
-
-      <p
-        id="alertMessage"
-        class="alert-message"
-      >
-        Monitoring regional events and inventory.
-      </p>
-
-      <span
-        id="alertCount"
-        class="alert-count"
-      >
-        0 events need attention
-      </span>
+    <section id="contentGrid" class="content-grid">
+      <article id="spotlight" class="spotlight"></article>
     </section>
 
-    <section class="kpi-strip">
-      <article class="kpi">
-        <div>
-          <p class="kpi-label">
-            Active POs
-          </p>
+    <footer class="footer-bar">
+      <span id="rotationCopy">Auto-rotating every 14 seconds</span>
 
-          <p
-            id="activeValue"
-            class="kpi-value"
-          >
-            0
-          </p>
-
-          <p
-            id="unitsValue"
-            class="kpi-sub"
-          >
-            0 units requested
-          </p>
-        </div>
-
-        <div class="kpi-icon">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M6 2h9l5 5v15H6z"></path>
-            <path d="M14 2v6h6"></path>
-            <path d="M9 13h8"></path>
-            <path d="M9 17h8"></path>
-          </svg>
-        </div>
-      </article>
-
-      <article class="kpi">
-        <div>
-          <p class="kpi-label">
-            Due in 14 days
-          </p>
-
-          <p
-            id="upcomingValue"
-            class="kpi-value"
-          >
-            0
-          </p>
-
-          <p
-            id="dueSoonValue"
-            class="kpi-sub"
-          >
-            0 due within 7 days
-          </p>
-        </div>
-
-        <div class="kpi-icon blue">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M3 5h18v16H3z"></path>
-            <path d="M8 3v4"></path>
-            <path d="M16 3v4"></path>
-            <path d="M3 10h18"></path>
-          </svg>
-        </div>
-      </article>
-
-      <article class="kpi">
-        <div>
-          <p class="kpi-label">
-            At risk
-          </p>
-
-          <p
-            id="riskValue"
-            class="kpi-value"
-          >
-            0
-          </p>
-
-          <p
-            id="overdueValue"
-            class="kpi-sub"
-          >
-            0 overdue
-          </p>
-        </div>
-
-        <div class="kpi-icon red">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M12 3 2.5 20h19z"></path>
-            <path d="M12 9v5"></path>
-            <path d="M12 18h.01"></path>
-          </svg>
-        </div>
-      </article>
-
-      <article class="kpi">
-        <div>
-          <p class="kpi-label">
-            Low inventory
-          </p>
-
-          <p
-            id="lowValue"
-            class="kpi-value"
-          >
-            0
-          </p>
-
-          <p
-            id="shortValue"
-            class="kpi-sub"
-          >
-            0 units short
-          </p>
-        </div>
-
-        <div class="kpi-icon amber">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M4 7.5 12 3l8 4.5v9L12 21l-8-4.5z"
-            ></path>
-
-            <path d="M12 12l8-4.5"></path>
-            <path d="M12 12 4 7.5"></path>
-            <path d="M12 12v9"></path>
-          </svg>
-        </div>
-      </article>
-
-      <article class="kpi">
-        <div>
-          <p class="kpi-label">
-            Inventory matched
-          </p>
-
-          <p
-            id="matchedValue"
-            class="kpi-value"
-          >
-            0%
-          </p>
-
-          <p
-            id="matchedDetail"
-            class="kpi-sub"
-          >
-            0 of 0 models
-          </p>
-        </div>
-
-        <div class="kpi-icon green">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="m5 12 4 4L19 6"></path>
-            <path d="M3 3h18v18H3z"></path>
-          </svg>
-        </div>
-      </article>
-
-      <article class="kpi">
-        <div>
-          <p class="kpi-label">
-            Average readiness
-          </p>
-
-          <p
-            id="readinessValue"
-            class="kpi-value"
-          >
-            0%
-          </p>
-
-          <p
-            id="readinessDetail"
-            class="kpi-sub"
-          >
-            Regional event health
-          </p>
-        </div>
-
-        <div class="kpi-icon">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M4 20V10"></path>
-            <path d="M10 20V4"></path>
-            <path d="M16 20v-7"></path>
-            <path d="M22 20H2"></path>
-          </svg>
-        </div>
-      </article>
-    </section>
-
-    <section
-      id="contentGrid"
-      class="content-grid"
-    >
-      <article
-        id="spotlight"
-        class="spotlight premium-card"
-        aria-live="polite"
-      ></article>
-
-      <aside
-        id="sidePanel"
-        class="side-panel"
-      >
-        <section class="rail-card premium-card">
-          <div class="rail-header">
-            <h2 class="rail-title">
-              Priority Event Queue
-            </h2>
-
-            <span
-              id="queueMeta"
-              class="rail-meta"
-            >
-              0 POs
-            </span>
-          </div>
-
-          <div
-            id="eventQueue"
-            class="event-queue"
-          ></div>
-        </section>
-
-        <section class="rail-card premium-card">
-          <div class="rail-header">
-            <h2 class="rail-title">
-              Current Inventory
-            </h2>
-
-            <span
-              id="inventoryMeta"
-              class="rail-meta"
-            >
-              Waiting for files
-            </span>
-          </div>
-
-          <div
-            id="inventoryGrid"
-            class="inventory-grid"
-          ></div>
-        </section>
-
-        <section class="rail-card premium-card">
-          <div class="rail-header">
-            <h2 class="rail-title">
-              Event Workflow
-            </h2>
-
-            <span class="rail-meta">
-              Regional pipeline
-            </span>
-          </div>
-
-          <div
-            id="pipeline"
-            class="pipeline"
-          ></div>
-        </section>
-      </aside>
-    </section>
-
-    <footer class="footer">
-      <span
-        id="rotationCopy"
-        class="footer-copy"
-      >
-        Auto-rotating every 14 seconds
-      </span>
-
-      <div class="progress-track">
-        <div
-          id="progressValue"
-          class="progress-value"
-        ></div>
+      <div class="rotation-track">
+        <div id="rotationProgress" class="rotation-progress"></div>
       </div>
 
-      <span
-        id="syncCopy"
-        class="footer-copy"
-      >
+      <span id="syncCopy" class="sync-copy">
         Waiting for regional data
       </span>
     </footer>
   </main>
 
-  <div
-    id="floatingControls"
-    class="floating-controls"
-  >
+  <div id="floatingControls" class="floating-controls">
     <button
       id="previousButton"
       class="control-button"
       type="button"
       title="Previous PO"
-      aria-label="Previous PO"
     >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.2"
-      >
-        <path d="m15 18-6-6 6-6"></path>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="m15 18-6-6 6-6"/>
       </svg>
     </button>
 
@@ -2173,7 +1129,6 @@
       class="control-button"
       type="button"
       title="Pause rotation"
-      aria-label="Pause rotation"
     >
       <svg
         id="pauseIcon"
@@ -2182,8 +1137,7 @@
         stroke="currentColor"
         stroke-width="2.2"
       >
-        <path d="M8 5v14"></path>
-        <path d="M16 5v14"></path>
+        <path d="M8 5v14M16 5v14"/>
       </svg>
     </button>
 
@@ -2192,15 +1146,9 @@
       class="control-button"
       type="button"
       title="Next PO"
-      aria-label="Next PO"
     >
-      <svg
-        viewBox="0 0 24 24"
-        fill="none"
-        stroke="currentColor"
-        stroke-width="2.2"
-      >
-        <path d="m9 18 6-6-6-6"></path>
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2">
+        <path d="m9 18 6-6-6-6"/>
       </svg>
     </button>
   </div>
@@ -2209,11 +1157,7 @@
     (() => {
       "use strict";
 
-      const VALID_REGIONS = [
-        "US",
-        "EU",
-        "CA"
-      ];
+      const REGIONS = ["US", "EU", "CA"];
 
       const REGION_NAMES = {
         US: "United States",
@@ -2221,10 +1165,7 @@
         CA: "Canada"
       };
 
-      const LOCATIONS = [
-        "Sarasota",
-        "Texas"
-      ];
+      const LOCATIONS = ["Sarasota", "Texas"];
 
       const WORKFLOW = [
         "Draft",
@@ -2235,30 +1176,20 @@
         "Complete"
       ];
 
-      const ITEMS_PER_SLIDE = 5;
+      const ITEMS_PER_SLIDE = 6;
       const ROTATION_MS = 14000;
       const REFRESH_MS = 5000;
 
-      const parameters =
-        new URLSearchParams(
-          window.location.search
-        );
+      const params = new URLSearchParams(window.location.search);
 
-      let region =
-        (
-          parameters.get("region") ||
-          "US"
-        ).toUpperCase();
+      let region = (params.get("region") || "US").toUpperCase();
 
-      if (!VALID_REGIONS.includes(region)) {
+      if (!REGIONS.includes(region)) {
         region = "US";
       }
 
       let viewMode =
-        (
-          parameters.get("view") ||
-          "all"
-        ).toLowerCase() === "active"
+        (params.get("view") || "all").toLowerCase() === "active"
           ? "active"
           : "all";
 
@@ -2270,33 +1201,27 @@
       let rotationStartedAt = Date.now();
       let lastFingerprint = "";
 
-      let reports = {
+      let locationReports = {
         Sarasota: null,
         Texas: null
       };
 
-      let inventoryMaps = {
+      let locationMaps = {
         Sarasota: new Map(),
         Texas: new Map()
       };
 
-      const $ = (id) =>
-        document.getElementById(id);
-
-      const regionSelect =
-        $("regionSelect");
-
-      const spotlight =
-        $("spotlight");
-
-      const sidePanel =
-        $("sidePanel");
-
-      const contentGrid =
-        $("contentGrid");
-
-      const progressValue =
-        $("progressValue");
+      const spotlight = document.getElementById("spotlight");
+      const contentGrid = document.getElementById("contentGrid");
+      const regionSelect = document.getElementById("regionSelect");
+      const activeViewButton = document.getElementById("activeViewButton");
+      const allViewButton = document.getElementById("allViewButton");
+      const pauseButton = document.getElementById("pauseButton");
+      const pauseIcon = document.getElementById("pauseIcon");
+      const floatingControls = document.getElementById("floatingControls");
+      const rotationCopy = document.getElementById("rotationCopy");
+      const rotationProgress = document.getElementById("rotationProgress");
+      const syncCopy = document.getElementById("syncCopy");
 
       initialize();
 
@@ -2307,133 +1232,78 @@
         bindControls();
         updateClock();
 
-        setInterval(
-          updateClock,
-          1000
-        );
+        window.setInterval(updateClock, 1000);
 
         await refreshData(true);
 
-        setInterval(
-          () => refreshData(false),
-          REFRESH_MS
-        );
+        window.setInterval(() => {
+          refreshData(false);
+        }, REFRESH_MS);
 
-        requestAnimationFrame(
-          updateRotation
-        );
+        window.requestAnimationFrame(updateRotation);
       }
 
       function bindControls() {
-        regionSelect.addEventListener(
-          "change",
-          () => {
-            const url =
-              new URL(
-                window.location.href
-              );
+        regionSelect.addEventListener("change", () => {
+          const nextUrl = new URL(window.location.href);
 
-            url.searchParams.set(
-              "region",
-              regionSelect.value
-            );
+          nextUrl.searchParams.set("region", regionSelect.value);
 
-            window.location.href =
-              url.toString();
+          window.location.href = nextUrl.toString();
+        });
+
+        activeViewButton.addEventListener("click", () => {
+          setViewMode("active");
+        });
+
+        allViewButton.addEventListener("click", () => {
+          setViewMode("all");
+        });
+
+        document
+          .getElementById("previousButton")
+          .addEventListener("click", previousSlide);
+
+        document
+          .getElementById("nextButton")
+          .addEventListener("click", nextSlide);
+
+        pauseButton.addEventListener("click", togglePause);
+
+        document
+          .getElementById("fullscreenButton")
+          .addEventListener("click", toggleFullscreen);
+
+        window.addEventListener("storage", event => {
+          if (event.key && event.key.startsWith("stark_events_v")) {
+            refreshData(false);
           }
-        );
+        });
 
-        $("activeViewButton")
-          .addEventListener(
-            "click",
-            () =>
-              setViewMode("active")
-          );
-
-        $("allViewButton")
-          .addEventListener(
-            "click",
-            () =>
-              setViewMode("all")
-          );
-
-        $("previousButton")
-          .addEventListener(
-            "click",
-            previousSlide
-          );
-
-        $("nextButton")
-          .addEventListener(
-            "click",
-            nextSlide
-          );
-
-        $("pauseButton")
-          .addEventListener(
-            "click",
-            togglePause
-          );
-
-        $("fullscreenButton")
-          .addEventListener(
-            "click",
-            toggleFullscreen
-          );
-
-        window.addEventListener(
-          "storage",
-          (event) => {
-            if (
-              event.key &&
-              event.key.startsWith(
-                "stark_events_v"
-              )
-            ) {
-              refreshData(false);
-            }
+        document.addEventListener("visibilitychange", () => {
+          if (!document.hidden) {
+            refreshData(false);
           }
-        );
+        });
 
-        document.addEventListener(
-          "visibilitychange",
-          () => {
-            if (!document.hidden) {
-              refreshData(false);
-            }
+        document.addEventListener("keydown", event => {
+          if (event.key === "ArrowRight") {
+            nextSlide();
           }
-        );
 
-        document.addEventListener(
-          "keydown",
-          (event) => {
-            if (
-              event.key ===
-              "ArrowRight"
-            ) {
-              nextSlide();
-            }
-
-            if (
-              event.key ===
-              "ArrowLeft"
-            ) {
-              previousSlide();
-            }
-
-            if (event.key === " ") {
-              event.preventDefault();
-              togglePause();
-            }
-
-            if (
-              event.key.toLowerCase() ===
-              "f"
-            ) {
-              toggleFullscreen();
-            }
+          if (event.key === "ArrowLeft") {
+            previousSlide();
           }
-        );
+
+          if (event.key === " ") {
+            event.preventDefault();
+            togglePause();
+          }
+
+          if (event.key.toLowerCase() === "f") {
+            toggleFullscreen();
+          }
+        });
       }
 
       function setViewMode(mode) {
@@ -2444,133 +1314,88 @@
         viewMode = mode;
         slideIndex = 0;
 
-        const url =
-          new URL(
-            window.location.href
-          );
+        const nextUrl = new URL(window.location.href);
 
-        url.searchParams.set(
-          "view",
-          viewMode
-        );
+        nextUrl.searchParams.set("view", mode);
 
-        history.replaceState(
-          {},
-          "",
-          url
-        );
+        window.history.replaceState({}, "", nextUrl);
 
         configureViewButtons();
         buildSlides();
-        renderAll();
+        renderCurrentSlide();
         resetRotation();
       }
 
       function configureViewButtons() {
-        $("activeViewButton")
-          .classList.toggle(
-            "active",
-            viewMode === "active"
-          );
+        activeViewButton.classList.toggle(
+          "active",
+          viewMode === "active"
+        );
 
-        $("allViewButton")
-          .classList.toggle(
-            "active",
-            viewMode === "all"
-          );
+        allViewButton.classList.toggle(
+          "active",
+          viewMode === "all"
+        );
       }
 
-      async function refreshData(force) {
-        const previousSlide =
-          slides[slideIndex];
+      async function refreshData(forceRender) {
+        const previousSlide = slides[slideIndex];
+        const previousEventId = previousSlide?.event?.id || "";
+        const previousPage = previousSlide?.itemPage || 0;
 
-        const previousEventId =
-          previousSlide?.event?.id ||
-          "";
+        const loadedEvents = normalizeEvents(loadExistingEvents());
 
-        const previousItemPage =
-          previousSlide?.itemPage ||
-          0;
+        locationReports = await loadStoredInventory();
 
-        reports =
-          await loadInventoryReports();
+        rebuildLocationMaps();
 
-        buildInventoryMaps();
+        events = loadedEvents
+          .map(synchronizeEventInventory)
+          .sort(compareEvents);
 
-        events =
-          normalizeEvents(
-            loadEvents()
-          )
-            .map(syncEventInventory)
-            .sort(compareEvents);
+        const fingerprint = JSON.stringify({
+          events: events.map(event => [
+            event.id,
+            event.updatedAt,
+            event.status,
+            event.items
+          ]),
+          inventory: LOCATIONS.map(location => [
+            location,
+            locationReports[location]?.uploadedAt || "",
+            locationReports[location]?.rows?.length || 0
+          ])
+        });
 
-        const fingerprint =
-          JSON.stringify({
-            events:
-              events.map(
-                (event) => [
-                  event.id,
-                  event.updatedAt,
-                  event.status,
-                  event.items
-                ]
-              ),
-
-            reports:
-              LOCATIONS.map(
-                (location) => [
-                  location,
-                  reports[
-                    location
-                  ]?.uploadedAt || "",
-                  reports[
-                    location
-                  ]?.rows?.length || 0
-                ]
-              )
-          });
-
-        if (
-          !force &&
-          fingerprint ===
-            lastFingerprint
-        ) {
+        if (!forceRender && fingerprint === lastFingerprint) {
           return;
         }
 
-        lastFingerprint =
-          fingerprint;
+        lastFingerprint = fingerprint;
 
         buildSlides();
 
-        const retainedIndex =
-          slides.findIndex(
-            (slide) => {
-              return (
-                slide.event.id ===
-                  previousEventId &&
-                slide.itemPage ===
-                  previousItemPage
-              );
-            }
+        const retainedIndex = slides.findIndex(slide => {
+          return (
+            slide.event.id === previousEventId &&
+            slide.itemPage === previousPage
           );
+        });
 
         slideIndex =
           retainedIndex >= 0
             ? retainedIndex
             : Math.min(
                 slideIndex,
-                Math.max(
-                  0,
-                  slides.length - 1
-                )
+                Math.max(0, slides.length - 1)
               );
 
-        renderAll();
+        renderCurrentSlide();
+        updateSyncCopy();
         resetRotation();
       }
 
-      function loadEvents() {
+      function loadExistingEvents() {
         const keys = [
           `stark_events_v6_${region}`,
           `stark_events_v5_${region}`,
@@ -2579,24 +1404,16 @@
 
         for (const key of keys) {
           try {
-            const raw =
-              localStorage.getItem(
-                key
-              );
+            const storedValue = localStorage.getItem(key);
+            const parsedValue = storedValue
+              ? JSON.parse(storedValue)
+              : null;
 
-            const value =
-              raw
-                ? JSON.parse(raw)
-                : null;
-
-            if (Array.isArray(value)) {
-              return value;
+            if (Array.isArray(parsedValue)) {
+              return parsedValue;
             }
           } catch (error) {
-            console.warn(
-              `Unable to read ${key}.`,
-              error
-            );
+            console.warn(`Could not read ${key}.`, error);
           }
         }
 
@@ -2608,340 +1425,182 @@
           return [];
         }
 
-        return records.map(
-          (event, index) => ({
-            id:
-              String(
-                event.id ||
-                `event-${index}`
-              ),
+        return records.map((event, index) => ({
+          id: String(event.id || `event-${index}`),
+          poNumber: String(event.poNumber || "Not entered"),
+          customer: String(
+            event.customer || "Customer not entered"
+          ),
+          inHandsDate: event.inHandsDate || "",
+          status: event.status || "Draft",
+          planning:
+            event.planning ||
+            event.fulfillmentPlanning ||
+            "Planning not confirmed",
+          customerFollowedUpDate:
+            event.customerFollowedUpDate || "",
+          owner: String(event.owner || ""),
+          recipients: String(event.recipients || ""),
+          trackingNumber: String(event.trackingNumber || ""),
+          notes: String(event.notes || ""),
+          createdAt: event.createdAt || "",
+          updatedAt:
+            event.updatedAt ||
+            event.createdAt ||
+            "",
+          items: Array.isArray(event.items)
+            ? event.items.map(item => ({
+                model: String(item.model || ""),
+                quantity: numberValue(item.quantity),
+                sarasota:
+                  numberValue(item.sarasota) ??
+                  numberValue(item.stockSarasota),
+                texas:
+                  numberValue(item.texas) ??
+                  numberValue(item.stockTexas),
+                total:
+                  numberValue(item.total) ??
+                  numberValue(item.stock),
+                matched: item.matched === true
+              }))
+            : []
+        }));
+      }
 
-            poNumber:
-              String(
-                event.poNumber ||
-                "Not entered"
-              ),
+      function compareEvents(first, second) {
+        const closedDifference =
+          Number(isClosed(first)) -
+          Number(isClosed(second));
 
-            customer:
-              String(
-                event.customer ||
-                "Customer not entered"
-              ),
+        if (closedDifference !== 0) {
+          return closedDifference;
+        }
 
-            inHandsDate:
-              event.inHandsDate || "",
+        const priorityDifference =
+          eventPriorityScore(second) -
+          eventPriorityScore(first);
 
-            status:
-              event.status ||
-              "Draft",
+        if (priorityDifference !== 0) {
+          return priorityDifference;
+        }
 
-            planning:
-              event.planning ||
-              event.fulfillmentPlanning ||
-              "Planning not confirmed",
-
-            customerFollowedUpDate:
-              event
-                .customerFollowedUpDate ||
-              "",
-
-            owner:
-              String(
-                event.owner || ""
-              ),
-
-            recipients:
-              String(
-                event.recipients || ""
-              ),
-
-            trackingNumber:
-              String(
-                event.trackingNumber ||
-                ""
-              ),
-
-            notes:
-              String(
-                event.notes || ""
-              ),
-
-            items:
-              Array.isArray(
-                event.items
-              )
-                ? event.items.map(
-                    (item) => ({
-                      model:
-                        String(
-                          item.model ||
-                          ""
-                        ),
-
-                      quantity:
-                        numberValue(
-                          item.quantity
-                        ),
-
-                      sarasota:
-                        numberValue(
-                          item.sarasota
-                        ) ??
-                        numberValue(
-                          item
-                            .stockSarasota
-                        ),
-
-                      texas:
-                        numberValue(
-                          item.texas
-                        ) ??
-                        numberValue(
-                          item
-                            .stockTexas
-                        ),
-
-                      total:
-                        numberValue(
-                          item.total
-                        ) ??
-                        numberValue(
-                          item.stock
-                        ),
-
-                      matched:
-                        item.matched ===
-                        true
-                    })
-                  )
-                : [],
-
-            createdAt:
-              event.createdAt || "",
-
-            updatedAt:
-              event.updatedAt ||
-              event.createdAt ||
-              ""
-          })
+        return (
+          dateValue(first.inHandsDate) -
+          dateValue(second.inHandsDate)
         );
       }
 
       function buildSlides() {
         visibleEvents =
           viewMode === "active"
-            ? events.filter(
-                (event) =>
-                  !isClosed(event)
-              )
+            ? events.filter(event => !isClosed(event))
             : [...events];
 
-        slides =
-          visibleEvents.flatMap(
-            (event) => {
-              const itemPages =
-                Math.max(
-                  1,
-                  Math.ceil(
-                    event.items.length /
-                    ITEMS_PER_SLIDE
-                  )
-                );
-
-              return Array.from(
-                {
-                  length: itemPages
-                },
-                (_, itemPage) => ({
-                  event,
-                  itemPage,
-                  itemPages
-                })
-              );
-            }
+        slides = visibleEvents.flatMap(event => {
+          const itemPages = Math.max(
+            1,
+            Math.ceil(event.items.length / ITEMS_PER_SLIDE)
           );
 
-        if (
-          slideIndex >=
-          slides.length
-        ) {
+          return Array.from(
+            { length: itemPages },
+            (_, itemPage) => ({
+              event,
+              itemPage,
+              itemPages
+            })
+          );
+        });
+
+        if (slideIndex >= slides.length) {
           slideIndex = 0;
         }
       }
 
-      function compareEvents(
-        first,
-        second
-      ) {
-        const closedDifference =
-          Number(
-            isClosed(first)
-          ) -
-          Number(
-            isClosed(second)
-          );
-
-        if (closedDifference) {
-          return closedDifference;
-        }
-
-        const priorityDifference =
-          eventPriorityScore(
-            second
-          ) -
-          eventPriorityScore(
-            first
-          );
-
-        if (priorityDifference) {
-          return priorityDifference;
-        }
-
-        return (
-          dateValue(
-            first.inHandsDate
-          ) -
-          dateValue(
-            second.inHandsDate
-          )
-        );
-      }
-
       function openInventoryDatabase() {
-        return new Promise(
-          (
-            resolve,
-            reject
-          ) => {
-            if (
-              !window.indexedDB
-            ) {
-              reject(
-                new Error(
-                  "Inventory storage is unavailable."
-                )
-              );
+        return new Promise((resolve, reject) => {
+          if (!("indexedDB" in window)) {
+            reject(
+              new Error("Browser inventory storage unavailable.")
+            );
 
-              return;
-            }
-
-            const request =
-              indexedDB.open(
-                "StarkEventsInventoryDB",
-                1
-              );
-
-            request.onupgradeneeded =
-              () => {
-                const database =
-                  request.result;
-
-                if (
-                  !database
-                    .objectStoreNames
-                    .contains(
-                      "locationReports"
-                    )
-                ) {
-                  database
-                    .createObjectStore(
-                      "locationReports",
-                      {
-                        keyPath: "key"
-                      }
-                    );
-                }
-              };
-
-            request.onsuccess =
-              () =>
-                resolve(
-                  request.result
-                );
-
-            request.onerror =
-              () =>
-                reject(
-                  request.error
-                );
+            return;
           }
-        );
+
+          const request = indexedDB.open(
+            "StarkEventsInventoryDB",
+            1
+          );
+
+          request.onupgradeneeded = () => {
+            const database = request.result;
+
+            if (
+              !database.objectStoreNames.contains(
+                "locationReports"
+              )
+            ) {
+              database.createObjectStore(
+                "locationReports",
+                { keyPath: "key" }
+              );
+            }
+          };
+
+          request.onsuccess = () => {
+            resolve(request.result);
+          };
+
+          request.onerror = () => {
+            reject(request.error);
+          };
+        });
       }
 
-      async function loadInventoryReports() {
+      async function loadStoredInventory() {
         const result = {
           Sarasota: null,
           Texas: null
         };
 
         try {
-          const database =
-            await openInventoryDatabase();
+          const database = await openInventoryDatabase();
 
-          const storedReports =
-            await new Promise(
-              (
-                resolve,
-                reject
-              ) => {
-                const transaction =
-                  database.transaction(
-                    "locationReports",
-                    "readonly"
-                  );
+          const reports = await new Promise(
+            (resolve, reject) => {
+              const transaction = database.transaction(
+                "locationReports",
+                "readonly"
+              );
 
-                const request =
-                  transaction
-                    .objectStore(
-                      "locationReports"
-                    )
-                    .getAll();
+              const request = transaction
+                .objectStore("locationReports")
+                .getAll();
 
-                request.onsuccess =
-                  () =>
-                    resolve(
-                      request.result ||
-                      []
-                    );
+              request.onsuccess = () => {
+                resolve(request.result || []);
+              };
 
-                request.onerror =
-                  () =>
-                    reject(
-                      request.error
-                    );
+              request.onerror = () => {
+                reject(request.error);
+              };
 
-                transaction.oncomplete =
-                  () =>
-                    database.close();
+              transaction.oncomplete = () => {
+                database.close();
+              };
+            }
+          );
 
-                transaction.onerror =
-                  () =>
-                    database.close();
+          reports
+            .filter(report => report.region === region)
+            .forEach(report => {
+              if (LOCATIONS.includes(report.location)) {
+                result[report.location] = report;
               }
-            );
-
-          storedReports
-            .filter(
-              (report) =>
-                report.region ===
-                region
-            )
-            .forEach(
-              (report) => {
-                if (
-                  LOCATIONS.includes(
-                    report.location
-                  )
-                ) {
-                  result[
-                    report.location
-                  ] = report;
-                }
-              }
-            );
+            });
         } catch (error) {
           console.warn(
-            "Unable to load inventory.",
+            "Inventory reports could not be loaded.",
             error
           );
         }
@@ -2949,22 +1608,15 @@
         return result;
       }
 
-      function buildInventoryMaps() {
-        LOCATIONS.forEach(
-          (location) => {
-            inventoryMaps[
-              location
-            ] =
-              createInventoryMap(
-                reports[
-                  location
-                ]
-              );
-          }
-        );
+      function rebuildLocationMaps() {
+        LOCATIONS.forEach(location => {
+          locationMaps[location] = createLocationMap(
+            locationReports[location]
+          );
+        });
       }
 
-      function createInventoryMap(report) {
+      function createLocationMap(report) {
         const map = new Map();
 
         if (
@@ -2974,452 +1626,114 @@
           return map;
         }
 
-        report.rows.forEach(
-          (row) => {
-            const model =
-              normalizeModel(
-                row[
-                  report.modelHeader
-                ]
-              );
+        report.rows.forEach(row => {
+          const model = normalizeModel(
+            row[report.modelHeader]
+          );
 
-            const stock =
-              extractStock(
-                row,
-                report
-              );
+          const stock = extractStock(row, report);
 
-            if (
-              !model ||
-              stock === null
-            ) {
-              return;
-            }
-
-            map.set(
-              model,
-              (
-                map.get(model) ||
-                0
-              ) + stock
-            );
+          if (!model || stock === null) {
+            return;
           }
-        );
+
+          map.set(
+            model,
+            (map.get(model) || 0) + stock
+          );
+        });
 
         return map;
       }
 
-      function extractStock(
-        row,
-        report
-      ) {
-        if (
-          report.directStockHeader
-        ) {
+      function extractStock(row, report) {
+        if (report.directStockHeader) {
           return numberValue(
-            row[
-              report
-                .directStockHeader
-            ]
+            row[report.directStockHeader]
           );
         }
 
-        const onHand =
-          report.onHandHeader
-            ? numberValue(
-                row[
-                  report
-                    .onHandHeader
-                ]
-              )
-            : null;
+        const onHand = report.onHandHeader
+          ? numberValue(row[report.onHandHeader])
+          : null;
 
-        const ats =
-          report.atsHeader
-            ? numberValue(
-                row[
-                  report
-                    .atsHeader
-                ]
-              )
-            : null;
+        const ats = report.atsHeader
+          ? numberValue(row[report.atsHeader])
+          : null;
 
-        if (
-          onHand !== null &&
-          ats !== null
-        ) {
+        if (onHand !== null && ats !== null) {
           return onHand + ats;
         }
 
         return onHand ?? ats;
       }
 
-      function syncEventInventory(event) {
+      function synchronizeEventInventory(event) {
+        const inventoryAvailable = LOCATIONS.some(
+          location => locationReports[location]
+        );
+
+        if (!inventoryAvailable) {
+          return event;
+        }
+
         return {
           ...event,
+          items: event.items.map(item => {
+            const model = normalizeModel(item.model);
 
-          items:
-            event.items.map(
-              (item) => {
-                const model =
-                  normalizeModel(
-                    item.model
-                  );
+            const sarasotaMatch =
+              locationMaps.Sarasota.get(model);
 
-                const sarasotaMatch =
-                  inventoryMaps
-                    .Sarasota
-                    .get(model);
+            const texasMatch =
+              locationMaps.Texas.get(model);
 
-                const texasMatch =
-                  inventoryMaps
-                    .Texas
-                    .get(model);
+            const matched =
+              sarasotaMatch !== undefined ||
+              texasMatch !== undefined;
 
-                const matched =
-                  sarasotaMatch !==
-                    undefined ||
-                  texasMatch !==
-                    undefined;
+            const sarasota =
+              sarasotaMatch !== undefined
+                ? sarasotaMatch
+                : null;
 
-                const sarasota =
-                  sarasotaMatch !==
-                  undefined
-                    ? sarasotaMatch
-                    : null;
+            const texas =
+              texasMatch !== undefined
+                ? texasMatch
+                : null;
 
-                const texas =
-                  texasMatch !==
-                  undefined
-                    ? texasMatch
-                    : null;
-
-                return {
-                  ...item,
-                  sarasota,
-                  texas,
-
-                  total:
-                    matched
-                      ? (
-                          sarasota ||
-                          0
-                        ) +
-                        (
-                          texas ||
-                          0
-                        )
-                      : null,
-
-                  matched
-                };
-              }
-            )
+            return {
+              ...item,
+              sarasota,
+              texas,
+              total: matched
+                ? (sarasota || 0) + (texas || 0)
+                : null,
+              matched
+            };
+          })
         };
       }
 
-      function renderAll() {
-        renderKPIs();
-        renderAlert();
-        renderInventory();
-        renderPipeline();
-        renderCurrentSlide();
-        renderSyncStatus();
-      }
-
-      function renderKPIs() {
-        const active =
-          events.filter(
-            (event) =>
-              !isClosed(event)
-          );
-
-        const upcoming =
-          active.filter(
-            (event) => {
-              const days =
-                daysUntil(
-                  event.inHandsDate
-                );
-
-              return (
-                days !== null &&
-                days >= 0 &&
-                days <= 14
-              );
-            }
-          );
-
-        const dueSoon =
-          active.filter(
-            (event) => {
-              const days =
-                daysUntil(
-                  event.inHandsDate
-                );
-
-              return (
-                days !== null &&
-                days >= 0 &&
-                days <= 7
-              );
-            }
-          );
-
-        const overdue =
-          active.filter(
-            (event) => {
-              const days =
-                daysUntil(
-                  event.inHandsDate
-                );
-
-              return (
-                days !== null &&
-                days < 0
-              );
-            }
-          );
-
-        const risk =
-          active.filter(isAtRisk);
-
-        const low =
-          active.filter(
-            (event) =>
-              getInventoryStatus(
-                event
-              ) === "LOW"
-          );
-
-        const requestedUnits =
-          active.reduce(
-            (
-              total,
-              event
-            ) => {
-              return (
-                total +
-                event.items.reduce(
-                  (
-                    itemTotal,
-                    item
-                  ) => {
-                    return (
-                      itemTotal +
-                      (
-                        numberValue(
-                          item.quantity
-                        ) || 0
-                      )
-                    );
-                  },
-                  0
-                )
-              );
-            },
-            0
-          );
-
-        const shortage =
-          active.reduce(
-            (
-              total,
-              event
-            ) => {
-              return (
-                total +
-                getEventShortage(
-                  event
-                )
-              );
-            },
-            0
-          );
-
-        const allItems =
-          active.flatMap(
-            (event) =>
-              event.items
-          );
-
-        const matchedItems =
-          allItems.filter(
-            (item) =>
-              item.matched === true
-          ).length;
-
-        const matchedPercent =
-          allItems.length
-            ? Math.round(
-                (
-                  matchedItems /
-                  allItems.length
-                ) * 100
-              )
-            : 0;
-
-        const averageReadiness =
-          active.length
-            ? Math.round(
-                active.reduce(
-                  (
-                    total,
-                    event
-                  ) => {
-                    return (
-                      total +
-                      calculateReadiness(
-                        event
-                      )
-                    );
-                  },
-                  0
-                ) /
-                active.length
-              )
-            : 0;
-
-        $("activeValue").textContent =
-          formatNumber(
-            active.length
-          );
-
-        $("unitsValue").textContent =
-          `${formatNumber(
-            requestedUnits
-          )} units requested`;
-
-        $("upcomingValue").textContent =
-          formatNumber(
-            upcoming.length
-          );
-
-        $("dueSoonValue").textContent =
-          `${dueSoon.length} due within 7 days`;
-
-        $("riskValue").textContent =
-          formatNumber(
-            risk.length
-          );
-
-        $("overdueValue").textContent =
-          `${overdue.length} overdue`;
-
-        $("lowValue").textContent =
-          formatNumber(
-            low.length
-          );
-
-        $("shortValue").textContent =
-          `${formatNumber(
-            shortage
-          )} units short`;
-
-        $("matchedValue").textContent =
-          `${matchedPercent}%`;
-
-        $("matchedDetail").textContent =
-          `${matchedItems} of ${allItems.length} models`;
-
-        $("readinessValue").textContent =
-          `${averageReadiness}%`;
-
-        $("readinessDetail").textContent =
-          readinessState(
-            averageReadiness
-          ).label;
-      }
-
-      function renderAlert() {
-        const attention =
-          events
-            .filter(
-              (event) =>
-                !isClosed(event)
-            )
-            .filter(
-              (event) => {
-                const priority =
-                  getPriority(
-                    event
-                  );
-
-                return (
-                  priority.slug ===
-                    "critical" ||
-                  priority.slug ===
-                    "urgent"
-                );
-              }
-            );
-
-        $("alertCount").textContent =
-          `${attention.length} event${
-            attention.length === 1
-              ? ""
-              : "s"
-          } need attention`;
-
-        if (!attention.length) {
-          $("alertMessage").textContent =
-            `No critical event exceptions detected for ${REGION_NAMES[region]}.`;
-
-          return;
-        }
-
-        const messages =
-          attention
-            .slice(0, 4)
-            .map(
-              (event) => {
-                const priority =
-                  getPriority(
-                    event
-                  );
-
-                return (
-                  `PO# ${event.poNumber} — ` +
-                  `${priority.label}: ` +
-                  `${getNextAction(
-                    event
-                  )}`
-                );
-              }
-            );
-
-        $("alertMessage").textContent =
-          messages.join("  •  ");
-      }
-
       function renderCurrentSlide() {
-        const oldEmpty =
-          $("emptyBoard");
+        const existingEmpty =
+          document.getElementById("emptyBoard");
 
-        if (oldEmpty) {
-          oldEmpty.remove();
+        if (existingEmpty) {
+          existingEmpty.remove();
         }
 
         if (!slides.length) {
-          spotlight.classList.add(
-            "hidden"
-          );
+          spotlight.classList.add("hidden");
 
-          sidePanel.classList.add(
-            "hidden"
-          );
+          const emptyState =
+            document.createElement("section");
 
-          const empty =
-            document.createElement(
-              "section"
-            );
-
-          empty.id = "emptyBoard";
-
-          empty.className =
+          emptyState.id = "emptyBoard";
+          emptyState.className =
             "empty-board slide-enter";
 
-          empty.innerHTML = `
+          emptyState.innerHTML = `
             <div>
               <div class="empty-icon">
                 <svg
@@ -3428,340 +1742,193 @@
                   stroke="currentColor"
                   stroke-width="1.8"
                 >
-                  <path d="M5 3h11l3 3v15H5z"></path>
-                  <path d="M15 3v4h4"></path>
-                  <path d="M8 12h8"></path>
-                  <path d="M8 16h5"></path>
+                  <path d="M5 3h11l3 3v15H5z"/>
+                  <path d="M15 3v4h4M8 12h8M8 16h5"/>
                 </svg>
               </div>
 
               <h2 class="empty-title">
-                No ${
-                  viewMode ===
-                  "active"
-                    ? "active "
-                    : ""
-                }events to display
+                No ${viewMode === "active" ? "active " : ""}events to display
               </h2>
 
               <p class="empty-copy">
-                Open the
-                ${escapeHtml(
-                  REGION_NAMES[
-                    region
-                  ]
-                )}
-                Events Control Center in this same browser.
-                Add or update a PO and this screen will
+                Open the ${escapeHtml(REGION_NAMES[region])}
+                Events Control Center in this same browser,
+                add or update a PO, and this screen will
                 refresh automatically.
               </p>
 
               <a
                 class="empty-link"
-                href="events.html?region=${encodeURIComponent(
-                  region
-                )}"
+                href="events.html?region=${encodeURIComponent(region)}"
               >
                 Open Events Control Center
               </a>
             </div>
           `;
 
-          contentGrid.appendChild(
-            empty
-          );
+          contentGrid.appendChild(emptyState);
+
+          rotationCopy.textContent =
+            "Waiting for events";
 
           return;
         }
 
         spotlight.classList.remove(
-          "hidden"
-        );
-
-        sidePanel.classList.remove(
-          "hidden"
-        );
-
-        const slide =
-          slides[slideIndex];
-
-        const event =
-          slide.event;
-
-        const priority =
-          getPriority(event);
-
-        const inventoryStatus =
-          getInventoryStatus(
-            event
-          );
-
-        const readiness =
-          calculateReadiness(
-            event
-          );
-
-        const readinessInfo =
-          readinessState(
-            readiness
-          );
-
-        const dateMessage =
-          getDateMessage(
-            event
-          );
-
-        const nextAction =
-          getNextAction(
-            event
-          );
-
-        const totalQuantity =
-          event.items.reduce(
-            (
-              total,
-              item
-            ) => {
-              return (
-                total +
-                (
-                  numberValue(
-                    item.quantity
-                  ) || 0
-                )
-              );
-            },
-            0
-          );
-
-        const shortage =
-          getEventShortage(
-            event
-          );
-
-        const itemStart =
-          slide.itemPage *
-          ITEMS_PER_SLIDE;
-
-        const pageItems =
-          event.items.slice(
-            itemStart,
-            itemStart +
-              ITEMS_PER_SLIDE
-          );
-
-        spotlight.classList.remove(
+          "hidden",
           "slide-enter"
         );
 
         void spotlight.offsetWidth;
 
-        spotlight.classList.add(
-          "slide-enter"
+        spotlight.classList.add("slide-enter");
+
+        const slide = slides[slideIndex];
+        const event = slide.event;
+        const inventoryStatus =
+          getInventoryStatus(event);
+        const priority =
+          getEventPriority(event);
+        const readiness =
+          calculateReadiness(event);
+        const readinessState =
+          getReadinessState(readiness);
+        const nextAction =
+          getNextAction(event);
+        const dateMessage =
+          getDateMessage(event);
+
+        const itemsStart =
+          slide.itemPage * ITEMS_PER_SLIDE;
+
+        const pageItems = event.items.slice(
+          itemsStart,
+          itemsStart + ITEMS_PER_SLIDE
+        );
+
+        const totalQuantity = event.items.reduce(
+          (sum, item) => {
+            return (
+              sum +
+              (numberValue(item.quantity) || 0)
+            );
+          },
+          0
         );
 
         spotlight.innerHTML = `
-          <header class="event-header">
+          <header class="event-head">
             <div>
               <p class="event-kicker">
-                ${escapeHtml(
-                  REGION_NAMES[
-                    region
-                  ]
-                )}
-                · Event
-                ${eventPosition(
-                  event
-                )}
-                of
-                ${visibleEvents.length}
+                ${escapeHtml(REGION_NAMES[region])}
+                · Event ${getEventPosition(event)}
+                of ${visibleEvents.length}
               </p>
 
-              <div class="po-row">
-                <span class="po-prefix">
-                  PO#
-                </span>
+              <div class="po-line">
+                <span class="po-label">PO#</span>
 
                 <h2
                   class="po-number"
-                  title="${escapeHtml(
-                    event.poNumber
-                  )}"
+                  title="${escapeHtml(event.poNumber)}"
                 >
-                  ${escapeHtml(
-                    event.poNumber
-                  )}
+                  ${escapeHtml(event.poNumber)}
                 </h2>
               </div>
 
               <p
-                class="customer-name"
-                title="${escapeHtml(
-                  event.customer
-                )}"
+                class="customer"
+                title="${escapeHtml(event.customer)}"
               >
-                ${escapeHtml(
-                  event.customer
-                )}
-                ·
-                ${formatNumber(
-                  totalQuantity
-                )}
-                units
-                ·
-                ${event.items.length}
-                model${
-                  event.items.length ===
-                  1
-                    ? ""
-                    : "s"
-                }
+                ${escapeHtml(event.customer)}
               </p>
             </div>
 
-            <div class="event-badges">
-              <span
-                class="badge badge-${priority.slug}"
-              >
-                ${escapeHtml(
-                  priority.label
-                )}
+            <div class="badges">
+              <span class="priority-badge priority-${priority.slug}">
+                ${escapeHtml(priority.label)}
               </span>
 
-              <span
-                class="badge badge-${statusSlug(
-                  event.status
-                )}"
-              >
-                ${escapeHtml(
-                  event.status
-                )}
+              <span class="badge badge-${statusSlug(event.status)}">
+                ${escapeHtml(event.status)}
               </span>
 
-              <span
-                class="badge badge-${inventoryStatus.toLowerCase()}"
-              >
-                Inventory
-                ${inventoryStatus}
+              <span class="badge badge-${inventoryStatus.toLowerCase()}">
+                Inventory ${inventoryStatus}
               </span>
-
-              ${
-                shortage > 0
-                  ? `
-                    <span class="badge badge-low">
-                      ${formatNumber(
-                        shortage
-                      )}
-                      units short
-                    </span>
-                  `
-                  : ""
-              }
             </div>
+          </header>
 
-            <div class="readiness">
+          <div class="event-overview">
+            <section class="deadline-card">
+              <p class="section-label">
+                In-hands date
+              </p>
+
+              <p class="deadline-date">
+                ${formatDate(event.inHandsDate)}
+              </p>
+
+              <p class="deadline-message ${isAtRisk(event) ? "risk" : ""}">
+                ${escapeHtml(dateMessage)}
+              </p>
+            </section>
+
+            <section class="readiness-card">
               <div
                 class="readiness-ring"
                 style="
                   --score:${readiness};
-                  --ring-color:${readinessInfo.color};
+                  --ring-color:${readinessState.color}
                 "
               >
-                <span class="readiness-score">
+                <span class="readiness-number">
                   ${readiness}%
                 </span>
               </div>
 
-              <div class="readiness-copy">
-                <p class="readiness-label">
+              <div>
+                <p class="section-label">
                   Readiness
                 </p>
 
-                <p class="readiness-state">
-                  ${escapeHtml(
-                    readinessInfo.label
-                  )}
+                <p class="readiness-label">
+                  ${escapeHtml(readinessState.label)}
+                </p>
+
+                <p class="readiness-detail">
+                  Inventory, planning and follow-up
                 </p>
               </div>
-            </div>
-          </header>
-
-          <div class="overview-grid">
-            <section class="info-card">
-              <p class="label">
-                In-hands date
-              </p>
-
-              <p class="deadline-value">
-                ${formatDate(
-                  event.inHandsDate
-                )}
-              </p>
-
-              <p
-                class="deadline-status ${
-                  isAtRisk(event)
-                    ? "risk"
-                    : ""
-                }"
-              >
-                ${escapeHtml(
-                  dateMessage
-                )}
-              </p>
             </section>
 
-            <section class="info-card">
-              <p class="label">
+            <section class="planning-card">
+              <p class="section-label">
                 Fulfillment planning
               </p>
 
-              <p
-                class="planning-value"
-                title="${escapeHtml(
-                  event.planning
-                )}"
-              >
+              <p class="planning-value">
                 ${escapeHtml(
                   event.planning ||
                   "Planning not confirmed"
                 )}
               </p>
             </section>
-
-            <section class="info-card action">
-              <p class="label">
-                Next required action
-              </p>
-
-              <p
-                class="action-value"
-                title="${escapeHtml(
-                  nextAction
-                )}"
-              >
-                ${escapeHtml(
-                  nextAction
-                )}
-              </p>
-            </section>
           </div>
 
-          <div class="details-area">
+          <div>
             <div class="meta-grid">
               ${metaCard(
                 "Event owner",
-                event.owner ||
-                "Not assigned"
+                event.owner || "Not assigned"
               )}
 
               ${metaCard(
                 "Customer follow-up",
-                event
-                  .customerFollowedUpDate
+                event.customerFollowedUpDate
                   ? formatDate(
-                      event
-                        .customerFollowedUpDate
+                      event.customerFollowedUpDate
                     )
                   : "Not recorded"
               )}
@@ -3773,6 +1940,16 @@
               )}
 
               ${metaCard(
+                "PO quantity",
+                `${formatNumber(totalQuantity)} units ·
+                 ${event.items.length} model${
+                   event.items.length === 1
+                     ? ""
+                     : "s"
+                 }`
+              )}
+
+              ${metaCard(
                 "Internal recipients",
                 event.recipients ||
                 "Not entered"
@@ -3781,35 +1958,39 @@
               ${metaCard(
                 "Last updated",
                 event.updatedAt
-                  ? shortDateTime(
-                      event.updatedAt
-                    )
+                  ? shortDateTime(event.updatedAt)
                   : "Unknown"
               )}
             </div>
 
-            <section class="notes-card">
-              <p class="label">
-                Latest notes
-              </p>
+            <div class="action-notes-grid">
+              <section class="next-action-card">
+                <p class="section-label">
+                  Next required action
+                </p>
 
-              <p
-                class="notes-value"
-                title="${escapeHtml(
-                  event.notes ||
-                  "No notes entered"
-                )}"
-              >
-                ${escapeHtml(
-                  event.notes ||
-                  "No notes entered"
-                )}
-              </p>
-            </section>
+                <p class="next-action-value">
+                  ${escapeHtml(nextAction)}
+                </p>
+              </section>
+
+              <section class="notes-card">
+                <p class="section-label">
+                  Latest notes
+                </p>
+
+                <p class="notes-value">
+                  ${escapeHtml(
+                    event.notes ||
+                    "No notes entered"
+                  )}
+                </p>
+              </section>
+            </div>
           </div>
 
           <section class="items-panel">
-            <div class="items-header">
+            <div class="items-head">
               <h3 class="items-title">
                 PO Items & Live Stock Availability
               </h3>
@@ -3817,68 +1998,48 @@
               <span class="items-page">
                 ${
                   event.items.length
-                    ? `Items ${
-                        itemStart + 1
-                      }–${Math.min(
-                        itemStart +
-                          pageItems.length,
-                        event.items
-                          .length
-                      )} of ${
-                        event.items
-                          .length
-                      }`
+                    ? `Items ${itemsStart + 1}–${
+                        Math.min(
+                          itemsStart + pageItems.length,
+                          event.items.length
+                        )
+                      } of ${event.items.length}`
                     : "No items"
                 }
-
                 ${
                   slide.itemPages > 1
                     ? ` · Page ${
-                        slide.itemPage +
-                        1
-                      } of ${
-                        slide.itemPages
-                      }`
+                        slide.itemPage + 1
+                      } of ${slide.itemPages}`
                     : ""
                 }
               </span>
             </div>
 
-            ${renderItems(
-              pageItems
-            )}
+            ${renderItemsTable(pageItems)}
           </section>
         `;
 
-        renderQueue(event);
-
-        $("rotationCopy").textContent =
+        rotationCopy.textContent =
           slides.length > 1
             ? `${
                 paused
                   ? "Rotation paused"
-                  : "Priority-first rotation every 14 seconds"
-              } · Slide ${
-                slideIndex + 1
-              } of ${slides.length}`
+                  : "Auto-rotating every 14 seconds"
+              } · Slide ${slideIndex + 1} of ${slides.length}`
             : "Single event view";
       }
 
-      function metaCard(
-        label,
-        value
-      ) {
+      function metaCard(label, value) {
         return `
           <section class="meta-card">
-            <p class="label">
+            <p class="section-label">
               ${escapeHtml(label)}
             </p>
 
             <p
               class="meta-value"
-              title="${escapeHtml(
-                value
-              )}"
+              title="${escapeHtml(value)}"
             >
               ${escapeHtml(value)}
             </p>
@@ -3886,7 +2047,7 @@
         `;
       }
 
-      function renderItems(items) {
+      function renderItemsTable(items) {
         if (!items.length) {
           return `
             <div class="no-items">
@@ -3911,412 +2072,83 @@
               </thead>
 
               <tbody>
-                ${items
-                  .map(
-                    (item) => {
-                      const quantity =
-                        numberValue(
-                          item.quantity
-                        );
+                ${items.map(item => {
+                  const quantity =
+                    numberValue(item.quantity);
 
-                      const total =
-                        numberValue(
-                          item.total
-                        );
+                  const total =
+                    numberValue(item.total);
 
-                      const status =
-                        getItemStatus(
-                          item
-                        );
+                  const status =
+                    getItemInventoryStatus(item);
 
-                      const balance =
-                        quantity !==
-                          null &&
-                        total !== null
-                          ? total -
-                            quantity
-                          : null;
+                  const balance =
+                    quantity !== null &&
+                    total !== null
+                      ? total - quantity
+                      : null;
 
-                      return `
-                        <tr>
-                          <td
-                            class="model-value"
-                            title="${escapeHtml(
-                              item.model ||
-                              "Not entered"
-                            )}"
-                          >
-                            ${escapeHtml(
-                              item.model ||
-                              "Not entered"
-                            )}
-                          </td>
+                  return `
+                    <tr>
+                      <td
+                        class="model-value"
+                        title="${escapeHtml(
+                          item.model || "Not entered"
+                        )}"
+                      >
+                        ${escapeHtml(
+                          item.model || "Not entered"
+                        )}
+                      </td>
 
-                          <td>
-                            ${numberOrDash(
-                              quantity
-                            )}
-                          </td>
+                      <td>
+                        ${numberOrDash(quantity)}
+                      </td>
 
-                          <td>
-                            ${numberOrDash(
-                              item.sarasota
-                            )}
-                          </td>
+                      <td>
+                        ${numberOrDash(item.sarasota)}
+                      </td>
 
-                          <td>
-                            ${numberOrDash(
-                              item.texas
-                            )}
-                          </td>
+                      <td>
+                        ${numberOrDash(item.texas)}
+                      </td>
 
-                          <td>
-                            ${numberOrDash(
-                              total
-                            )}
-                          </td>
+                      <td>
+                        ${numberOrDash(total)}
+                      </td>
 
-                          <td
-                            class="${
-                              balance ===
-                              null
-                                ? ""
-                                : balance < 0
-                                  ? "negative"
-                                  : "positive"
-                            }"
-                          >
-                            ${numberOrDash(
-                              balance
-                            )}
-                          </td>
+                      <td class="${
+                        balance === null
+                          ? ""
+                          : balance < 0
+                            ? "balance-negative"
+                            : "balance-positive"
+                      }">
+                        ${numberOrDash(balance)}
+                      </td>
 
-                          <td>
-                            <span
-                              class="item-status ${status.toLowerCase()}"
-                            >
-                              ${status}
-                            </span>
-                          </td>
-                        </tr>
-                      `;
-                    }
-                  )
-                  .join("")}
+                      <td>
+                        <span class="mini-status ${status.toLowerCase()}">
+                          ${status}
+                        </span>
+                      </td>
+                    </tr>
+                  `;
+                }).join("")}
               </tbody>
             </table>
           </div>
         `;
       }
 
-      function renderQueue(
-        currentEvent
-      ) {
-        $("queueMeta").textContent =
-          `${visibleEvents.length} PO${
-            visibleEvents.length ===
-            1
-              ? ""
-              : "s"
-          }`;
-
-        const currentIndex =
-          Math.max(
-            0,
-            visibleEvents.findIndex(
-              (event) =>
-                event.id ===
-                currentEvent.id
-            )
-          );
-
-        const queueEvents =
-          Array.from(
-            {
-              length: Math.min(
-                6,
-                visibleEvents.length
-              )
-            },
-            (_, offset) => {
-              return visibleEvents[
-                (
-                  currentIndex +
-                  offset
-                ) %
-                visibleEvents.length
-              ];
-            }
-          );
-
-        $("eventQueue").innerHTML =
-          queueEvents
-            .map(
-              (event) => {
-                const priority =
-                  getPriority(
-                    event
-                  );
-
-                return `
-                  <button
-                    class="queue-item ${
-                      event.id ===
-                      currentEvent.id
-                        ? "current"
-                        : ""
-                    }"
-                    type="button"
-                    data-event-id="${escapeHtml(
-                      event.id
-                    )}"
-                  >
-                    <div>
-                      <p class="queue-po">
-                        PO#
-                        ${escapeHtml(
-                          event.poNumber
-                        )}
-                      </p>
-
-                      <p class="queue-customer">
-                        ${escapeHtml(
-                          event.customer
-                        )}
-                        ·
-                        ${escapeHtml(
-                          event.status
-                        )}
-                      </p>
-
-                      <span
-                        class="queue-priority ${priority.slug}"
-                      >
-                        ${escapeHtml(
-                          priority.label
-                        )}
-                      </span>
-                    </div>
-
-                    <span
-                      class="queue-date ${
-                        isAtRisk(event)
-                          ? "risk"
-                          : ""
-                      }"
-                    >
-                      ${escapeHtml(
-                        shortDate(
-                          event
-                            .inHandsDate
-                        )
-                      )}
-                      <br>
-                      ${escapeHtml(
-                        getDateMessage(
-                          event
-                        )
-                      )}
-                    </span>
-                  </button>
-                `;
-              }
-            )
-            .join("");
-
-        document
-          .querySelectorAll(
-            "[data-event-id]"
-          )
-          .forEach(
-            (button) => {
-              button.addEventListener(
-                "click",
-                () =>
-                  goToEvent(
-                    button.dataset
-                      .eventId
-                  )
-              );
-            }
-          );
-      }
-
-      function renderInventory() {
-        const availableReports =
-          LOCATIONS.filter(
-            (location) =>
-              reports[location]
-          );
-
-        $("inventoryMeta").textContent =
-          availableReports.length
-            ? `${availableReports.length} of ${LOCATIONS.length} locations live`
-            : "Waiting for files";
-
-        $("inventoryGrid").innerHTML =
-          LOCATIONS
-            .map(
-              (location) => {
-                const report =
-                  reports[location];
-
-                const map =
-                  inventoryMaps[
-                    location
-                  ];
-
-                const units =
-                  [...map.values()]
-                    .reduce(
-                      (
-                        total,
-                        value
-                      ) => {
-                        return (
-                          total +
-                          (
-                            numberValue(
-                              value
-                            ) || 0
-                          )
-                        );
-                      },
-                      0
-                    );
-
-                return `
-                  <article
-                    class="location-card"
-                    title="${
-                      report
-                        ? escapeHtml(
-                            report.fileName ||
-                            `${location} inventory`
-                          )
-                        : `No ${location} file uploaded`
-                    }"
-                  >
-                    <p class="location-name">
-                      ${location}
-                    </p>
-
-                    <p class="location-value">
-                      ${
-                        report
-                          ? formatNumber(
-                              units
-                            )
-                          : "—"
-                      }
-                    </p>
-
-                    <p class="location-detail">
-                      ${
-                        report
-                          ? `${formatNumber(
-                              map.size
-                            )} models · ${shortDateTime(
-                              report.uploadedAt
-                            )}`
-                          : "No inventory uploaded"
-                      }
-                    </p>
-                  </article>
-                `;
-              }
-            )
-            .join("");
-      }
-
-      function renderPipeline() {
-        $("pipeline").innerHTML =
-          WORKFLOW
-            .map(
-              (status) => {
-                const count =
-                  events.filter(
-                    (event) =>
-                      event.status ===
-                      status
-                  ).length;
-
-                return `
-                  <article class="pipeline-step">
-                    <p class="pipeline-count">
-                      ${count}
-                    </p>
-
-                    <p
-                      class="pipeline-name"
-                      title="${escapeHtml(
-                        status
-                      )}"
-                    >
-                      ${escapeHtml(
-                        status
-                      )}
-                    </p>
-                  </article>
-                `;
-              }
-            )
-            .join("");
-      }
-
-      function renderSyncStatus() {
-        const latest = [
-          ...events.map(
-            (event) =>
-              event.updatedAt
-          ),
-
-          ...LOCATIONS.map(
-            (location) =>
-              reports[
-                location
-              ]?.uploadedAt
-          )
-        ]
-          .filter(Boolean)
-          .sort()
-          .pop();
-
-        $("syncCopy").textContent =
-          latest
-            ? `Latest update ${shortDateTime(
-                latest
-              )}`
-            : `Waiting for ${REGION_NAMES[region]} data`;
-      }
-
-      function eventPosition(event) {
-        const position =
-          visibleEvents.findIndex(
-            (record) =>
-              record.id === event.id
-          );
+      function getEventPosition(event) {
+        const position = visibleEvents.findIndex(
+          record => record.id === event.id
+        );
 
         return position >= 0
           ? position + 1
           : 1;
-      }
-
-      function goToEvent(eventId) {
-        const index =
-          slides.findIndex(
-            (slide) =>
-              slide.event.id ===
-              eventId
-          );
-
-        if (index < 0) {
-          return;
-        }
-
-        slideIndex = index;
-        renderCurrentSlide();
-        resetRotation();
       }
 
       function nextSlide() {
@@ -4325,10 +2157,7 @@
         }
 
         slideIndex =
-          (
-            slideIndex + 1
-          ) %
-          slides.length;
+          (slideIndex + 1) % slides.length;
 
         renderCurrentSlide();
         resetRotation();
@@ -4340,11 +2169,7 @@
         }
 
         slideIndex =
-          (
-            slideIndex -
-            1 +
-            slides.length
-          ) %
+          (slideIndex - 1 + slides.length) %
           slides.length;
 
         renderCurrentSlide();
@@ -4354,32 +2179,26 @@
       function togglePause() {
         paused = !paused;
 
-        $("floatingControls")
-          .classList.toggle(
-            "paused",
-            paused
-          );
-
-        $("pauseIcon").innerHTML =
+        floatingControls.classList.toggle(
+          "paused",
           paused
-            ? '<path d="m8 5 11 7-11 7z"></path>'
-            : '<path d="M8 5v14"></path><path d="M16 5v14"></path>';
+        );
 
-        $("pauseButton").title =
-          paused
-            ? "Resume rotation"
-            : "Pause rotation";
+        pauseButton.title = paused
+          ? "Resume rotation"
+          : "Pause rotation";
 
-        resetRotation();
+        pauseIcon.innerHTML = paused
+          ? '<path d="m8 5 11 7-11 7z"/>'
+          : '<path d="M8 5v14M16 5v14"/>';
+
         renderCurrentSlide();
+        resetRotation();
       }
 
       function resetRotation() {
-        rotationStartedAt =
-          Date.now();
-
-        progressValue.style.width =
-          "0%";
+        rotationStartedAt = Date.now();
+        rotationProgress.style.width = "0%";
       }
 
       function updateRotation() {
@@ -4388,49 +2207,35 @@
           slides.length > 1
         ) {
           const elapsed =
-            Date.now() -
-            rotationStartedAt;
+            Date.now() - rotationStartedAt;
 
-          const percentage =
-            Math.min(
-              100,
-              (
-                elapsed /
-                ROTATION_MS
-              ) * 100
-            );
+          const percentage = Math.min(
+            100,
+            (elapsed / ROTATION_MS) * 100
+          );
 
-          progressValue.style.width =
+          rotationProgress.style.width =
             `${percentage}%`;
 
-          if (
-            elapsed >=
-            ROTATION_MS
-          ) {
+          if (elapsed >= ROTATION_MS) {
             nextSlide();
           }
         } else {
-          progressValue.style.width =
-            "0%";
+          rotationProgress.style.width = "0%";
         }
 
-        requestAnimationFrame(
+        window.requestAnimationFrame(
           updateRotation
         );
       }
 
       async function toggleFullscreen() {
         try {
-          if (
-            !document
-              .fullscreenElement
-          ) {
-            await document
-              .documentElement
+          if (!document.fullscreenElement) {
+            await document.documentElement
               .requestFullscreen();
           } else {
-            await document
-              .exitFullscreen();
+            await document.exitFullscreen();
           }
         } catch (error) {
           console.warn(
@@ -4443,7 +2248,9 @@
       function updateClock() {
         const now = new Date();
 
-        $("clockTime").textContent =
+        document.getElementById(
+          "clockTime"
+        ).textContent =
           new Intl.DateTimeFormat(
             undefined,
             {
@@ -4453,7 +2260,9 @@
             }
           ).format(now);
 
-        $("clockDate").textContent =
+        document.getElementById(
+          "clockDate"
+        ).textContent =
           new Intl.DateTimeFormat(
             undefined,
             {
@@ -4465,99 +2274,47 @@
           ).format(now);
       }
 
-      function getInventoryStatus(event) {
-        if (!event.items.length) {
-          return "CHECK";
-        }
+      function updateSyncCopy() {
+        const latestUpdate = [
+          ...events.map(event => event.updatedAt),
+          ...LOCATIONS.map(
+            location =>
+              locationReports[location]?.uploadedAt
+          )
+        ]
+          .filter(Boolean)
+          .sort()
+          .pop();
 
-        let hasLow = false;
-        let hasCheck = false;
-
-        event.items.forEach(
-          (item) => {
-            const status =
-              getItemStatus(
-                item
-              );
-
-            if (status === "LOW") {
-              hasLow = true;
-            }
-
-            if (
-              status === "CHECK"
-            ) {
-              hasCheck = true;
-            }
-          }
-        );
-
-        if (hasLow) {
-          return "LOW";
-        }
-
-        if (hasCheck) {
-          return "CHECK";
-        }
-
-        return "GOOD";
-      }
-
-      function getItemStatus(item) {
-        const quantity =
-          numberValue(
-            item.quantity
-          );
-
-        const total =
-          numberValue(
-            item.total
-          );
-
-        if (
-          quantity === null ||
-          total === null ||
-          item.matched !== true
-        ) {
-          return "CHECK";
-        }
-
-        return total >= quantity
-          ? "GOOD"
-          : "LOW";
+        syncCopy.textContent = latestUpdate
+          ? `Data refreshed · Latest update ${
+              shortDateTime(latestUpdate)
+            }`
+          : `Waiting for ${
+              REGION_NAMES[region]
+            } data`;
       }
 
       function getEventShortage(event) {
         return event.items.reduce(
-          (
-            total,
-            item
-          ) => {
+          (sum, item) => {
             const quantity =
-              numberValue(
-                item.quantity
-              );
+              numberValue(item.quantity);
 
-            const available =
-              numberValue(
-                item.total
-              );
+            const total =
+              numberValue(item.total);
 
             if (
               quantity === null ||
-              available === null ||
+              total === null ||
               item.matched !== true
             ) {
-              return total;
+              return sum;
             }
 
             return (
-              total +
-              Math.max(
-                0,
-                quantity -
-                available
-              )
+              sum +
+              Math.max(0, quantity - total)
             );
           },
           0
@@ -4565,54 +2322,28 @@
       }
 
       function calculateReadiness(event) {
-        if (
-          event.status ===
-          "Complete"
-        ) {
+        if (event.status === "Complete") {
           return 100;
         }
 
-        if (
-          event.status ===
-          "Cancelled"
-        ) {
+        if (event.status === "Cancelled") {
           return 0;
         }
 
         let score = 0;
 
         const inventoryStatus =
-          getInventoryStatus(
-            event
-          );
+          getInventoryStatus(event);
 
-        const workflowIndex =
-          Math.max(
-            0,
-            WORKFLOW.indexOf(
-              event.status
-            )
-          );
+        const workflowIndex = Math.max(
+          0,
+          WORKFLOW.indexOf(event.status)
+        );
 
-        if (event.items.length) {
-          score += 8;
-        }
-
-        if (event.inHandsDate) {
-          score += 7;
-        }
-
-        if (
-          inventoryStatus ===
-          "GOOD"
-        ) {
-          score += 25;
-        } else if (
-          inventoryStatus ===
-          "CHECK"
-        ) {
-          score += 8;
-        }
+        if (event.items.length) score += 8;
+        if (event.inHandsDate) score += 7;
+        if (inventoryStatus === "GOOD") score += 25;
+        if (inventoryStatus === "CHECK") score += 8;
 
         if (
           event.planning &&
@@ -4622,89 +2353,63 @@
           score += 15;
         }
 
-        if (event.owner) {
-          score += 10;
-        }
+        if (event.owner) score += 10;
+        if (event.customerFollowedUpDate) score += 10;
+        if (event.notes) score += 5;
 
         if (
-          event
-            .customerFollowedUpDate
+          event.status === "Shipped" ||
+          event.status === "Complete"
         ) {
-          score += 10;
-        }
-
-        if (event.notes) {
-          score += 5;
-        }
-
-        if (
-          event.status ===
-            "Shipped" ||
-          event.status ===
-            "Complete"
-        ) {
-          if (
-            event.trackingNumber
-          ) {
+          if (event.trackingNumber) {
             score += 10;
           }
         } else {
           score += 10;
         }
 
-        score +=
-          Math.round(
-            (
-              workflowIndex /
-              (
-                WORKFLOW.length -
-                1
-              )
-            ) * 10
-          );
+        score += Math.round(
+          (workflowIndex /
+            (WORKFLOW.length - 1)) *
+            10
+        );
 
         return Math.max(
           0,
-          Math.min(
-            100,
-            Math.round(score)
-          )
+          Math.min(100, Math.round(score))
         );
       }
 
-      function readinessState(score) {
+      function getReadinessState(score) {
         if (score >= 85) {
           return {
             label: "Ready",
-            color: "#3cde8d"
+            color: "#39d98a"
           };
         }
 
         if (score >= 65) {
           return {
             label: "Progressing",
-            color: "#1ed8c8"
+            color: "#19d3c5"
           };
         }
 
         if (score >= 40) {
           return {
             label: "Needs attention",
-            color: "#ffc95b"
+            color: "#ffc857"
           };
         }
 
         return {
           label: "At risk",
-          color: "#ff6c7b"
+          color: "#ff6b78"
         };
       }
 
-      function getPriority(event) {
-        if (
-          event.status ===
-          "Cancelled"
-        ) {
+      function getEventPriority(event) {
+        if (event.status === "Cancelled") {
           return {
             label: "Closed",
             slug: "complete",
@@ -4712,10 +2417,7 @@
           };
         }
 
-        if (
-          event.status ===
-          "Complete"
-        ) {
+        if (event.status === "Complete") {
           return {
             label: "Complete",
             slug: "complete",
@@ -4724,14 +2426,10 @@
         }
 
         const days =
-          daysUntil(
-            event.inHandsDate
-          );
+          daysUntil(event.inHandsDate);
 
         const inventoryStatus =
-          getInventoryStatus(
-            event
-          );
+          getInventoryStatus(event);
 
         if (
           days !== null &&
@@ -4745,12 +2443,8 @@
         }
 
         if (
-          inventoryStatus ===
-            "LOW" &&
-          (
-            days === null ||
-            days <= 14
-          )
+          inventoryStatus === "LOW" &&
+          (days === null || days <= 14)
         ) {
           return {
             label: "Critical",
@@ -4760,12 +2454,8 @@
         }
 
         if (
-          inventoryStatus ===
-            "LOW" ||
-          (
-            days !== null &&
-            days <= 7
-          )
+          inventoryStatus === "LOW" ||
+          (days !== null && days <= 7)
         ) {
           return {
             label: "Urgent",
@@ -4775,8 +2465,7 @@
         }
 
         if (
-          inventoryStatus ===
-            "CHECK" ||
+          inventoryStatus === "CHECK" ||
           days === null ||
           !event.owner ||
           !event.planning ||
@@ -4799,57 +2488,37 @@
 
       function eventPriorityScore(event) {
         const priority =
-          getPriority(
-            event
-          );
+          getEventPriority(event);
 
         const days =
-          daysUntil(
-            event.inHandsDate
-          );
+          daysUntil(event.inHandsDate);
 
         const urgency =
           days === null
             ? 0
-            : Math.max(
-                -60,
-                60 - days
-              );
+            : Math.max(-60, 60 - days);
 
         return (
-          priority.rank *
-            1000 +
+          priority.rank * 1000 +
           urgency +
-          getEventShortage(
-            event
-          )
+          getEventShortage(event)
         );
       }
 
       function getNextAction(event) {
-        if (
-          event.status ===
-          "Cancelled"
-        ) {
+        if (event.status === "Cancelled") {
           return "No action required — PO cancelled";
         }
 
-        if (
-          event.status ===
-          "Complete"
-        ) {
+        if (event.status === "Complete") {
           return "No action required — event complete";
         }
 
         const inventoryStatus =
-          getInventoryStatus(
-            event
-          );
+          getInventoryStatus(event);
 
         const days =
-          daysUntil(
-            event.inHandsDate
-          );
+          daysUntil(event.inHandsDate);
 
         if (!event.inHandsDate) {
           return "Enter and confirm the customer in-hands date";
@@ -4862,25 +2531,14 @@
           return "Escalate the overdue delivery and confirm a recovery plan";
         }
 
-        if (
-          inventoryStatus ===
-          "LOW"
-        ) {
-          return (
-            `Resolve the ` +
-            `${formatNumber(
-              getEventShortage(
-                event
-              )
-            )}-unit inventory shortage`
-          );
+        if (inventoryStatus === "LOW") {
+          return `Resolve the ${formatNumber(
+            getEventShortage(event)
+          )}-unit inventory shortage`;
         }
 
-        if (
-          inventoryStatus ===
-          "CHECK"
-        ) {
-          return "Match all PO models with Sarasota and Texas inventory";
+        if (inventoryStatus === "CHECK") {
+          return "Match PO models with current Sarasota and Texas inventory";
         }
 
         if (
@@ -4895,26 +2553,19 @@
           return "Assign an owner responsible for this event";
         }
 
-        if (
-          !event
-            .customerFollowedUpDate
-        ) {
+        if (!event.customerFollowedUpDate) {
           return "Follow up with the customer and record the follow-up date";
         }
 
         const actions = {
           Draft:
             "Confirm the PO, customer requirements and event scope",
-
           Confirmed:
             "Allocate available inventory to the PO",
-
           Allocating:
             "Complete allocation and prepare the shipment",
-
           "Ready to Ship":
             "Ship the order and enter the tracking number",
-
           Shipped:
             "Monitor tracking and confirm delivery with the customer"
         };
@@ -4925,12 +2576,50 @@
         );
       }
 
+      function getInventoryStatus(event) {
+        if (!event.items.length) {
+          return "CHECK";
+        }
+
+        const statuses = event.items.map(
+          getItemInventoryStatus
+        );
+
+        if (statuses.includes("LOW")) {
+          return "LOW";
+        }
+
+        if (statuses.includes("CHECK")) {
+          return "CHECK";
+        }
+
+        return "GOOD";
+      }
+
+      function getItemInventoryStatus(item) {
+        const quantity =
+          numberValue(item.quantity);
+
+        const total =
+          numberValue(item.total);
+
+        if (
+          quantity === null ||
+          total === null ||
+          item.matched !== true
+        ) {
+          return "CHECK";
+        }
+
+        return total >= quantity
+          ? "GOOD"
+          : "LOW";
+      }
+
       function isClosed(event) {
         return (
-          event.status ===
-            "Complete" ||
-          event.status ===
-            "Cancelled"
+          event.status === "Complete" ||
+          event.status === "Cancelled"
         );
       }
 
@@ -4940,9 +2629,7 @@
         }
 
         const days =
-          daysUntil(
-            event.inHandsDate
-          );
+          daysUntil(event.inHandsDate);
 
         return (
           days !== null &&
@@ -4950,8 +2637,7 @@
             days < 0 ||
             (
               days <= 7 &&
-              event.status !==
-                "Shipped"
+              event.status !== "Shipped"
             )
           )
         );
@@ -4959,9 +2645,7 @@
 
       function getDateMessage(event) {
         const days =
-          daysUntil(
-            event.inHandsDate
-          );
+          daysUntil(event.inHandsDate);
 
         if (days === null) {
           return "Date required";
@@ -4972,55 +2656,36 @@
         }
 
         if (days < 0) {
-          return (
-            `${Math.abs(
-              days
-            )} day${
-              Math.abs(days) ===
-              1
-                ? ""
-                : "s"
-            } overdue`
-          );
+          return `${Math.abs(days)} day${
+            Math.abs(days) === 1 ? "" : "s"
+          } overdue`;
         }
 
         if (days === 0) {
           return "Due today";
         }
 
-        return (
-          `${days} day${
-            days === 1
-              ? ""
-              : "s"
-          } remaining`
-        );
+        return `${days} day${
+          days === 1 ? "" : "s"
+        } remaining`;
       }
 
       function daysUntil(value) {
-        const date =
-          parseDate(value);
+        const date = parseDate(value);
 
         if (!date) {
           return null;
         }
 
-        const today =
-          new Date();
+        const today = new Date();
 
-        today.setHours(
-          0,
-          0,
-          0,
-          0
-        );
+        today.setHours(0, 0, 0, 0);
 
         return Math.ceil(
           (
             date.getTime() -
             today.getTime()
-          ) /
-          86400000
+          ) / 86400000
         );
       }
 
@@ -5029,92 +2694,58 @@
           return null;
         }
 
-        const date =
-          new Date(
-            `${value}T00:00:00`
-          );
+        const stringValue = String(value);
 
-        return Number.isNaN(
-          date.getTime()
-        )
+        const date =
+          /^\d{4}-\d{2}-\d{2}$/.test(stringValue)
+            ? new Date(`${stringValue}T00:00:00`)
+            : new Date(stringValue);
+
+        return Number.isNaN(date.getTime())
           ? null
           : date;
       }
 
       function dateValue(value) {
         return (
-          parseDate(value)
-            ?.getTime() ||
+          parseDate(value)?.getTime() ||
           Number.MAX_SAFE_INTEGER
         );
       }
 
       function formatDate(value) {
-        const date =
-          parseDate(value);
+        const date = parseDate(value);
 
         if (!date) {
           return "Not entered";
         }
 
-        return new Intl
-          .DateTimeFormat(
-            "en-US",
-            {
-              month: "long",
-              day: "numeric",
-              year: "numeric"
-            }
-          )
-          .format(date);
-      }
-
-      function shortDate(value) {
-        const date =
-          parseDate(value);
-
-        if (!date) {
-          return "No date";
-        }
-
-        return new Intl
-          .DateTimeFormat(
-            "en-US",
-            {
-              month: "short",
-              day: "numeric"
-            }
-          )
-          .format(date);
+        return new Intl.DateTimeFormat(
+          "en-US",
+          {
+            month: "long",
+            day: "numeric",
+            year: "numeric"
+          }
+        ).format(date);
       }
 
       function shortDateTime(value) {
-        if (!value) {
+        const date = parseDate(value);
+
+        if (!date) {
           return "Unknown";
         }
 
-        const date =
-          new Date(value);
-
-        if (
-          Number.isNaN(
-            date.getTime()
-          )
-        ) {
-          return "Unknown";
-        }
-
-        return new Intl
-          .DateTimeFormat(
-            "en-US",
-            {
-              month: "short",
-              day: "numeric",
-              hour: "numeric",
-              minute: "2-digit"
-            }
-          )
-          .format(date);
+        return new Intl.DateTimeFormat(
+          "en-US",
+          {
+            month: "short",
+            day: "numeric",
+            hour: "numeric",
+            minute: "2-digit"
+          }
+        ).format(date);
       }
 
       function numberValue(value) {
@@ -5126,13 +2757,15 @@
           return null;
         }
 
-        const cleaned =
-          String(value)
-            .replace(/,/g, "")
-            .replace(
-              /[^\d.-]/g,
-              ""
-            );
+        if (typeof value === "number") {
+          return Number.isFinite(value)
+            ? value
+            : null;
+        }
+
+        const cleaned = String(value)
+          .replace(/,/g, "")
+          .replace(/[^\d.-]/g, "");
 
         if (
           !cleaned ||
@@ -5142,38 +2775,24 @@
           return null;
         }
 
-        const number =
-          Number(cleaned);
+        const number = Number(cleaned);
 
-        return Number.isFinite(
-          number
-        )
+        return Number.isFinite(number)
           ? number
           : null;
       }
 
       function formatNumber(value) {
-        const number =
-          numberValue(value);
-
-        return new Intl
-          .NumberFormat(
-            "en-US",
-            {
-              maximumFractionDigits:
-                2
-            }
-          )
-          .format(
-            number === null
-              ? 0
-              : number
-          );
+        return new Intl.NumberFormat(
+          "en-US",
+          {
+            maximumFractionDigits: 2
+          }
+        ).format(numberValue(value) || 0);
       }
 
       function numberOrDash(value) {
-        const number =
-          numberValue(value);
+        const number = numberValue(value);
 
         return number === null
           ? "—"
@@ -5181,53 +2800,26 @@
       }
 
       function normalizeModel(value) {
-        return String(
-          value || ""
-        )
+        return String(value || "")
           .trim()
           .toUpperCase()
           .replace(/\s+/g, "");
       }
 
       function statusSlug(value) {
-        return String(
-          value || "draft"
-        )
+        return String(value || "draft")
           .toLowerCase()
-          .replace(
-            /[^a-z0-9]+/g,
-            "-"
-          )
-          .replace(
-            /^-|-$/g,
-            ""
-          );
+          .replace(/[^a-z0-9]+/g, "-")
+          .replace(/^-|-$/g, "");
       }
 
       function escapeHtml(value) {
-        return String(
-          value ?? ""
-        )
-          .replace(
-            /&/g,
-            "&amp;"
-          )
-          .replace(
-            /</g,
-            "&lt;"
-          )
-          .replace(
-            />/g,
-            "&gt;"
-          )
-          .replace(
-            /"/g,
-            "&quot;"
-          )
-          .replace(
-            /'/g,
-            "&#039;"
-          );
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
       }
     })();
   </script>
