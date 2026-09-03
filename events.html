@@ -1,22 +1,13 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-
-  <meta
-    name="viewport"
-    content="width=device-width, initial-scale=1"
-  >
-
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
   <title>Events Control Center | Stark Premium</title>
 
   <script
     src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
-    onerror="
-      this.onerror = null;
-      this.src =
-        'https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js';
-    "
+    onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'"
   ></script>
 
   <style>
@@ -25,15 +16,12 @@
       --navy-2: #174f79;
       --teal: #009b92;
       --teal-dark: #007d76;
-      --teal-light: #e1f6f4;
       --green: #198754;
       --green-light: #e6f6ee;
       --amber: #b66a09;
       --amber-light: #fff3da;
       --red: #c93f50;
       --red-light: #fdebed;
-      --purple: #7550a0;
-      --purple-light: #f0e9f7;
       --blue: #25689e;
       --blue-light: #e7f1fb;
       --background: #eef4f8;
@@ -62,8 +50,13 @@
       overflow-x: hidden;
       color: var(--text);
       font-family:
-        Inter, ui-sans-serif, system-ui, -apple-system,
-        BlinkMacSystemFont, "Segoe UI", sans-serif;
+        Inter,
+        ui-sans-serif,
+        system-ui,
+        -apple-system,
+        BlinkMacSystemFont,
+        "Segoe UI",
+        sans-serif;
       background:
         radial-gradient(
           circle at 92% 0%,
@@ -85,8 +78,8 @@
     }
 
     button:disabled {
-      cursor: wait;
-      opacity: 0.65;
+      cursor: not-allowed;
+      opacity: 0.52;
     }
 
     a {
@@ -135,8 +128,14 @@
       color: #ffffff;
       font-size: 22px;
       font-weight: 900;
-      background: linear-gradient(145deg, var(--navy), var(--navy-2));
-      box-shadow: 0 12px 23px rgba(8, 39, 70, 0.18);
+      background:
+        linear-gradient(
+          145deg,
+          var(--navy),
+          var(--navy-2)
+        );
+      box-shadow:
+        0 12px 23px rgba(8, 39, 70, 0.18);
     }
 
     .brand-eyebrow {
@@ -170,12 +169,12 @@
     .region-select {
       min-width: 105px;
       height: 46px;
-      padding: 0 39px 0 15px;
+      padding: 0 15px;
       border: 1px solid #c5d7e3;
       border-radius: 13px;
       color: var(--text);
-      font-weight: 800;
       background: #ffffff;
+      font-weight: 800;
     }
 
     .region-badge {
@@ -183,10 +182,10 @@
       padding: 12px 16px;
       border-radius: 999px;
       color: #ffffff;
+      background: var(--navy);
       font-size: 14px;
       font-weight: 900;
       text-align: center;
-      background: var(--navy);
     }
 
     .page {
@@ -227,8 +226,14 @@
 
     .nav-link.active {
       color: #ffffff;
-      background: linear-gradient(135deg, var(--navy), #1d5987);
-      box-shadow: 0 10px 19px rgba(8, 39, 70, 0.18);
+      background:
+        linear-gradient(
+          135deg,
+          var(--navy),
+          #1d5987
+        );
+      box-shadow:
+        0 10px 19px rgba(8, 39, 70, 0.18);
     }
 
     .nav-link.back {
@@ -239,10 +244,10 @@
 
     .hero {
       position: relative;
-      min-height: 205px;
+      min-height: 190px;
       margin-top: 24px;
       overflow: hidden;
-      padding: 35px 40px;
+      padding: 34px 40px;
       display: grid;
       grid-template-columns: minmax(0, 1fr) auto;
       align-items: center;
@@ -250,7 +255,12 @@
       border-radius: 27px;
       color: #ffffff;
       background:
-        linear-gradient(115deg, #071f3b 0%, #164d76 60%, #117b89 100%);
+        linear-gradient(
+          115deg,
+          #071f3b 0%,
+          #164d76 60%,
+          #117b89 100%
+        );
       box-shadow: var(--shadow);
     }
 
@@ -259,13 +269,13 @@
       position: absolute;
       width: 285px;
       height: 285px;
-      right: -75px;
-      top: -175px;
-      border-radius: 50%;
+      right: -80px;
+      top: -120px;
       border: 1px solid rgba(255, 255, 255, 0.17);
+      border-radius: 50%;
       box-shadow:
-        0 0 0 48px rgba(255, 255, 255, 0.035),
-        0 0 0 96px rgba(255, 255, 255, 0.022);
+        0 0 0 55px rgba(255, 255, 255, 0.045),
+        0 0 0 110px rgba(255, 255, 255, 0.025);
     }
 
     .hero-copy,
@@ -275,9 +285,9 @@
     }
 
     .hero-eyebrow {
-      margin: 0 0 10px;
-      color: #55e4da;
-      font-size: 12px;
+      margin: 0 0 11px;
+      color: #59eee1;
+      font-size: 13px;
       font-weight: 900;
       letter-spacing: 0.16em;
       text-transform: uppercase;
@@ -285,77 +295,65 @@
 
     .hero h1 {
       margin: 0;
-      font-size: clamp(36px, 4vw, 52px);
+      font-size: clamp(35px, 4vw, 58px);
       line-height: 1;
       letter-spacing: -0.045em;
     }
 
     .hero-description {
       max-width: 760px;
-      margin: 16px 0 0;
-      color: rgba(255, 255, 255, 0.8);
+      margin: 15px 0 0;
+      color: #d7e8f2;
       font-size: 16px;
       line-height: 1.55;
     }
 
     .hero-actions {
       display: flex;
-      flex-wrap: wrap;
+      align-items: center;
       justify-content: flex-end;
+      flex-wrap: wrap;
       gap: 10px;
     }
 
     .button {
-      min-height: 44px;
+      min-height: 46px;
       padding: 0 17px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: 1px solid transparent;
+      border: 1px solid #c7d8e4;
       border-radius: 13px;
-      font-size: 14px;
+      color: var(--text);
+      background: #ffffff;
       font-weight: 850;
-      transition:
-        transform 160ms ease,
-        box-shadow 160ms ease,
-        background 160ms ease;
+      transition: 0.18s;
     }
 
     .button:hover {
-      transform: translateY(-2px);
+      transform: translateY(-1px);
+      box-shadow:
+        0 9px 18px rgba(8, 39, 70, 0.12);
     }
 
     .button-primary {
+      border-color: var(--teal);
       color: #ffffff;
-      background: var(--teal);
-      box-shadow: 0 10px 20px rgba(0, 155, 146, 0.24);
-    }
-
-    .button-primary:hover {
-      background: var(--teal-dark);
-    }
-
-    .button-secondary {
-      color: var(--text);
-      border-color: var(--border);
-      background: #ffffff;
-    }
-
-    .button-secondary:hover {
-      box-shadow: 0 9px 18px rgba(8, 39, 70, 0.1);
+      background:
+        linear-gradient(
+          135deg,
+          #08a59b,
+          var(--teal-dark)
+        );
     }
 
     .button-hero {
+      border-color: rgba(255, 255, 255, 0.32);
       color: #ffffff;
-      border-color: rgba(255, 255, 255, 0.24);
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(7px);
     }
 
     .button-danger {
-      color: var(--red);
-      border-color: #f2c8cf;
-      background: #fff7f8;
+      border-color: #efc5cc;
+      color: #b5263d;
     }
 
     .button-small {
@@ -365,118 +363,8 @@
       font-size: 13px;
     }
 
-    .summary-grid {
-      margin-top: 21px;
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 15px;
-    }
-
-    .summary-card {
-      padding: 19px;
-      border: 1px solid var(--border);
-      border-radius: 19px;
-      background: rgba(255, 255, 255, 0.94);
-      box-shadow: 0 11px 26px rgba(8, 39, 70, 0.07);
-    }
-
-    .summary-card-top {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-    }
-
-    .summary-icon {
-      width: 38px;
-      height: 38px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      color: var(--teal-dark);
-      background: var(--teal-light);
-    }
-
-    .summary-icon.warning {
-      color: var(--amber);
-      background: var(--amber-light);
-    }
-
-    .summary-icon.danger {
-      color: var(--red);
-      background: var(--red-light);
-    }
-
-    .summary-value {
-      margin: 14px 0 2px;
-      font-size: 29px;
-      font-weight: 900;
-      letter-spacing: -0.035em;
-    }
-
-    .summary-label {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      font-weight: 750;
-    }
-
-    .workflow-card {
-      margin-top: 20px;
-      padding: 21px;
-      border: 1px solid var(--border);
-      border-radius: 21px;
-      background: rgba(255, 255, 255, 0.95);
-      box-shadow: 0 12px 29px rgba(8, 39, 70, 0.07);
-    }
-
-    .section-header {
-      margin-bottom: 18px;
-    }
-
-    .section-header h2 {
-      margin: 0;
-      font-size: 20px;
-    }
-
-    .section-header p {
-      margin: 5px 0 0;
-      color: var(--muted);
-      font-size: 13px;
-    }
-
-    .pipeline {
-      display: grid;
-      grid-template-columns: repeat(6, minmax(0, 1fr));
-      gap: 9px;
-    }
-
-    .pipeline-step {
-      padding: 13px;
-      border: 1px solid var(--border);
-      border-radius: 14px;
-      background: var(--surface-2);
-    }
-
-    .pipeline-count {
-      display: block;
-      margin-bottom: 4px;
-      font-size: 21px;
-      font-weight: 900;
-    }
-
-    .pipeline-name {
-      display: block;
-      overflow: hidden;
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 800;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
     .workspace-card {
-      margin-top: 20px;
+      margin-top: 24px;
       overflow: hidden;
       border: 1px solid var(--border);
       border-radius: 22px;
@@ -485,120 +373,122 @@
     }
 
     .toolbar {
-      padding: 18px;
+      padding: 19px;
       display: grid;
       grid-template-columns:
-        minmax(230px, 1fr)
-        repeat(3, minmax(145px, 190px));
+        minmax(260px, 1.5fr)
+        repeat(3, minmax(155px, 0.65fr))
+        auto;
       gap: 12px;
+      align-items: end;
       border-bottom: 1px solid var(--border);
-      background: #fbfdfe;
     }
 
     .field {
-      min-width: 0;
+      display: grid;
+      gap: 7px;
     }
 
     .field label {
-      display: block;
-      margin-bottom: 7px;
       color: var(--muted);
       font-size: 12px;
-      font-weight: 850;
-      letter-spacing: 0.035em;
+      font-weight: 900;
+      letter-spacing: 0.05em;
       text-transform: uppercase;
     }
 
     .control {
       width: 100%;
-      min-height: 43px;
-      padding: 9px 12px;
-      border: 1px solid #c8d8e4;
-      border-radius: 11px;
-      outline: none;
+      height: 46px;
+      padding: 0 13px;
+      border: 1px solid #cbdbe6;
+      border-radius: 12px;
+      outline: 0;
       color: var(--text);
       background: #ffffff;
     }
 
-    .control:focus {
+    .control:focus,
+    .note-input:focus {
       border-color: var(--teal);
-      box-shadow: 0 0 0 4px rgba(0, 155, 146, 0.11);
-    }
-
-    .control[readonly] {
-      color: #41556d;
-      background: #eef4f7;
-    }
-
-    textarea.control {
-      min-height: 92px;
-      resize: vertical;
+      box-shadow:
+        0 0 0 4px rgba(0, 155, 146, 0.11);
     }
 
     .table-meta {
-      padding: 13px 18px;
+      padding: 13px 19px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 15px;
       color: var(--muted);
       font-size: 13px;
-      font-weight: 700;
-      border-bottom: 1px solid var(--border);
+    }
+
+    .table-meta strong {
+      color: var(--text);
     }
 
     .table-wrap {
-      width: 100%;
-      overflow-x: auto;
+      overflow: auto;
     }
 
     table {
       width: 100%;
-      min-width: 1160px;
       border-collapse: collapse;
-    }
-
-    th,
-    td {
-      padding: 14px 15px;
-      text-align: left;
-      vertical-align: middle;
-      border-bottom: 1px solid #e5edf2;
+      table-layout: auto;
     }
 
     th {
+      padding: 15px 14px;
       color: #ffffff;
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 0.055em;
-      text-transform: uppercase;
-      white-space: nowrap;
       background: var(--navy);
-    }
-
-    tbody tr:hover {
-      background: #f5fafb;
+      font-size: 12px;
+      letter-spacing: 0.02em;
+      text-align: left;
+      white-space: nowrap;
     }
 
     td {
+      padding: 14px;
+      border-bottom: 1px solid var(--border);
       font-size: 13px;
+      vertical-align: middle;
     }
 
-    .po-number {
-      color: var(--navy);
+    tbody tr:nth-child(even) {
+      background: #f7fafc;
+    }
+
+    tbody tr:hover {
+      background: #eef7fa;
+    }
+
+    .po-link {
+      padding: 0;
+      border: 0;
+      color: #07335c;
+      background: none;
       font-weight: 900;
+      text-align: left;
+      text-decoration: underline;
+      text-decoration-color: #86b8d4;
+      text-underline-offset: 3px;
+    }
+
+    .po-link:hover {
+      color: var(--teal-dark);
     }
 
     .customer-name {
-      max-width: 180px;
-      overflow: hidden;
-      font-weight: 800;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      min-width: 150px;
+      max-width: 230px;
+      font-weight: 850;
     }
 
     .date-primary {
-      font-weight: 800;
+      min-width: 135px;
+      font-weight: 850;
     }
 
     .date-secondary {
@@ -607,16 +497,24 @@
       font-size: 11px;
     }
 
+    .planning-text {
+      min-width: 180px;
+      max-width: 260px;
+      font-weight: 650;
+      line-height: 1.35;
+    }
+
     .status {
-      min-width: max-content;
-      padding: 6px 10px;
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
+      padding: 7px 10px;
       border-radius: 999px;
       font-size: 11px;
       font-weight: 900;
+      letter-spacing: 0.035em;
       text-transform: uppercase;
+      white-space: nowrap;
     }
 
     .status::before {
@@ -627,228 +525,189 @@
       background: currentColor;
     }
 
-    .status-good,
-    .status-complete {
+    .good,
+    .shipped,
+    .complete {
       color: var(--green);
       background: var(--green-light);
     }
 
-    .status-low {
+    .low,
+    .cancelled {
       color: var(--red);
       background: var(--red-light);
     }
 
-    .status-check {
+    .check {
       color: var(--amber);
       background: var(--amber-light);
     }
 
-    .status-draft {
-      color: #68768a;
-      background: #edf1f5;
+    .draft {
+      color: #6a788b;
+      background: #e9eff4;
     }
 
-    .status-confirmed,
-    .status-shipped {
+    .confirmed,
+    .allocating,
+    .ready-to-ship {
       color: var(--blue);
       background: var(--blue-light);
     }
 
-    .status-allocating {
-      color: var(--purple);
-      background: var(--purple-light);
+    .notes-cell {
+      min-width: 270px;
     }
 
-    .status-ready {
-      color: var(--teal-dark);
-      background: var(--teal-light);
+    .notes-editor {
+      display: grid;
+      grid-template-columns: minmax(175px, 1fr) auto;
+      gap: 8px;
+      align-items: stretch;
     }
 
-    .status-cancelled {
-      color: #758093;
-      background: #edf0f3;
+    .note-input {
+      width: 100%;
+      min-height: 42px;
+      max-height: 90px;
+      padding: 9px 11px;
+      resize: vertical;
+      border: 1px solid #cbdbe6;
+      border-radius: 10px;
+      outline: 0;
+      color: var(--text);
+      background: #ffffff;
+      font-size: 13px;
+      line-height: 1.35;
     }
 
-    .planning-text {
-      max-width: 175px;
+    .save-note {
+      align-self: stretch;
+      min-width: 62px;
+      border: 1px solid #b9d8d5;
+      border-radius: 10px;
+      color: #ffffff;
+      background: var(--teal);
       font-size: 12px;
-      font-weight: 750;
-      line-height: 1.4;
+      font-weight: 900;
+    }
+
+    .save-note:disabled {
+      border-color: #d5e1e8;
+      color: #7e8e9e;
+      background: #edf3f6;
     }
 
     .row-actions {
       display: flex;
-      align-items: center;
       gap: 7px;
     }
 
     .icon-button {
-      width: 38px;
-      height: 38px;
-      flex: 0 0 38px;
+      width: 39px;
+      height: 39px;
       display: grid;
       place-items: center;
-      border: 1px solid #cedee8;
+      border: 1px solid #c8dbe7;
       border-radius: 11px;
       color: var(--navy);
       background: #ffffff;
+      font-weight: 900;
     }
 
     .icon-button:hover {
-      transform: translateY(-2px);
-      color: var(--teal-dark);
-      background: var(--teal-light);
+      border-color: #8ebbd2;
+      background: #eff7fb;
     }
 
     .empty-state {
-      min-height: 310px;
-      padding: 45px 20px;
+      min-height: 300px;
       display: grid;
       place-items: center;
+      padding: 40px;
       text-align: center;
     }
 
     .empty-icon {
-      width: 64px;
-      height: 64px;
-      margin: 0 auto 17px;
-      display: grid;
-      place-items: center;
-      border-radius: 19px;
-      color: var(--teal-dark);
-      font-size: 27px;
-      background: var(--teal-light);
+      color: var(--teal);
+      font-size: 45px;
     }
 
     .empty-state h3 {
-      margin: 0 0 7px;
-      font-size: 22px;
+      margin: 10px 0 6px;
+      font-size: 23px;
     }
 
     .empty-state p {
-      max-width: 480px;
-      margin: 0 auto 19px;
+      margin: 0 0 17px;
       color: var(--muted);
-      font-size: 14px;
-      line-height: 1.55;
     }
 
     dialog {
-      width: min(1080px, calc(100% - 30px));
-      max-height: calc(100vh - 30px);
+      width: min(920px, calc(100% - 28px));
+      max-height: 90vh;
       padding: 0;
-      overflow: hidden;
       border: 0;
-      border-radius: 24px;
+      border-radius: 23px;
       color: var(--text);
       background: #ffffff;
-      box-shadow: 0 35px 90px rgba(8, 39, 70, 0.28);
-    }
-
-    dialog.inventory-dialog {
-      width: min(1380px, calc(100% - 30px));
+      box-shadow:
+        0 30px 90px rgba(3, 28, 52, 0.3);
     }
 
     dialog::backdrop {
-      background: rgba(5, 24, 43, 0.62);
+      background: rgba(4, 25, 45, 0.62);
       backdrop-filter: blur(5px);
     }
 
     .dialog-shell {
-      max-height: calc(100vh - 30px);
-      display: flex;
-      flex-direction: column;
+      margin: 0;
     }
 
     .dialog-header {
-      padding: 21px 23px;
+      padding: 21px 24px;
       display: flex;
       align-items: flex-start;
       justify-content: space-between;
       gap: 20px;
       color: #ffffff;
-      background: linear-gradient(115deg, var(--navy), #17617e);
+      background:
+        linear-gradient(
+          115deg,
+          var(--navy),
+          #17627c
+        );
     }
 
     .dialog-header h2 {
       margin: 0;
-      font-size: 23px;
+      font-size: 24px;
     }
 
     .dialog-header p {
       margin: 5px 0 0;
-      color: rgba(255, 255, 255, 0.72);
+      color: #d7e7ef;
       font-size: 13px;
     }
 
-    .dialog-close {
-      width: 38px;
-      height: 38px;
-      flex: 0 0 38px;
-      display: grid;
-      place-items: center;
-      border: 1px solid rgba(255, 255, 255, 0.22);
-      border-radius: 11px;
+    .close-button {
+      width: 39px;
+      height: 39px;
+      border: 1px solid rgba(255, 255, 255, 0.3);
+      border-radius: 12px;
       color: #ffffff;
-      font-size: 20px;
       background: rgba(255, 255, 255, 0.1);
+      font-size: 20px;
     }
 
     .dialog-body {
-      padding: 22px;
-      overflow-y: auto;
-    }
-
-    .form-section {
-      padding: 19px;
-      border: 1px solid var(--border);
-      border-radius: 17px;
-      background: #fbfdfe;
-    }
-
-    .form-section + .form-section {
-      margin-top: 17px;
-    }
-
-    .form-section-title {
-      margin: 0 0 15px;
-      font-size: 17px;
-    }
-
-    .form-grid {
-      display: grid;
-      grid-template-columns: repeat(4, minmax(0, 1fr));
-      gap: 14px;
-    }
-
-    .span-2 {
-      grid-column: span 2;
-    }
-
-    .span-4 {
-      grid-column: span 4;
-    }
-
-    .items-toolbar {
-      margin-bottom: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
-    }
-
-    .items-toolbar p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 12px;
-    }
-
-    .items-table {
-      min-width: 1020px;
+      max-height: calc(90vh - 145px);
+      overflow: auto;
+      padding: 22px 24px;
     }
 
     .dialog-footer {
-      padding: 15px 22px;
+      padding: 15px 24px;
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -859,293 +718,286 @@
 
     .footer-actions {
       display: flex;
-      align-items: center;
-      justify-content: flex-end;
+      flex-wrap: wrap;
       gap: 9px;
     }
 
-    .inventory-tabs {
-      margin-bottom: 18px;
-      padding: 6px;
+    .form-grid {
       display: grid;
       grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 7px;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: #edf4f8;
-    }
-
-    .inventory-tab {
-      min-height: 48px;
-      padding: 0 17px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 12px;
-      border: 0;
-      border-radius: 12px;
-      color: var(--muted);
-      font-weight: 850;
-      background: transparent;
-    }
-
-    .inventory-tab.active {
-      color: #ffffff;
-      background: var(--navy);
-      box-shadow: 0 9px 18px rgba(8, 39, 70, 0.18);
-    }
-
-    .tab-count {
-      padding: 4px 9px;
-      border-radius: 999px;
-      font-size: 11px;
-      background: rgba(255, 255, 255, 0.15);
-    }
-
-    .inventory-location {
-      display: none;
-    }
-
-    .inventory-location.active {
-      display: block;
-    }
-
-    .upload-card {
-      padding: 19px;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) auto;
-      align-items: center;
-      gap: 20px;
-      border: 1px dashed #a9c4d5;
-      border-radius: 17px;
-      background: #f7fbfd;
-      transition:
-        border-color 160ms ease,
-        background 160ms ease,
-        box-shadow 160ms ease;
-    }
-
-    .upload-card.dragging {
-      border-color: var(--teal);
-      background: var(--teal-light);
-      box-shadow: 0 0 0 4px rgba(0, 155, 146, 0.1);
-    }
-
-    .upload-title {
-      margin: 0 0 5px;
-      font-size: 18px;
-    }
-
-    .upload-description {
-      margin: 0;
-      color: var(--muted);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .file-input {
-      position: fixed !important;
-      left: -10000px !important;
-      top: -10000px !important;
-      width: 1px !important;
-      height: 1px !important;
-      opacity: 0 !important;
-      pointer-events: none !important;
-    }
-
-    .inventory-meta {
-      margin-top: 14px;
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
       gap: 15px;
-      border: 1px solid var(--border);
-      border-radius: 13px;
+    }
+
+    .form-field {
+      display: grid;
+      gap: 7px;
+    }
+
+    .form-field.full {
+      grid-column: 1 / -1;
+    }
+
+    .form-field label {
       color: var(--muted);
       font-size: 12px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .form-field input,
+    .form-field select,
+    .form-field textarea {
+      width: 100%;
+      min-height: 46px;
+      padding: 10px 12px;
+      border: 1px solid #cadbe6;
+      border-radius: 11px;
+      outline: 0;
+      color: var(--text);
       background: #ffffff;
     }
 
-    .inventory-list-card {
-      margin-top: 16px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      background: #ffffff;
+    .form-field textarea {
+      min-height: 90px;
+      resize: vertical;
     }
 
-    .inventory-list-toolbar {
-      padding: 13px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 14px;
-      border-bottom: 1px solid var(--border);
-      background: #f8fbfd;
-    }
-
-    .inventory-search {
-      max-width: 360px;
-    }
-
-    .inventory-table {
-      min-width: max-content;
-    }
-
-    .inventory-table th,
-    .inventory-table td {
-      min-width: 125px;
-      max-width: 280px;
-      overflow: hidden;
-      text-overflow: ellipsis;
-      white-space: nowrap;
-    }
-
-    .inventory-pagination {
-      padding: 12px 14px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 15px;
+    .section-title {
+      margin: 21px 0 11px;
+      padding-top: 17px;
       border-top: 1px solid var(--border);
+      font-size: 16px;
+    }
+
+    .items-editor {
+      overflow: auto;
+      border: 1px solid var(--border);
+      border-radius: 13px;
+    }
+
+    .items-editor table {
+      min-width: 550px;
+    }
+
+    .items-editor th {
+      padding: 11px;
+    }
+
+    .items-editor td {
+      padding: 8px;
+    }
+
+    .items-editor input {
+      width: 100%;
+      min-height: 39px;
+      padding: 0 9px;
+      border: 1px solid #ccdae4;
+      border-radius: 9px;
+    }
+
+    .view-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .view-card {
+      padding: 14px;
+      border: 1px solid var(--border);
+      border-radius: 13px;
       background: #f8fbfd;
     }
 
-    .pagination-actions {
-      display: flex;
-      gap: 8px;
+    .view-card.full {
+      grid-column: 1 / -1;
     }
 
-    .inventory-empty {
-      padding: 55px 20px;
+    .view-card > span {
+      display: block;
       color: var(--muted);
-      text-align: center;
+      font-size: 11px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+    }
+
+    .view-card strong,
+    .view-card p {
+      display: block;
+      margin: 6px 0 0;
+      line-height: 1.45;
+    }
+
+    .view-items {
+      margin-top: 18px;
+    }
+
+    .inventory-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .inventory-panel {
+      padding: 17px;
+      border: 1px solid var(--border);
+      border-radius: 15px;
+      background: #f8fbfd;
+    }
+
+    .inventory-panel h3 {
+      margin: 0;
+    }
+
+    .inventory-panel p {
+      min-height: 38px;
+      margin: 6px 0 12px;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .inventory-file {
+      width: 100%;
+      padding: 10px;
+      border: 1px dashed #9fc3d4;
+      border-radius: 11px;
+      background: #ffffff;
     }
 
     .email-note {
-      margin: 11px 0 0;
+      margin: 15px 0 0;
       padding: 12px;
-      border-radius: 12px;
-      color: #52667e;
-      font-size: 12px;
-      line-height: 1.5;
-      background: #eef5f8;
+      border-left: 4px solid var(--teal);
+      border-radius: 8px;
+      color: #47657a;
+      background: #eef9f8;
+      font-size: 13px;
+    }
+
+    .status-ok {
+      color: var(--green);
+      font-weight: 850;
+    }
+
+    .status-bad {
+      color: var(--red);
+      font-weight: 850;
     }
 
     .toast {
       position: fixed;
       right: 22px;
       bottom: 22px;
-      z-index: 500;
-      max-width: min(430px, calc(100% - 44px));
-      padding: 14px 17px;
-      border-radius: 13px;
+      z-index: 300;
+      padding: 13px 17px;
+      border-radius: 12px;
       color: #ffffff;
-      font-size: 13px;
+      background: #0b3558;
+      box-shadow:
+        0 16px 40px rgba(8, 39, 70, 0.25);
       font-weight: 750;
-      background: var(--navy);
-      box-shadow: 0 18px 40px rgba(8, 39, 70, 0.25);
       opacity: 0;
+      transform: translateY(12px);
       pointer-events: none;
-      transform: translateY(15px);
-      transition:
-        opacity 180ms ease,
-        transform 180ms ease;
+      transition: 0.23s;
     }
 
     .toast.visible {
       opacity: 1;
-      transform: translateY(0);
+      transform: none;
     }
 
     @media (max-width: 1100px) {
-      .summary-grid {
+      .toolbar {
         grid-template-columns: repeat(2, minmax(0, 1fr));
       }
 
-      .pipeline {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
-      }
-
-      .toolbar,
-      .form-grid {
-        grid-template-columns: repeat(2, minmax(0, 1fr));
-      }
-
-      .span-4 {
-        grid-column: span 2;
-      }
-    }
-
-    @media (max-width: 780px) {
-      .header-inner,
-      .page {
-        width: min(100% - 24px, var(--page-width));
-      }
-
-      .brand-mark {
-        width: 48px;
-        height: 48px;
-        flex-basis: 48px;
-        border-radius: 15px;
-      }
-
-      .brand-title {
-        font-size: 18px;
-      }
-
-      .brand-eyebrow,
-      .region-label,
-      .region-badge {
-        display: none;
-      }
-
-      .region-select {
-        min-width: 78px;
+      .toolbar .button {
+        width: 100%;
       }
 
       .hero {
-        min-height: auto;
-        padding: 29px 23px;
         grid-template-columns: 1fr;
-      }
-
-      .hero h1 {
-        font-size: 35px;
       }
 
       .hero-actions {
         justify-content: flex-start;
       }
 
-      .summary-grid,
-      .pipeline,
+      .header-controls .region-label {
+        display: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .header-inner,
+      .page {
+        width: min(100% - 22px, var(--page-width));
+      }
+
+      .brand-title {
+        font-size: 19px;
+      }
+
+      .brand-mark {
+        width: 50px;
+        height: 50px;
+        flex-basis: 50px;
+      }
+
+      .region-badge {
+        display: none;
+      }
+
+      .hero {
+        padding: 27px 22px;
+      }
+
+      .hero-actions {
+        display: grid;
+        grid-template-columns: 1fr;
+      }
+
       .toolbar,
       .form-grid,
-      .inventory-tabs {
+      .inventory-grid,
+      .view-grid {
         grid-template-columns: 1fr;
       }
 
-      .span-2,
-      .span-4 {
-        grid-column: span 1;
+      .form-field.full,
+      .view-card.full {
+        grid-column: auto;
       }
 
-      .upload-card {
+      .table-meta {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+
+      .notes-editor {
         grid-template-columns: 1fr;
       }
 
-      .dialog-footer,
-      .inventory-meta,
-      .inventory-pagination {
-        align-items: stretch;
+      .save-note {
+        min-height: 38px;
+      }
+
+      .dialog-body,
+      .dialog-header,
+      .dialog-footer {
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+
+      .dialog-footer {
+        align-items: flex-start;
         flex-direction: column;
       }
 
       .footer-actions {
         width: 100%;
-        flex-wrap: wrap;
       }
 
       .footer-actions .button {
@@ -1199,9 +1051,7 @@
         Sales Analysis
       </a>
 
-      <a id="eventsLink" class="nav-link active" href="#">
-        Events
-      </a>
+      <a class="nav-link active" href="#">Events</a>
     </nav>
 
     <section class="hero">
@@ -1213,12 +1063,21 @@
         <h1>Events Control Center</h1>
 
         <p class="hero-description">
-          Track customer deadlines, PO items, Sarasota and Texas inventory,
-          fulfillment planning, follow-ups, shipping and Outlook updates.
+          Open any PO for a complete view, maintain saved notes directly
+          in the events list, and prepare one Outlook update containing
+          every event.
         </p>
       </div>
 
       <div class="hero-actions">
+        <button
+          id="emailListButton"
+          class="button button-primary"
+          type="button"
+        >
+          ✉ Email events list
+        </button>
+
         <button
           id="emailSettingsButton"
           class="button button-hero"
@@ -1228,7 +1087,7 @@
         </button>
 
         <button
-          id="currentInventoryButton"
+          id="inventoryButton"
           class="button button-hero"
           type="button"
         >
@@ -1237,96 +1096,11 @@
 
         <button
           id="newEventButton"
-          class="button button-primary"
+          class="button button-hero"
           type="button"
         >
           + New event
         </button>
-      </div>
-    </section>
-
-    <section class="summary-grid">
-      <article class="summary-card">
-        <div class="summary-card-top">
-          <p class="summary-label">Active events</p>
-          <div class="summary-icon">◆</div>
-        </div>
-
-        <p id="activeEventsValue" class="summary-value">0</p>
-        <p class="summary-label">Open event records</p>
-      </article>
-
-      <article class="summary-card">
-        <div class="summary-card-top">
-          <p class="summary-label">Next 14 days</p>
-          <div class="summary-icon warning">◷</div>
-        </div>
-
-        <p id="upcomingEventsValue" class="summary-value">0</p>
-        <p class="summary-label">Upcoming in-hands dates</p>
-      </article>
-
-      <article class="summary-card">
-        <div class="summary-card-top">
-          <p class="summary-label">At risk</p>
-          <div class="summary-icon danger">!</div>
-        </div>
-
-        <p id="riskEventsValue" class="summary-value">0</p>
-        <p class="summary-label">Late or within seven days</p>
-      </article>
-
-      <article class="summary-card">
-        <div class="summary-card-top">
-          <p class="summary-label">Low inventory</p>
-          <div class="summary-icon danger">↓</div>
-        </div>
-
-        <p id="lowInventoryValue" class="summary-value">0</p>
-        <p class="summary-label">Events needing inventory action</p>
-      </article>
-    </section>
-
-    <section class="workflow-card">
-      <div class="section-header">
-        <h2>Event workflow</h2>
-
-        <p>
-          Confirm requirements, allocate inventory, prepare shipment, ship,
-          confirm delivery and complete the event.
-        </p>
-      </div>
-
-      <div class="pipeline">
-        <div class="pipeline-step">
-          <span id="draftCount" class="pipeline-count">0</span>
-          <span class="pipeline-name">Draft</span>
-        </div>
-
-        <div class="pipeline-step">
-          <span id="confirmedCount" class="pipeline-count">0</span>
-          <span class="pipeline-name">Confirmed</span>
-        </div>
-
-        <div class="pipeline-step">
-          <span id="allocatingCount" class="pipeline-count">0</span>
-          <span class="pipeline-name">Allocating</span>
-        </div>
-
-        <div class="pipeline-step">
-          <span id="readyCount" class="pipeline-count">0</span>
-          <span class="pipeline-name">Ready to ship</span>
-        </div>
-
-        <div class="pipeline-step">
-          <span id="shippedCount" class="pipeline-count">0</span>
-          <span class="pipeline-name">Shipped</span>
-        </div>
-
-        <div class="pipeline-step">
-          <span id="completeCount" class="pipeline-count">0</span>
-          <span class="pipeline-name">Complete</span>
-        </div>
       </div>
     </section>
 
@@ -1339,7 +1113,7 @@
             id="searchInput"
             class="control"
             type="search"
-            placeholder="PO#, customer, model, owner or notes"
+            placeholder="PO#, customer, model, planning or notes"
           >
         </div>
 
@@ -1380,10 +1154,21 @@
             <option value="30">Next 30 days</option>
           </select>
         </div>
+
+        <button
+          id="clearFiltersButton"
+          class="button"
+          type="button"
+        >
+          Clear filters
+        </button>
       </div>
 
       <div class="table-meta">
-        <span id="recordCount">0 events</span>
+        <span>
+          <strong id="recordCount">0 events</strong>
+          · Click a PO# to view the event
+        </span>
 
         <span id="inventorySourceStatus">
           Upload Sarasota and Texas inventory to synchronize stock.
@@ -1401,7 +1186,7 @@
               <th>Inventory</th>
               <th>Current status</th>
               <th>Planning</th>
-              <th>Owner</th>
+              <th>Notes</th>
               <th>Actions</th>
             </tr>
           </thead>
@@ -1413,13 +1198,8 @@
       <div id="emptyState" class="empty-state hidden">
         <div>
           <div class="empty-icon">◇</div>
-
           <h3>No events found</h3>
-
-          <p>
-            Create an event to track its inventory, customer deadline,
-            fulfillment plan, follow-up and shipment.
-          </p>
+          <p>Create an event or clear the current filters.</p>
 
           <button
             id="emptyNewEventButton"
@@ -1438,16 +1218,13 @@
       <div class="dialog-header">
         <div>
           <h2 id="eventDialogTitle">New event</h2>
-
-          <p>
-            Inventory synchronizes from Sarasota and Texas reports.
-          </p>
+          <p>Create or update the event and its PO line items.</p>
         </div>
 
         <button
-          class="dialog-close"
+          class="close-button"
           type="button"
-          data-close-dialog="eventDialog"
+          data-close="eventDialog"
         >
           ×
         </button>
@@ -1456,194 +1233,89 @@
       <div class="dialog-body">
         <input id="eventId" type="hidden">
 
-        <section class="form-section">
-          <h3 class="form-section-title">Event information</h3>
-
-          <div class="form-grid">
-            <div class="field">
-              <label for="poNumber">PO# *</label>
-
-              <input
-                id="poNumber"
-                class="control"
-                type="text"
-                required
-                placeholder="e.g. 85721"
-              >
-            </div>
-
-            <div class="field">
-              <label for="customer">Customer *</label>
-
-              <input
-                id="customer"
-                class="control"
-                type="text"
-                required
-                placeholder="Customer name"
-              >
-            </div>
-
-            <div class="field">
-              <label for="inHandsDate">In-hands date *</label>
-
-              <input
-                id="inHandsDate"
-                class="control"
-                type="date"
-                required
-              >
-            </div>
-
-            <div class="field">
-              <label for="eventStatus">Current status</label>
-
-              <select id="eventStatus" class="control">
-                <option>Draft</option>
-                <option>Confirmed</option>
-                <option>Allocating</option>
-                <option>Ready to Ship</option>
-                <option>Shipped</option>
-                <option>Complete</option>
-                <option>Cancelled</option>
-              </select>
-            </div>
-
-            <div class="field span-2">
-              <label for="fulfillmentPlanning">Planning *</label>
-
-              <select
-                id="fulfillmentPlanning"
-                class="control"
-                required
-              >
-                <option value="">Select fulfillment plan</option>
-
-                <option value="Shipping direct to the customer">
-                  Shipping direct to the customer
-                </option>
-
-                <option value="Bringing the items to our warehouse">
-                  Bringing the items to our warehouse
-                </option>
-
-                <option value="Part direct and part through our warehouse">
-                  Part direct and part through our warehouse
-                </option>
-
-                <option value="Planning not confirmed">
-                  Planning not confirmed
-                </option>
-              </select>
-            </div>
-
-            <div class="field">
-              <label for="customerFollowedUpDate">
-                Customer followed-up date
-              </label>
-
-              <input
-                id="customerFollowedUpDate"
-                class="control"
-                type="date"
-              >
-            </div>
-
-            <div class="field">
-              <label for="eventOwner">Owner</label>
-
-              <input
-                id="eventOwner"
-                class="control"
-                type="text"
-                placeholder="Responsible employee"
-              >
-            </div>
-
-            <div class="field span-2">
-              <label for="eventRecipients">
-                Internal email recipients
-              </label>
-
-              <input
-                id="eventRecipients"
-                class="control"
-                type="text"
-                placeholder="name@company.com, team@company.com"
-              >
-            </div>
-
-            <div class="field span-2">
-              <label for="trackingNumber">Tracking number</label>
-
-              <input
-                id="trackingNumber"
-                class="control"
-                type="text"
-                placeholder="Optional"
-              >
-            </div>
-
-            <div class="field span-4">
-              <label for="eventNotes">Latest notes</label>
-
-              <textarea
-                id="eventNotes"
-                class="control"
-                placeholder="Latest customer update, inventory update or delivery instruction"
-              ></textarea>
-            </div>
-          </div>
-        </section>
-
-        <section class="form-section">
-          <div class="items-toolbar">
-            <div>
-              <h3 class="form-section-title">PO items</h3>
-
-              <p>
-                Enter the model number to match current inventory.
-              </p>
-            </div>
-
-            <div class="footer-actions">
-              <button
-                id="syncInventoryButton"
-                class="button button-secondary button-small"
-                type="button"
-              >
-                Sync all items
-              </button>
-
-              <button
-                id="addItemButton"
-                class="button button-primary button-small"
-                type="button"
-              >
-                + Add model
-              </button>
-            </div>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="poNumber">PO#</label>
+            <input id="poNumber" required>
           </div>
 
-          <div class="table-wrap">
-            <table class="items-table">
-              <thead>
-                <tr>
-                  <th>Model#</th>
-                  <th>PO quantity</th>
-                  <th>Sarasota</th>
-                  <th>Texas</th>
-                  <th>Total available</th>
-                  <th>After allocation</th>
-                  <th>Status</th>
-                  <th></th>
-                </tr>
-              </thead>
-
-              <tbody id="itemsTableBody"></tbody>
-            </table>
+          <div class="form-field">
+            <label for="customer">Customer</label>
+            <input id="customer" required>
           </div>
-        </section>
+
+          <div class="form-field">
+            <label for="inHandsDate">In-hands date</label>
+            <input id="inHandsDate" type="date" required>
+          </div>
+
+          <div class="form-field">
+            <label for="eventStatus">Current status</label>
+
+            <select id="eventStatus">
+              <option>Draft</option>
+              <option>Confirmed</option>
+              <option>Allocating</option>
+              <option>Ready to Ship</option>
+              <option>Shipped</option>
+              <option>Complete</option>
+              <option>Cancelled</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="planning">Planning</label>
+
+            <select id="planning">
+              <option>Planning not confirmed</option>
+              <option>Shipping directly to the customer</option>
+              <option>Bringing the items to our warehouse</option>
+              <option>Part direct and part through our warehouse</option>
+            </select>
+          </div>
+
+          <div class="form-field">
+            <label for="followUpDate">Customer followed-up date</label>
+            <input id="followUpDate" type="date">
+          </div>
+
+          <div class="form-field full">
+            <label for="eventNotes">Notes</label>
+
+            <textarea
+              id="eventNotes"
+              placeholder="Latest event notes"
+            ></textarea>
+          </div>
+        </div>
+
+        <h3 class="section-title">PO line items</h3>
+
+        <div class="items-editor">
+          <table>
+            <thead>
+              <tr>
+                <th>Model#</th>
+                <th>PO quantity</th>
+                <th>Sarasota</th>
+                <th>Texas</th>
+                <th>Total</th>
+                <th></th>
+              </tr>
+            </thead>
+
+            <tbody id="itemsEditorBody"></tbody>
+          </table>
+        </div>
+
+        <button
+          id="addItemButton"
+          class="button button-small"
+          type="button"
+          style="margin-top:10px"
+        >
+          + Add item
+        </button>
       </div>
 
       <div class="dialog-footer">
@@ -1652,27 +1324,22 @@
           class="button button-danger hidden"
           type="button"
         >
-          Delete event
+          Delete
         </button>
 
         <div class="footer-actions">
           <button
-            class="button button-secondary"
+            class="button"
             type="button"
-            data-close-dialog="eventDialog"
+            data-close="eventDialog"
           >
             Cancel
           </button>
 
           <button
-            id="saveAndEmailButton"
-            class="button button-secondary"
-            type="button"
+            class="button button-primary"
+            type="submit"
           >
-            Save & email
-          </button>
-
-          <button class="button button-primary" type="submit">
             Save event
           </button>
         </div>
@@ -1680,185 +1347,123 @@
     </form>
   </dialog>
 
-  <dialog id="inventoryDialog" class="inventory-dialog">
+  <dialog id="viewDialog">
     <div class="dialog-shell">
       <div class="dialog-header">
         <div>
-          <h2>Current Inventory</h2>
-
-          <p id="inventoryDialogSubtitle">
-            Regional inventory by location
-          </p>
+          <h2 id="viewTitle">PO details</h2>
+          <p id="viewSubtitle"></p>
         </div>
 
         <button
-          class="dialog-close"
+          class="close-button"
           type="button"
-          data-close-dialog="inventoryDialog"
+          data-close="viewDialog"
         >
           ×
         </button>
       </div>
 
       <div class="dialog-body">
-        <div class="inventory-tabs">
-          <button
-            class="inventory-tab active"
-            type="button"
-            data-location-tab="Sarasota"
-          >
-            <span>Sarasota</span>
-            <span id="sarasotaTabCount" class="tab-count">
-              0 rows
-            </span>
-          </button>
-
-          <button
-            class="inventory-tab"
-            type="button"
-            data-location-tab="Texas"
-          >
-            <span>Texas</span>
-            <span id="texasTabCount" class="tab-count">
-              0 rows
-            </span>
-          </button>
-        </div>
-
-        <section
-          class="inventory-location active"
-          data-location-panel="Sarasota"
-        >
-          <div id="sarasotaUploadZone" class="upload-card">
-            <div>
-              <h3 class="upload-title">Sarasota Inventory</h3>
-
-              <p class="upload-description">
-                Upload or drag and drop the latest Sarasota XLS, XLSX,
-                CSV or TSV inventory report.
-              </p>
-            </div>
-
-            <div class="footer-actions">
-              <input
-                id="sarasotaFileInput"
-                class="file-input"
-                type="file"
-                accept=".xlsx,.xls,.csv,.tsv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
-              >
-
-              <button
-                id="sarasotaUploadButton"
-                class="button button-primary"
-                type="button"
-              >
-                Upload Sarasota file
-              </button>
-
-              <button
-                id="removeSarasotaButton"
-                class="button button-danger hidden"
-                type="button"
-              >
-                Remove
-              </button>
-            </div>
-          </div>
-
-          <div id="sarasotaMeta" class="inventory-meta">
-            <span>No Sarasota file uploaded.</span>
-            <span>0 models detected</span>
-          </div>
-
-          <div class="inventory-list-card">
-            <div class="inventory-list-toolbar">
-              <strong>Sarasota data</strong>
-
-              <input
-                id="sarasotaInventorySearch"
-                class="control inventory-search"
-                type="search"
-                placeholder="Search Sarasota inventory"
-              >
-            </div>
-
-            <div id="sarasotaInventoryList"></div>
-          </div>
-        </section>
-
-        <section
-          class="inventory-location"
-          data-location-panel="Texas"
-        >
-          <div id="texasUploadZone" class="upload-card">
-            <div>
-              <h3 class="upload-title">Texas Inventory</h3>
-
-              <p class="upload-description">
-                Upload or drag and drop the latest Texas XLS, XLSX,
-                CSV or TSV inventory report.
-              </p>
-            </div>
-
-            <div class="footer-actions">
-              <input
-                id="texasFileInput"
-                class="file-input"
-                type="file"
-                accept=".xlsx,.xls,.csv,.tsv,application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet,text/csv"
-              >
-
-              <button
-                id="texasUploadButton"
-                class="button button-primary"
-                type="button"
-              >
-                Upload Texas file
-              </button>
-
-              <button
-                id="removeTexasButton"
-                class="button button-danger hidden"
-                type="button"
-              >
-                Remove
-              </button>
-            </div>
-          </div>
-
-          <div id="texasMeta" class="inventory-meta">
-            <span>No Texas file uploaded.</span>
-            <span>0 models detected</span>
-          </div>
-
-          <div class="inventory-list-card">
-            <div class="inventory-list-toolbar">
-              <strong>Texas data</strong>
-
-              <input
-                id="texasInventorySearch"
-                class="control inventory-search"
-                type="search"
-                placeholder="Search Texas inventory"
-              >
-            </div>
-
-            <div id="texasInventoryList"></div>
-          </div>
-        </section>
+        <div id="viewContent"></div>
       </div>
 
       <div class="dialog-footer">
-        <span id="inventorySyncMessage">
-          Inventory is stored separately for this region.
-        </span>
+        <span></span>
+
+        <div class="footer-actions">
+          <button
+            class="button"
+            type="button"
+            data-close="viewDialog"
+          >
+            Close
+          </button>
+
+          <button
+            id="editFromViewButton"
+            class="button button-primary"
+            type="button"
+          >
+            Edit event
+          </button>
+        </div>
+      </div>
+    </div>
+  </dialog>
+
+  <dialog id="inventoryDialog">
+    <div class="dialog-shell">
+      <div class="dialog-header">
+        <div>
+          <h2>Current Inventory</h2>
+          <p>Upload XLS, XLSX or CSV inventory by location.</p>
+        </div>
 
         <button
-          class="button button-primary"
+          class="close-button"
           type="button"
-          data-close-dialog="inventoryDialog"
+          data-close="inventoryDialog"
         >
-          Done
+          ×
+        </button>
+      </div>
+
+      <div class="dialog-body">
+        <div class="inventory-grid">
+          <section class="inventory-panel">
+            <h3>Sarasota</h3>
+            <p id="sarasotaMeta">No file uploaded.</p>
+
+            <input
+              id="sarasotaFile"
+              class="inventory-file"
+              type="file"
+              accept=".xls,.xlsx,.csv,.tsv"
+            >
+
+            <button
+              class="button button-primary"
+              data-upload="Sarasota"
+              type="button"
+              style="margin-top:10px"
+            >
+              Upload Sarasota
+            </button>
+          </section>
+
+          <section class="inventory-panel">
+            <h3>Texas</h3>
+            <p id="texasMeta">No file uploaded.</p>
+
+            <input
+              id="texasFile"
+              class="inventory-file"
+              type="file"
+              accept=".xls,.xlsx,.csv,.tsv"
+            >
+
+            <button
+              class="button button-primary"
+              data-upload="Texas"
+              type="button"
+              style="margin-top:10px"
+            >
+              Upload Texas
+            </button>
+          </section>
+        </div>
+      </div>
+
+      <div class="dialog-footer">
+        <span></span>
+
+        <button
+          class="button"
+          type="button"
+          data-close="inventoryDialog"
+        >
+          Close
         </button>
       </div>
     </div>
@@ -1869,63 +1474,60 @@
       <div class="dialog-header">
         <div>
           <h2>Outlook settings</h2>
-          <p>Configure internal recipients and email signature.</p>
+          <p>
+            Set the internal recipients used for the complete
+            events-list draft.
+          </p>
         </div>
 
         <button
-          class="dialog-close"
+          class="close-button"
           type="button"
-          data-close-dialog="emailSettingsDialog"
+          data-close="emailSettingsDialog"
         >
           ×
         </button>
       </div>
 
       <div class="dialog-body">
-        <section class="form-section">
-          <div class="form-grid">
-            <div class="field span-4">
-              <label for="organizationDomain">
-                Organization email domain
-              </label>
+        <div class="form-grid">
+          <div class="form-field">
+            <label for="organizationDomain">
+              Organization email domain
+            </label>
 
-              <input
-                id="organizationDomain"
-                class="control"
-                type="text"
-                placeholder="starkpremium.com"
-              >
-            </div>
-
-            <div class="field span-4">
-              <label for="defaultRecipients">
-                Default internal recipients
-              </label>
-
-              <input
-                id="defaultRecipients"
-                class="control"
-                type="text"
-                placeholder="operations@company.com, sales@company.com"
-              >
-            </div>
-
-            <div class="field span-4">
-              <label for="emailSignature">Email signature</label>
-
-              <textarea
-                id="emailSignature"
-                class="control"
-                placeholder="Thank you,&#10;Manoj"
-              ></textarea>
-            </div>
+            <input
+              id="organizationDomain"
+              placeholder="company.com"
+            >
           </div>
 
-          <p class="email-note">
-            The email button opens a prepared Outlook message. No Outlook
-            password is stored in this page.
-          </p>
-        </section>
+          <div class="form-field">
+            <label for="defaultRecipients">
+              Internal recipients
+            </label>
+
+            <input
+              id="defaultRecipients"
+              placeholder="person@company.com; team@company.com"
+            >
+          </div>
+
+          <div class="form-field full">
+            <label for="emailSignature">Email signature</label>
+
+            <textarea
+              id="emailSignature"
+              placeholder="Thank you,&#10;Your name"
+            ></textarea>
+          </div>
+        </div>
+
+        <p class="email-note">
+          The email button creates one Outlook draft containing the
+          entire events list. A formatted HTML table is also copied to
+          the clipboard when browser permission allows it.
+        </p>
       </div>
 
       <div class="dialog-footer">
@@ -1933,14 +1535,17 @@
 
         <div class="footer-actions">
           <button
-            class="button button-secondary"
+            class="button"
             type="button"
-            data-close-dialog="emailSettingsDialog"
+            data-close="emailSettingsDialog"
           >
             Cancel
           </button>
 
-          <button class="button button-primary" type="submit">
+          <button
+            class="button button-primary"
+            type="submit"
+          >
             Save settings
           </button>
         </div>
@@ -1948,20 +1553,33 @@
     </form>
   </dialog>
 
-  <div id="toast" class="toast"></div>
+  <div
+    id="toast"
+    class="toast"
+    role="status"
+    aria-live="polite"
+  ></div>
 
   <script>
     (() => {
-      const VALID_REGIONS = ["US", "EU", "CA"];
+      "use strict";
 
-      const REGION_NAMES = {
+      const $ = id =>
+        document.getElementById(id);
+
+      const REGIONS = {
         US: "United States",
         EU: "European Union",
         CA: "Canada"
       };
 
-      const LOCATIONS = ["Sarasota", "Texas"];
-      const INVENTORY_PAGE_SIZE = 100;
+      const VALID_REGIONS =
+        Object.keys(REGIONS);
+
+      const LOCATIONS = [
+        "Sarasota",
+        "Texas"
+      ];
 
       const WORKFLOW = [
         "Draft",
@@ -1971,16 +1589,6 @@
         "Shipped",
         "Complete"
       ];
-
-      const NEXT_ACTIONS = {
-        Draft: "Confirm customer and event requirements",
-        Confirmed: "Confirm inventory allocation",
-        Allocating: "Resolve inventory and fulfillment plan",
-        "Ready to Ship": "Ship and enter tracking information",
-        Shipped: "Follow up and confirm delivery",
-        Complete: "No action required",
-        Cancelled: "No action required"
-      };
 
       const MODEL_ALIASES = [
         "model",
@@ -1999,7 +1607,7 @@
         "productcode"
       ];
 
-      const DIRECT_STOCK_ALIASES = [
+      const STOCK_ALIASES = [
         "actualavailable",
         "actualavailability",
         "totalavailable",
@@ -2009,10 +1617,7 @@
         "availablequantity",
         "quantityavailable",
         "stockavailable",
-        "available"
-      ];
-
-      const ON_HAND_ALIASES = [
+        "available",
         "onhand",
         "onhandqty",
         "onhandquantity",
@@ -2020,10 +1625,7 @@
         "stockqty",
         "stock",
         "inventory",
-        "quantityonhand"
-      ];
-
-      const ATS_ALIASES = [
+        "quantityonhand",
         "ats",
         "availabletosell",
         "atsqty",
@@ -2031,26 +1633,38 @@
       ];
 
       const parameters =
-        new URLSearchParams(window.location.search);
+        new URLSearchParams(
+          window.location.search
+        );
 
       let region =
-        (parameters.get("region") || "US").toUpperCase();
+        (
+          parameters.get("region") ||
+          "US"
+        ).toUpperCase();
 
       if (!VALID_REGIONS.includes(region)) {
         region = "US";
       }
 
-      const eventStorageKey = `stark_events_v6_${region}`;
+      const eventStorageKey =
+        `stark_events_v6_${region}`;
+
       const emailSettingsKey =
         "stark_events_outlook_settings_v1";
 
-      let events = loadExistingEvents();
+      let events =
+        loadExistingEvents();
 
-      let emailSettings = loadJson(emailSettingsKey, {
-        organizationDomain: "",
-        defaultRecipients: "",
-        emailSignature: ""
-      });
+      let emailSettings =
+        loadJson(
+          emailSettingsKey,
+          {
+            organizationDomain: "",
+            defaultRecipients: "",
+            emailSignature: ""
+          }
+        );
 
       let locationReports = {
         Sarasota: null,
@@ -2062,380 +1676,18 @@
         Texas: new Map()
       };
 
-      let inventoryPages = {
-        Sarasota: 1,
-        Texas: 1
-      };
-
+      let viewingEventId = null;
       let toastTimer;
-
-      const regionSelect =
-        document.getElementById("regionSelect");
-
-      const regionBadge =
-        document.getElementById("regionBadge");
-
-      const heroEyebrow =
-        document.getElementById("heroEyebrow");
-
-      const searchInput =
-        document.getElementById("searchInput");
-
-      const statusFilter =
-        document.getElementById("statusFilter");
-
-      const inventoryFilter =
-        document.getElementById("inventoryFilter");
-
-      const dateFilter =
-        document.getElementById("dateFilter");
-
-      const eventsTableBody =
-        document.getElementById("eventsTableBody");
-
-      const tableContainer =
-        document.getElementById("tableContainer");
-
-      const emptyState =
-        document.getElementById("emptyState");
-
-      const recordCount =
-        document.getElementById("recordCount");
-
-      const eventDialog =
-        document.getElementById("eventDialog");
-
-      const inventoryDialog =
-        document.getElementById("inventoryDialog");
-
-      const emailSettingsDialog =
-        document.getElementById("emailSettingsDialog");
-
-      const eventForm =
-        document.getElementById("eventForm");
-
-      const eventId =
-        document.getElementById("eventId");
-
-      const poNumber =
-        document.getElementById("poNumber");
-
-      const customer =
-        document.getElementById("customer");
-
-      const inHandsDate =
-        document.getElementById("inHandsDate");
-
-      const eventStatus =
-        document.getElementById("eventStatus");
-
-      const fulfillmentPlanning =
-        document.getElementById("fulfillmentPlanning");
-
-      const customerFollowedUpDate =
-        document.getElementById("customerFollowedUpDate");
-
-      const eventOwner =
-        document.getElementById("eventOwner");
-
-      const eventRecipients =
-        document.getElementById("eventRecipients");
-
-      const trackingNumber =
-        document.getElementById("trackingNumber");
-
-      const eventNotes =
-        document.getElementById("eventNotes");
-
-      const itemsTableBody =
-        document.getElementById("itemsTableBody");
-
-      const deleteEventButton =
-        document.getElementById("deleteEventButton");
-
-      const syncInventoryButton =
-        document.getElementById("syncInventoryButton");
-
-      const toast =
-        document.getElementById("toast");
-
-      initialize();
-
-      async function initialize() {
-        configureRegion();
-        normalizeEvents();
-        bindEvents();
-
-        try {
-          await loadStoredInventory();
-        } catch (error) {
-          showToast(
-            "Stored inventory could not be loaded. New files can still be uploaded."
-          );
-        }
-
-        rebuildLocationMaps();
-        synchronizeAllEventInventory(false);
-        render();
-        renderInventoryLocations();
-      }
-
-      function configureRegion() {
-        regionSelect.value = region;
-        regionBadge.textContent = region;
-
-        heroEyebrow.textContent =
-          `Events Operations · ${REGION_NAMES[region]}`;
-
-        document.getElementById("backLink").href =
-          `index.html?region=${encodeURIComponent(region)}`;
-
-        document.getElementById("dashboardLink").href =
-          `inventory-dashboard.html?region=${encodeURIComponent(region)}`;
-
-        document.getElementById("salesLink").href =
-          `sales-analysis.html?region=${encodeURIComponent(region)}`;
-
-        document.getElementById("eventsLink").href =
-          `events.html?region=${encodeURIComponent(region)}`;
-
-        document.getElementById(
-          "inventoryDialogSubtitle"
-        ).textContent =
-          `${REGION_NAMES[region]} inventory by location`;
-      }
-
-      function bindEvents() {
-        regionSelect.addEventListener("change", () => {
-          window.location.href =
-            `events.html?region=${encodeURIComponent(
-              regionSelect.value
-            )}`;
-        });
-
-        document
-          .getElementById("newEventButton")
-          .addEventListener("click", openNewEvent);
-
-        document
-          .getElementById("emptyNewEventButton")
-          .addEventListener("click", openNewEvent);
-
-        document
-          .getElementById("currentInventoryButton")
-          .addEventListener("click", openInventoryDialog);
-
-        document
-          .getElementById("emailSettingsButton")
-          .addEventListener("click", openEmailSettings);
-
-        document
-          .getElementById("addItemButton")
-          .addEventListener("click", () => addItemRow());
-
-        syncInventoryButton.addEventListener(
-          "click",
-          syncDialogItems
-        );
-
-        searchInput.addEventListener("input", renderTable);
-        statusFilter.addEventListener("change", renderTable);
-        inventoryFilter.addEventListener("change", renderTable);
-        dateFilter.addEventListener("change", renderTable);
-
-        eventForm.addEventListener("submit", (event) => {
-          event.preventDefault();
-          saveEvent(false);
-        });
-
-        document
-          .getElementById("saveAndEmailButton")
-          .addEventListener("click", () => saveEvent(true));
-
-        deleteEventButton.addEventListener(
-          "click",
-          deleteCurrentEvent
-        );
-
-        document
-          .getElementById("emailSettingsForm")
-          .addEventListener("submit", (event) => {
-            event.preventDefault();
-            saveEmailSettings();
-          });
-
-        bindInventoryUploader(
-          "Sarasota",
-          "sarasotaFileInput",
-          "sarasotaUploadButton",
-          "sarasotaUploadZone"
-        );
-
-        bindInventoryUploader(
-          "Texas",
-          "texasFileInput",
-          "texasUploadButton",
-          "texasUploadZone"
-        );
-
-        document
-          .getElementById("removeSarasotaButton")
-          .addEventListener("click", () => {
-            removeLocationReport("Sarasota");
-          });
-
-        document
-          .getElementById("removeTexasButton")
-          .addEventListener("click", () => {
-            removeLocationReport("Texas");
-          });
-
-        document
-          .getElementById("sarasotaInventorySearch")
-          .addEventListener("input", () => {
-            inventoryPages.Sarasota = 1;
-            renderLocationList("Sarasota");
-          });
-
-        document
-          .getElementById("texasInventorySearch")
-          .addEventListener("input", () => {
-            inventoryPages.Texas = 1;
-            renderLocationList("Texas");
-          });
-
-        document
-          .querySelectorAll("[data-location-tab]")
-          .forEach((button) => {
-            button.addEventListener("click", () => {
-              selectInventoryLocation(
-                button.dataset.locationTab
-              );
-            });
-          });
-
-        document
-          .querySelectorAll("[data-close-dialog]")
-          .forEach((button) => {
-            button.addEventListener("click", () => {
-              document
-                .getElementById(button.dataset.closeDialog)
-                .close();
-            });
-          });
-      }
-
-      function bindInventoryUploader(
-        location,
-        inputId,
-        buttonId,
-        dropZoneId
-      ) {
-        const input = document.getElementById(inputId);
-        const button = document.getElementById(buttonId);
-        const dropZone = document.getElementById(dropZoneId);
-
-        if (!input || !button || !dropZone) {
-          return;
-        }
-
-        button.addEventListener("click", (event) => {
-          event.preventDefault();
-          event.stopPropagation();
-
-          input.value = "";
-          input.click();
-        });
-
-        input.addEventListener("change", async () => {
-          const file = input.files?.[0];
-
-          if (!file) {
-            return;
-          }
-
-          await handleSelectedInventoryFile(location, file);
-          input.value = "";
-        });
-
-        dropZone.addEventListener("click", (event) => {
-          if (
-            event.target.closest("button") ||
-            event.target.closest("input")
-          ) {
-            return;
-          }
-
-          input.value = "";
-          input.click();
-        });
-
-        ["dragenter", "dragover"].forEach((eventName) => {
-          dropZone.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            dropZone.classList.add("dragging");
-          });
-        });
-
-        ["dragleave", "drop"].forEach((eventName) => {
-          dropZone.addEventListener(eventName, (event) => {
-            event.preventDefault();
-            event.stopPropagation();
-            dropZone.classList.remove("dragging");
-          });
-        });
-
-        dropZone.addEventListener("drop", async (event) => {
-          const file = event.dataTransfer?.files?.[0];
-
-          if (!file) {
-            return;
-          }
-
-          await handleSelectedInventoryFile(location, file);
-        });
-      }
-
-      async function handleSelectedInventoryFile(location, file) {
-        const allowedExtensions = [
-          ".xlsx",
-          ".xls",
-          ".csv",
-          ".tsv"
-        ];
-
-        const fileName = file.name.toLowerCase();
-
-        const validFile = allowedExtensions.some((extension) => {
-          return fileName.endsWith(extension);
-        });
-
-        if (!validFile) {
-          showToast(
-            "Please select an XLS, XLSX, CSV or TSV inventory file."
-          );
-
-          return;
-        }
-
-        if (!window.XLSX) {
-          showToast(
-            "The Excel reader has not loaded. Refresh the page and try again."
-          );
-
-          return;
-        }
-
-        await uploadInventoryFile(location, file);
-      }
 
       function loadJson(key, fallback) {
         try {
-          const value = localStorage.getItem(key);
+          const value =
+            JSON.parse(
+              localStorage.getItem(key)
+            );
 
-          return value ? JSON.parse(value) : fallback;
-        } catch (error) {
+          return value ?? fallback;
+        } catch {
           return fallback;
         }
       }
@@ -2448,7 +1700,8 @@
         ];
 
         for (const key of keys) {
-          const value = loadJson(key, null);
+          const value =
+            loadJson(key, null);
 
           if (Array.isArray(value)) {
             return value;
@@ -2458,24 +1711,52 @@
         return [];
       }
 
-      function saveEvents() {
-        localStorage.setItem(
-          eventStorageKey,
-          JSON.stringify(events)
-        );
+      function createId() {
+        if (window.crypto?.randomUUID) {
+          return crypto.randomUUID();
+        }
+
+        return `${Date.now()}-${Math.random()
+          .toString(16)
+          .slice(2)}`;
+      }
+
+      function numberValue(value) {
+        if (
+          value === "" ||
+          value === null ||
+          value === undefined
+        ) {
+          return null;
+        }
+
+        const parsed =
+          Number(
+            String(value).replace(/,/g, "")
+          );
+
+        return Number.isFinite(parsed)
+          ? parsed
+          : null;
       }
 
       function normalizeEvents() {
-        if (!Array.isArray(events)) {
-          events = [];
-        }
+        events = events.map(event => ({
+          id:
+            event.id ||
+            createId(),
 
-        events = events.map((event) => ({
-          id: event.id || createId(),
-          poNumber: String(event.poNumber || ""),
-          customer: String(event.customer || ""),
-          inHandsDate: event.inHandsDate || "",
-          status: event.status || "Draft",
+          poNumber:
+            String(event.poNumber || ""),
+
+          customer:
+            String(event.customer || ""),
+
+          inHandsDate:
+            event.inHandsDate || "",
+
+          status:
+            event.status || "Draft",
 
           planning:
             event.planning ||
@@ -2485,32 +1766,39 @@
           customerFollowedUpDate:
             event.customerFollowedUpDate || "",
 
-          owner: String(event.owner || ""),
-          recipients: String(event.recipients || ""),
-          trackingNumber:
-            String(event.trackingNumber || ""),
-          notes: String(event.notes || ""),
+          notes:
+            String(event.notes || ""),
 
-          items: Array.isArray(event.items)
-            ? event.items.map((item) => ({
-                model: String(item.model || ""),
-                quantity: numberValue(item.quantity),
+          items:
+            Array.isArray(event.items)
+              ? event.items.map(item => ({
+                  model:
+                    String(item.model || ""),
 
-                sarasota:
-                  numberValue(item.sarasota) ??
-                  numberValue(item.stockSarasota),
+                  quantity:
+                    numberValue(
+                      item.quantity
+                    ),
 
-                texas:
-                  numberValue(item.texas) ??
-                  numberValue(item.stockTexas),
+                  sarasota:
+                    numberValue(
+                      item.sarasota ??
+                      item.stockSarasota
+                    ),
 
-                total:
-                  numberValue(item.total) ??
-                  numberValue(item.stock),
+                  texas:
+                    numberValue(
+                      item.texas ??
+                      item.stockTexas
+                    ),
 
-                matched: item.matched === true
-              }))
-            : [],
+                  total:
+                    numberValue(
+                      item.total ??
+                      item.stock
+                    )
+                }))
+              : [],
 
           createdAt:
             event.createdAt ||
@@ -2524,262 +1812,230 @@
         saveEvents();
       }
 
-      function createId() {
-        if (window.crypto?.randomUUID) {
-          return crypto.randomUUID();
+      function saveEvents() {
+        localStorage.setItem(
+          eventStorageKey,
+          JSON.stringify(events)
+        );
+      }
+
+      function escapeHtml(value) {
+        return String(value ?? "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function formatDate(value) {
+        if (!value) {
+          return "Not recorded";
         }
 
-        return `${Date.now()}-${Math.random()
-          .toString(16)
-          .slice(2)}`;
-      }
+        const date =
+          new Date(`${value}T12:00:00`);
 
-      function render() {
-        renderSummary();
-        renderPipeline();
-        renderTable();
-        renderInventorySourceStatus();
-      }
+        if (Number.isNaN(date.getTime())) {
+          return String(value);
+        }
 
-      function renderSummary() {
-        const active = events.filter(
-          (event) =>
-            event.status !== "Complete" &&
-            event.status !== "Cancelled"
-        );
-
-        const upcoming = active.filter((event) => {
-          const days = daysUntil(event.inHandsDate);
-
-          return days !== null && days >= 0 && days <= 14;
-        });
-
-        const risk = active.filter((event) => {
-          const days = daysUntil(event.inHandsDate);
-
-          return (
-            days !== null &&
-            (days < 0 ||
-              (days <= 7 && event.status !== "Shipped"))
-          );
-        });
-
-        const low = active.filter(
-          (event) =>
-            getInventoryStatus(event) === "LOW"
-        );
-
-        document.getElementById(
-          "activeEventsValue"
-        ).textContent = active.length;
-
-        document.getElementById(
-          "upcomingEventsValue"
-        ).textContent = upcoming.length;
-
-        document.getElementById(
-          "riskEventsValue"
-        ).textContent = risk.length;
-
-        document.getElementById(
-          "lowInventoryValue"
-        ).textContent = low.length;
-      }
-
-      function renderPipeline() {
-        const statusElements = {
-          Draft: "draftCount",
-          Confirmed: "confirmedCount",
-          Allocating: "allocatingCount",
-          "Ready to Ship": "readyCount",
-          Shipped: "shippedCount",
-          Complete: "completeCount"
-        };
-
-        Object.entries(statusElements).forEach(
-          ([status, id]) => {
-            document.getElementById(id).textContent =
-              events.filter(
-                (event) => event.status === status
-              ).length;
+        return date.toLocaleDateString(
+          "en-US",
+          {
+            month: "long",
+            day: "numeric",
+            year: "numeric"
           }
         );
       }
 
-      function renderTable() {
-        const filteredEvents = getFilteredEvents();
-
-        recordCount.textContent =
-          `${filteredEvents.length} ${
-            filteredEvents.length === 1
-              ? "event"
-              : "events"
-          }`;
-
-        if (!filteredEvents.length) {
-          tableContainer.classList.add("hidden");
-          emptyState.classList.remove("hidden");
-          return;
+      function daysUntil(value) {
+        if (!value) {
+          return null;
         }
 
-        tableContainer.classList.remove("hidden");
-        emptyState.classList.add("hidden");
+        const target =
+          new Date(`${value}T12:00:00`);
 
-        eventsTableBody.innerHTML = filteredEvents
-          .map((event) => {
-            const inventoryStatus =
-              getInventoryStatus(event);
+        const today =
+          new Date();
 
-            return `
-              <tr>
-                <td>
-                  <span class="po-number">
-                    ${escapeHtml(event.poNumber)}
-                  </span>
-                </td>
+        today.setHours(12, 0, 0, 0);
 
-                <td>
-                  <div
-                    class="customer-name"
-                    title="${escapeHtml(event.customer)}"
-                  >
-                    ${escapeHtml(event.customer)}
-                  </div>
-                </td>
+        return Math.ceil(
+          (
+            target.getTime() -
+            today.getTime()
+          ) / 86400000
+        );
+      }
 
-                <td>
-                  <div class="date-primary">
-                    ${formatDate(event.inHandsDate)}
-                  </div>
+      function getDateMessage(event) {
+        const days =
+          daysUntil(event.inHandsDate);
 
-                  <div class="date-secondary">
-                    ${escapeHtml(getDateMessage(event))}
-                  </div>
-                </td>
+        if (days === null) {
+          return "Date not recorded";
+        }
 
-                <td>
-                  <strong>${event.items.length}</strong>
-                  ${
-                    event.items.length === 1
-                      ? " model"
-                      : " models"
-                  }
-                </td>
+        if (days < 0) {
+          const overdue =
+            Math.abs(days);
 
-                <td>
-                  <span class="status ${
-                    inventoryStatusClass(inventoryStatus)
-                  }">
-                    ${inventoryStatus}
-                  </span>
-                </td>
+          return `${overdue} day${
+            overdue === 1 ? "" : "s"
+          } overdue`;
+        }
 
-                <td>
-                  <span class="status ${
-                    eventStatusClass(event.status)
-                  }">
-                    ${escapeHtml(event.status)}
-                  </span>
-                </td>
+        if (days === 0) {
+          return "Due today";
+        }
 
-                <td>
-                  <div class="planning-text">
-                    ${escapeHtml(event.planning)}
-                  </div>
-                </td>
+        return `${days} day${
+          days === 1 ? "" : "s"
+        } remaining`;
+      }
 
-                <td>
-                  ${escapeHtml(event.owner || "—")}
-                </td>
+      function normalizeModel(value) {
+        return String(value ?? "")
+          .trim()
+          .toUpperCase()
+          .replace(/[^A-Z0-9]/g, "");
+      }
 
-                <td>
-                  <div class="row-actions">
-                    <button
-                      class="icon-button"
-                      type="button"
-                      title="Edit PO"
-                      onclick="window.eventTracker.edit('${event.id}')"
-                    >
-                      ✎
-                    </button>
+      function getInventoryStatus(event) {
+        if (!event.items.length) {
+          return "CHECK";
+        }
 
-                    <button
-                      class="icon-button"
-                      type="button"
-                      title="Prepare Outlook email"
-                      onclick="window.eventTracker.email('${event.id}')"
-                    >
-                      ✉
-                    </button>
+        let unknown = false;
+        let low = false;
 
-                    <button
-                      class="icon-button"
-                      type="button"
-                      title="Move to next status"
-                      onclick="window.eventTracker.advance('${event.id}')"
-                    >
-                      →
-                    </button>
-                  </div>
-                </td>
-              </tr>
-            `;
-          })
-          .join("");
+        event.items.forEach(item => {
+          const quantity =
+            numberValue(item.quantity);
+
+          const stock =
+            numberValue(item.total);
+
+          if (
+            quantity === null ||
+            stock === null
+          ) {
+            unknown = true;
+          } else if (stock < quantity) {
+            low = true;
+          }
+        });
+
+        if (low) {
+          return "LOW";
+        }
+
+        if (unknown) {
+          return "CHECK";
+        }
+
+        return "GOOD";
+      }
+
+      function statusClass(value) {
+        return String(value)
+          .toLowerCase()
+          .replace(/\s+/g, "-");
+      }
+
+      function configureRegion() {
+        $("regionSelect").value = region;
+        $("regionBadge").textContent = region;
+
+        $("heroEyebrow").textContent =
+          `Events Operations · ${REGIONS[region]}`;
+
+        $("backLink").href =
+          `index.html?region=${region}`;
+
+        $("dashboardLink").href =
+          `inventory-dashboard.html?region=${region}`;
+
+        $("salesLink").href =
+          `sales.html?region=${region}`;
       }
 
       function getFilteredEvents() {
         const query =
-          searchInput.value.trim().toLowerCase();
+          $("searchInput")
+            .value
+            .trim()
+            .toLowerCase();
+
+        const selectedStatus =
+          $("statusFilter").value;
+
+        const selectedInventory =
+          $("inventoryFilter").value;
+
+        const selectedDate =
+          $("dateFilter").value;
 
         return [...events]
-          .filter((event) => {
+          .filter(event => {
             const searchable = [
               event.poNumber,
               event.customer,
-              event.owner,
-              event.notes,
               event.planning,
-              event.trackingNumber,
-              ...event.items.map((item) => item.model)
+              event.notes,
+              ...event.items.map(
+                item => item.model
+              )
             ]
               .join(" ")
               .toLowerCase();
 
-            if (query && !searchable.includes(query)) {
-              return false;
-            }
-
             if (
-              statusFilter.value &&
-              event.status !== statusFilter.value
+              query &&
+              !searchable.includes(query)
             ) {
               return false;
             }
 
             if (
-              inventoryFilter.value &&
+              selectedStatus &&
+              event.status !== selectedStatus
+            ) {
+              return false;
+            }
+
+            if (
+              selectedInventory &&
               getInventoryStatus(event) !==
-                inventoryFilter.value
+                selectedInventory
             ) {
               return false;
             }
 
-            if (dateFilter.value) {
-              const days = daysUntil(event.inHandsDate);
+            if (selectedDate) {
+              const days =
+                daysUntil(event.inHandsDate);
+
+              if (days === null) {
+                return false;
+              }
 
               if (
-                dateFilter.value === "overdue" &&
-                (days === null || days >= 0)
+                selectedDate === "overdue" &&
+                days >= 0
               ) {
                 return false;
               }
 
               if (
-                dateFilter.value !== "overdue" &&
-                (days === null ||
+                selectedDate !== "overdue" &&
+                (
                   days < 0 ||
-                  days > Number(dateFilter.value))
+                  days > Number(selectedDate)
+                )
               ) {
                 return false;
               }
@@ -2787,436 +2043,846 @@
 
             return true;
           })
-          .sort((first, second) => {
-            return (
-              dateValue(first.inHandsDate) -
-              dateValue(second.inHandsDate)
+          .sort((a, b) =>
+            (
+              a.inHandsDate ||
+              "9999"
+            ).localeCompare(
+              b.inHandsDate ||
+              "9999"
+            )
+          );
+      }
+
+      function render() {
+        renderTable();
+        renderInventoryMeta();
+      }
+
+      function renderTable() {
+        const filteredEvents =
+          getFilteredEvents();
+
+        $("recordCount").textContent =
+          `${filteredEvents.length} ${
+            filteredEvents.length === 1
+              ? "event"
+              : "events"
+          }`;
+
+        $("tableContainer").classList.toggle(
+          "hidden",
+          !filteredEvents.length
+        );
+
+        $("emptyState").classList.toggle(
+          "hidden",
+          Boolean(filteredEvents.length)
+        );
+
+        $("eventsTableBody").innerHTML =
+          filteredEvents
+            .map(event => {
+              const inventoryStatus =
+                getInventoryStatus(event);
+
+              return `
+                <tr>
+                  <td>
+                    <button
+                      class="po-link"
+                      type="button"
+                      onclick="window.eventsApp.view('${event.id}')"
+                    >
+                      ${escapeHtml(
+                        event.poNumber ||
+                        "Untitled PO"
+                      )}
+                    </button>
+                  </td>
+
+                  <td>
+                    <div class="customer-name">
+                      ${escapeHtml(
+                        event.customer ||
+                        "—"
+                      )}
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="date-primary">
+                      ${escapeHtml(
+                        formatDate(
+                          event.inHandsDate
+                        )
+                      )}
+                    </div>
+
+                    <div class="date-secondary">
+                      ${escapeHtml(
+                        getDateMessage(event)
+                      )}
+                    </div>
+                  </td>
+
+                  <td>
+                    <strong>
+                      ${event.items.length}
+                    </strong>
+
+                    ${
+                      event.items.length === 1
+                        ? "model"
+                        : "models"
+                    }
+                  </td>
+
+                  <td>
+                    <span
+                      class="status ${inventoryStatus.toLowerCase()}"
+                    >
+                      ${inventoryStatus}
+                    </span>
+                  </td>
+
+                  <td>
+                    <span
+                      class="status ${statusClass(event.status)}"
+                    >
+                      ${escapeHtml(event.status)}
+                    </span>
+                  </td>
+
+                  <td>
+                    <div class="planning-text">
+                      ${escapeHtml(
+                        event.planning ||
+                        "Planning not confirmed"
+                      )}
+                    </div>
+                  </td>
+
+                  <td class="notes-cell">
+                    <div class="notes-editor">
+                      <textarea
+                        class="note-input"
+                        id="note-${event.id}"
+                        oninput="window.eventsApp.noteChanged('${event.id}')"
+                        placeholder="Add notes"
+                      >${escapeHtml(event.notes)}</textarea>
+
+                      <button
+                        class="save-note"
+                        id="save-note-${event.id}"
+                        type="button"
+                        onclick="window.eventsApp.saveNote('${event.id}')"
+                        disabled
+                      >
+                        Save
+                      </button>
+                    </div>
+                  </td>
+
+                  <td>
+                    <div class="row-actions">
+                      <button
+                        class="icon-button"
+                        type="button"
+                        title="Edit event"
+                        onclick="window.eventsApp.edit('${event.id}')"
+                      >
+                        ✎
+                      </button>
+
+                      <button
+                        class="icon-button"
+                        type="button"
+                        title="Move to next status"
+                        onclick="window.eventsApp.advance('${event.id}')"
+                      >
+                        →
+                      </button>
+                    </div>
+                  </td>
+                </tr>
+              `;
+            })
+            .join("");
+      }
+
+      function bindEvents() {
+        $("regionSelect").addEventListener(
+          "change",
+          event => {
+            window.location.href =
+              `events.html?region=${event.target.value}`;
+          }
+        );
+
+        [
+          "searchInput",
+          "statusFilter",
+          "inventoryFilter",
+          "dateFilter"
+        ].forEach(id => {
+          $(id).addEventListener(
+            id === "searchInput"
+              ? "input"
+              : "change",
+            renderTable
+          );
+        });
+
+        $("clearFiltersButton").addEventListener(
+          "click",
+          () => {
+            $("searchInput").value = "";
+            $("statusFilter").value = "";
+            $("inventoryFilter").value = "";
+            $("dateFilter").value = "";
+            renderTable();
+          }
+        );
+
+        $("newEventButton").addEventListener(
+          "click",
+          () => openEventEditor()
+        );
+
+        $("emptyNewEventButton").addEventListener(
+          "click",
+          () => openEventEditor()
+        );
+
+        $("eventForm").addEventListener(
+          "submit",
+          event => {
+            event.preventDefault();
+            saveEvent();
+          }
+        );
+
+        $("addItemButton").addEventListener(
+          "click",
+          () => addItemRow()
+        );
+
+        $("deleteEventButton").addEventListener(
+          "click",
+          deleteCurrentEvent
+        );
+
+        $("editFromViewButton").addEventListener(
+          "click",
+          () => {
+            const eventId =
+              viewingEventId;
+
+            $("viewDialog").close();
+            openEventEditor(eventId);
+          }
+        );
+
+        $("inventoryButton").addEventListener(
+          "click",
+          () => {
+            $("inventoryDialog").showModal();
+          }
+        );
+
+        $("emailSettingsButton").addEventListener(
+          "click",
+          openEmailSettings
+        );
+
+        $("emailSettingsForm").addEventListener(
+          "submit",
+          event => {
+            event.preventDefault();
+            saveEmailSettings();
+          }
+        );
+
+        $("emailListButton").addEventListener(
+          "click",
+          emailEntireEventsList
+        );
+
+        document
+          .querySelectorAll("[data-close]")
+          .forEach(button => {
+            button.addEventListener(
+              "click",
+              () => {
+                $(
+                  button.dataset.close
+                ).close();
+              }
+            );
+          });
+
+        document
+          .querySelectorAll("[data-upload]")
+          .forEach(button => {
+            button.addEventListener(
+              "click",
+              () => {
+                uploadInventory(
+                  button.dataset.upload
+                );
+              }
             );
           });
       }
 
-      function renderInventorySourceStatus() {
-        const sarasotaRows =
-          locationReports.Sarasota?.rows?.length || 0;
-
-        const texasRows =
-          locationReports.Texas?.rows?.length || 0;
-
-        const element =
-          document.getElementById("inventorySourceStatus");
-
-        if (!sarasotaRows && !texasRows) {
-          element.textContent =
-            "Upload Sarasota and Texas inventory to synchronize stock.";
-
-          return;
+      function addItemRow(
+        item = {
+          model: "",
+          quantity: "",
+          sarasota: null,
+          texas: null,
+          total: null
         }
+      ) {
+        $("itemsEditorBody")
+          .insertAdjacentHTML(
+            "beforeend",
+            `
+              <tr>
+                <td>
+                  <input
+                    data-model
+                    value="${escapeHtml(item.model)}"
+                    placeholder="Model#"
+                  >
+                </td>
 
-        element.textContent =
-          `Current inventory: Sarasota ${sarasotaRows.toLocaleString()} rows · ` +
-          `Texas ${texasRows.toLocaleString()} rows`;
-      }
+                <td>
+                  <input
+                    data-quantity
+                    type="number"
+                    min="0"
+                    value="${item.quantity ?? ""}"
+                  >
+                </td>
 
-      function openNewEvent() {
-        eventForm.reset();
-        eventId.value = "";
-        eventStatus.value = "Draft";
+                <td data-sarasota>
+                  ${item.sarasota ?? "—"}
+                </td>
 
-        fulfillmentPlanning.value =
-          "Planning not confirmed";
+                <td data-texas>
+                  ${item.texas ?? "—"}
+                </td>
 
-        document.getElementById(
-          "eventDialogTitle"
-        ).textContent = "New event";
+                <td data-total>
+                  ${item.total ?? "—"}
+                </td>
 
-        deleteEventButton.classList.add("hidden");
-
-        itemsTableBody.innerHTML = "";
-        addItemRow();
-
-        eventDialog.showModal();
-      }
-
-      function editEvent(id) {
-        const event = events.find(
-          (record) => record.id === id
-        );
-
-        if (!event) {
-          return;
-        }
-
-        eventId.value = event.id;
-        poNumber.value = event.poNumber;
-        customer.value = event.customer;
-        inHandsDate.value = event.inHandsDate;
-        eventStatus.value = event.status;
-        fulfillmentPlanning.value = event.planning;
-        customerFollowedUpDate.value =
-          event.customerFollowedUpDate || "";
-        eventOwner.value = event.owner;
-        eventRecipients.value = event.recipients;
-        trackingNumber.value = event.trackingNumber;
-        eventNotes.value = event.notes;
-
-        document.getElementById(
-          "eventDialogTitle"
-        ).textContent = `Edit PO ${event.poNumber}`;
-
-        deleteEventButton.classList.remove("hidden");
-        itemsTableBody.innerHTML = "";
-
-        if (event.items.length) {
-          event.items.forEach((item) => addItemRow(item));
-        } else {
-          addItemRow();
-        }
-
-        eventDialog.showModal();
-      }
-
-      function addItemRow(item = {}) {
-        const row = document.createElement("tr");
-
-        row.innerHTML = `
-          <td>
-            <input
-              class="control item-model"
-              type="text"
-              placeholder="Model#"
-              value="${escapeHtml(item.model || "")}"
-            >
-          </td>
-
-          <td>
-            <input
-              class="control item-quantity"
-              type="number"
-              min="0"
-              step="1"
-              value="${numberOrBlank(item.quantity)}"
-            >
-          </td>
-
-          <td>
-            <input
-              class="control item-sarasota"
-              type="number"
-              readonly
-              value="${numberOrBlank(item.sarasota)}"
-            >
-          </td>
-
-          <td>
-            <input
-              class="control item-texas"
-              type="number"
-              readonly
-              value="${numberOrBlank(item.texas)}"
-            >
-          </td>
-
-          <td class="item-total">—</td>
-          <td class="item-balance">—</td>
-
-          <td class="item-status">
-            <span class="status status-check">CHECK</span>
-          </td>
-
-          <td>
-            <button
-              class="icon-button item-remove"
-              type="button"
-              title="Remove item"
-            >
-              ×
-            </button>
-          </td>
-        `;
-
-        row.dataset.matched =
-          item.matched === true ? "true" : "false";
-
-        const modelInput =
-          row.querySelector(".item-model");
-
-        const quantityInput =
-          row.querySelector(".item-quantity");
-
-        modelInput.addEventListener("change", () => {
-          syncItemRow(row);
-        });
-
-        modelInput.addEventListener("blur", () => {
-          syncItemRow(row);
-        });
-
-        quantityInput.addEventListener("input", () => {
-          updateItemRow(row);
-        });
-
-        row
-          .querySelector(".item-remove")
-          .addEventListener("click", () => {
-            row.remove();
-
-            if (!itemsTableBody.children.length) {
-              addItemRow();
-            }
-          });
-
-        itemsTableBody.appendChild(row);
-
-        if (item.model) {
-          syncItemRow(row);
-        } else {
-          updateItemRow(row);
-        }
-      }
-
-      function syncItemRow(row) {
-        const model =
-          normalizeModel(
-            row.querySelector(".item-model").value
+                <td>
+                  <button
+                    class="icon-button"
+                    data-remove-item
+                    type="button"
+                  >
+                    ×
+                  </button>
+                </td>
+              </tr>
+            `
           );
 
-        const sarasotaMatch =
-          locationMaps.Sarasota.get(model);
+        const row =
+          $("itemsEditorBody")
+            .lastElementChild;
 
-        const texasMatch =
-          locationMaps.Texas.get(model);
+        row
+          .querySelector("[data-model]")
+          .addEventListener(
+            "change",
+            () => syncEditorRow(row)
+          );
 
-        const sarasotaInput =
-          row.querySelector(".item-sarasota");
+        row
+          .querySelector("[data-remove-item]")
+          .addEventListener(
+            "click",
+            () => row.remove()
+          );
 
-        const texasInput =
-          row.querySelector(".item-texas");
-
-        sarasotaInput.value =
-          sarasotaMatch !== undefined
-            ? sarasotaMatch
-            : "";
-
-        texasInput.value =
-          texasMatch !== undefined
-            ? texasMatch
-            : "";
-
-        row.dataset.matched =
-          sarasotaMatch !== undefined ||
-          texasMatch !== undefined
-            ? "true"
-            : "false";
-
-        updateItemRow(row);
+        syncEditorRow(row);
       }
 
-      function syncDialogItems() {
-        let matched = 0;
-
-        itemsTableBody
-          .querySelectorAll("tr")
-          .forEach((row) => {
-            syncItemRow(row);
-
-            if (row.dataset.matched === "true") {
-              matched += 1;
-            }
-          });
-
-        showToast(
-          `${matched} model${matched === 1 ? "" : "s"} synchronized.`
-        );
-      }
-
-      function updateItemRow(row) {
-        const quantity =
-          numberValue(
-            row.querySelector(".item-quantity").value
+      function syncEditorRow(row) {
+        const modelKey =
+          normalizeModel(
+            row
+              .querySelector("[data-model]")
+              .value
           );
 
         const sarasota =
-          numberValue(
-            row.querySelector(".item-sarasota").value
-          );
-
-        const texas =
-          numberValue(
-            row.querySelector(".item-texas").value
-          );
-
-        const matched =
-          row.dataset.matched === "true";
-
-        const total =
-          matched
-            ? (sarasota || 0) + (texas || 0)
+          modelKey
+            ? locationMaps.Sarasota.get(
+                modelKey
+              )
             : null;
 
-        const totalCell =
-          row.querySelector(".item-total");
+        const texas =
+          modelKey
+            ? locationMaps.Texas.get(
+                modelKey
+              )
+            : null;
 
-        const balanceCell =
-          row.querySelector(".item-balance");
+        const total =
+          sarasota === undefined &&
+          texas === undefined
+            ? null
+            : (sarasota || 0) +
+              (texas || 0);
 
-        const statusCell =
-          row.querySelector(".item-status");
+        row
+          .querySelector("[data-sarasota]")
+          .textContent =
+            sarasota ?? "—";
 
-        totalCell.textContent =
-          total === null ? "—" : formatNumber(total);
+        row
+          .querySelector("[data-texas]")
+          .textContent =
+            texas ?? "—";
 
-        if (quantity === null || total === null) {
-          balanceCell.textContent = "—";
+        row
+          .querySelector("[data-total]")
+          .textContent =
+            total ?? "—";
 
-          statusCell.innerHTML =
-            '<span class="status status-check">CHECK</span>';
+        row.dataset.sarasota =
+          sarasota ?? "";
 
-          return;
-        }
+        row.dataset.texas =
+          texas ?? "";
 
-        balanceCell.textContent =
-          formatNumber(total - quantity);
+        row.dataset.total =
+          total ?? "";
+      }
 
-        const status =
-          total >= quantity ? "GOOD" : "LOW";
+      function openEventEditor(eventId = null) {
+        const event =
+          eventId
+            ? events.find(
+                record =>
+                  record.id === eventId
+              )
+            : null;
 
-        statusCell.innerHTML = `
-          <span class="status ${inventoryStatusClass(status)}">
-            ${status}
-          </span>
-        `;
+        $("eventDialogTitle").textContent =
+          event
+            ? `Edit PO ${event.poNumber}`
+            : "New event";
+
+        $("eventId").value =
+          event?.id || "";
+
+        $("poNumber").value =
+          event?.poNumber || "";
+
+        $("customer").value =
+          event?.customer || "";
+
+        $("inHandsDate").value =
+          event?.inHandsDate || "";
+
+        $("eventStatus").value =
+          event?.status || "Draft";
+
+        $("planning").value =
+          event?.planning ||
+          "Planning not confirmed";
+
+        $("followUpDate").value =
+          event?.customerFollowedUpDate ||
+          "";
+
+        $("eventNotes").value =
+          event?.notes || "";
+
+        $("itemsEditorBody").innerHTML = "";
+
+        const items =
+          event?.items?.length
+            ? event.items
+            : [{}];
+
+        items.forEach(item =>
+          addItemRow(item)
+        );
+
+        $("deleteEventButton")
+          .classList.toggle(
+            "hidden",
+            !event
+          );
+
+        $("eventDialog").showModal();
       }
 
       function collectItems() {
-        return [...itemsTableBody.querySelectorAll("tr")]
-          .map((row) => {
-            const sarasota =
+        return [
+          ...$("itemsEditorBody").rows
+        ]
+          .map(row => ({
+            model:
+              row
+                .querySelector("[data-model]")
+                .value
+                .trim(),
+
+            quantity:
               numberValue(
-                row.querySelector(".item-sarasota").value
-              );
+                row
+                  .querySelector(
+                    "[data-quantity]"
+                  )
+                  .value
+              ),
 
-            const texas =
+            sarasota:
               numberValue(
-                row.querySelector(".item-texas").value
-              );
+                row.dataset.sarasota
+              ),
 
-            const matched =
-              row.dataset.matched === "true";
+            texas:
+              numberValue(
+                row.dataset.texas
+              ),
 
-            return {
-              model:
-                row.querySelector(".item-model").value.trim(),
-
-              quantity:
-                numberValue(
-                  row.querySelector(".item-quantity").value
-                ),
-
-              sarasota,
-              texas,
-
-              total:
-                matched
-                  ? (sarasota || 0) + (texas || 0)
-                  : null,
-
-              matched
-            };
-          })
-          .filter(
-            (item) =>
-              item.model ||
-              item.quantity !== null
+            total:
+              numberValue(
+                row.dataset.total
+              )
+          }))
+          .filter(item =>
+            item.model ||
+            item.quantity !== null
           );
       }
 
-      function buildEvent() {
-        return {
-          id: eventId.value || createId(),
-          poNumber: poNumber.value.trim(),
-          customer: customer.value.trim(),
-          inHandsDate: inHandsDate.value,
-          status: eventStatus.value,
-          planning: fulfillmentPlanning.value,
-
-          customerFollowedUpDate:
-            customerFollowedUpDate.value,
-
-          owner: eventOwner.value.trim(),
-          recipients: eventRecipients.value.trim(),
-          trackingNumber: trackingNumber.value.trim(),
-          notes: eventNotes.value.trim(),
-          items: collectItems(),
-          region,
-          updatedAt: new Date().toISOString()
-        };
-      }
-
-      function saveEvent(emailAfterSave) {
-        if (!eventForm.reportValidity()) {
+      function saveEvent() {
+        if (
+          !$("eventForm").reportValidity()
+        ) {
           return;
         }
 
-        syncDialogItems();
+        const existing =
+          events.find(
+            event =>
+              event.id ===
+              $("eventId").value
+          );
 
-        const event = buildEvent();
+        const event = {
+          id:
+            existing?.id ||
+            createId(),
+
+          poNumber:
+            $("poNumber").value.trim(),
+
+          customer:
+            $("customer").value.trim(),
+
+          inHandsDate:
+            $("inHandsDate").value,
+
+          status:
+            $("eventStatus").value,
+
+          planning:
+            $("planning").value,
+
+          customerFollowedUpDate:
+            $("followUpDate").value,
+
+          notes:
+            $("eventNotes")
+              .value
+              .trim(),
+
+          items:
+            collectItems(),
+
+          createdAt:
+            existing?.createdAt ||
+            new Date().toISOString(),
+
+          updatedAt:
+            new Date().toISOString()
+        };
 
         const existingIndex =
           events.findIndex(
-            (record) => record.id === event.id
+            record =>
+              record.id === event.id
           );
 
         if (existingIndex >= 0) {
-          event.createdAt =
-            events[existingIndex].createdAt;
-
           events[existingIndex] = event;
         } else {
-          event.createdAt =
-            new Date().toISOString();
-
           events.push(event);
         }
 
         saveEvents();
         render();
-        eventDialog.close();
 
-        showToast(`PO ${event.poNumber} saved.`);
+        $("eventDialog").close();
 
-        if (emailAfterSave) {
-          openOutlookEmail(event);
-        }
+        showToast(
+          `PO ${event.poNumber} saved.`
+        );
       }
 
       function deleteCurrentEvent() {
-        const event = events.find(
-          (record) => record.id === eventId.value
-        );
+        const event =
+          events.find(
+            record =>
+              record.id ===
+              $("eventId").value
+          );
 
         if (!event) {
           return;
         }
 
-        if (!confirm(`Delete PO ${event.poNumber}?`)) {
+        if (
+          !window.confirm(
+            `Delete PO ${event.poNumber}?`
+          )
+        ) {
           return;
         }
 
-        events = events.filter(
-          (record) => record.id !== event.id
-        );
+        events =
+          events.filter(
+            record =>
+              record.id !== event.id
+          );
 
         saveEvents();
         render();
-        eventDialog.close();
+
+        $("eventDialog").close();
 
         showToast("Event deleted.");
       }
 
-      function advanceEvent(id) {
-        const event = events.find(
-          (record) => record.id === id
+      function viewEvent(eventId) {
+        const event =
+          events.find(
+            record =>
+              record.id === eventId
+          );
+
+        if (!event) {
+          return;
+        }
+
+        viewingEventId = event.id;
+
+        const inventoryStatus =
+          getInventoryStatus(event);
+
+        $("viewTitle").textContent =
+          `PO ${event.poNumber}`;
+
+        $("viewSubtitle").textContent =
+          event.customer;
+
+        const itemRows =
+          event.items
+            .map(item => {
+              const quantity =
+                numberValue(item.quantity);
+
+              const total =
+                numberValue(item.total);
+
+              const balance =
+                quantity !== null &&
+                total !== null
+                  ? total - quantity
+                  : null;
+
+              return `
+                <tr>
+                  <td>${escapeHtml(item.model)}</td>
+                  <td>${quantity ?? "—"}</td>
+                  <td>${item.sarasota ?? "—"}</td>
+                  <td>${item.texas ?? "—"}</td>
+                  <td>${total ?? "—"}</td>
+                  <td
+                    class="${
+                      balance !== null &&
+                      balance < 0
+                        ? "status-bad"
+                        : "status-ok"
+                    }"
+                  >
+                    ${balance ?? "—"}
+                  </td>
+                </tr>
+              `;
+            })
+            .join("");
+
+        $("viewContent").innerHTML = `
+          <div class="view-grid">
+            <div class="view-card">
+              <span>Customer</span>
+              <strong>
+                ${escapeHtml(event.customer)}
+              </strong>
+            </div>
+
+            <div class="view-card">
+              <span>In-hands date</span>
+              <strong>
+                ${escapeHtml(
+                  formatDate(
+                    event.inHandsDate
+                  )
+                )}
+              </strong>
+
+              <p>
+                ${escapeHtml(
+                  getDateMessage(event)
+                )}
+              </p>
+            </div>
+
+            <div class="view-card">
+              <span>Inventory</span>
+
+              <strong>
+                <span
+                  class="status ${inventoryStatus.toLowerCase()}"
+                >
+                  ${inventoryStatus}
+                </span>
+              </strong>
+            </div>
+
+            <div class="view-card">
+              <span>Current status</span>
+              <strong>
+                ${escapeHtml(event.status)}
+              </strong>
+            </div>
+
+            <div class="view-card">
+              <span>Planning</span>
+              <strong>
+                ${escapeHtml(event.planning)}
+              </strong>
+            </div>
+
+            <div class="view-card">
+              <span>Customer followed up</span>
+              <strong>
+                ${escapeHtml(
+                  formatDate(
+                    event.customerFollowedUpDate
+                  )
+                )}
+              </strong>
+            </div>
+
+            <div class="view-card full">
+              <span>Notes</span>
+
+              <p>
+                ${escapeHtml(
+                  event.notes ||
+                  "No notes recorded."
+                )}
+              </p>
+            </div>
+          </div>
+
+          <div class="view-items">
+            <h3>PO line items</h3>
+
+            <div class="table-wrap">
+              <table>
+                <thead>
+                  <tr>
+                    <th>Model#</th>
+                    <th>PO quantity</th>
+                    <th>Sarasota</th>
+                    <th>Texas</th>
+                    <th>Total stock</th>
+                    <th>Balance</th>
+                  </tr>
+                </thead>
+
+                <tbody>
+                  ${
+                    itemRows ||
+                    `
+                      <tr>
+                        <td colspan="6">
+                          No line items entered.
+                        </td>
+                      </tr>
+                    `
+                  }
+                </tbody>
+              </table>
+            </div>
+          </div>
+        `;
+
+        $("viewDialog").showModal();
+      }
+
+      function saveInlineNote(eventId) {
+        const event =
+          events.find(
+            record =>
+              record.id === eventId
+          );
+
+        const input =
+          $(`note-${eventId}`);
+
+        if (!event || !input) {
+          return;
+        }
+
+        event.notes =
+          input.value.trim();
+
+        event.updatedAt =
+          new Date().toISOString();
+
+        saveEvents();
+
+        $(`save-note-${eventId}`)
+          .disabled = true;
+
+        showToast(
+          `Notes saved for PO ${event.poNumber}.`
         );
+      }
+
+      function advanceEvent(eventId) {
+        const event =
+          events.find(
+            record =>
+              record.id === eventId
+          );
 
         if (!event) {
           return;
@@ -3227,10 +2893,11 @@
 
         if (
           currentIndex < 0 ||
-          currentIndex === WORKFLOW.length - 1
+          currentIndex >=
+            WORKFLOW.length - 1
         ) {
           showToast(
-            "This event cannot be advanced further."
+            "This event has no next workflow status."
           );
 
           return;
@@ -3250,1031 +2917,38 @@
         );
       }
 
-      function getInventoryStatus(event) {
-        if (!event.items.length) {
-          return "CHECK";
-        }
-
-        let hasCheck = false;
-        let hasLow = false;
-
-        event.items.forEach((item) => {
-          const quantity =
-            numberValue(item.quantity);
-
-          const total =
-            numberValue(item.total);
-
-          if (
-            quantity === null ||
-            total === null ||
-            item.matched !== true
-          ) {
-            hasCheck = true;
-          } else if (total < quantity) {
-            hasLow = true;
-          }
-        });
-
-        if (hasLow) {
-          return "LOW";
-        }
-
-        if (hasCheck) {
-          return "CHECK";
-        }
-
-        return "GOOD";
-      }
-
-      function synchronizeAllEventInventory(showMessage = true) {
-        let matchedItems = 0;
-
-        events.forEach((event) => {
-          event.items = event.items.map((item) => {
-            const model = normalizeModel(item.model);
-
-            const sarasotaMatch =
-              locationMaps.Sarasota.get(model);
-
-            const texasMatch =
-              locationMaps.Texas.get(model);
-
-            const matched =
-              sarasotaMatch !== undefined ||
-              texasMatch !== undefined;
-
-            if (matched) {
-              matchedItems += 1;
-            }
-
-            const sarasota =
-              sarasotaMatch !== undefined
-                ? sarasotaMatch
-                : null;
-
-            const texas =
-              texasMatch !== undefined
-                ? texasMatch
-                : null;
-
-            return {
-              ...item,
-              sarasota,
-              texas,
-              total:
-                matched
-                  ? (sarasota || 0) + (texas || 0)
-                  : null,
-              matched
-            };
-          });
-
-          event.updatedAt = new Date().toISOString();
-        });
-
-        saveEvents();
-        render();
-
-        if (showMessage) {
-          showToast(
-            `${matchedItems} event item${
-              matchedItems === 1 ? "" : "s"
-            } synchronized with current inventory.`
-          );
-        }
-      }
-
-      function inventoryStatusClass(status) {
-        if (status === "GOOD") {
-          return "status-good";
-        }
-
-        if (status === "LOW") {
-          return "status-low";
-        }
-
-        return "status-check";
-      }
-
-      function eventStatusClass(status) {
-        const classes = {
-          Draft: "status-draft",
-          Confirmed: "status-confirmed",
-          Allocating: "status-allocating",
-          "Ready to Ship": "status-ready",
-          Shipped: "status-shipped",
-          Complete: "status-complete",
-          Cancelled: "status-cancelled"
-        };
-
-        return classes[status] || "status-draft";
-      }
-
-      function daysUntil(value) {
-        const date = parseDate(value);
-
-        if (!date) {
-          return null;
-        }
-
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
-
-        return Math.ceil(
-          (date.getTime() - today.getTime()) /
-            86400000
-        );
-      }
-
-      function getDateMessage(event) {
-        const days = daysUntil(event.inHandsDate);
-
-        if (days === null) {
-          return "Date required";
-        }
-
-        if (
-          event.status === "Complete" ||
-          event.status === "Cancelled"
-        ) {
-          return event.status;
-        }
-
-        if (days < 0) {
-          return `${Math.abs(days)} day${
-            Math.abs(days) === 1 ? "" : "s"
-          } overdue`;
-        }
-
-        if (days === 0) {
-          return "Due today";
-        }
-
-        return `${days} day${
-          days === 1 ? "" : "s"
-        } remaining`;
-      }
-
-      function parseDate(value) {
-        if (!value) {
-          return null;
-        }
-
-        const date = new Date(`${value}T00:00:00`);
-
-        return Number.isNaN(date.getTime())
-          ? null
-          : date;
-      }
-
-      function dateValue(value) {
-        return (
-          parseDate(value)?.getTime() ||
-          Number.MAX_SAFE_INTEGER
-        );
-      }
-
-      function formatDate(value) {
-        const date = parseDate(value);
-
-        if (!date) {
-          return "Not entered";
-        }
-
-        return new Intl.DateTimeFormat("en-US", {
-          month: "long",
-          day: "numeric",
-          year: "numeric"
-        }).format(date);
-      }
-
-      function formatDateTime(value) {
-        if (!value) {
-          return "Unknown";
-        }
-
-        const date = new Date(value);
-
-        if (Number.isNaN(date.getTime())) {
-          return "Unknown";
-        }
-
-        return new Intl.DateTimeFormat("en-US", {
-          month: "short",
-          day: "numeric",
-          year: "numeric",
-          hour: "numeric",
-          minute: "2-digit"
-        }).format(date);
-      }
-
-      function numberValue(value) {
-        if (
-          value === "" ||
-          value === null ||
-          value === undefined
-        ) {
-          return null;
-        }
-
-        const cleaned = String(value)
-          .replace(/,/g, "")
-          .replace(/[^\d.-]/g, "");
-
-        if (!cleaned || cleaned === "-" || cleaned === ".") {
-          return null;
-        }
-
-        const number = Number(cleaned);
-
-        return Number.isFinite(number)
-          ? number
-          : null;
-      }
-
-      function numberOrBlank(value) {
-        const number = numberValue(value);
-
-        return number === null ? "" : number;
-      }
-
-      function formatNumber(value) {
-        return new Intl.NumberFormat("en-US", {
-          maximumFractionDigits: 2
-        }).format(value);
-      }
-
-      function normalizeKey(value) {
-        return String(value || "")
-          .toLowerCase()
-          .replace(/[^a-z0-9]/g, "");
-      }
-
-      function normalizeModel(value) {
-        return String(value || "")
-          .trim()
-          .toUpperCase()
-          .replace(/\s+/g, "");
-      }
-
-      function findHeaderIndex(headers, aliases) {
-        const normalizedAliases = new Set(aliases);
-
-        for (
-          let index = 0;
-          index < headers.length;
-          index += 1
-        ) {
-          if (
-            normalizedAliases.has(
-              normalizeKey(headers[index])
-            )
-          ) {
-            return index;
-          }
-        }
-
-        return -1;
-      }
-
-      function createUniqueHeaders(headers) {
-        const used = new Map();
-
-        return headers.map((header, index) => {
-          let name = String(header ?? "").trim();
-
-          if (!name) {
-            name = `Column ${index + 1}`;
-          }
-
-          const count = used.get(name) || 0;
-          used.set(name, count + 1);
-
-          return count === 0
-            ? name
-            : `${name} ${count + 1}`;
-        });
-      }
-
-      function rebuildLocationMaps() {
-        LOCATIONS.forEach((location) => {
-          locationMaps[location] =
-            createLocationMap(locationReports[location]);
-        });
-      }
-
-      function createLocationMap(report) {
-        const map = new Map();
-
-        if (!report?.rows?.length || !report.modelHeader) {
-          return map;
-        }
-
-        report.rows.forEach((row) => {
-          const model =
-            normalizeModel(row[report.modelHeader]);
-
-          const stock =
-            extractStockFromRow(row, report);
-
-          if (!model || stock === null) {
-            return;
-          }
-
-          const existing = map.get(model) || 0;
-          map.set(model, existing + stock);
-        });
-
-        return map;
-      }
-
-      function extractStockFromRow(row, report) {
-        if (report.directStockHeader) {
-          return numberValue(
-            row[report.directStockHeader]
-          );
-        }
-
-        const onHand =
-          report.onHandHeader
-            ? numberValue(row[report.onHandHeader])
-            : null;
-
-        const ats =
-          report.atsHeader
-            ? numberValue(row[report.atsHeader])
-            : null;
-
-        if (onHand !== null && ats !== null) {
-          return onHand + ats;
-        }
-
-        return onHand ?? ats;
-      }
-
-      function openInventoryDialog() {
-        renderInventoryLocations();
-        inventoryDialog.showModal();
-      }
-
-      function selectInventoryLocation(location) {
-        document
-          .querySelectorAll("[data-location-tab]")
-          .forEach((button) => {
-            button.classList.toggle(
-              "active",
-              button.dataset.locationTab === location
-            );
-          });
-
-        document
-          .querySelectorAll("[data-location-panel]")
-          .forEach((panel) => {
-            panel.classList.toggle(
-              "active",
-              panel.dataset.locationPanel === location
-            );
-          });
-      }
-
-      async function uploadInventoryFile(location, file) {
-        const button =
-          document.getElementById(
-            `${location.toLowerCase()}UploadButton`
-          );
-
-        button.disabled = true;
-        button.textContent = "Reading file...";
-
-        try {
-          const report =
-            await parseInventoryFile(file, location);
-
-          await saveLocationReport(report);
-
-          locationReports[location] = report;
-          inventoryPages[location] = 1;
-
-          rebuildLocationMaps();
-          synchronizeAllEventInventory(false);
-
-          renderInventoryLocations();
-          render();
-
-          showToast(
-            `${location} inventory uploaded. ` +
-            `${report.rows.length.toLocaleString()} rows loaded.`
-          );
-        } catch (error) {
-          console.error(error);
-
-          showToast(
-            error.message ||
-            `${location} inventory could not be uploaded.`
-          );
-        } finally {
-          button.disabled = false;
-          button.textContent =
-            `Upload ${location} file`;
-        }
-      }
-
-      async function parseInventoryFile(file, location) {
-        if (!window.XLSX) {
-          throw new Error(
-            "The Excel reader is unavailable. Refresh the page."
-          );
-        }
-
-        const buffer = await file.arrayBuffer();
-
-        const workbook = XLSX.read(buffer, {
-          type: "array",
-          cellDates: true,
-          cellText: true
-        });
-
-        let selectedReport = null;
-
-        for (const sheetName of workbook.SheetNames) {
-          const worksheet = workbook.Sheets[sheetName];
-
-          const matrix = XLSX.utils.sheet_to_json(
-            worksheet,
-            {
-              header: 1,
-              defval: "",
-              raw: false,
-              dateNF: "yyyy-mm-dd",
-              blankrows: false
-            }
-          );
-
-          if (!matrix.length) {
-            continue;
-          }
-
-          const maximumHeaderRows =
-            Math.min(matrix.length, 50);
-
-          for (
-            let headerRowIndex = 0;
-            headerRowIndex < maximumHeaderRows;
-            headerRowIndex += 1
-          ) {
-            const possibleHeaders =
-              matrix[headerRowIndex].map((value) => {
-                return String(value ?? "").trim();
-              });
-
-            const modelColumnIndex =
-              findHeaderIndex(
-                possibleHeaders,
-                MODEL_ALIASES
-              );
-
-            const directStockColumnIndex =
-              findHeaderIndex(
-                possibleHeaders,
-                DIRECT_STOCK_ALIASES
-              );
-
-            const onHandColumnIndex =
-              findHeaderIndex(
-                possibleHeaders,
-                ON_HAND_ALIASES
-              );
-
-            const atsColumnIndex =
-              findHeaderIndex(
-                possibleHeaders,
-                ATS_ALIASES
-              );
-
-            const hasStockColumn =
-              directStockColumnIndex >= 0 ||
-              onHandColumnIndex >= 0 ||
-              atsColumnIndex >= 0;
-
-            if (
-              modelColumnIndex < 0 ||
-              !hasStockColumn
-            ) {
-              continue;
-            }
-
-            const headers =
-              createUniqueHeaders(possibleHeaders);
-
-            const rows = matrix
-              .slice(headerRowIndex + 1)
-              .filter((row) => {
-                return row.some((value) => {
-                  return String(value ?? "").trim() !== "";
-                });
-              })
-              .map((row) => {
-                const record = {};
-
-                headers.forEach((header, index) => {
-                  record[header] =
-                    row[index] === undefined
-                      ? ""
-                      : row[index];
-                });
-
-                return record;
-              })
-              .filter((row) => {
-                const modelHeader =
-                  headers[modelColumnIndex];
-
-                return (
-                  String(row[modelHeader] ?? "").trim() !== ""
-                );
-              });
-
-            if (!rows.length) {
-              continue;
-            }
-
-            selectedReport = {
-              key: `${region}::${location}`,
-              region,
-              location,
-              fileName: file.name,
-              sheetName,
-              headerRowNumber: headerRowIndex + 1,
-              headers,
-              rows,
-
-              modelHeader:
-                headers[modelColumnIndex],
-
-              directStockHeader:
-                directStockColumnIndex >= 0
-                  ? headers[directStockColumnIndex]
-                  : null,
-
-              onHandHeader:
-                onHandColumnIndex >= 0
-                  ? headers[onHandColumnIndex]
-                  : null,
-
-              atsHeader:
-                atsColumnIndex >= 0
-                  ? headers[atsColumnIndex]
-                  : null,
-
-              uploadedAt: new Date().toISOString()
-            };
-
-            break;
-          }
-
-          if (selectedReport) {
-            break;
-          }
-        }
-
-        if (!selectedReport) {
-          throw new Error(
-            "The file opened, but Model# and Stock Available columns could not be detected."
-          );
-        }
-
-        return selectedReport;
-      }
-
-      function renderInventoryLocations() {
-        LOCATIONS.forEach((location) => {
-          renderLocationMeta(location);
-          renderLocationList(location);
-        });
-
-        document.getElementById(
-          "sarasotaTabCount"
-        ).textContent =
-          `${locationReports.Sarasota?.rows?.length || 0} rows`;
-
-        document.getElementById(
-          "texasTabCount"
-        ).textContent =
-          `${locationReports.Texas?.rows?.length || 0} rows`;
-      }
-
-      function renderLocationMeta(location) {
-        const report = locationReports[location];
-        const prefix = location.toLowerCase();
-
-        const meta =
-          document.getElementById(`${prefix}Meta`);
-
-        const removeButton =
-          document.getElementById(
-            `remove${location}Button`
-          );
-
-        if (!report) {
-          meta.innerHTML = `
-            <span>No ${location} file uploaded.</span>
-            <span>0 models detected</span>
-          `;
-
-          removeButton.classList.add("hidden");
-          return;
-        }
-
-        const modelCount =
-          locationMaps[location].size;
-
-        meta.innerHTML = `
-          <span>
-            <strong>${escapeHtml(report.fileName)}</strong>
-            · ${escapeHtml(report.sheetName)}
-            · Header row ${report.headerRowNumber}
-            · Uploaded ${formatDateTime(report.uploadedAt)}
-          </span>
-
-          <span>
-            ${report.rows.length.toLocaleString()} rows ·
-            ${modelCount.toLocaleString()} models
-          </span>
-        `;
-
-        removeButton.classList.remove("hidden");
-      }
-
-      function getFilteredInventoryRows(location) {
-        const report = locationReports[location];
-
-        if (!report?.rows?.length) {
-          return [];
-        }
-
-        const search =
-          document
-            .getElementById(
-              `${location.toLowerCase()}InventorySearch`
-            )
-            .value
-            .trim()
-            .toLowerCase();
-
-        if (!search) {
-          return report.rows;
-        }
-
-        return report.rows.filter((row) => {
-          return Object.values(row)
-            .join(" ")
-            .toLowerCase()
-            .includes(search);
-        });
-      }
-
-      function renderLocationList(location) {
-        const report = locationReports[location];
-
-        const container =
-          document.getElementById(
-            `${location.toLowerCase()}InventoryList`
-          );
-
-        if (!report?.rows?.length) {
-          container.innerHTML = `
-            <div class="inventory-empty">
-              Upload the ${location} inventory file to view its data.
-            </div>
-          `;
-
-          return;
-        }
-
-        const filteredRows =
-          getFilteredInventoryRows(location);
-
-        const totalPages = Math.max(
-          1,
-          Math.ceil(
-            filteredRows.length / INVENTORY_PAGE_SIZE
-          )
-        );
-
-        inventoryPages[location] = Math.min(
-          Math.max(1, inventoryPages[location]),
-          totalPages
-        );
-
-        const currentPage =
-          inventoryPages[location];
-
-        const start =
-          (currentPage - 1) * INVENTORY_PAGE_SIZE;
-
-        const pageRows =
-          filteredRows.slice(
-            start,
-            start + INVENTORY_PAGE_SIZE
-          );
-
-        const headerHtml = report.headers
-          .map((header) => {
-            const detected =
-              header === report.modelHeader ||
-              header === report.directStockHeader ||
-              header === report.onHandHeader ||
-              header === report.atsHeader;
-
-            return `
-              <th>
-                ${escapeHtml(header)}
-                ${detected ? " ✓" : ""}
-              </th>
-            `;
-          })
-          .join("");
-
-        const bodyHtml = pageRows
-          .map((row) => {
-            return `
-              <tr>
-                ${report.headers
-                  .map((header) => {
-                    return `
-                      <td title="${escapeHtml(row[header])}">
-                        ${escapeHtml(row[header])}
-                      </td>
-                    `;
-                  })
-                  .join("")}
-              </tr>
-            `;
-          })
-          .join("");
-
-        container.innerHTML = `
-          <div class="table-meta">
-            <span>
-              ${filteredRows.length.toLocaleString()} matching rows
-            </span>
-
-            <span>
-              ✓ used for inventory synchronization
-            </span>
-          </div>
-
-          <div class="table-wrap">
-            <table class="inventory-table">
-              <thead>
-                <tr>${headerHtml}</tr>
-              </thead>
-
-              <tbody>${bodyHtml}</tbody>
-            </table>
-          </div>
-
-          <div class="inventory-pagination">
-            <span>
-              Page ${currentPage} of ${totalPages}
-              · Showing ${
-                pageRows.length
-                  ? start + 1
-                  : 0
-              }–${Math.min(
-                start + pageRows.length,
-                filteredRows.length
-              )} of ${filteredRows.length.toLocaleString()}
-            </span>
-
-            <div class="pagination-actions">
-              <button
-                class="button button-secondary button-small"
-                type="button"
-                ${currentPage <= 1 ? "disabled" : ""}
-                onclick="window.inventoryPager.previous('${location}')"
-              >
-                Previous
-              </button>
-
-              <button
-                class="button button-secondary button-small"
-                type="button"
-                ${currentPage >= totalPages ? "disabled" : ""}
-                onclick="window.inventoryPager.next('${location}')"
-              >
-                Next
-              </button>
-            </div>
-          </div>
-        `;
-      }
-
-      async function removeLocationReport(location) {
-        if (
-          !confirm(
-            `Remove the current ${location} inventory report?`
-          )
-        ) {
-          return;
-        }
-
-        try {
-          await deleteLocationReport(location);
-
-          locationReports[location] = null;
-          inventoryPages[location] = 1;
-
-          rebuildLocationMaps();
-          synchronizeAllEventInventory(false);
-
-          renderInventoryLocations();
-          render();
-
-          showToast(`${location} inventory removed.`);
-        } catch (error) {
-          showToast(
-            `${location} inventory could not be removed.`
-          );
-        }
-      }
-
-      function openInventoryDatabase() {
-        return new Promise((resolve, reject) => {
-          if (!window.indexedDB) {
-            reject(
-              new Error("Browser inventory storage is unavailable.")
-            );
-
-            return;
-          }
-
-          const request =
-            indexedDB.open(
-              "StarkEventsInventoryDB",
-              1
-            );
-
-          request.onupgradeneeded = () => {
-            const database = request.result;
-
-            if (
-              !database.objectStoreNames.contains(
-                "locationReports"
-              )
-            ) {
-              database.createObjectStore(
-                "locationReports",
-                {
-                  keyPath: "key"
-                }
-              );
-            }
-          };
-
-          request.onsuccess = () => {
-            resolve(request.result);
-          };
-
-          request.onerror = () => {
-            reject(request.error);
-          };
-        });
-      }
-
-      async function saveLocationReport(report) {
-        const database =
-          await openInventoryDatabase();
-
-        return new Promise((resolve, reject) => {
-          const transaction =
-            database.transaction(
-              "locationReports",
-              "readwrite"
-            );
-
-          transaction
-            .objectStore("locationReports")
-            .put(report);
-
-          transaction.oncomplete = () => {
-            database.close();
-            resolve();
-          };
-
-          transaction.onerror = () => {
-            database.close();
-            reject(transaction.error);
-          };
-        });
-      }
-
-      async function loadStoredInventory() {
-        const database =
-          await openInventoryDatabase();
-
-        const reports = await new Promise(
-          (resolve, reject) => {
-            const transaction =
-              database.transaction(
-                "locationReports",
-                "readonly"
-              );
-
-            const request =
-              transaction
-                .objectStore("locationReports")
-                .getAll();
-
-            request.onsuccess = () => {
-              resolve(request.result || []);
-            };
-
-            request.onerror = () => {
-              reject(request.error);
-            };
-
-            transaction.oncomplete = () => {
-              database.close();
-            };
-          }
-        );
-
-        reports
-          .filter((report) => report.region === region)
-          .forEach((report) => {
-            if (LOCATIONS.includes(report.location)) {
-              locationReports[report.location] = report;
-            }
-          });
-      }
-
-      async function deleteLocationReport(location) {
-        const database =
-          await openInventoryDatabase();
-
-        return new Promise((resolve, reject) => {
-          const transaction =
-            database.transaction(
-              "locationReports",
-              "readwrite"
-            );
-
-          transaction
-            .objectStore("locationReports")
-            .delete(`${region}::${location}`);
-
-          transaction.oncomplete = () => {
-            database.close();
-            resolve();
-          };
-
-          transaction.onerror = () => {
-            database.close();
-            reject(transaction.error);
-          };
-        });
-      }
-
       function openEmailSettings() {
-        document.getElementById(
-          "organizationDomain"
-        ).value =
-          emailSettings.organizationDomain || "";
+        $("organizationDomain").value =
+          emailSettings.organizationDomain ||
+          "";
 
-        document.getElementById(
-          "defaultRecipients"
-        ).value =
-          emailSettings.defaultRecipients || "";
+        $("defaultRecipients").value =
+          emailSettings.defaultRecipients ||
+          "";
 
-        document.getElementById(
-          "emailSignature"
-        ).value =
-          emailSettings.emailSignature || "";
+        $("emailSignature").value =
+          emailSettings.emailSignature ||
+          "";
 
-        emailSettingsDialog.showModal();
+        $("emailSettingsDialog").showModal();
       }
 
       function saveEmailSettings() {
         emailSettings = {
           organizationDomain:
-            document
-              .getElementById("organizationDomain")
+            $("organizationDomain")
               .value
               .trim()
               .replace(/^@/, "")
               .toLowerCase(),
 
           defaultRecipients:
-            document
-              .getElementById("defaultRecipients")
+            $("defaultRecipients")
               .value
               .trim(),
 
           emailSignature:
-            document
-              .getElementById("emailSignature")
+            $("emailSignature")
               .value
               .trim()
         };
@@ -4284,41 +2958,286 @@
           JSON.stringify(emailSettings)
         );
 
-        emailSettingsDialog.close();
-        showToast("Outlook settings saved.");
+        $("emailSettingsDialog").close();
+
+        showToast(
+          "Outlook settings saved."
+        );
       }
 
-      function openOutlookEmail(event) {
-        const inventoryStatus =
-          getInventoryStatus(event);
+      function getEmailEvents() {
+        return [...events].sort(
+          (a, b) =>
+            (
+              a.inHandsDate ||
+              "9999"
+            ).localeCompare(
+              b.inHandsDate ||
+              "9999"
+            )
+        );
+      }
+
+      function buildPlainEmailTable(list) {
+        const columns = [
+          "PO#",
+          "CUSTOMER",
+          "IN-HANDS DATE",
+          "ITEMS",
+          "INVENTORY",
+          "CURRENT STATUS",
+          "PLANNING",
+          "NOTES"
+        ];
+
+        const rows =
+          list.map(event => [
+            event.poNumber,
+            event.customer,
+            formatDate(
+              event.inHandsDate
+            ),
+
+            `${event.items.length} ${
+              event.items.length === 1
+                ? "model"
+                : "models"
+            }`,
+
+            getInventoryStatus(event),
+            event.status,
+            event.planning,
+            event.notes || "—"
+          ].map(value =>
+            String(value ?? "")
+              .replace(
+                /[\r\n]+/g,
+                " "
+              )
+          ));
+
+        return [
+          columns.join(" | "),
+
+          columns
+            .map(column =>
+              "-".repeat(
+                Math.min(
+                  18,
+                  column.length + 4
+                )
+              )
+            )
+            .join(" | "),
+
+          ...rows.map(row =>
+            row.join(" | ")
+          )
+        ].join("\n");
+      }
+
+      function buildHtmlEmailTable(list) {
+        const headers = [
+          "PO#",
+          "Customer",
+          "In-hands date",
+          "Items",
+          "Inventory",
+          "Current status",
+          "Planning",
+          "Notes"
+        ];
+
+        return `
+          <table
+            style="
+              width:100%;
+              border-collapse:collapse;
+              font-family:Arial,sans-serif;
+              font-size:12px;
+            "
+          >
+            <thead>
+              <tr>
+                ${headers
+                  .map(header => `
+                    <th
+                      style="
+                        padding:9px;
+                        border:1px solid #cad8e3;
+                        color:#ffffff;
+                        background:#082746;
+                        text-align:left;
+                      "
+                    >
+                      ${header}
+                    </th>
+                  `)
+                  .join("")}
+              </tr>
+            </thead>
+
+            <tbody>
+              ${list
+                .map(event => `
+                  <tr>
+                    <td
+                      style="
+                        padding:8px;
+                        border:1px solid #cad8e3;
+                        font-weight:700;
+                      "
+                    >
+                      ${escapeHtml(event.poNumber)}
+                    </td>
+
+                    <td style="padding:8px;border:1px solid #cad8e3">
+                      ${escapeHtml(event.customer)}
+                    </td>
+
+                    <td style="padding:8px;border:1px solid #cad8e3">
+                      ${escapeHtml(
+                        formatDate(
+                          event.inHandsDate
+                        )
+                      )}
+                    </td>
+
+                    <td style="padding:8px;border:1px solid #cad8e3">
+                      ${event.items.length}
+                      ${
+                        event.items.length === 1
+                          ? "model"
+                          : "models"
+                      }
+                    </td>
+
+                    <td style="padding:8px;border:1px solid #cad8e3">
+                      ${getInventoryStatus(event)}
+                    </td>
+
+                    <td style="padding:8px;border:1px solid #cad8e3">
+                      ${escapeHtml(event.status)}
+                    </td>
+
+                    <td style="padding:8px;border:1px solid #cad8e3">
+                      ${escapeHtml(event.planning)}
+                    </td>
+
+                    <td style="padding:8px;border:1px solid #cad8e3">
+                      ${escapeHtml(
+                        event.notes ||
+                        "—"
+                      )}
+                    </td>
+                  </tr>
+                `)
+                .join("")}
+            </tbody>
+          </table>
+        `;
+      }
+
+      async function copyFormattedEmailTable(list) {
+        if (
+          !navigator.clipboard?.write ||
+          !window.ClipboardItem
+        ) {
+          return false;
+        }
+
+        try {
+          const html = `
+            <p>Hello,</p>
+
+            <p>
+              Please find the complete
+              ${escapeHtml(REGIONS[region])}
+              events update below.
+            </p>
+
+            ${buildHtmlEmailTable(list)}
+
+            ${
+              emailSettings.emailSignature
+                ? `
+                  <p>
+                    ${escapeHtml(
+                      emailSettings.emailSignature
+                    ).replace(/\n/g, "<br>")}
+                  </p>
+                `
+                : ""
+            }
+          `;
+
+          const plain =
+            buildPlainEmailTable(list);
+
+          await navigator.clipboard.write([
+            new ClipboardItem({
+              "text/html":
+                new Blob(
+                  [html],
+                  {
+                    type: "text/html"
+                  }
+                ),
+
+              "text/plain":
+                new Blob(
+                  [plain],
+                  {
+                    type: "text/plain"
+                  }
+                )
+            })
+          ]);
+
+          return true;
+        } catch {
+          return false;
+        }
+      }
+
+      async function emailEntireEventsList() {
+        const list =
+          getEmailEvents();
+
+        if (!list.length) {
+          showToast(
+            "There are no events to email."
+          );
+
+          return;
+        }
 
         const recipients =
-          event.recipients ||
-          emailSettings.defaultRecipients ||
-          "";
-
-        const recipientList = recipients
-          .split(/[;,]/)
-          .map((address) => address.trim())
-          .filter(Boolean);
+          (
+            emailSettings.defaultRecipients ||
+            ""
+          )
+            .split(/[;,]/)
+            .map(address =>
+              address.trim()
+            )
+            .filter(Boolean);
 
         if (
-          emailSettings.organizationDomain &&
-          recipientList.length
+          emailSettings.organizationDomain
         ) {
-          const external = recipientList.filter(
-            (address) => {
-              return !address
+          const externalRecipients =
+            recipients.filter(address =>
+              !address
                 .toLowerCase()
                 .endsWith(
                   `@${emailSettings.organizationDomain}`
-                );
-            }
-          );
+                )
+            );
 
           if (
-            external.length &&
-            !confirm(
+            externalRecipients.length &&
+            !window.confirm(
               "Some recipients are outside the configured organization domain. Continue?"
             )
           ) {
@@ -4327,63 +3246,39 @@
         }
 
         const subject =
-          `Event Update | PO ${event.poNumber} | ` +
-          `${event.customer} | ${formatDate(
-            event.inHandsDate
-          )}`;
+          `Events Status Report | ${REGIONS[region]} | ` +
+          new Date().toLocaleDateString(
+            "en-US"
+          );
 
         const body = [
           "Hello,",
           "",
-          "Please find the latest event update below.",
+          "Please find the complete events update below.",
           "",
-          "EVENT DETAILS",
-          "----------------------------------------",
-          `PO#: ${event.poNumber}`,
-          `Customer: ${event.customer}`,
-          `Inventory Status: ${inventoryStatus}`,
-          `In-Hands Date: ${formatDate(
-            event.inHandsDate
-          )}`,
-          `Current Status: ${event.status}`,
-          `Planning: ${
-            event.planning ||
-            "Planning not confirmed"
+          `Region: ${REGIONS[region]}`,
+
+          `Generated: ${
+            new Date().toLocaleString(
+              "en-US"
+            )
           }`,
-          `Customer Followed-Up Date: ${formatDate(
-            event.customerFollowedUpDate
-          )}`,
+
+          `Events: ${list.length}`,
           "",
-          "ITEMS",
-          "----------------------------------------",
-          buildEmailItems(event.items),
+          buildPlainEmailTable(list),
           "",
-          "LATEST NOTES",
-          "----------------------------------------",
-          event.notes || "No latest notes entered.",
-          "",
-          "ADDITIONAL INFORMATION",
-          "----------------------------------------",
-          `Region: ${REGION_NAMES[region]}`,
-          `Event Owner: ${
-            event.owner || "Not assigned"
-          }`,
-          `Tracking Number: ${
-            event.trackingNumber ||
-            "Not available"
-          }`,
-          `Next Action: ${
-            NEXT_ACTIONS[event.status] ||
-            "Review current event status"
-          }`,
-          "",
-          emailSettings.emailSignature || ""
+          emailSettings.emailSignature ||
+          ""
         ].join("\n");
+
+        const formattedTableCopied =
+          await copyFormattedEmailTable(list);
 
         const outlookUrl =
           "https://outlook.office.com/mail/deeplink/compose" +
           `?to=${encodeURIComponent(
-            recipientList.join(";")
+            recipients.join(";")
           )}` +
           `&subject=${encodeURIComponent(subject)}` +
           `&body=${encodeURIComponent(body)}`;
@@ -4393,128 +3288,551 @@
           "_blank",
           "noopener,noreferrer"
         );
+
+        showToast(
+          formattedTableCopied
+            ? "Outlook draft opened. The formatted table was also copied."
+            : "Outlook draft opened with the complete events list."
+        );
       }
 
-      function buildEmailItems(items) {
-        if (!items.length) {
-          return "No items entered.";
+      function normalizedHeader(value) {
+        return String(value ?? "")
+          .toLowerCase()
+          .replace(/[^a-z0-9]/g, "");
+      }
+
+      function createUniqueHeaders(values) {
+        const used = {};
+
+        return values.map(
+          (value, index) => {
+            let header =
+              String(value ?? "").trim() ||
+              `Column ${index + 1}`;
+
+            used[header] =
+              (used[header] || 0) + 1;
+
+            if (used[header] > 1) {
+              header =
+                `${header} ${used[header]}`;
+            }
+
+            return header;
+          }
+        );
+      }
+
+      async function parseInventoryFile(
+        file,
+        locationName
+      ) {
+        if (!window.XLSX) {
+          throw new Error(
+            "The Excel reader is unavailable. Refresh the page."
+          );
         }
 
-        return items
-          .map((item, index) => {
-            const quantity =
-              numberValue(item.quantity);
+        const buffer =
+          await file.arrayBuffer();
+
+        const workbook =
+          XLSX.read(
+            buffer,
+            {
+              type: "array",
+              cellDates: true,
+              cellText: true
+            }
+          );
+
+        for (
+          const sheetName of
+          workbook.SheetNames
+        ) {
+          const worksheet =
+            workbook.Sheets[sheetName];
+
+          const matrix =
+            XLSX.utils.sheet_to_json(
+              worksheet,
+              {
+                header: 1,
+                defval: "",
+                raw: false,
+                blankrows: false
+              }
+            );
+
+          const headerLimit =
+            Math.min(
+              50,
+              matrix.length
+            );
+
+          for (
+            let headerRow = 0;
+            headerRow < headerLimit;
+            headerRow += 1
+          ) {
+            const rawHeaders =
+              matrix[headerRow].map(
+                value =>
+                  String(
+                    value ?? ""
+                  ).trim()
+              );
+
+            const keys =
+              rawHeaders.map(
+                normalizedHeader
+              );
+
+            const modelIndex =
+              keys.findIndex(
+                key =>
+                  MODEL_ALIASES.includes(key)
+              );
+
+            const stockIndex =
+              keys.findIndex(
+                key =>
+                  STOCK_ALIASES.includes(key)
+              );
+
+            if (
+              modelIndex < 0 ||
+              stockIndex < 0
+            ) {
+              continue;
+            }
+
+            const headers =
+              createUniqueHeaders(
+                rawHeaders
+              );
+
+            const rows =
+              matrix
+                .slice(headerRow + 1)
+                .filter(row =>
+                  String(
+                    row[modelIndex] ??
+                    ""
+                  ).trim()
+                )
+                .map(row =>
+                  Object.fromEntries(
+                    headers.map(
+                      (header, index) => [
+                        header,
+                        row[index] ?? ""
+                      ]
+                    )
+                  )
+                );
+
+            if (rows.length) {
+              return {
+                key:
+                  `${region}::${locationName}`,
+
+                region,
+                location: locationName,
+                fileName: file.name,
+                sheetName,
+                headers,
+                rows,
+
+                modelHeader:
+                  headers[modelIndex],
+
+                stockHeader:
+                  headers[stockIndex],
+
+                uploadedAt:
+                  new Date().toISOString()
+              };
+            }
+          }
+        }
+
+        throw new Error(
+          "Model# and available-stock columns could not be detected."
+        );
+      }
+
+      function openInventoryDatabase() {
+        return new Promise(
+          (resolve, reject) => {
+            const request =
+              indexedDB.open(
+                "StarkEventsInventoryDB",
+                1
+              );
+
+            request.onupgradeneeded =
+              () => {
+                const database =
+                  request.result;
+
+                if (
+                  !database
+                    .objectStoreNames
+                    .contains(
+                      "locationReports"
+                    )
+                ) {
+                  database.createObjectStore(
+                    "locationReports",
+                    {
+                      keyPath: "key"
+                    }
+                  );
+                }
+              };
+
+            request.onsuccess =
+              () => resolve(
+                request.result
+              );
+
+            request.onerror =
+              () => reject(
+                request.error
+              );
+          }
+        );
+      }
+
+      async function saveLocationReport(report) {
+        const database =
+          await openInventoryDatabase();
+
+        return new Promise(
+          (resolve, reject) => {
+            const transaction =
+              database.transaction(
+                "locationReports",
+                "readwrite"
+              );
+
+            transaction
+              .objectStore(
+                "locationReports"
+              )
+              .put(report);
+
+            transaction.oncomplete =
+              () => {
+                database.close();
+                resolve();
+              };
+
+            transaction.onerror =
+              () => {
+                database.close();
+                reject(
+                  transaction.error
+                );
+              };
+          }
+        );
+      }
+
+      async function loadStoredInventory() {
+        const database =
+          await openInventoryDatabase();
+
+        return new Promise(
+          (resolve, reject) => {
+            const transaction =
+              database.transaction(
+                "locationReports",
+                "readonly"
+              );
+
+            const request =
+              transaction
+                .objectStore(
+                  "locationReports"
+                )
+                .getAll();
+
+            request.onsuccess =
+              () => resolve(
+                request.result || []
+              );
+
+            request.onerror =
+              () => reject(
+                request.error
+              );
+
+            transaction.oncomplete =
+              () => database.close();
+          }
+        );
+      }
+
+      function rebuildLocationMaps() {
+        LOCATIONS.forEach(
+          locationName => {
+            const map =
+              new Map();
+
+            const report =
+              locationReports[
+                locationName
+              ];
+
+            if (report) {
+              report.rows.forEach(row => {
+                const model =
+                  normalizeModel(
+                    row[
+                      report.modelHeader
+                    ]
+                  );
+
+                const stock =
+                  numberValue(
+                    row[
+                      report.stockHeader
+                    ]
+                  );
+
+                if (
+                  model &&
+                  stock !== null
+                ) {
+                  map.set(
+                    model,
+                    (
+                      map.get(model) ||
+                      0
+                    ) + stock
+                  );
+                }
+              });
+            }
+
+            locationMaps[
+              locationName
+            ] = map;
+          }
+        );
+
+        synchronizeAllInventory();
+      }
+
+      function synchronizeAllInventory() {
+        events.forEach(event => {
+          event.items.forEach(item => {
+            const model =
+              normalizeModel(
+                item.model
+              );
+
+            if (
+              locationReports.Sarasota
+            ) {
+              item.sarasota =
+                locationMaps
+                  .Sarasota
+                  .get(model) ??
+                null;
+            }
+
+            if (locationReports.Texas) {
+              item.texas =
+                locationMaps
+                  .Texas
+                  .get(model) ??
+                null;
+            }
 
             const sarasota =
-              numberValue(item.sarasota);
+              numberValue(
+                item.sarasota
+              );
 
             const texas =
-              numberValue(item.texas);
+              numberValue(
+                item.texas
+              );
 
-            const total =
-              numberValue(item.total);
+            item.total =
+              sarasota === null &&
+              texas === null
+                ? null
+                : (sarasota || 0) +
+                  (texas || 0);
+          });
+        });
 
-            const balance =
-              quantity !== null &&
-              total !== null
-                ? total - quantity
-                : null;
+        saveEvents();
+      }
 
-            const status =
-              quantity === null ||
-              total === null ||
-              item.matched !== true
-                ? "CHECK"
-                : total >= quantity
-                  ? "GOOD"
-                  : "LOW";
+      async function uploadInventory(
+        locationName
+      ) {
+        const fileInput =
+          $(
+            `${locationName.toLowerCase()}File`
+          );
 
-            return [
-              `${index + 1}. Model#: ${
-                item.model || "Not entered"
-              }`,
-              `   PO Quantity: ${
-                quantity === null
-                  ? "Not entered"
-                  : quantity
-              }`,
-              `   Sarasota Stock: ${
-                sarasota === null
-                  ? "Not found"
-                  : sarasota
-              }`,
-              `   Texas Stock: ${
-                texas === null
-                  ? "Not found"
-                  : texas
-              }`,
-              `   Total Stock Available: ${
-                total === null
-                  ? "Not found"
-                  : total
-              }`,
-              `   Available After Allocation: ${
-                balance === null
-                  ? "Not available"
-                  : balance
-              }`,
-              `   Inventory Status: ${status}`
-            ].join("\n");
-          })
-          .join("\n\n");
+        const file =
+          fileInput.files[0];
+
+        if (!file) {
+          showToast(
+            `Choose a ${locationName} file first.`
+          );
+
+          return;
+        }
+
+        try {
+          const report =
+            await parseInventoryFile(
+              file,
+              locationName
+            );
+
+          await saveLocationReport(
+            report
+          );
+
+          locationReports[
+            locationName
+          ] = report;
+
+          rebuildLocationMaps();
+          render();
+
+          showToast(
+            `${locationName} inventory loaded: ` +
+            `${report.rows.length.toLocaleString()} rows.`
+          );
+        } catch (error) {
+          console.error(error);
+
+          showToast(
+            error.message ||
+            "Inventory upload failed."
+          );
+        }
+      }
+
+      function renderInventoryMeta() {
+        LOCATIONS.forEach(
+          locationName => {
+            const report =
+              locationReports[
+                locationName
+              ];
+
+            const element =
+              $(
+                `${locationName.toLowerCase()}Meta`
+              );
+
+            element.textContent =
+              report
+                ? `${report.fileName} · ` +
+                  `${report.rows.length.toLocaleString()} rows · ` +
+                  `${locationMaps[locationName].size.toLocaleString()} models`
+                : "No file uploaded.";
+          }
+        );
+
+        const liveLocations =
+          LOCATIONS.filter(
+            locationName =>
+              locationReports[
+                locationName
+              ]
+          ).length;
+
+        $("inventorySourceStatus")
+          .textContent =
+            liveLocations
+              ? `${liveLocations} of 2 inventory locations synchronized.`
+              : "Upload Sarasota and Texas inventory to synchronize stock.";
       }
 
       function showToast(message) {
         clearTimeout(toastTimer);
 
-        toast.textContent = message;
-        toast.classList.add("visible");
+        $("toast").textContent =
+          message;
 
-        toastTimer = setTimeout(() => {
-          toast.classList.remove("visible");
-        }, 3600);
-      }
+        $("toast").classList.add(
+          "visible"
+        );
 
-      function escapeHtml(value) {
-        return String(value ?? "")
-          .replace(/&/g, "&amp;")
-          .replace(/</g, "&lt;")
-          .replace(/>/g, "&gt;")
-          .replace(/"/g, "&quot;")
-          .replace(/'/g, "&#039;");
-      }
-
-      window.eventTracker = {
-        edit: editEvent,
-
-        email(id) {
-          const event = events.find(
-            (record) => record.id === id
+        toastTimer =
+          setTimeout(
+            () => {
+              $("toast")
+                .classList.remove(
+                  "visible"
+                );
+            },
+            3400
           );
+      }
 
-          if (event) {
-            openOutlookEmail(event);
+      window.eventsApp = {
+        view: viewEvent,
+        edit: openEventEditor,
+        advance: advanceEvent,
+
+        noteChanged(eventId) {
+          const button =
+            $(`save-note-${eventId}`);
+
+          if (button) {
+            button.disabled = false;
           }
         },
 
-        advance: advanceEvent
+        saveNote: saveInlineNote
       };
 
-      window.inventoryPager = {
-        previous(location) {
-          inventoryPages[location] = Math.max(
-            1,
-            inventoryPages[location] - 1
-          );
+      async function initialize() {
+        configureRegion();
+        normalizeEvents();
+        bindEvents();
 
-          renderLocationList(location);
-        },
+        try {
+          const storedReports =
+            await loadStoredInventory();
 
-        next(location) {
-          inventoryPages[location] += 1;
-          renderLocationList(location);
+          storedReports
+            .filter(report =>
+              report.region === region &&
+              LOCATIONS.includes(
+                report.location
+              )
+            )
+            .forEach(report => {
+              locationReports[
+                report.location
+              ] = report;
+            });
+
+          rebuildLocationMaps();
+        } catch (error) {
+          console.warn(error);
         }
-      };
+
+        render();
+      }
+
+      initialize();
     })();
   </script>
 </body>
