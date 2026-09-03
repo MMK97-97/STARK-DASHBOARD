@@ -2,47 +2,31 @@
   "use strict";
 
   const SI = window.StarkInventory;
-  const page =
-    document.body.dataset.page || "inventory";
-
+  const page = document.body.dataset.page || "inventory";
   const region = SI.initFrame(page);
 
   let dataset = null;
   let items = [];
 
-  const number = new Intl.NumberFormat(
-    "en-US",
-    {
-      maximumFractionDigits: 0
-    }
-  );
+  const number = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 0
+  });
 
-  const decimal = new Intl.NumberFormat(
-    "en-US",
-    {
-      maximumFractionDigits: 1
-    }
-  );
+  const decimal = new Intl.NumberFormat("en-US", {
+    maximumFractionDigits: 1
+  });
 
-  const percent = new Intl.NumberFormat(
-    "en-US",
-    {
-      style: "percent",
-      maximumFractionDigits: 1
-    }
-  );
+  const percent = new Intl.NumberFormat("en-US", {
+    style: "percent",
+    maximumFractionDigits: 1
+  });
 
-  const el = id =>
-    document.getElementById(id);
+  const el = id => document.getElementById(id);
 
-  document.addEventListener(
-    "DOMContentLoaded",
-    init
-  );
+  document.addEventListener("DOMContentLoaded", init);
 
   async function init() {
-    dataset =
-      await SI.loadDataset(region);
+    dataset = await SI.loadDataset(region);
 
     items = dataset
       ? SI.analyze(dataset.rows, region)
@@ -101,11 +85,8 @@
   }
 
   function initDashboard() {
-    const clearButton =
-      el("clear-inventory-data");
-
-    const settings =
-      SI.loadSettings(region);
+    const clearButton = el("clear-inventory-data");
+    const settings = SI.loadSettings(region);
 
     [
       "critical",
@@ -114,87 +95,92 @@
       "a",
       "b"
     ].forEach(key => {
-      const input =
-        el(`setting-${key}`);
+      const input = el(`setting-${key}`);
 
       if (input) {
         input.value = settings[key];
       }
     });
 
-    clearButton.addEventListener(
-      "click",
-      async () => {
-        const approved = confirm(
-          `Clear the ${SI.regionName(region)} inventory report stored in this browser?`
-        );
-
-        if (!approved) {
-          return;
-        }
-
-        await SI.clearDataset(region);
-
-        dataset = null;
-        items = [];
-
-        renderDataNote();
-        renderDashboard();
-      }
-    );
-
-    el("save-inventory-settings")
-      .addEventListener("click", () => {
-        const next = {};
-
-        [
-          "critical",
-          "coverage",
-          "delay",
-          "a",
-          "b"
-        ].forEach(key => {
-          next[key] = Number(
-            el(`setting-${key}`).value
-          );
-        });
-
-        if (
-          next.a <= 0 ||
-          next.a >= next.b ||
-          next.b > 100
-        ) {
-          alert(
-            "ABC thresholds must satisfy A < B and B ≤ 100."
+    if (clearButton) {
+      clearButton.addEventListener(
+        "click",
+        async () => {
+          const approved = confirm(
+            `Clear the ${SI.regionName(region)} inventory report stored in this browser?`
           );
 
-          return;
+          if (!approved) {
+            return;
+          }
+
+          await SI.clearDataset(region);
+
+          dataset = null;
+          items = [];
+
+          renderDataNote();
+          renderDashboard();
         }
+      );
+    }
 
-        SI.saveSettings(region, next);
+    const saveButton =
+      el("save-inventory-settings");
 
-        items = dataset
-          ? SI.analyze(
-              dataset.rows,
-              region
-            )
-          : [];
+    if (saveButton) {
+      saveButton.addEventListener(
+        "click",
+        () => {
+          const next = {};
 
-        renderDashboard();
+          [
+            "critical",
+            "coverage",
+            "delay",
+            "a",
+            "b"
+          ].forEach(key => {
+            next[key] = Number(
+              el(`setting-${key}`).value
+            );
+          });
 
-        const button =
-          el("save-inventory-settings");
+          if (
+            next.a <= 0 ||
+            next.a >= next.b ||
+            next.b > 100
+          ) {
+            alert(
+              "ABC thresholds must satisfy A < B and B ≤ 100."
+            );
 
-        button.textContent = "Saved ✓";
-        button.disabled = true;
+            return;
+          }
 
-        window.setTimeout(() => {
-          button.textContent =
-            "Save settings";
+          SI.saveSettings(region, next);
 
-          button.disabled = false;
-        }, 1600);
-      });
+          items = dataset
+            ? SI.analyze(
+                dataset.rows,
+                region
+              )
+            : [];
+
+          renderDashboard();
+
+          saveButton.textContent = "Saved ✓";
+          saveButton.disabled = true;
+
+          window.setTimeout(() => {
+            saveButton.textContent =
+              "Save settings";
+
+            saveButton.disabled = false;
+          }, 1600);
+        }
+      );
+    }
 
     renderDashboard();
   }
@@ -227,45 +213,42 @@
       item => item.recommended
     );
 
-    renderKpis(
-      "dashboard-kpis",
+    renderKpis("dashboard-kpis", [
       [
-        [
-          "Items",
-          number.format(active.length),
-          `${SI.unique(active.map(item => item.brand)).length} active brands`
-        ],
-        [
-          "Stock available",
-          number.format(totalAvailable),
-          "Current available inventory"
-        ],
-        [
-          "Average monthly demand",
-          number.format(totalDemand),
-          "Past three-month run rate"
-        ],
-        [
-          "Reorder items",
-          number.format(reorders.length),
-          "Live, Fashion and Backorder"
-        ],
-        [
-          "Recommended units",
-          number.format(reorderUnits),
-          "Lead-time reorder formula"
-        ],
-        [
-          "Inactive-brand items",
-          number.format(
-            items.filter(
-              item => !item.activeBrand
-            ).length
-          ),
-          "Excluded from reorder"
-        ]
+        "Items",
+        number.format(active.length),
+        `${SI.unique(active.map(item => item.brand)).length} active brands`
+      ],
+      [
+        "Stock available",
+        number.format(totalAvailable),
+        "Current available inventory"
+      ],
+      [
+        "Average monthly demand",
+        number.format(totalDemand),
+        "Past three-month run rate"
+      ],
+      [
+        "Reorder items",
+        number.format(reorders.length),
+        "Live, Fashion and Backorder"
+      ],
+      [
+        "Recommended units",
+        number.format(reorderUnits),
+        "Lead-time reorder formula"
+      ],
+      [
+        "Inactive-brand items",
+        number.format(
+          items.filter(
+            item => !item.activeBrand
+          ).length
+        ),
+        "Excluded from reorder"
       ]
-    );
+    ]);
 
     renderAbcSummary(active);
 
@@ -286,29 +269,40 @@
       .slice()
       .sort(
         (a, b) =>
-          b.recommended -
-          a.recommended
+          b.recommended - a.recommended
       )
       .slice(0, 8);
 
-    el("attention-table").innerHTML =
-      attention
-        .map(item => `
-          <tr>
-            <td>${SI.escapeHtml(item.model)}</td>
-            <td>${SI.escapeHtml(item.brand)}</td>
-            <td>${SI.escapeHtml(item.product)}</td>
-            <td class="num">${number.format(item.available)}</td>
-            <td class="num">${decimal.format(item.avg3)}</td>
-            <td class="num">${number.format(item.recommended)}</td>
-            <td>${SI.escapeHtml(item.reorderReason)}</td>
-          </tr>
-        `)
-        .join("") ||
-      emptyRow(7);
+    const table = el("attention-table");
+
+    if (table) {
+      table.innerHTML =
+        attention
+          .map(item => `
+            <tr>
+              <td>${SI.escapeHtml(item.model)}</td>
+              <td>${SI.escapeHtml(item.brand)}</td>
+              <td>${SI.escapeHtml(item.product)}</td>
+              <td class="num">${number.format(item.available)}</td>
+              <td class="num">${decimal.format(item.avg3)}</td>
+              <td class="num">${number.format(item.recommended)}</td>
+              <td>${SI.escapeHtml(item.reorderReason)}</td>
+            </tr>
+          `)
+          .join("") ||
+        emptyRow(7);
+    }
   }
 
   function renderAbcSummary(rows) {
+    const summary = el("abc-summary");
+    const donut = el("abc-donut-css");
+    const totalElement = el("abc-donut-total");
+
+    if (!summary || !donut || !totalElement) {
+      return;
+    }
+
     const counts = ["A", "B", "C"].map(
       code => ({
         code,
@@ -320,31 +314,30 @@
 
     const total =
       counts.reduce(
-        (sumValue, item) =>
-          sumValue + item.value,
+        (current, item) =>
+          current + item.value,
         0
       ) || 1;
 
-    el("abc-summary").innerHTML =
-      counts
-        .map(item => `
-          <div class="abc-summary-row">
-            <span class="class-badge class-${item.code.toLowerCase()}">
-              ${item.code}
-            </span>
+    summary.innerHTML = counts
+      .map(item => `
+        <div class="abc-summary-row">
+          <span class="class-badge class-${item.code.toLowerCase()}">
+            ${item.code}
+          </span>
 
-            <div>
-              <strong>
-                ${number.format(item.value)} items
-              </strong>
+          <div>
+            <strong>
+              ${number.format(item.value)} items
+            </strong>
 
-              <small>
-                ${percent.format(item.value / total)} of active items
-              </small>
-            </div>
+            <small>
+              ${percent.format(item.value / total)} of active items
+            </small>
           </div>
-        `)
-        .join("");
+        </div>
+      `)
+      .join("");
 
     const aEnd =
       counts[0].value / total * 100;
@@ -355,14 +348,14 @@
         counts[1].value
       ) / total * 100;
 
-    el("abc-donut-css").style.background =
+    donut.style.background =
       `conic-gradient(
         #0b8f87 0 ${aEnd}%,
         #f59e0b ${aEnd}% ${bEnd}%,
         #dc5a64 ${bEnd}% 100%
       )`;
 
-    el("abc-donut-total").textContent =
+    totalElement.textContent =
       number.format(
         total === 1 && !rows.length
           ? 0
@@ -374,6 +367,10 @@
     const fileInput = el("raw-file");
     const uploadButton =
       el("upload-raw-report");
+
+    if (!fileInput || !uploadButton) {
+      return;
+    }
 
     fileInput.addEventListener(
       "change",
@@ -466,18 +463,18 @@
       "raw-status",
       "raw-abc"
     ].forEach(id => {
-      el(id).addEventListener(
+      el(id)?.addEventListener(
         "change",
         renderRaw
       );
     });
 
-    el("raw-search").addEventListener(
+    el("raw-search")?.addEventListener(
       "input",
       renderRaw
     );
 
-    el("export-raw").addEventListener(
+    el("export-raw")?.addEventListener(
       "click",
       exportRaw
     );
@@ -486,14 +483,19 @@
   }
 
   function filteredRaw() {
-    const brand = el("raw-brand").value;
-    const status = el("raw-status").value;
-    const abc = el("raw-abc").value;
+    const brand =
+      el("raw-brand")?.value || "";
 
-    const search = el("raw-search")
-      .value
-      .trim()
-      .toLowerCase();
+    const status =
+      el("raw-status")?.value || "";
+
+    const abc =
+      el("raw-abc")?.value || "";
+
+    const search =
+      (el("raw-search")?.value || "")
+        .trim()
+        .toLowerCase();
 
     return items.filter(item =>
       (!brand || item.brand === brand) &&
@@ -511,10 +513,17 @@
   function renderRaw() {
     const rows = filteredRaw();
 
-    el("raw-result-count").textContent =
+    const count = el("raw-result-count");
+    const table = el("raw-table");
+
+    if (!count || !table) {
+      return;
+    }
+
+    count.textContent =
       `${number.format(rows.length)} of ${number.format(items.length)} items`;
 
-    el("raw-table").innerHTML =
+    table.innerHTML =
       rows
         .map(item => `
           <tr>
@@ -606,24 +615,24 @@
       "All brands"
     );
 
-    el("reorder-brand").addEventListener(
+    el("reorder-brand")?.addEventListener(
       "change",
       renderReorder
     );
 
-    el("reorder-search").addEventListener(
+    el("reorder-search")?.addEventListener(
       "input",
       renderReorder
     );
 
     el("export-reorder-csv")
-      .addEventListener(
+      ?.addEventListener(
         "click",
         exportReorderCsv
       );
 
     el("export-reorder-xlsx")
-      .addEventListener(
+      ?.addEventListener(
         "click",
         exportReorderXlsx
       );
@@ -663,11 +672,10 @@
 
   function filteredReorders() {
     const brand =
-      el("reorder-brand").value;
+      el("reorder-brand")?.value || "";
 
     const search =
-      el("reorder-search")
-        .value
+      (el("reorder-search")?.value || "")
         .trim()
         .toLowerCase();
 
@@ -684,6 +692,10 @@
     );
   }
 
+  /*
+   * The full array is retained for CSV and Excel exports.
+   * Only the first 12 values are displayed on the website.
+   */
   function reorderArray(rows) {
     return rows.map(item => [
       item.model,
@@ -695,9 +707,11 @@
       item.available,
       item.openSupplier,
       item.supplierWindow,
+
       item.daysUntil == null
         ? ""
         : item.daysUntil,
+
       item.recommended,
       "REORDER",
       SI.dateText(item.supplierStart),
@@ -731,44 +745,56 @@
   function renderReorder() {
     const rows = filteredReorders();
 
-    el("reorder-result-count").textContent =
+    const count =
+      el("reorder-result-count");
+
+    const table =
+      el("reorder-table");
+
+    if (!count || !table) {
+      return;
+    }
+
+    count.textContent =
       `${number.format(rows.length)} reorder items • ${number.format(sum(rows, item => item.recommended))} recommended units`;
 
-    el("reorder-table").innerHTML =
+    table.innerHTML =
       reorderArray(rows)
-        .map(row => `
-          <tr>
-            ${row
-              .map((value, index) => {
-                const numeric =
-                  [
+        .map(row => {
+          const visibleColumns =
+            row.slice(0, 12);
+
+          return `
+            <tr>
+              ${visibleColumns
+                .map((value, index) => {
+                  const numeric = [
                     4,
                     5,
                     6,
                     7,
                     9,
-                    10,
-                    15,
-                    16
+                    10
                   ].includes(index);
 
-                const content =
-                  index === 11
-                    ? '<span class="status status-risk">REORDER</span>'
-                    : SI.escapeHtml(value);
+                  const content =
+                    index === 11
+                      ? '<span class="status status-risk">REORDER</span>'
+                      : SI.escapeHtml(value);
 
-                return `
-                  <td${numeric ? ' class="num"' : ""}>
-                    ${content}
-                  </td>
-                `;
-              })
-              .join("")}
-          </tr>
-        `)
+                  return `
+                    <td${numeric ? ' class="num"' : ""}>
+                      ${content}
+                    </td>
+                  `;
+                })
+                .join("")}
+            </tr>
+          `;
+        })
         .join("") ||
       emptyRow(
-        17,
+        12,
         "No reorder-required items match the filters."
       );
   }
@@ -873,27 +899,28 @@
 
     ensureBrands();
 
-    el("brand-search").addEventListener(
+    el("brand-search")?.addEventListener(
       "input",
       renderBrands
     );
 
-    el("activate-all").addEventListener(
+    el("activate-all")?.addEventListener(
       "click",
       () => setAllBrands(true)
     );
 
-    el("deactivate-all").addEventListener(
+    el("deactivate-all")?.addEventListener(
       "click",
       () => setAllBrands(false)
     );
 
-    el("save-lead-times").addEventListener(
-      "click",
-      saveAllLeadTimes
-    );
+    el("save-lead-times")
+      ?.addEventListener(
+        "click",
+        saveAllLeadTimes
+      );
 
-    el("export-brands").addEventListener(
+    el("export-brands")?.addEventListener(
       "click",
       exportBrands
     );
@@ -913,8 +940,7 @@
       SI.loadBrandSettings(region);
 
     const search =
-      el("brand-search")
-        .value
+      (el("brand-search")?.value || "")
         .trim()
         .toLowerCase();
 
@@ -946,10 +972,20 @@
   function renderBrands() {
     const rows = brandRows();
 
-    el("brand-result-count").textContent =
+    const count =
+      el("brand-result-count");
+
+    const table =
+      el("brands-table");
+
+    if (!count || !table) {
+      return;
+    }
+
+    count.textContent =
       `${number.format(rows.filter(row => row.active !== false).length)} active of ${number.format(rows.length)} displayed brands`;
 
-    el("brands-table").innerHTML =
+    table.innerHTML =
       rows
         .map(row => `
           <tr>
@@ -1047,8 +1083,13 @@
         "[data-brand-active]"
       );
 
-    el("brand-result-count").textContent =
-      `${number.format(Array.from(displayed).filter(input => input.checked).length)} active of ${number.format(displayed.length)} displayed brands`;
+    const count =
+      el("brand-result-count");
+
+    if (count) {
+      count.textContent =
+        `${number.format(Array.from(displayed).filter(input => input.checked).length)} active of ${number.format(displayed.length)} displayed brands`;
+    }
   }
 
   function saveAllLeadTimes() {
@@ -1085,6 +1126,10 @@
 
     const button =
       el("save-lead-times");
+
+    if (!button) {
+      return;
+    }
 
     button.textContent = "Saved ✓";
     button.disabled = true;
@@ -1152,7 +1197,13 @@
   }
 
   function renderKpis(id, cards) {
-    el(id).innerHTML = cards
+    const container = el(id);
+
+    if (!container) {
+      return;
+    }
+
+    container.innerHTML = cards
       .map(card => `
         <article class="inventory-kpi">
           <span>${card[0]}</span>
@@ -1168,12 +1219,18 @@
     rows,
     formatter
   ) {
+    const container = el(id);
+
+    if (!container) {
+      return;
+    }
+
     const max = Math.max(
       1,
       ...rows.map(row => row.value)
     );
 
-    el(id).innerHTML =
+    container.innerHTML =
       rows
         .map(row => `
           <div class="bar-list-row">
@@ -1242,7 +1299,13 @@
     values,
     label
   ) {
-    el(id).innerHTML =
+    const select = el(id);
+
+    if (!select) {
+      return;
+    }
+
+    select.innerHTML =
       `<option value="">${label}</option>` +
       values
         .map(value => `
