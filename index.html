@@ -1,647 +1,446 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
+  <meta charset="utf-8">
 
   <meta
     name="viewport"
-    content="width=device-width, initial-scale=1, maximum-scale=1"
+    content="width=device-width, initial-scale=1"
   >
 
-  <title>Stark Premium | Regional Command Center</title>
+  <meta
+    name="description"
+    content="Stark Premium regional operations command center"
+  >
+
+  <title>
+    Stark Premium | Regional Command Center
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  >
 
   <style>
     :root {
-      --navy: #092747;
-      --navy-2: #164c77;
-      --teal: #009b92;
-      --teal-light: #50e2d7;
-      --blue: #377eb8;
-      --red: #bf4b5c;
-      --purple: #7550a0;
-      --background: #eef4f8;
-      --surface: #ffffff;
-      --border: #d3e0e9;
-      --text: #0b294b;
-      --muted: #61738b;
-      --shadow: 0 18px 40px rgba(9, 39, 71, 0.1);
-      --page-width: 1420px;
+      --navy: #082d52;
+      --ink: #092848;
+      --muted: #64748b;
+      --line: #cfdeeb;
+      --teal: #008d89;
+      --shadow: 0 18px 40px rgba(22, 52, 82, 0.13);
     }
 
     * {
       box-sizing: border-box;
     }
 
-    html {
-      width: 100%;
-      min-height: 100%;
-      font-size: 16px;
-      scroll-behavior: smooth;
-    }
-
     body {
-      width: 100%;
-      min-height: 100vh;
       margin: 0;
-      overflow-x: hidden;
-      font-family:
-        Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont,
-        "Segoe UI", sans-serif;
-      color: var(--text);
+      color: var(--ink);
       background:
         radial-gradient(
-          circle at 88% 4%,
-          rgba(0, 155, 146, 0.1),
-          transparent 28rem
+          circle at 90% 16%,
+          rgba(12, 162, 157, 0.11),
+          transparent 28%
         ),
-        linear-gradient(135deg, #f8fbfd 0%, var(--background) 100%);
+        #f3f8fc;
+      font-family: "DM Sans", sans-serif;
     }
 
-    button,
-    select,
-    input,
-    textarea {
-      font: inherit;
+    .hidden {
+      display: none !important;
     }
 
-    button,
-    a {
-      -webkit-tap-highlight-color: transparent;
-    }
-
-    a {
-      color: inherit;
-      text-decoration: none;
-    }
-
-    .site-header {
-      position: relative;
-      z-index: 100;
-      width: 100%;
-      border-bottom: 1px solid var(--border);
-      background: rgba(255, 255, 255, 0.96);
-      backdrop-filter: blur(16px);
-    }
-
-    .header-inner {
-      width: min(var(--page-width), calc(100% - 48px));
-      min-height: 88px;
-      margin: 0 auto;
-      padding: 12px 0;
+    .header {
+      min-height: 112px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 30px;
+      gap: 24px;
+      padding: 20px clamp(28px, 7vw, 138px);
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
     }
 
     .brand {
-      min-width: 0;
-      display: inline-flex;
+      display: flex;
       align-items: center;
       gap: 15px;
     }
 
-    .brand-mark {
+    .mark {
       width: 58px;
       height: 58px;
-      flex: 0 0 58px;
       display: grid;
       place-items: center;
       border-radius: 18px;
       color: #ffffff;
-      font-size: 22px;
-      font-weight: 900;
-      background: linear-gradient(145deg, var(--navy), var(--navy-2));
-      box-shadow:
-        0 12px 22px rgba(9, 39, 71, 0.18),
-        inset 0 1px 0 rgba(255, 255, 255, 0.2);
+      background: linear-gradient(
+        145deg,
+        #0a3157,
+        #1c5b85
+      );
+      box-shadow: 0 12px 25px rgba(8, 45, 82, 0.2);
+      font: 800 22px/1 "Manrope";
     }
 
-    .brand-copy {
-      min-width: 0;
-    }
-
-    .brand-eyebrow {
-      margin: 0 0 3px;
-      color: #00877f;
+    .brand small,
+    .eyebrow {
+      display: block;
+      color: #00887f;
       font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 0.18em;
+      font-weight: 800;
       text-transform: uppercase;
+      letter-spacing: 0.16em;
     }
 
-    .brand-title {
-      margin: 0;
-      font-size: clamp(20px, 2vw, 26px);
-      line-height: 1.1;
-      letter-spacing: -0.02em;
-      white-space: nowrap;
+    .brand strong {
+      display: block;
+      margin-top: 5px;
+      font: 800 25px/1.1 "Manrope";
     }
 
-    .header-status {
-      flex: 0 0 auto;
+    .privacy {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 9px;
       color: var(--muted);
-      font-size: 14px;
-      font-weight: 750;
-      white-space: nowrap;
+      font-size: 13px;
+      font-weight: 700;
     }
 
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      flex: 0 0 10px;
+    .privacy i {
+      width: 20px;
+      height: 20px;
+      display: grid;
+      place-items: center;
       border-radius: 50%;
-      background: var(--teal);
-      box-shadow: 0 0 0 6px rgba(0, 155, 146, 0.12);
+      color: #0fa597;
+      background: #dff4f1;
+      font-style: normal;
     }
 
-    .page {
-      width: min(var(--page-width), calc(100% - 48px));
+    .main {
+      width: min(1320px, calc(100% - 48px));
       margin: 0 auto;
-      padding: 34px 0 64px;
+      padding: 30px 0 60px;
     }
 
-    .market-view.hidden {
-      display: none;
+    .topline {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      margin-bottom: 24px;
     }
 
-    .module-view {
-      display: none;
+    .button {
+      min-height: 48px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      color: var(--ink);
+      background: #ffffff;
+      text-decoration: none;
+      font-weight: 800;
+      box-shadow: 0 7px 18px rgba(24, 55, 86, 0.05);
     }
 
-    .module-view.visible {
-      display: block;
+    .region-pill {
+      padding: 13px 20px;
+      border-radius: 999px;
+      color: #ffffff;
+      background: var(--navy);
+      font-weight: 800;
     }
 
     .hero {
       position: relative;
-      min-height: 245px;
       overflow: hidden;
-      padding: 42px 48px;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 250px;
+      min-height: 210px;
+      display: flex;
       align-items: center;
-      gap: 38px;
-      border-radius: 28px;
+      padding: 40px clamp(28px, 4vw, 48px);
+      border-radius: 27px;
       color: #ffffff;
-      background:
-        linear-gradient(115deg, #071f3b 0%, #154b74 61%, #127989 100%);
+      background: linear-gradient(
+        112deg,
+        #082c50 0%,
+        #174d75 67%,
+        #0f7f87 120%
+      );
       box-shadow: var(--shadow);
     }
 
-    .hero::before,
-    .module-hero::before {
+    .hero::after {
       content: "";
       position: absolute;
-      width: 310px;
-      height: 310px;
-      right: -85px;
-      top: -175px;
+      right: -70px;
+      top: -195px;
+      width: 430px;
+      height: 430px;
+      border: 1px solid rgba(255, 255, 255, 0.18);
       border-radius: 50%;
-      border: 1px solid rgba(255, 255, 255, 0.16);
       box-shadow:
-        0 0 0 48px rgba(255, 255, 255, 0.035),
-        0 0 0 96px rgba(255, 255, 255, 0.022);
-      pointer-events: none;
+        0 0 0 48px rgba(255, 255, 255, 0.04),
+        0 0 0 96px rgba(255, 255, 255, 0.025);
     }
 
-    .hero-content,
-    .hero-summary,
-    .module-hero-content {
+    .hero > div {
       position: relative;
       z-index: 1;
     }
 
-    .hero-eyebrow {
-      margin: 0 0 12px;
-      color: var(--teal-light);
-      font-size: 13px;
-      font-weight: 900;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
+    .hero .eyebrow {
+      color: #d9e6ef;
     }
 
     .hero h1 {
-      max-width: 760px;
-      margin: 0;
-      font-size: clamp(38px, 4vw, 56px);
-      line-height: 1.02;
+      margin: 9px 0 12px;
+      font: 800 clamp(38px, 5vw, 58px)/1 "Manrope";
       letter-spacing: -0.045em;
     }
 
-    .hero-description {
-      max-width: 780px;
-      margin: 18px 0 0;
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 17px;
-      line-height: 1.55;
-    }
-
-    .hero-summary {
-      width: 100%;
-      padding: 22px;
-      border: 1px solid rgba(255, 255, 255, 0.19);
-      border-radius: 19px;
-      background: rgba(255, 255, 255, 0.1);
-      backdrop-filter: blur(9px);
-    }
-
-    .summary-label {
-      margin: 0 0 9px;
-      color: rgba(255, 255, 255, 0.64);
-      font-size: 11px;
-      font-weight: 900;
-      letter-spacing: 0.14em;
-      text-transform: uppercase;
-    }
-
-    .summary-value {
+    .hero p:last-child {
       margin: 0;
-      font-size: 19px;
-      font-weight: 850;
+      color: #dbe8f0;
+      font-size: 16px;
     }
 
-    .summary-meta {
-      margin: 10px 0 0;
-      color: rgba(255, 255, 255, 0.72);
-      font-size: 13px;
-      line-height: 1.5;
-    }
-
-    .workspace {
-      margin-top: 28px;
-      padding: 31px;
-      border: 1px solid var(--border);
-      border-radius: 27px;
-      background: rgba(255, 255, 255, 0.9);
-      box-shadow: var(--shadow);
-    }
-
-    .workspace-header {
-      margin-bottom: 23px;
-      display: flex;
-      align-items: flex-end;
-      justify-content: space-between;
-      gap: 20px;
-    }
-
-    .section-eyebrow {
-      margin: 0 0 7px;
-      color: #00877f;
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 0.16em;
-      text-transform: uppercase;
-    }
-
-    .workspace h2 {
-      margin: 0;
-      font-size: clamp(27px, 3vw, 38px);
-      line-height: 1.05;
-      letter-spacing: -0.035em;
-    }
-
-    .section-note {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      font-weight: 750;
-      white-space: nowrap;
-    }
-
+    .module-grid,
     .region-grid {
       display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
       gap: 20px;
-    }
-
-    .region-card {
-      --accent: #164f78;
-      --accent-light: #e7f0f6;
-
-      position: relative;
-      min-width: 0;
-      min-height: 225px;
-      overflow: hidden;
-      padding: 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      border: 1px solid var(--border);
-      border-radius: 23px;
-      background: #ffffff;
-      box-shadow:
-        0 9px 0 #dce7ee,
-        0 17px 29px rgba(9, 39, 71, 0.08);
-      transition:
-        transform 180ms ease,
-        box-shadow 180ms ease,
-        border-color 180ms ease;
-    }
-
-    .region-card.eu {
-      --accent: #377eb8;
-      --accent-light: #eaf3fa;
-    }
-
-    .region-card.ca {
-      --accent: #bf4b5c;
-      --accent-light: #faecef;
-    }
-
-    .region-card::after {
-      content: "";
-      position: absolute;
-      width: 165px;
-      height: 165px;
-      right: -80px;
-      bottom: -80px;
-      border-radius: 50%;
-      background: var(--accent-light);
-    }
-
-    .region-card:hover {
-      z-index: 2;
-      transform: translateY(-5px);
-      border-color: var(--accent);
-      box-shadow:
-        0 13px 0 #dce7ee,
-        0 25px 38px rgba(9, 39, 71, 0.13);
-    }
-
-    .region-card:active {
-      transform: translateY(2px);
-      box-shadow:
-        0 5px 0 #dce7ee,
-        0 11px 20px rgba(9, 39, 71, 0.1);
-    }
-
-    .region-top {
-      position: relative;
-      z-index: 1;
-      display: flex;
-      align-items: flex-start;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .region-code {
-      width: 70px;
-      height: 70px;
-      flex: 0 0 70px;
-      display: grid;
-      place-items: center;
-      border-radius: 21px;
-      color: #ffffff;
-      font-size: 23px;
-      font-weight: 900;
-      background: var(--accent);
-      box-shadow:
-        0 12px 21px rgba(9, 39, 71, 0.16),
-        inset 0 1px 0 rgba(255, 255, 255, 0.22);
-    }
-
-    .region-arrow {
-      width: 45px;
-      height: 45px;
-      flex: 0 0 45px;
-      display: grid;
-      place-items: center;
-      border-radius: 14px;
-      color: var(--accent);
-      font-size: 20px;
-      font-weight: 900;
-      background: var(--accent-light);
-      transition:
-        transform 180ms ease,
-        color 180ms ease,
-        background 180ms ease;
-    }
-
-    .region-card:hover .region-arrow {
-      transform: translateX(4px);
-      color: #ffffff;
-      background: var(--accent);
-    }
-
-    .region-details {
-      position: relative;
-      z-index: 1;
-      min-width: 0;
-      padding-right: 8px;
-    }
-
-    .region-details h3 {
-      margin: 0 0 7px;
-      font-size: 23px;
-      line-height: 1.08;
-      letter-spacing: -0.025em;
-    }
-
-    .region-details p {
-      margin: 0;
-      color: var(--muted);
-      font-size: 14px;
-      line-height: 1.5;
-    }
-
-    .module-toolbar {
-      width: 100%;
-      margin-bottom: 24px;
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      gap: 18px;
-    }
-
-    .back-button {
-      min-height: 48px;
-      padding: 0 20px;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      gap: 8px;
-      border: 1px solid #bdd0df;
-      border-radius: 14px;
-      color: var(--text);
-      font-size: 15px;
-      font-weight: 850;
-      background: #ffffff;
-      cursor: pointer;
-      box-shadow: 0 6px 14px rgba(9, 39, 71, 0.06);
-      transition:
-        transform 160ms ease,
-        box-shadow 160ms ease;
-    }
-
-    .back-button:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 10px 19px rgba(9, 39, 71, 0.1);
-    }
-
-    .selected-region {
-      min-width: 60px;
-      padding: 12px 17px;
-      border-radius: 999px;
-      color: #ffffff;
-      font-size: 14px;
-      font-weight: 850;
-      text-align: center;
-      background: var(--navy);
-    }
-
-    .module-hero {
-      position: relative;
-      min-height: 250px;
-      overflow: hidden;
-      padding: 44px 50px;
-      display: flex;
-      align-items: center;
-      border-radius: 28px;
-      color: #ffffff;
-      background:
-        linear-gradient(115deg, #071f3b 0%, #164d76 61%, #127989 100%);
-      box-shadow: var(--shadow);
-    }
-
-    .module-hero h2 {
-      margin: 0;
-      font-size: clamp(38px, 4vw, 55px);
-      line-height: 1;
-      letter-spacing: -0.045em;
-    }
-
-    .module-hero p {
-      max-width: 760px;
-      margin: 17px 0 0;
-      color: rgba(255, 255, 255, 0.8);
-      font-size: 17px;
-      line-height: 1.55;
+      margin-top: 24px;
     }
 
     .module-grid {
-      margin-top: 26px;
-      display: grid;
-      grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 20px;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
 
     .module-card {
-      --module-color: #126b7d;
-      --module-dark: #0a3e5c;
-
-      min-width: 0;
-      min-height: 235px;
-      padding: 25px;
+      position: relative;
+      overflow: hidden;
+      min-height: 250px;
       display: flex;
       flex-direction: column;
-      justify-content: space-between;
+      padding: 24px;
       border-radius: 23px;
       color: #ffffff;
-      background:
-        linear-gradient(145deg, var(--module-dark), var(--module-color));
+      text-decoration: none;
       box-shadow:
-        0 9px 0 rgba(18, 107, 125, 0.22),
-        0 18px 31px rgba(9, 39, 71, 0.15);
-      transition:
-        transform 180ms ease,
-        box-shadow 180ms ease;
-    }
-
-    .module-card.sales {
-      --module-color: #416ea9;
-      --module-dark: #254d84;
-    }
-
-    .module-card.events {
-      --module-color: #80549f;
-      --module-dark: #563b7b;
+        0 12px 0 rgba(37, 77, 98, 0.14),
+        var(--shadow);
+      transition: 0.2s ease;
     }
 
     .module-card:hover {
-      transform: translateY(-5px);
+      transform: translateY(-4px);
       box-shadow:
-        0 13px 0 rgba(18, 107, 125, 0.2),
-        0 25px 39px rgba(9, 39, 71, 0.19);
+        0 16px 0 rgba(37, 77, 98, 0.12),
+        0 24px 48px rgba(22, 52, 82, 0.18);
     }
 
-    .module-number {
+    .module-card::after {
+      content: "";
+      position: absolute;
+      right: -70px;
+      top: -110px;
+      width: 220px;
+      height: 220px;
+      border: 1px solid rgba(255, 255, 255, 0.16);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 34px rgba(255, 255, 255, 0.035);
+    }
+
+    .inventory {
+      background: linear-gradient(
+        140deg,
+        #12566d,
+        #147c84
+      );
+    }
+
+    .sales {
+      background: linear-gradient(
+        140deg,
+        #315f9d,
+        #4b78b7
+      );
+    }
+
+    .events {
+      background: linear-gradient(
+        140deg,
+        #65418b,
+        #8a55a3
+      );
+    }
+
+    .freight {
+      background: linear-gradient(
+        140deg,
+        #9d5a1c,
+        #d0892f
+      );
+    }
+
+    .card-number {
       width: 44px;
       height: 44px;
       display: grid;
       place-items: center;
-      border: 1px solid rgba(255, 255, 255, 0.24);
-      border-radius: 14px;
-      font-size: 13px;
-      font-weight: 900;
+      border: 1px solid rgba(255, 255, 255, 0.26);
+      border-radius: 13px;
       background: rgba(255, 255, 255, 0.1);
+      font-weight: 800;
     }
 
-    .module-content {
-      margin-top: 36px;
-    }
-
-    .module-card h3 {
-      margin: 0 0 8px;
-      font-size: 23px;
-      line-height: 1.15;
+    .module-card h2 {
+      margin: auto 0 8px;
+      font: 800 21px/1.2 "Manrope";
     }
 
     .module-card p {
+      min-height: 58px;
       margin: 0;
-      color: rgba(255, 255, 255, 0.78);
-      font-size: 14px;
-      line-height: 1.5;
+      color: rgba(255, 255, 255, 0.88);
+      font-size: 13px;
+      line-height: 1.55;
     }
 
-    .module-link {
-      margin-top: 20px;
+    .card-action {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
-      font-size: 14px;
-      font-weight: 850;
+      margin-top: 20px;
+      font-weight: 800;
     }
 
-    .module-link-arrow {
+    .arrow {
       width: 40px;
       height: 40px;
-      flex: 0 0 40px;
       display: grid;
       place-items: center;
-      border-radius: 13px;
-      background: rgba(255, 255, 255, 0.13);
+      border-radius: 12px;
+      background: rgba(255, 255, 255, 0.14);
+      font-style: normal;
+    }
+
+    .region-screen {
+      padding: 25px 0;
+    }
+
+    .region-intro {
+      text-align: center;
+    }
+
+    .region-intro h1 {
+      margin: 12px 0;
+      font: 800 clamp(38px, 5vw, 58px)/1.05 "Manrope";
+    }
+
+    .region-intro p {
+      margin: 0;
+      color: var(--muted);
+    }
+
+    .region-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      margin-top: 40px;
+    }
+
+    .region-card {
+      min-height: 280px;
+      padding: 28px;
+      border: 1px solid var(--line);
+      border-radius: 25px;
+      background: #ffffff;
+      color: var(--ink);
+      text-decoration: none;
+      box-shadow: var(--shadow);
+    }
+
+    .region-code {
+      width: 82px;
+      height: 82px;
+      display: grid;
+      place-items: center;
+      border-radius: 24px;
+      color: #ffffff;
+      background: linear-gradient(
+        145deg,
+        #0b3e68,
+        #2375a8
+      );
+      font: 800 29px/1 "Manrope";
+    }
+
+    .region-card:nth-child(2) .region-code {
+      background: linear-gradient(
+        145deg,
+        #205e96,
+        #3c8bc2
+      );
+    }
+
+    .region-card:nth-child(3) .region-code {
+      background: linear-gradient(
+        145deg,
+        #9f344f,
+        #cf5770
+      );
+    }
+
+    .region-card h2 {
+      margin: 65px 0 8px;
+      font: 800 28px/1.2 "Manrope";
+    }
+
+    .region-card p {
+      color: var(--muted);
+    }
+
+    .note {
+      margin-top: 32px;
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
     }
 
     @media (max-width: 1100px) {
-      .hero {
-        grid-template-columns: minmax(0, 1fr) 220px;
-      }
-
-      .region-card {
-        min-height: 235px;
-      }
-
-      .module-card {
-        min-height: 250px;
+      .module-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
       }
     }
 
-    @media (max-width: 900px) {
-      .header-status {
+    @media (max-width: 760px) {
+      .header {
+        padding: 18px 20px;
+      }
+
+      .privacy {
         display: none;
       }
 
-      .hero {
-        grid-template-columns: 1fr;
-      }
-
-      .hero-summary {
-        max-width: 100%;
+      .main {
+        width: min(100% - 24px, 1320px);
       }
 
       .region-grid,
@@ -649,397 +448,302 @@
         grid-template-columns: 1fr;
       }
 
-      .region-card,
       .module-card {
-        min-height: 210px;
+        min-height: 230px;
+      }
+
+      .hero {
+        padding: 32px 25px;
+      }
+
+      .brand strong {
+        font-size: 20px;
       }
     }
 
-    @media (max-width: 620px) {
-      html {
-        font-size: 15px;
-      }
-
-      .header-inner,
-      .page {
-        width: min(100% - 28px, var(--page-width));
-      }
-
-      .header-inner {
-        min-height: 78px;
-      }
-
-      .brand-mark {
+    @media (max-width: 420px) {
+      .mark {
         width: 50px;
         height: 50px;
-        flex-basis: 50px;
-        border-radius: 16px;
-        font-size: 19px;
       }
 
-      .brand-title {
-        max-width: 230px;
-        overflow: hidden;
-        font-size: 18px;
-        text-overflow: ellipsis;
-      }
-
-      .brand-eyebrow {
-        font-size: 10px;
-      }
-
-      .page {
-        padding-top: 22px;
-      }
-
-      .hero,
-      .module-hero {
-        min-height: auto;
-        padding: 32px 24px;
-        border-radius: 23px;
-      }
-
-      .hero h1,
-      .module-hero h2 {
-        font-size: 36px;
-      }
-
-      .workspace {
-        padding: 21px;
-        border-radius: 23px;
-      }
-
-      .workspace-header {
-        align-items: flex-start;
-        flex-direction: column;
-      }
-
-      .region-card,
-      .module-card {
-        padding: 22px;
-      }
-
-      .module-toolbar {
-        margin-bottom: 18px;
-      }
-
-      .back-button {
-        min-height: 45px;
-        padding: 0 16px;
+      .brand strong {
+        font-size: 17px;
       }
     }
   </style>
 </head>
 
 <body>
-  <header class="site-header">
-    <div class="header-inner">
-      <a class="brand" href="index.html" aria-label="Stark Premium home">
-        <div class="brand-mark">S</div>
+  <header class="header">
+    <div class="brand">
+      <span class="mark">S</span>
 
-        <div class="brand-copy">
-          <p class="brand-eyebrow">Stark Premium</p>
-          <h1 class="brand-title">Regional Command Center</h1>
-        </div>
-      </a>
+      <span>
+        <small>Stark Premium</small>
+        <strong>Regional Command Center</strong>
+      </span>
+    </div>
 
-      <div class="header-status">
-        <span class="status-dot"></span>
-        <span>Data remains separate by region</span>
-      </div>
+    <div class="privacy">
+      <i>●</i>
+      Data remains separate by region
     </div>
   </header>
 
-  <main class="page">
-    <section id="marketView" class="market-view">
-      <section class="hero">
-        <div class="hero-content">
-          <p class="hero-eyebrow">Business Intelligence Workspace</p>
+  <main class="main">
+    <section
+      id="region-screen"
+      class="region-screen hidden"
+    >
+      <div class="region-intro">
+        <span class="eyebrow">
+          Regional workspace
+        </span>
 
-          <h1>Regional operations, clearly connected.</h1>
+        <h1>Choose a market</h1>
 
-          <p class="hero-description">
-            Access inventory analysis, sales intelligence and event planning
-            for the United States, European Union and Canada.
-          </p>
-        </div>
-
-        <aside class="hero-summary">
-          <p class="summary-label">Regional structure</p>
-          <p class="summary-value">3 independent markets</p>
-
-          <p class="summary-meta">
-            Uploaded reports, settings and calculations remain separate for
-            each region.
-          </p>
-        </aside>
-      </section>
-
-      <section class="workspace">
-        <div class="workspace-header">
-          <div>
-            <p class="section-eyebrow">Regional workspace</p>
-            <h2>Choose a market</h2>
-          </div>
-
-          <p class="section-note">US · EU · CA</p>
-        </div>
-
-        <div class="region-grid">
-          <a
-            class="region-card us"
-            href="index.html?region=US"
-            data-region="US"
-            aria-label="Open United States workspace"
-          >
-            <div class="region-top">
-              <div class="region-code">US</div>
-              <div class="region-arrow">→</div>
-            </div>
-
-            <div class="region-details">
-              <h3>United States</h3>
-              <p>Open the United States regional workspace.</p>
-            </div>
-          </a>
-
-          <a
-            class="region-card eu"
-            href="index.html?region=EU"
-            data-region="EU"
-            aria-label="Open European Union workspace"
-          >
-            <div class="region-top">
-              <div class="region-code">EU</div>
-              <div class="region-arrow">→</div>
-            </div>
-
-            <div class="region-details">
-              <h3>European Union</h3>
-              <p>Open the European Union regional workspace.</p>
-            </div>
-          </a>
-
-          <a
-            class="region-card ca"
-            href="index.html?region=CA"
-            data-region="CA"
-            aria-label="Open Canada workspace"
-          >
-            <div class="region-top">
-              <div class="region-code">CA</div>
-              <div class="region-arrow">→</div>
-            </div>
-
-            <div class="region-details">
-              <h3>Canada</h3>
-              <p>Open the Canada regional workspace.</p>
-            </div>
-          </a>
-        </div>
-      </section>
-    </section>
-
-    <section id="moduleView" class="module-view">
-      <div class="module-toolbar">
-        <button id="backButton" class="back-button" type="button">
-          <span>←</span>
-          <span>All regions</span>
-        </button>
-
-        <div id="selectedRegionBadge" class="selected-region">US</div>
+        <p>
+          Open a regional workspace. Files and saved planning data
+          remain separate.
+        </p>
       </div>
 
-      <section class="module-hero">
-        <div class="module-hero-content">
-          <p id="moduleEyebrow" class="hero-eyebrow">United States</p>
+      <div class="region-grid">
+        <a
+          class="region-card"
+          href="index.html?region=US"
+        >
+          <span class="region-code">US</span>
+          <h2>United States</h2>
+          <p>Open the United States regional workspace.</p>
+        </a>
 
-          <h2>Regional Modules</h2>
+        <a
+          class="region-card"
+          href="index.html?region=EU"
+        >
+          <span class="region-code">EU</span>
+          <h2>European Union</h2>
+          <p>Open the European Union regional workspace.</p>
+        </a>
+
+        <a
+          class="region-card"
+          href="index.html?region=Canada"
+        >
+          <span class="region-code">CA</span>
+          <h2>Canada</h2>
+          <p>Open the Canada regional workspace.</p>
+        </a>
+      </div>
+    </section>
+
+    <section
+      id="module-screen"
+      class="hidden"
+    >
+      <div class="topline">
+        <a
+          class="button"
+          href="index.html"
+        >
+          ← All regions
+        </a>
+
+        <span
+          class="region-pill"
+          id="region-pill"
+        >
+          US
+        </span>
+      </div>
+
+      <section class="hero">
+        <div>
+          <span
+            class="eyebrow"
+            id="region-name"
+          >
+            United States
+          </span>
+
+          <h1>Regional Modules</h1>
 
           <p>
-            Choose the operational workspace you want to open for the selected
-            region.
+            Choose the operational workspace you want to open for the
+            selected region.
           </p>
         </div>
       </section>
 
-      <section class="module-grid">
-        <a id="inventoryLink" class="module-card inventory" href="#">
-          <div class="module-number">01</div>
+      <div class="module-grid">
+        <a
+          class="module-card inventory"
+          id="inventory-link"
+          href="inventory-dashboard.html"
+        >
+          <span class="card-number">01</span>
 
-          <div class="module-content">
-            <h3>Inventory Analysis</h3>
+          <h2>Inventory Analysis</h2>
 
-            <p>
-              Open the inventory dashboard, raw report, reorder report,
-              active brands and instructions.
-            </p>
+          <p>
+            Open the inventory dashboard, raw report, reorder report,
+            active brands and instructions.
+          </p>
 
-            <div class="module-link">
-              <span>Open inventory</span>
-              <span class="module-link-arrow">→</span>
-            </div>
-          </div>
+          <span class="card-action">
+            Open inventory
+            <i class="arrow">→</i>
+          </span>
         </a>
 
-        <a id="salesLink" class="module-card sales" href="#">
-          <div class="module-number">02</div>
+        <a
+          class="module-card sales"
+          id="sales-link"
+          href="sales.html"
+        >
+          <span class="card-number">02</span>
 
-          <div class="module-content">
-            <h3>Sales Analysis</h3>
+          <h2>Sales Analysis</h2>
 
-            <p>
-              Review product, brand, customer, regional and period sales
-              performance.
-            </p>
+          <p>
+            Review product, brand, customer, regional and period sales
+            performance.
+          </p>
 
-            <div class="module-link">
-              <span>Open sales</span>
-              <span class="module-link-arrow">→</span>
-            </div>
-          </div>
+          <span class="card-action">
+            Open sales
+            <i class="arrow">→</i>
+          </span>
         </a>
 
-        <a id="eventsLink" class="module-card events" href="#">
-          <div class="module-number">03</div>
+        <a
+          class="module-card events"
+          id="events-link"
+          href="events.html"
+        >
+          <span class="card-number">03</span>
 
-          <div class="module-content">
-            <h3>Events</h3>
+          <h2>Events</h2>
 
-            <p>
-              Manage purchase orders, customers, in-hands dates, quantities
-              and inventory status.
-            </p>
+          <p>
+            Manage purchase orders, customers, in-hands dates,
+            quantities and inventory status.
+          </p>
 
-            <div class="module-link">
-              <span>Open events</span>
-              <span class="module-link-arrow">→</span>
-            </div>
-          </div>
+          <span class="card-action">
+            Open events
+            <i class="arrow">→</i>
+          </span>
         </a>
-      </section>
+
+        <a
+          class="module-card freight"
+          id="freight-link"
+          href="freight-estimator.html"
+        >
+          <span class="card-number">04</span>
+
+          <h2>Freight Estimator</h2>
+
+          <p>
+            Estimate cartons, dimensional weight, pallets, freight class
+            and the best shipping mode.
+          </p>
+
+          <span class="card-action">
+            Open estimator
+            <i class="arrow">→</i>
+          </span>
+        </a>
+      </div>
+
+      <div class="note">
+        ● Regional files and planning data stay in this browser.
+      </div>
     </section>
   </main>
 
   <script>
-    (() => {
-      const VALID_REGIONS = ["US", "EU", "CA"];
+    (function () {
+      "use strict";
 
-      const REGION_NAMES = {
+      const regionNames = {
         US: "United States",
         EU: "European Union",
-        CA: "Canada"
+        Canada: "Canada"
       };
 
-      const marketView = document.getElementById("marketView");
-      const moduleView = document.getElementById("moduleView");
-      const selectedRegionBadge =
-        document.getElementById("selectedRegionBadge");
-      const moduleEyebrow = document.getElementById("moduleEyebrow");
-      const inventoryLink = document.getElementById("inventoryLink");
-      const salesLink = document.getElementById("salesLink");
-      const eventsLink = document.getElementById("eventsLink");
-      const backButton = document.getElementById("backButton");
-
-      function getCurrentRegion() {
-        const params = new URLSearchParams(window.location.search);
-
-        return (params.get("region") || "").trim().toUpperCase();
-      }
-
-      function showMarketView() {
-        marketView.classList.remove("hidden");
-        moduleView.classList.remove("visible");
-
-        document.title =
-          "Stark Premium | Regional Command Center";
-      }
-
-      function showModuleView(region) {
-        if (!VALID_REGIONS.includes(region)) {
-          showMarketView();
-          return;
-        }
-
-        marketView.classList.add("hidden");
-        moduleView.classList.add("visible");
-
-        selectedRegionBadge.textContent = region;
-        moduleEyebrow.textContent = REGION_NAMES[region];
-
-        inventoryLink.href =
-          `inventory-dashboard.html?region=${encodeURIComponent(region)}`;
-
-        salesLink.href =
-          `sales-analysis.html?region=${encodeURIComponent(region)}`;
-
-        eventsLink.href =
-          `events.html?region=${encodeURIComponent(region)}`;
-
-        document.title =
-          `${REGION_NAMES[region]} | Stark Premium`;
-
-        window.scrollTo({
-          top: 0,
-          behavior: "instant"
-        });
-      }
-
-      function navigateToRegion(region) {
-        const targetUrl =
-          `${window.location.pathname}?region=${encodeURIComponent(region)}`;
-
-        window.history.pushState(
-          { region },
-          "",
-          targetUrl
+      const parameters =
+        new URLSearchParams(
+          location.search
         );
 
-        showModuleView(region);
+      const region =
+        parameters.get("region");
+
+      if (!regionNames[region]) {
+        document
+          .getElementById(
+            "region-screen"
+          )
+          .classList.remove("hidden");
+
+        return;
       }
 
       document
-        .querySelectorAll("[data-region]")
-        .forEach((regionCard) => {
-          regionCard.addEventListener("click", (event) => {
-            event.preventDefault();
+        .getElementById(
+          "module-screen"
+        )
+        .classList.remove("hidden");
 
-            navigateToRegion(regionCard.dataset.region);
-          });
-        });
+      document
+        .getElementById(
+          "region-name"
+        )
+        .textContent =
+          regionNames[region];
 
-      backButton.addEventListener("click", () => {
-        window.history.pushState(
-          {},
-          "",
-          window.location.pathname
-        );
+      document
+        .getElementById(
+          "region-pill"
+        )
+        .textContent =
+          region === "Canada"
+            ? "CA"
+            : region;
 
-        showMarketView();
+      const routes = [
+        [
+          "inventory-link",
+          "inventory-dashboard.html"
+        ],
+        [
+          "sales-link",
+          "sales.html"
+        ],
+        [
+          "events-link",
+          "events.html"
+        ],
+        [
+          "freight-link",
+          "freight-estimator.html"
+        ]
+      ];
 
-        window.scrollTo({
-          top: 0,
-          behavior: "instant"
-        });
-      });
-
-      window.addEventListener("popstate", () => {
-        const region = getCurrentRegion();
-
-        if (VALID_REGIONS.includes(region)) {
-          showModuleView(region);
-        } else {
-          showMarketView();
+      routes.forEach(
+        ([elementId, path]) => {
+          document
+            .getElementById(elementId)
+            .href =
+              path +
+              "?region=" +
+              encodeURIComponent(region);
         }
-      });
-
-      const initialRegion = getCurrentRegion();
-
-      if (VALID_REGIONS.includes(initialRegion)) {
-        showModuleView(initialRegion);
-      } else {
-        showMarketView();
-      }
+      );
     })();
   </script>
 </body>
