@@ -98,7 +98,10 @@
   </header>
 
   <main class="inventory-main">
-    <nav class="inventory-nav" aria-label="Inventory analysis pages">
+    <nav
+      class="inventory-nav"
+      aria-label="Inventory analysis pages"
+    >
       <a
         class="inventory-overview-link"
         data-region-link
@@ -153,7 +156,9 @@
       <div>
         <p class="eyebrow">
           Inventory action •
-          <span data-region-name>United States</span>
+          <span data-region-name>
+            United States
+          </span>
         </p>
 
         <h1>Reorder Report</h1>
@@ -164,13 +169,21 @@
         </p>
       </div>
 
-      <div class="file-status" data-file-status>
+      <div
+        class="file-status"
+        data-file-status
+      >
         No Item Sales Report uploaded
       </div>
     </section>
 
-    <div class="hidden" data-requires-data>
-      <section class="inventory-filter-bar reorder-filters">
+    <div
+      class="hidden"
+      data-requires-data
+    >
+      <section
+        class="inventory-filter-bar reorder-filters"
+      >
         <label>
           Brand
           <select id="reorder-brand"></select>
@@ -203,9 +216,14 @@
         </button>
       </section>
 
-      <p class="result-count" id="reorder-result-count"></p>
+      <p
+        class="result-count"
+        id="reorder-result-count"
+      ></p>
 
-      <section class="inventory-panel report-table-panel">
+      <section
+        class="inventory-panel report-table-panel"
+      >
         <div class="reorder-title">
           Reorder Report — Active Brands / Status: LIVE, FASHION,
           BACKORDER / Reorder Required Only
@@ -213,11 +231,14 @@
 
         <div class="reorder-note">
           Recommended quantity =
-          (On Hand − Open Orders From Client) × Lead Time + Avg/Month.
+          ((On Hand + Open Supplier Qty due within 15 days −
+          Open Orders From Client) × Lead Time) + Avg/Month.
           Negative results are set to zero and quantities are rounded up.
         </div>
 
-        <div class="inventory-table-wrap inventory-long-table">
+        <div
+          class="inventory-table-wrap inventory-long-table"
+        >
           <table class="wide-reorder-table">
             <thead>
               <tr>
