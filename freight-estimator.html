@@ -3,18 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta
-    name="description"
-    content="Carton, parcel, pallet and freight planning estimator for Stark Premium."
-  >
+  <meta name="description" content="Carton, parcel, pallet and freight planning estimator for Stark Premium.">
   <title>Freight Estimator | Stark Premium</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link
-    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
-    rel="stylesheet"
-  >
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
 
   <style>
     :root {
@@ -26,11 +20,11 @@
       --muted: #687b91;
       --line: #cfdeea;
       --soft: #f2f7fb;
-      --white: #ffffff;
+      --white: #fff;
       --green: #0f9d7d;
       --amber: #d58a18;
       --red: #d8445c;
-      --shadow: 0 18px 48px rgba(20, 55, 86, 0.12);
+      --shadow: 0 18px 48px rgba(20, 55, 86, .12);
     }
 
     * {
@@ -45,11 +39,7 @@
       margin: 0;
       color: var(--ink);
       background:
-        radial-gradient(
-          circle at 92% 8%,
-          rgba(15, 164, 156, 0.12),
-          transparent 25%
-        ),
+        radial-gradient(circle at 92% 8%, rgba(15, 164, 156, .12), transparent 25%),
         #f3f8fc;
       font-family: "DM Sans", sans-serif;
     }
@@ -69,15 +59,15 @@
     }
 
     .app-header {
-      min-height: 112px;
+      min-height: 106px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 24px;
-      padding: 20px clamp(22px, 4vw, 70px);
+      padding: 18px clamp(22px, 4vw, 70px);
       border-bottom: 1px solid var(--line);
-      background: rgba(255, 255, 255, 0.94);
-      backdrop-filter: blur(14px);
+      background: rgba(255, 255, 255, .95);
+      backdrop-filter: blur(16px);
     }
 
     .brand {
@@ -89,14 +79,14 @@
     }
 
     .brand-mark {
-      width: 68px;
-      height: 68px;
+      width: 66px;
+      height: 66px;
       display: grid;
       place-items: center;
       border-radius: 20px;
       color: #fff;
       background: linear-gradient(145deg, #092b4d, #1b5b86);
-      box-shadow: 0 14px 28px rgba(9, 43, 77, 0.2);
+      box-shadow: 0 14px 28px rgba(9, 43, 77, .2);
       font: 800 25px/1 "Manrope";
     }
 
@@ -105,14 +95,14 @@
       display: block;
       color: #00877f;
       font-weight: 800;
-      letter-spacing: 0.15em;
+      letter-spacing: .14em;
       text-transform: uppercase;
     }
 
     .brand strong {
       display: block;
       margin-top: 4px;
-      font: 800 clamp(20px, 2vw, 29px)/1.1 "Manrope";
+      font: 800 clamp(20px, 2vw, 28px)/1.1 "Manrope";
     }
 
     .header-actions {
@@ -121,7 +111,8 @@
       gap: 11px;
     }
 
-    .header-actions label      display: flex;
+    .header-actions label {
+      display: flex;
       align-items: center;
       gap: 10px;
       color: var(--muted);
@@ -139,20 +130,25 @@
     input,
     select {
       width: 100%;
-      min-height: 46px;
+      min-height: 47px;
       padding: 0 13px;
       border: 1px solid var(--line);
       border-radius: 11px;
       outline: 0;
       color: var(--ink);
       background: #fff;
-      transition: 0.2s;
+      transition: .2s;
     }
 
     input:focus,
     select:focus {
       border-color: #18a79f;
-      box-shadow: 0 0 0 4px rgba(24, 167, 159, 0.12);
+      box-shadow: 0 0 0 4px rgba(24, 167, 159, .12);
+    }
+
+    select:disabled {
+      color: #8c9aa9;
+      background: #edf3f7;
     }
 
     .button {
@@ -163,19 +159,19 @@
       color: var(--ink);
       background: #fff;
       font-weight: 800;
-      transition: 0.2s;
+      transition: .2s;
     }
 
     .button:hover {
       transform: translateY(-1px);
-      box-shadow: 0 8px 18px rgba(16, 56, 89, 0.1);
+      box-shadow: 0 8px 18px rgba(16, 56, 89, .1);
     }
 
     .button-primary {
       border-color: #0d9c94;
       color: #fff;
       background: linear-gradient(135deg, #0aa69c, #087f7d);
-      box-shadow: 0 10px 24px rgba(8, 143, 137, 0.2);
+      box-shadow: 0 10px 24px rgba(8, 143, 137, .2);
     }
 
     .button-danger {
@@ -189,7 +185,7 @@
     }
 
     .button:disabled {
-      opacity: 0.45;
+      opacity: .45;
       cursor: not-allowed;
       transform: none;
       box-shadow: none;
@@ -205,7 +201,7 @@
       display: flex;
       align-items: center;
       gap: 9px;
-      margin-bottom: 24px;
+      margin-bottom: 22px;
       padding: 9px;
       border: 1px solid var(--line);
       border-radius: 18px;
@@ -234,27 +230,22 @@
     .nav-bar a.active {
       color: #fff;
       background: linear-gradient(135deg, #123d68, #205c87);
-      box-shadow: 0 10px 24px rgba(15, 55, 91, 0.2);
+      box-shadow: 0 10px 24px rgba(15, 55, 91, .2);
     }
 
     .hero {
       position: relative;
       overflow: hidden;
-      min-height: 202px;
+      min-height: 185px;
       display: flex;
       align-items: center;
       justify-content: space-between;
       gap: 26px;
       margin-bottom: 22px;
-      padding: 38px clamp(28px, 4.5vw, 62px);
+      padding: 34px clamp(28px, 4.5vw, 62px);
       border-radius: 27px;
       color: #fff;
-      background: linear-gradient(
-        110deg,
-        #082b50 0%,
-        #194e77 66%,
-        #15838a 120%
-      );
+      background: linear-gradient(110deg, #082b50 0%, #194e77 66%, #15838a 120%);
       box-shadow: var(--shadow);
     }
 
@@ -265,11 +256,11 @@
       top: -190px;
       width: 445px;
       height: 445px;
-      border: 1px solid rgba(255, 255, 255, 0.16);
+      border: 1px solid rgba(255, 255, 255, .16);
       border-radius: 50%;
       box-shadow:
-        0 0 0 55px rgba(255, 255, 255, 0.04),
-        0 0 0 110px rgba(255, 255, 255, 0.025);
+        0 0 0 55px rgba(255, 255, 255, .04),
+        0 0 0 110px rgba(255, 255, 255, .025);
     }
 
     .hero > div {
@@ -278,9 +269,9 @@
     }
 
     .hero h1 {
-      margin: 10px 0;
-      font: 800 clamp(36px, 4.6vw, 61px)/1 "Manrope";
-      letter-spacing: -0.045em;
+      margin: 9px 0;
+      font: 800 clamp(35px, 4.3vw, 58px)/1 "Manrope";
+      letter-spacing: -.045em;
     }
 
     .hero p:last-child {
@@ -294,9 +285,9 @@
     .hero-badge {
       min-width: 230px;
       padding: 18px 21px;
-      border: 1px solid rgba(255, 255, 255, 0.24);
+      border: 1px solid rgba(255, 255, 255, .24);
       border-radius: 17px;
-      background: rgba(255, 255, 255, 0.1);
+      background: rgba(255, 255, 255, .1);
       backdrop-filter: blur(8px);
     }
 
@@ -306,7 +297,7 @@
       font-size: 12px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.11em;
+      letter-spacing: .11em;
     }
 
     .hero-badge strong {
@@ -317,9 +308,7 @@
 
     .workspace {
       display: grid;
-      grid-template-columns:
-        minmax(370px, 0.9fr)
-        minmax(620px, 1.55fr);
+      grid-template-columns: minmax(385px, .9fr) minmax(620px, 1.55fr);
       gap: 22px;
       align-items: start;
     }
@@ -354,7 +343,7 @@
     .panel-head p {
       margin: 6px 0 0;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 14px;
     }
 
     .panel-body {
@@ -371,10 +360,10 @@
       display: grid;
       gap: 7px;
       color: var(--muted);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.055em;
+      letter-spacing: .045em;
     }
 
     .span-2 {
@@ -387,14 +376,14 @@
       padding-top: 14px;
       border-top: 1px solid var(--line);
       color: var(--teal);
-      font-size: 12px;
+      font-size: 13px;
       font-weight: 800;
-      letter-spacing: 0.13em;
+      letter-spacing: .11em;
       text-transform: uppercase;
     }
 
     .check-row {
-      min-height: 46px;
+      min-height: 47px;
       display: flex !important;
       grid-auto-flow: column;
       justify-content: start;
@@ -415,7 +404,7 @@
 
     .check-row span {
       color: var(--ink);
-      font-size: 13px;
+      font-size: 14px;
       text-transform: none;
       letter-spacing: 0;
     }
@@ -424,7 +413,7 @@
       display: block;
       margin-top: 3px;
       color: #8291a3;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 500;
       line-height: 1.35;
       text-transform: none;
@@ -470,6 +459,7 @@
     .item-row small {
       margin-top: 3px;
       color: var(--muted);
+      font-size: 13px;
       line-height: 1.4;
     }
 
@@ -520,6 +510,7 @@
     .results-empty p {
       max-width: 420px;
       margin: 8px 0 0;
+      font-size: 16px;
       line-height: 1.5;
     }
 
@@ -540,7 +531,7 @@
       color: #8ce5dc;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.13em;
+      letter-spacing: .13em;
     }
 
     .recommendation h2 {
@@ -558,9 +549,9 @@
     .mode-chip {
       flex: none;
       padding: 13px 17px;
-      border: 1px solid rgba(255, 255, 255, 0.25);
+      border: 1px solid rgba(255, 255, 255, .25);
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.12);
+      background: rgba(255, 255, 255, .12);
       font-weight: 800;
     }
 
@@ -570,7 +561,7 @@
       gap: 10px;
       margin-top: 12px;
       color: #c8dce9;
-      font-size: 12px;
+      font-size: 13px;
     }
 
     .confidence-track {
@@ -578,7 +569,7 @@
       height: 7px;
       overflow: hidden;
       border-radius: 999px;
-      background: rgba(255, 255, 255, 0.16);
+      background: rgba(255, 255, 255, .16);
     }
 
     .confidence-track b {
@@ -608,10 +599,10 @@
     }
 
     .kpi span {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 800;
       text-transform: uppercase;
-      letter-spacing: 0.07em;
+      letter-spacing: .06em;
     }
 
     .kpi strong {
@@ -621,7 +612,7 @@
     }
 
     .kpi small {
-      font-size: 10px;
+      font-size: 12px;
       line-height: 1.35;
     }
 
@@ -644,7 +635,7 @@
 
     .result-card h3 {
       margin: 0 0 11px;
-      font: 800 16px/1.2 "Manrope";
+      font: 800 17px/1.2 "Manrope";
     }
 
     .status-line {
@@ -662,11 +653,11 @@
 
     .status-line span {
       color: var(--muted);
-      font-size: 12px;
+      font-size: 13px;
     }
 
     .status-line strong {
-      font-size: 12px;
+      font-size: 13px;
       text-align: right;
     }
 
@@ -706,12 +697,12 @@
     table {
       width: 100%;
       border-collapse: collapse;
-      font-size: 12px;
+      font-size: 13px;
     }
 
     th,
     td {
-      padding: 10px 9px;
+      padding: 11px 10px;
       border: 1px solid var(--line);
       text-align: center;
       white-space: nowrap;
@@ -720,9 +711,9 @@
     th {
       color: #fff;
       background: #184f78;
-      font-size: 10px;
+      font-size: 11px;
       text-transform: uppercase;
-      letter-spacing: 0.045em;
+      letter-spacing: .04em;
     }
 
     tbody tr:nth-child(even) {
@@ -735,12 +726,12 @@
     }
 
     .warning {
-      padding: 10px 12px;
+      padding: 11px 13px;
       border-left: 4px solid var(--amber);
       border-radius: 8px;
       color: #65450f;
       background: #fff8e9;
-      font-size: 12px;
+      font-size: 13px;
       line-height: 1.45;
     }
 
@@ -772,7 +763,7 @@
     .formula p {
       margin: 0;
       color: var(--muted);
-      font-size: 13px;
+      font-size: 14px;
       line-height: 1.6;
     }
 
@@ -780,7 +771,7 @@
       padding: 21px 0;
       color: var(--muted);
       text-align: center;
-      font-size: 12px;
+      font-size: 13px;
     }
 
     .toast {
@@ -792,12 +783,12 @@
       border-radius: 12px;
       color: #fff;
       background: #0a3559;
-      box-shadow: 0 16px 40px rgba(9, 43, 77, 0.25);
+      box-shadow: 0 16px 40px rgba(9, 43, 77, .25);
       font-weight: 700;
       opacity: 0;
       transform: translateY(10px);
       pointer-events: none;
-      transition: 0.25s;
+      transition: .25s;
     }
 
     .toast.show {
@@ -847,7 +838,7 @@
       .hero {
         align-items: flex-start;
         flex-direction: column;
-        padding: 32px 24px;
+        padding: 30px 24px;
       }
 
       .hero-badge {
@@ -956,6 +947,7 @@
   <header class="app-header">
     <a class="brand" href="index.html">
       <span class="brand-mark">S</span>
+
       <span>
         <small>Stark Premium</small>
         <strong>Regional Freight Intelligence</strong>
@@ -965,6 +957,7 @@
     <div class="header-actions">
       <label>
         Region
+
         <select id="region-select">
           <option value="US">US</option>
           <option value="EU">EU</option>
@@ -979,9 +972,7 @@
   <main class="shell">
     <nav class="nav-bar">
       <a id="back-modules" href="index.html">← Regional modules</a>
-      <a id="inventory-link" href="inventory-dashboard.html">
-        Inventory Dashboard
-      </a>
+      <a id="inventory-link" href="inventory-dashboard.html">Inventory Dashboard</a>
       <a id="events-link" href="events.html">Events</a>
       <a class="active" href="#">Freight Estimator</a>
     </nav>
@@ -996,9 +987,10 @@
         <h1>Freight Estimator</h1>
 
         <p>
-          Convert unit measurements into a carton, parcel and pallet plan.
-          Screen UPS and FedEx limits, estimate LTL density class and compare
-          parcel, LTL and FTL modes before requesting live rates.
+          Convert product measurements into an optimized shipping-box,
+          parcel and pallet plan. Screen carrier limits, calculate
+          dimensional weight, estimate freight class and compare parcel,
+          LTL and FTL modes.
         </p>
       </div>
 
@@ -1014,7 +1006,7 @@
           <div>
             <span class="eyebrow">Shipment builder</span>
             <h2>Packaging inputs</h2>
-            <p>Enter packed product measurements for the strongest estimate.</p>
+            <p>Use exact packed measurements whenever available.</p>
           </div>
         </div>
 
@@ -1111,6 +1103,19 @@
             </label>
 
             <label>
+              Dimensions represent
+              <select id="dimension-type">
+                <option value="product" selected>
+                  Bare product — add protection
+                </option>
+
+                <option value="packed">
+                  Packed unit — no added padding
+                </option>
+              </select>
+            </label>
+
+            <label>
               Protection
               <select id="item-protection">
                 <option value="minimal">Retail boxed / minimal</option>
@@ -1129,8 +1134,9 @@
                 step="1"
                 placeholder="Auto optimize"
               >
+
               <small class="input-note">
-                Leave blank for automatic packing.
+                Leave blank for automatic carton optimization.
               </small>
             </label>
 
@@ -1255,7 +1261,11 @@
               Calculate shipment plan
             </button>
 
-            <button class="button button-danger" id="clear" type="button">
+            <button
+              class="button button-danger"
+              id="clear"
+              type="button"
+            >
               Clear
             </button>
           </div>
@@ -1294,9 +1304,10 @@
         <div id="results-empty" class="results-empty">
           <i>▦</i>
           <strong>Build your shipment</strong>
+
           <p>
-            Add one or more items, then calculate to compare parcel, pallet
-            and truckload options.
+            Add one or more items, then calculate the recommended box,
+            pallet and shipping mode.
           </p>
         </div>
 
@@ -1339,17 +1350,17 @@
             </article>
 
             <article class="result-card full">
-              <h3>Shipping box and carton plan</h3>
+              <h3>Recommended shipping box plan</h3>
 
               <div class="table-wrap">
                 <table>
                   <thead>
                     <tr>
                       <th>Item</th>
-                      <th>Units / carton</th>
-                      <th>Cartons</th>
-                      <th>Estimated box size</th>
-                      <th>Actual / carton</th>
+                      <th>Units / box</th>
+                      <th>Boxes</th>
+                      <th>Recommended box size</th>
+                      <th>Actual / box</th>
                       <th>UPS DIM</th>
                       <th>FedEx DIM</th>
                       <th>Parcel status</th>
@@ -1368,10 +1379,10 @@
                 <table>
                   <thead>
                     <tr>
-                      <th>Carton group</th>
-                      <th>Cartons / layer</th>
+                      <th>Box group</th>
+                      <th>Boxes / layer</th>
                       <th>Layers / pallet</th>
-                      <th>Cartons / pallet</th>
+                      <th>Boxes / pallet</th>
                       <th>Estimated pallets</th>
                       <th>Loaded height</th>
                       <th>Loaded weight</th>
@@ -1396,20 +1407,17 @@
       <h3>Calculation standard</h3>
 
       <p>
-        Package dimensions are rounded up before DIM and size screening.
-        Billable weight is the greater of rounded actual or dimensional
-        weight. UPS screening uses 150 lb, 108-inch maximum length and
-        165-inch length-plus-girth. FedEx screening uses 150 lb and
-        165-inch length-plus-girth, with oversize exposure above 96 inches
-        in length or 130 inches length-plus-girth. Pallet calculations use
-        the selected footprint, actual carton layer fit, loaded-height limit
-        and pallet-weight limit. LTL freight class is density guidance only.
+        Shipping-box dimensions are rounded up before DIM-weight and
+        carrier-size screening. Billable parcel weight is the greater of
+        rounded actual weight or dimensional weight. Pallet calculations
+        test carton orientations, mixed orientations on each layer, loaded
+        height and pallet weight. Freight class remains a density-based
+        estimate and must be verified against the current NMFC commodity.
       </p>
     </section>
 
     <footer class="footer">
-      Stark Premium • Regional shipment planning • Calculations remain in
-      this browser
+      Stark Premium • Regional shipment planning • Calculations remain in this browser
     </footer>
   </main>
 
@@ -1419,7 +1427,7 @@
     (() => {
       "use strict";
 
-      const $ = (id) => document.getElementById(id);
+      const $ = id => document.getElementById(id);
 
       const REGIONS = {
         US: "United States",
@@ -1427,11 +1435,6 @@
         CA: "Canada"
       };
 
-      /*
-       * Estimated cushioning around each outside edge of the item.
-       * These are planning assumptions and should be replaced by actual
-       * packed dimensions whenever they are available.
-       */
       const PROTECTION_PADDING = {
         minimal: 0.25,
         standard: 0.75,
@@ -1440,8 +1443,8 @@
       };
 
       const TRAILER = {
-        palletPositions: 26,
-        maximumPayload: 45000
+        positions: 26,
+        payload: 45000
       };
 
       const PALLET_BASE_HEIGHT = 6;
@@ -1451,35 +1454,37 @@
         lastSummary: null
       };
 
-      const number = (value, digits = 0) =>
+      const formatNumber = (value, digits = 0) =>
         Number(value).toLocaleString("en-US", {
           minimumFractionDigits: 0,
           maximumFractionDigits: digits
         });
 
-      const ceilTwo = (value) => Math.ceil(value * 100) / 100;
+      const ceilTwo = value =>
+        Math.ceil(value * 100) / 100;
 
-      const isPositive = (value) =>
+      const isPositive = value =>
         Number.isFinite(value) && value > 0;
 
-      const valueOf = (id) => Number($(id).value);
+      const numericValue = id =>
+        Number($(id).value);
 
-      const escapeHtml = (value) =>
+      const escapeHtml = value =>
         String(value ?? "").replace(
           /[&<>"]/g,
-          (character) =>
-            ({
-              "&": "&amp;",
-              "<": "&lt;",
-              ">": "&gt;",
-              '"': "&quot;"
-            })[character]
+          character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            '"': "&quot;"
+          })[character]
         );
 
       const plural = (value, word) =>
-        `${number(value)} ${word}${value === 1 ? "" : "s"}`;
+        `${formatNumber(value)} ${word}${value === 1 ? "" : "s"}`;
 
-      let region = new URLSearchParams(location.search).get("region");
+      let region =
+        new URLSearchParams(location.search).get("region");
 
       if (!REGIONS[region]) {
         region = "US";
@@ -1495,11 +1500,12 @@
           ["inventory-link", "inventory-dashboard.html"],
           ["events-link", "events.html"]
         ].forEach(([id, path]) => {
-          $(id).href = `${path}?region=${encodeURIComponent(region)}`;
+          $(id).href =
+            `${path}?region=${encodeURIComponent(region)}`;
         });
       }
 
-      $("region-select").addEventListener("change", (event) => {
+      $("region-select").addEventListener("change", event => {
         location.href =
           `freight-estimator.html?region=${encodeURIComponent(
             event.target.value
@@ -1533,7 +1539,7 @@
 
         return candidates.filter(
           (candidate, index) =>
-            candidates.findIndex((other) =>
+            candidates.findIndex(other =>
               other.every(
                 (measurement, dimensionIndex) =>
                   measurement === candidate[dimensionIndex]
@@ -1559,7 +1565,7 @@
 
       function roundedDimensions(dimensions) {
         return dimensions
-          .map((dimension) => Math.ceil(dimension))
+          .map(Math.ceil)
           .sort((a, b) => b - a);
       }
 
@@ -1575,53 +1581,68 @@
         actualWeight,
         carrierName
       ) {
-        const [length] = roundedDimensions(dimensions);
-        const combinedSize = lengthAndGirth(dimensions);
+        const [length] =
+          roundedDimensions(dimensions);
+
+        const combinedSize =
+          lengthAndGirth(dimensions);
 
         const eligible =
           actualWeight <= 150 &&
           combinedSize <= 165 &&
-          (carrierName !== "UPS" || length <= 108);
+          (
+            carrierName !== "UPS" ||
+            length <= 108
+          );
 
         return {
           eligible,
-          oversize: length > 96 || combinedSize > 130,
+          oversize:
+            length > 96 ||
+            combinedSize > 130,
           length,
           combinedSize
         };
       }
 
-      /*
-       * Finds a rectangular grid configuration for a requested number
-       * of units. Every valid item orientation is evaluated.
-       */
-      function findBestCarton(item, units) {
+      function findBestShippingBox(item, units) {
         let best = null;
 
         const padding =
-          PROTECTION_PADDING[item.protection];
+          item.dimensionType === "packed"
+            ? 0
+            : PROTECTION_PADDING[item.protection];
 
-        itemOrientations(item).forEach((orientation) => {
-          for (let columns = 1; columns <= units; columns += 1) {
-            const maximumRows =
-              Math.ceil(units / columns);
-
+        itemOrientations(item).forEach(orientation => {
+          for (
+            let columns = 1;
+            columns <= units;
+            columns += 1
+          ) {
             for (
               let rows = 1;
-              rows <= maximumRows;
+              rows <= Math.ceil(units / columns);
               rows += 1
             ) {
               const layers =
-                Math.ceil(units / (columns * rows));
+                Math.ceil(
+                  units / (columns * rows)
+                );
 
               const availableSlots =
                 columns * rows * layers;
 
-              const dimensions = roundedDimensions([
-                orientation[0] * columns + padding * 2,
-                orientation[1] * rows + padding * 2,
-                orientation[2] * layers + padding * 2
-              ]);
+              const dimensions =
+                roundedDimensions([
+                  orientation[0] * columns +
+                    padding * 2,
+
+                  orientation[1] * rows +
+                    padding * 2,
+
+                  orientation[2] * layers +
+                    padding * 2
+                ]);
 
               const volume =
                 dimensions[0] *
@@ -1629,7 +1650,8 @@
                 dimensions[2];
 
               const unusedRatio =
-                (availableSlots - units) / units;
+                (availableSlots - units) /
+                Math.max(1, units);
 
               const aspectRatio =
                 dimensions[0] /
@@ -1640,13 +1662,18 @@
                 (
                   1 +
                   unusedRatio * 0.06 +
-                  Math.max(0, aspectRatio - 5) * 0.015
+                  Math.max(0, aspectRatio - 5) *
+                    0.015
                 );
 
               if (!best || score < best.score) {
                 best = {
                   dimensions,
-                  grid: [columns, rows, layers],
+                  grid: [
+                    columns,
+                    rows,
+                    layers
+                  ],
                   score
                 };
               }
@@ -1657,11 +1684,7 @@
         return best;
       }
 
-      /*
-       * Selects units per carton by comparing actual weight,
-       * dimensional weight, package count and oversize exposure.
-       */
-      function chooseUnitsPerCarton(item, settings) {
+      function chooseUnitsPerBox(item, settings) {
         if (isPositive(item.manualUnits)) {
           return Math.min(
             item.quantity,
@@ -1669,21 +1692,23 @@
           );
         }
 
-        const maximumByWeight = Math.max(
-          1,
-          Math.floor(
-            (
-              settings.maximumCartonWeight -
-              settings.cartonTare
-            ) / item.weight
-          )
-        );
+        const maximumByWeight =
+          Math.max(
+            1,
+            Math.floor(
+              (
+                settings.maxCartonWeight -
+                settings.cartonTare
+              ) / item.weight
+            )
+          );
 
-        const searchLimit = Math.min(
-          item.quantity,
-          maximumByWeight,
-          200
-        );
+        const searchLimit =
+          Math.min(
+            item.quantity,
+            maximumByWeight,
+            200
+          );
 
         let best = null;
 
@@ -1692,50 +1717,57 @@
           units <= searchLimit;
           units += 1
         ) {
-          const carton = findBestCarton(item, units);
+          const box =
+            findBestShippingBox(item, units);
 
           const actualWeight =
             item.weight * units +
             settings.cartonTare;
 
-          const ups = carrierQualification(
-            carton.dimensions,
-            actualWeight,
-            "UPS"
-          );
+          const ups =
+            carrierQualification(
+              box.dimensions,
+              actualWeight,
+              "UPS"
+            );
 
-          const fedex = carrierQualification(
-            carton.dimensions,
-            actualWeight,
-            "FedEx"
-          );
+          const fedex =
+            carrierQualification(
+              box.dimensions,
+              actualWeight,
+              "FedEx"
+            );
 
           if (!ups.eligible && !fedex.eligible) {
             continue;
           }
 
-          const cartonVolume =
-            carton.dimensions.reduce(
-              (total, dimension) =>
-                total * dimension,
+          const volume =
+            box.dimensions.reduce(
+              (total, measurement) =>
+                total * measurement,
               1
             );
 
-          const upsBillable = Math.max(
-            Math.ceil(actualWeight),
-            Math.ceil(
-              cartonVolume /
-              settings.upsDivisor
-            )
-          );
+          const upsBillable =
+            Math.max(
+              Math.ceil(actualWeight),
+              Math.ceil(
+                volume / settings.upsDivisor
+              )
+            );
 
-          const fedexBillable = Math.max(
-            Math.ceil(actualWeight),
-            Math.ceil(cartonVolume / 139)
-          );
+          const fedexBillable =
+            Math.max(
+              Math.ceil(actualWeight),
+              Math.ceil(volume / 139)
+            );
 
           const bestBillable =
-            Math.min(upsBillable, fedexBillable);
+            Math.min(
+              upsBillable,
+              fedexBillable
+            );
 
           let score =
             bestBillable / units;
@@ -1751,7 +1783,8 @@
               bestBillable / units +
               0.18 / units +
               (
-                ups.oversize || fedex.oversize
+                ups.oversize ||
+                fedex.oversize
                   ? 12 / units
                   : 0
               );
@@ -1761,7 +1794,8 @@
             !best ||
             score < best.score - 0.0001 ||
             (
-              Math.abs(score - best.score) < 0.0001 &&
+              Math.abs(score - best.score) <
+                0.0001 &&
               units > best.units
             )
           ) {
@@ -1775,58 +1809,63 @@
         return best ? best.units : 1;
       }
 
-      function buildCartonPlans(item, settings) {
-        const unitsPerCarton =
-          chooseUnitsPerCarton(item, settings);
+      function createBoxPlans(item, settings) {
+        const unitsPerBox =
+          chooseUnitsPerBox(item, settings);
 
-        const fullCartons = Math.floor(
-          item.quantity / unitsPerCarton
-        );
+        const fullBoxes =
+          Math.floor(
+            item.quantity / unitsPerBox
+          );
 
-        const remainingUnits =
-          item.quantity % unitsPerCarton;
+        const remainder =
+          item.quantity % unitsPerBox;
 
         const groups = [];
 
-        if (fullCartons) {
+        if (fullBoxes) {
           groups.push({
-            units: unitsPerCarton,
-            count: fullCartons
+            units: unitsPerBox,
+            count: fullBoxes
           });
         }
 
-        if (remainingUnits) {
+        if (remainder) {
           groups.push({
-            units: remainingUnits,
+            units: remainder,
             count: 1
           });
         }
 
-        return groups.map((group) => {
-          const carton =
-            findBestCarton(item, group.units);
+        return groups.map(group => {
+          const box =
+            findBestShippingBox(
+              item,
+              group.units
+            );
 
           const dimensions =
-            carton.dimensions;
+            box.dimensions;
 
           const volume =
             dimensions.reduce(
-              (total, dimension) =>
-                total * dimension,
+              (total, measurement) =>
+                total * measurement,
               1
             );
 
-          const actualWeight = ceilTwo(
-            item.weight * group.units +
-            settings.cartonTare
-          );
+          const actualWeight =
+            ceilTwo(
+              item.weight * group.units +
+              settings.cartonTare
+            );
 
-          const upsDimensionalWeight =
+          const upsDim =
             Math.ceil(
               volume / settings.upsDivisor
             );
 
-          const fedexDimensionalWeight =
+          const fedexDim =
             Math.ceil(volume / 139);
 
           return {
@@ -1837,149 +1876,259 @@
             dimensions,
             volume,
             actualWeight,
-            upsDimensionalWeight,
-            fedexDimensionalWeight,
-            upsBillableWeight: Math.max(
-              Math.ceil(actualWeight),
-              upsDimensionalWeight
-            ),
-            fedexBillableWeight: Math.max(
-              Math.ceil(actualWeight),
-              fedexDimensionalWeight
-            ),
-            ups: carrierQualification(
-              dimensions,
-              actualWeight,
-              "UPS"
-            ),
-            fedex: carrierQualification(
-              dimensions,
-              actualWeight,
-              "FedEx"
-            )
+            upsDim,
+            fedexDim,
+
+            upsBillable:
+              Math.max(
+                Math.ceil(actualWeight),
+                upsDim
+              ),
+
+            fedexBillable:
+              Math.max(
+                Math.ceil(actualWeight),
+                fedexDim
+              ),
+
+            ups:
+              carrierQualification(
+                dimensions,
+                actualWeight,
+                "UPS"
+              ),
+
+            fedex:
+              carrierQualification(
+                dimensions,
+                actualWeight,
+                "FedEx"
+              ),
+
+            upright: item.upright
           };
         });
       }
 
-      function cartonsPerLayer(
+      /*
+       * Shelf-based mixed-orientation pallet-layer solver.
+       * It tests straight and rotated rows in both pallet directions.
+       */
+      function maximumBoxesPerLayer(
         palletLength,
         palletWidth,
-        cartonLength,
-        cartonWidth
+        boxLength,
+        boxWidth
       ) {
-        const firstOrientation =
-          Math.floor(palletLength / cartonLength) *
-          Math.floor(palletWidth / cartonWidth);
+        let best = 0;
 
-        const rotatedOrientation =
-          Math.floor(palletLength / cartonWidth) *
-          Math.floor(palletWidth / cartonLength);
+        function solve(
+          length,
+          width,
+          firstLength,
+          firstWidth
+        ) {
+          const maximumRows =
+            Math.floor(width / firstWidth);
 
-        return Math.max(
-          firstOrientation,
-          rotatedOrientation
+          for (
+            let rows = 0;
+            rows <= maximumRows;
+            rows += 1
+          ) {
+            const usedWidth =
+              rows * firstWidth;
+
+            const firstCount =
+              rows *
+              Math.floor(
+                length / firstLength
+              );
+
+            const remainingWidth =
+              width - usedWidth;
+
+            const rotatedCount =
+              Math.floor(
+                remainingWidth /
+                firstLength
+              ) *
+              Math.floor(
+                length / firstWidth
+              );
+
+            best = Math.max(
+              best,
+              firstCount + rotatedCount
+            );
+          }
+        }
+
+        solve(
+          palletLength,
+          palletWidth,
+          boxLength,
+          boxWidth
         );
+
+        solve(
+          palletWidth,
+          palletLength,
+          boxLength,
+          boxWidth
+        );
+
+        solve(
+          palletLength,
+          palletWidth,
+          boxWidth,
+          boxLength
+        );
+
+        solve(
+          palletWidth,
+          palletLength,
+          boxWidth,
+          boxLength
+        );
+
+        return best;
       }
 
-      /*
-       * Tests each carton orientation against pallet footprint,
-       * height and weight capacity.
-       */
-      function palletizeCartonGroup(plan, settings) {
+      function palletizeBoxGroup(plan, settings) {
         let best = null;
 
-        uniqueOrientations(plan.dimensions).forEach(
-          (orientation) => {
-            const perLayer = cartonsPerLayer(
-              settings.palletLength,
-              settings.palletWidth,
-              orientation[0],
-              orientation[1]
-            );
+        const availableOrientations =
+          plan.upright
+            ? [
+                [
+                  plan.dimensions[0],
+                  plan.dimensions[1],
+                  plan.dimensions[2]
+                ],
+                [
+                  plan.dimensions[1],
+                  plan.dimensions[0],
+                  plan.dimensions[2]
+                ]
+              ]
+            : uniqueOrientations(
+                plan.dimensions
+              );
 
-            if (perLayer < 1) {
+        availableOrientations.forEach(
+          orientation => {
+            const boxesPerLayer =
+              maximumBoxesPerLayer(
+                settings.palletLength,
+                settings.palletWidth,
+                orientation[0],
+                orientation[1]
+              );
+
+            if (boxesPerLayer < 1) {
               return;
             }
 
-            const layersByHeight = Math.floor(
-              (
-                settings.maximumPalletHeight -
-                PALLET_BASE_HEIGHT
-              ) / orientation[2]
-            );
+            const layersByHeight =
+              Math.floor(
+                (
+                  settings.palletHeight -
+                  PALLET_BASE_HEIGHT
+                ) / orientation[2]
+              );
 
-            const cartonsByWeight = Math.floor(
-              (
-                settings.maximumPalletWeight -
-                settings.palletTare
-              ) / plan.actualWeight
-            );
+            const boxesByWeight =
+              Math.floor(
+                (
+                  settings.palletWeight -
+                  settings.palletTare
+                ) / plan.actualWeight
+              );
 
-            const cartonsPerPallet = Math.min(
-              perLayer * Math.max(0, layersByHeight),
-              Math.max(0, cartonsByWeight)
-            );
-
-            if (cartonsPerPallet < 1) {
-              return;
-            }
-
-            const pallets = Math.ceil(
-              plan.count / cartonsPerPallet
-            );
-
-            const lastPalletCartons =
-              plan.count -
-              (pallets - 1) * cartonsPerPallet;
-
-            const lastPalletLayers = Math.ceil(
-              lastPalletCartons / perLayer
-            );
-
-            const maximumPalletCartons =
+            const boxesPerPallet =
               Math.min(
-                cartonsPerPallet,
+                boxesPerLayer *
+                  Math.max(
+                    0,
+                    layersByHeight
+                  ),
+
+                Math.max(
+                  0,
+                  boxesByWeight
+                )
+              );
+
+            if (boxesPerPallet < 1) {
+              return;
+            }
+
+            const pallets =
+              Math.ceil(
+                plan.count /
+                boxesPerPallet
+              );
+
+            const lastPalletBoxes =
+              plan.count -
+              (
+                pallets - 1
+              ) *
+              boxesPerPallet;
+
+            const lastPalletLayers =
+              Math.ceil(
+                lastPalletBoxes /
+                boxesPerLayer
+              );
+
+            const maximumBoxes =
+              Math.min(
+                boxesPerPallet,
                 plan.count
               );
 
             const maximumLayersUsed =
               Math.ceil(
-                maximumPalletCartons / perLayer
+                maximumBoxes /
+                boxesPerLayer
               );
 
-            const loadedHeight = Math.min(
-              settings.maximumPalletHeight,
-              PALLET_BASE_HEIGHT +
-              maximumLayersUsed * orientation[2]
-            );
+            const loadedHeight =
+              Math.min(
+                settings.palletHeight,
+
+                PALLET_BASE_HEIGHT +
+                maximumLayersUsed *
+                  orientation[2]
+              );
 
             const maximumLoadedWeight =
-              maximumPalletCartons *
+              maximumBoxes *
               plan.actualWeight +
               settings.palletTare;
 
-            const fullPalletCube =
-              settings.palletLength *
-              settings.palletWidth *
-              loadedHeight;
-
             const lastPalletHeight =
               PALLET_BASE_HEIGHT +
-              lastPalletLayers * orientation[2];
+              lastPalletLayers *
+                orientation[2];
 
-            const totalCube = (
-              Math.max(0, pallets - 1) *
-              fullPalletCube +
-              settings.palletLength *
-              settings.palletWidth *
-              lastPalletHeight
-            ) / 1728;
+            const totalCube =
+              (
+                Math.max(
+                  0,
+                  pallets - 1
+                ) *
+                settings.palletLength *
+                settings.palletWidth *
+                loadedHeight +
 
-            /*
-             * Pallet count receives the strongest priority.
-             * Cube breaks ties between configurations with the
-             * same pallet count.
-             */
+                settings.palletLength *
+                settings.palletWidth *
+                lastPalletHeight
+              ) / 1728;
+
             const score =
               pallets * 1000000000 +
               totalCube;
@@ -1987,9 +2136,9 @@
             if (!best || score < best.score) {
               best = {
                 orientation,
-                perLayer,
+                boxesPerLayer,
                 layersByHeight,
-                cartonsPerPallet,
+                boxesPerPallet,
                 pallets,
                 loadedHeight,
                 maximumLoadedWeight,
@@ -2003,7 +2152,7 @@
         return best;
       }
 
-      function estimatedDensityClass(density) {
+      function estimatedFreightClass(density) {
         if (density < 1) return 400;
         if (density < 2) return 300;
         if (density < 4) return 250;
@@ -2030,14 +2179,16 @@
           .map(Number);
 
         return {
-          maximumCartonWeight:
-            valueOf("max-carton-weight"),
+          maxCartonWeight:
+            numericValue(
+              "max-carton-weight"
+            ),
 
           cartonTare:
-            valueOf("carton-tare"),
+            numericValue("carton-tare"),
 
           upsDivisor:
-            valueOf("ups-divisor"),
+            numericValue("ups-divisor"),
 
           optimization:
             $("optimization").value,
@@ -2045,40 +2196,65 @@
           palletLength,
           palletWidth,
 
-          maximumPalletHeight:
-            valueOf("pallet-height"),
+          palletHeight:
+            numericValue("pallet-height"),
 
-          maximumPalletWeight:
-            valueOf("pallet-weight"),
+          palletWeight:
+            numericValue("pallet-weight"),
 
           palletTare:
-            valueOf("pallet-tare"),
+            numericValue("pallet-tare"),
 
-          allowMixedPallets:
-            $("allow-mixed-pallets").checked
+          allowMixed:
+            $("allow-mixed-pallets")
+              .checked
         };
       }
 
       function addItem(itemData) {
-        const item = itemData || {
-          id: Date.now() + Math.random(),
-          name:
-            $("item-name").value.trim() ||
-            "Unnamed item",
-          length: valueOf("item-length"),
-          width: valueOf("item-width"),
-          height: valueOf("item-height"),
-          weight: valueOf("item-weight"),
-          quantity: Math.floor(
-            valueOf("item-quantity")
-          ),
-          protection:
-            $("item-protection").value,
-          manualUnits:
-            valueOf("units-per-carton"),
-          upright:
-            $("keep-upright").checked
-        };
+        const item =
+          itemData || {
+            id:
+              Date.now() +
+              Math.random(),
+
+            name:
+              $("item-name").value.trim() ||
+              "Unnamed item",
+
+            length:
+              numericValue("item-length"),
+
+            width:
+              numericValue("item-width"),
+
+            height:
+              numericValue("item-height"),
+
+            weight:
+              numericValue("item-weight"),
+
+            quantity:
+              Math.floor(
+                numericValue(
+                  "item-quantity"
+                )
+              ),
+
+            dimensionType:
+              $("dimension-type").value,
+
+            protection:
+              $("item-protection").value,
+
+            manualUnits:
+              numericValue(
+                "units-per-carton"
+              ),
+
+            upright:
+              $("keep-upright").checked
+          };
 
         if (
           ![
@@ -2092,6 +2268,7 @@
           showToast(
             "Enter positive dimensions, weight and quantity."
           );
+
           return;
         }
 
@@ -2119,23 +2296,28 @@
 
         $("item-list").innerHTML =
           state.items
-            .map((item) => `
+            .map(item => `
               <div class="item-row">
                 <div>
                   <strong>${escapeHtml(item.name)}</strong>
 
                   <small>
-                    ${number(item.length, 2)}
-                    × ${number(item.width, 2)}
-                    × ${number(item.height, 2)} in
-                    • ${number(item.weight, 2)} lb
-                    • Qty ${number(item.quantity)}
+                    ${formatNumber(item.length, 2)}
+                    × ${formatNumber(item.width, 2)}
+                    × ${formatNumber(item.height, 2)} in
+                    • ${formatNumber(item.weight, 2)} lb
+                    • Qty ${formatNumber(item.quantity)}
                     ${
                       item.manualUnits
-                        ? `• ${number(item.manualUnits)} / carton`
+                        ? `• ${formatNumber(item.manualUnits)} / box`
                         : "• Auto pack"
                     }
-                    ${item.upright ? "• Upright" : ""}
+                    ${
+                      item.dimensionType === "packed"
+                        ? " • Packed dimensions"
+                        : ""
+                    }
+                    ${item.upright ? " • Upright" : ""}
                   </small>
                 </div>
 
@@ -2153,17 +2335,21 @@
 
         document
           .querySelectorAll("[data-remove]")
-          .forEach((button) => {
-            button.addEventListener("click", () => {
-              state.items = state.items.filter(
-                (item) =>
-                  String(item.id) !==
-                  button.dataset.remove
-              );
+          .forEach(button => {
+            button.addEventListener(
+              "click",
+              () => {
+                state.items =
+                  state.items.filter(
+                    item =>
+                      String(item.id) !==
+                      button.dataset.remove
+                  );
 
-              renderItems();
-              resetResults();
-            });
+                renderItems();
+                resetResults();
+              }
+            );
           });
       }
 
@@ -2177,7 +2363,11 @@
             <span>${label}</span>
 
             <strong
-              class="${status ? `status-${status}` : ""}"
+              class="${
+                status
+                  ? `status-${status}`
+                  : ""
+              }"
             >
               ${value}
             </strong>
@@ -2201,38 +2391,44 @@
 
         const settings = readSettings();
 
-        const settingsAreInvalid =
-          !isPositive(settings.maximumCartonWeight) ||
-          settings.maximumCartonWeight > 150 ||
+        const invalidSettings =
+          !isPositive(
+            settings.maxCartonWeight
+          ) ||
+          settings.maxCartonWeight > 150 ||
           settings.cartonTare < 0 ||
           settings.cartonTare >=
-            settings.maximumCartonWeight ||
+            settings.maxCartonWeight ||
           !isPositive(
-            settings.maximumPalletHeight
+            settings.palletHeight
           ) ||
           !isPositive(
-            settings.maximumPalletWeight
+            settings.palletWeight
           ) ||
           settings.palletTare < 0 ||
-          settings.maximumPalletHeight <=
+          settings.palletHeight <=
             PALLET_BASE_HEIGHT ||
           settings.palletTare >=
-            settings.maximumPalletWeight;
+            settings.palletWeight;
 
-        if (settingsAreInvalid) {
+        if (invalidSettings) {
           showToast(
-            "Review the carton and pallet rules."
+            "Review carton and pallet rules."
           );
+
           return;
         }
 
-        const cartonPlans =
-          state.items.flatMap((item) =>
-            buildCartonPlans(item, settings)
+        const boxPlans =
+          state.items.flatMap(item =>
+            createBoxPlans(
+              item,
+              settings
+            )
           );
 
-        const totalCartons =
-          cartonPlans.reduce(
+        const totalBoxes =
+          boxPlans.reduce(
             (total, plan) =>
               total + plan.count,
             0
@@ -2249,131 +2445,128 @@
           state.items.reduce(
             (total, item) =>
               total +
-              item.weight * item.quantity,
+              item.weight *
+              item.quantity,
             0
           );
 
-        const totalActualWeight =
+        const actualShipmentWeight =
           totalItemWeight +
-          totalCartons *
-            settings.cartonTare;
+          totalBoxes *
+          settings.cartonTare;
 
-        const totalCartonCube =
-          cartonPlans.reduce(
+        const totalBoxCube =
+          boxPlans.reduce(
             (total, plan) =>
               total +
-              plan.volume * plan.count,
+              plan.volume *
+              plan.count,
             0
           ) / 1728;
 
-        const totalUpsBillableWeight =
-          cartonPlans.reduce(
+        const totalUpsBillable =
+          boxPlans.reduce(
             (total, plan) =>
               total +
-              plan.upsBillableWeight *
-                plan.count,
+              plan.upsBillable *
+              plan.count,
             0
           );
 
-        const totalFedexBillableWeight =
-          cartonPlans.reduce(
+        const totalFedexBillable =
+          boxPlans.reduce(
             (total, plan) =>
               total +
-              plan.fedexBillableWeight *
-                plan.count,
+              plan.fedexBillable *
+              plan.count,
             0
           );
 
-        const allUpsEligible =
-          cartonPlans.every(
-            (plan) => plan.ups.eligible
+        const upsEligible =
+          boxPlans.every(
+            plan => plan.ups.eligible
           );
 
-        const allFedexEligible =
-          cartonPlans.every(
-            (plan) => plan.fedex.eligible
+        const fedexEligible =
+          boxPlans.every(
+            plan => plan.fedex.eligible
           );
 
-        const hasOversizeExposure =
-          cartonPlans.some(
-            (plan) =>
+        const oversizeExposure =
+          boxPlans.some(
+            plan =>
               plan.ups.oversize ||
               plan.fedex.oversize
           );
 
         const palletRows =
-          cartonPlans.map((plan) => ({
+          boxPlans.map(plan => ({
             plan,
             pallet:
-              palletizeCartonGroup(
+              palletizeBoxGroup(
                 plan,
                 settings
               )
           }));
 
-        const unpalletizable =
+        const cannotPalletize =
           palletRows.filter(
-            (row) => !row.pallet
+            row => !row.pallet
           );
 
         const validPalletRows =
           palletRows.filter(
-            (row) => row.pallet
+            row => row.pallet
           );
 
         let totalPallets =
           validPalletRows.reduce(
             (total, row) =>
-              total + row.pallet.pallets,
+              total +
+              row.pallet.pallets,
             0
           );
 
-        let palletizedCube =
+        let palletCube =
           validPalletRows.reduce(
             (total, row) =>
-              total + row.pallet.totalCube,
+              total +
+              row.pallet.totalCube,
             0
           );
 
-        let palletizedWeight =
-          totalActualWeight +
+        let freightWeight =
+          actualShipmentWeight +
           totalPallets *
-            settings.palletTare;
+          settings.palletTare;
 
-        /*
-         * Optional mixed-pallet consolidation.
-         * This uses cube and weight consolidation rather than a
-         * full mixed-SKU three-dimensional packing solver.
-         */
         if (
-          settings.allowMixedPallets &&
+          settings.allowMixed &&
           validPalletRows.length > 1 &&
           totalPallets > 1
         ) {
-          const usableCubePerPallet =
+          const usablePalletCube =
             (
               settings.palletLength *
               settings.palletWidth *
               (
-                settings.maximumPalletHeight -
+                settings.palletHeight -
                 PALLET_BASE_HEIGHT
               )
-            ) /
-            1728 *
-            0.82;
+            ) / 1728 * .82;
 
           const palletsByCube =
             Math.ceil(
-              totalCartonCube /
-              usableCubePerPallet
+              totalBoxCube /
+              usablePalletCube
             );
 
           const palletsByWeight =
             Math.ceil(
-              totalActualWeight /
+              actualShipmentWeight /
               Math.max(
                 1,
-                settings.maximumPalletWeight -
+                settings.palletWeight -
                 settings.palletTare
               )
             );
@@ -2385,42 +2578,48 @@
               palletsByWeight
             );
 
-          if (consolidatedPallets < totalPallets) {
+          if (
+            consolidatedPallets <
+            totalPallets
+          ) {
             totalPallets =
               consolidatedPallets;
 
-            palletizedWeight =
-              totalActualWeight +
+            freightWeight =
+              actualShipmentWeight +
               totalPallets *
-                settings.palletTare;
+              settings.palletTare;
 
-            palletizedCube =
-              (
-                totalPallets *
-                settings.palletLength *
-                settings.palletWidth *
-                settings.maximumPalletHeight
-              ) / 1728;
+            palletCube =
+              totalPallets *
+              settings.palletLength *
+              settings.palletWidth *
+              settings.palletHeight /
+              1728;
           }
         }
 
         const density =
-          palletizedCube > 0
-            ? palletizedWeight /
-              palletizedCube
+          palletCube > 0
+            ? freightWeight /
+              palletCube
             : 0;
 
         const freightClass =
           density > 0
-            ? estimatedDensityClass(density)
+            ? estimatedFreightClass(
+                density
+              )
             : "—";
 
-        const trailerUtilization = Math.max(
-          totalPallets /
-            TRAILER.palletPositions,
-          palletizedWeight /
-            TRAILER.maximumPayload
-        ) * 100;
+        const trailerUtilization =
+          Math.max(
+            totalPallets /
+              TRAILER.positions,
+
+            freightWeight /
+              TRAILER.payload
+          ) * 100;
 
         const urgency =
           $("urgency").value;
@@ -2429,53 +2628,55 @@
         let title;
         let reason;
 
-        if (unpalletizable.length) {
+        if (cannotPalletize.length) {
           mode = "SPECIAL";
           title = "Specialized freight review";
           reason =
-            "At least one estimated carton cannot fit the selected pallet footprint or capacity without overhang.";
+            "At least one shipping box cannot fit the selected pallet footprint, height or weight limit without overhang.";
         } else if (
           totalPallets >= 12 ||
-          palletizedWeight >= 20000
+          freightWeight >= 20000
         ) {
           mode = "FTL";
           title = "Request an FTL quote";
           reason =
-            "Estimated pallet positions or gross weight justify comparing dedicated truckload capacity.";
+            "Estimated pallet positions or shipment weight justify comparing dedicated truckload service.";
         } else if (
           totalPallets >= 8 ||
-          palletizedWeight >= 10000
+          freightWeight >= 10000
         ) {
           mode = "VOLUME";
           title = "Compare volume LTL and FTL";
           reason =
-            "This sits in the crossover range where an LTL volume quote and truckload quote should be compared.";
+            "This shipment is in the crossover range where volume-LTL and truckload quotes should be compared.";
         } else if (
-          (!allUpsEligible &&
-            !allFedexEligible) ||
+          (
+            !upsEligible &&
+            !fedexEligible
+          ) ||
           totalPallets >= 2 ||
-          totalActualWeight >= 1000 ||
-          totalCartons > 20
+          actualShipmentWeight >= 1000 ||
+          totalBoxes > 20
         ) {
           mode = "LTL";
           title = "Request an LTL quote";
           reason =
-            "The package count, gross weight or carrier limits favor a secured palletized shipment.";
+            "The box count, shipment weight or carrier limits favor a secured palletized shipment.";
         } else if (
-          hasOversizeExposure ||
-          totalCartons >= 8 ||
+          oversizeExposure ||
+          totalBoxes >= 8 ||
           Math.min(
-            totalUpsBillableWeight,
-            totalFedexBillableWeight
+            totalUpsBillable,
+            totalFedexBillable
           ) >= 500
         ) {
           mode = "COMPARE";
           title = "Compare parcel and LTL";
           reason =
-            "Parcel remains possible, but dimensional weight, oversize exposure or package count may make LTL more competitive.";
+            "Parcel remains possible, but dimensional weight, oversize exposure or box count may make LTL more economical.";
         } else if (
-          allUpsEligible &&
-          allFedexEligible
+          upsEligible &&
+          fedexEligible
         ) {
           mode = "PARCEL";
 
@@ -2485,64 +2686,65 @@
               : "Compare UPS and FedEx Ground";
 
           reason =
-            "Every estimated carton is within both carriers’ package screening limits. Compare contracted rates and service commitments.";
-        } else if (allUpsEligible) {
+            "Every estimated shipping box fits both carriers’ package screening limits. Compare your contracted prices and service commitments.";
+        } else if (upsEligible) {
           mode = "UPS";
           title = "Quote UPS parcel";
           reason =
-            "The estimated cartons pass UPS screening but do not pass the FedEx screening applied here.";
+            "The estimated shipping boxes pass UPS screening but do not pass the FedEx screening used here.";
         } else {
           mode = "FEDEX";
           title = "Quote FedEx parcel";
           reason =
-            "The estimated cartons pass FedEx screening but do not pass the UPS screening applied here.";
+            "The estimated shipping boxes pass FedEx screening but do not pass the UPS screening used here.";
         }
 
-        let confidence = 94;
+        let confidence = 96;
         const planningNotes = [];
 
         if (
           !$("origin").value.trim() ||
           !$("destination").value.trim()
         ) {
-          confidence -= 8;
+          confidence -= 7;
 
           planningNotes.push(
-            "Add origin and destination postal codes before requesting live rates."
+            "Add origin and destination postal codes before requesting live carrier prices."
           );
         }
 
         if (
           state.items.some(
-            (item) =>
-              item.protection !== "minimal"
+            item =>
+              item.dimensionType !==
+              "packed"
           )
         ) {
-          confidence -= 4;
-
-          planningNotes.push(
-            "Cushioning is estimated. Verify the outside dimensions and weight of a physical packed sample."
-          );
-        }
-
-        if (settings.allowMixedPallets) {
           confidence -= 5;
 
           planningNotes.push(
-            "Mixed-pallet mode uses cube and weight consolidation rather than a full mixed-SKU loading solver."
+            "At least one line uses bare-product dimensions. Confirm the recommended box with a physical packed sample."
           );
         }
 
-        if (unpalletizable.length) {
+        if (settings.allowMixed) {
+          confidence -= 5;
+
+          planningNotes.push(
+            "Mixed-pallet mode consolidates by cube and weight; it is not a full mixed-SKU three-dimensional loading simulation."
+          );
+        }
+
+        if (cannotPalletize.length) {
           confidence -= 15;
         }
 
         if (
           state.items.length > 1 &&
-          !settings.allowMixedPallets
+          !settings.allowMixed
         ) {
           planningNotes.push(
-            "Different SKUs are palletized separately, providing a conservative pallet count."
+            "Different SKUs are palletized separately, providing a conservative estimated pallet count."
           );
         }
 
@@ -2550,121 +2752,114 @@
         $("mode-reason").textContent = reason;
         $("mode-chip").textContent = mode;
         $("confidence-value").textContent =
-          `${confidence}%`;
+          `${Math.max(50, confidence)}%`;
+
         $("confidence-bar").style.width =
-          `${confidence}%`;
+          `${Math.max(50, confidence)}%`;
 
         const kpis = [
           [
             "Total units",
-            number(totalUnits),
+            formatNumber(totalUnits),
             plural(state.items.length, "SKU")
           ],
           [
-            "Cartons",
-            number(totalCartons),
-            `${number(totalCartonCube, 1)} ft³ carton cube`
+            "Shipping boxes",
+            formatNumber(totalBoxes),
+            `${formatNumber(totalBoxCube, 1)} ft³ total box cube`
           ],
           [
             "Actual weight",
-            `${number(totalActualWeight, 1)} lb`,
-            "Items + carton tare"
+            `${formatNumber(actualShipmentWeight, 1)} lb`,
+            "Items + box tare"
           ],
           [
             "Best parcel billable",
-            `${number(
+            `${formatNumber(
               Math.min(
-                totalUpsBillableWeight,
-                totalFedexBillableWeight
+                totalUpsBillable,
+                totalFedexBillable
               )
             )} lb`,
-            totalUpsBillableWeight <=
-              totalFedexBillableWeight
+            totalUpsBillable <=
+              totalFedexBillable
               ? "UPS estimate"
               : "FedEx estimate"
           ],
           [
             "Estimated pallets",
-            number(totalPallets),
+            formatNumber(totalPallets),
             `${settings.palletLength} × ${settings.palletWidth} in`
           ],
           [
             "Freight weight",
-            `${number(palletizedWeight, 1)} lb`,
+            `${formatNumber(freightWeight, 1)} lb`,
             "Includes pallet tare"
           ],
           [
             "LTL density",
             density
-              ? `${number(density, 1)} lb/ft³`
+              ? `${formatNumber(density, 1)} lb/ft³`
               : "—",
             `Class guidance ${freightClass}`
           ],
           [
             "Trailer use",
-            `${number(trailerUtilization, 1)}%`,
+            `${formatNumber(trailerUtilization, 1)}%`,
             "26 positions / 45,000 lb"
           ]
         ];
 
         $("kpis").innerHTML =
-          kpis
-            .map(
-              (kpi) => `
-                <article class="kpi">
-                  <span>${kpi[0]}</span>
-                  <strong>${kpi[1]}</strong>
-                  <small>${kpi[2]}</small>
-                </article>
-              `
-            )
-            .join("");
+          kpis.map(kpi => `
+            <article class="kpi">
+              <span>${kpi[0]}</span>
+              <strong>${kpi[1]}</strong>
+              <small>${kpi[2]}</small>
+            </article>
+          `).join("");
 
         $("carrier-results").innerHTML =
           statusLine(
             "UPS package limits",
-            allUpsEligible
+            upsEligible
               ? "PASS"
               : "EXCEEDS",
-            allUpsEligible
+            upsEligible
               ? "ok"
               : "bad"
           ) +
           statusLine(
             "FedEx package limits",
-            allFedexEligible
+            fedexEligible
               ? "PASS"
               : "EXCEEDS",
-            allFedexEligible
+            fedexEligible
               ? "ok"
               : "bad"
           ) +
           statusLine(
             "Oversize exposure",
-            hasOversizeExposure
+            oversizeExposure
               ? "POSSIBLE"
               : "NONE",
-            hasOversizeExposure
+            oversizeExposure
               ? "warn"
               : "ok"
           ) +
           statusLine(
             "UPS billable total",
-            `${number(
-              totalUpsBillableWeight
-            )} lb`
+            `${formatNumber(totalUpsBillable)} lb`
           ) +
           statusLine(
             "FedEx billable total",
-            `${number(
-              totalFedexBillableWeight
-            )} lb`
+            `${formatNumber(totalFedexBillable)} lb`
           );
 
         $("freight-results").innerHTML =
           statusLine(
             "Palletized cube",
-            `${number(palletizedCube, 1)} ft³`
+            `${formatNumber(palletCube, 1)} ft³`
           ) +
           statusLine(
             "Density class guidance",
@@ -2672,23 +2867,20 @@
           ) +
           statusLine(
             "Pallet positions",
-            `${number(totalPallets)} of 26`
+            `${formatNumber(totalPallets)} of 26`
           ) +
           statusLine(
             "Weight utilization",
-            `${number(
-              palletizedWeight /
-              TRAILER.maximumPayload *
+            `${formatNumber(
+              freightWeight /
+              TRAILER.payload *
               100,
               1
             )}%`
           ) +
           statusLine(
             "Overall trailer use",
-            `${number(
-              trailerUtilization,
-              1
-            )}%`,
+            `${formatNumber(trailerUtilization, 1)}%`,
             trailerUtilization > 100
               ? "bad"
               : trailerUtilization >= 45
@@ -2703,231 +2895,211 @@
           )}%`;
 
         $("carton-table").innerHTML =
-          cartonPlans
-            .map((plan) => {
-              let parcelStatus;
-              let parcelClass;
+          boxPlans.map(plan => {
+            let parcelStatus;
+            let parcelClass;
 
-              if (
-                plan.ups.eligible &&
-                plan.fedex.eligible
-              ) {
-                parcelStatus = "UPS + FedEx";
-                parcelClass = "status-ok";
-              } else if (plan.ups.eligible) {
-                parcelStatus = "UPS only";
-                parcelClass = "status-warn";
-              } else if (
-                plan.fedex.eligible
-              ) {
-                parcelStatus = "FedEx only";
-                parcelClass = "status-warn";
-              } else {
-                parcelStatus = "Freight";
-                parcelClass = "status-bad";
-              }
+            if (
+              plan.ups.eligible &&
+              plan.fedex.eligible
+            ) {
+              parcelStatus = "UPS + FedEx";
+              parcelClass = "status-ok";
+            } else if (plan.ups.eligible) {
+              parcelStatus = "UPS only";
+              parcelClass = "status-warn";
+            } else if (
+              plan.fedex.eligible
+            ) {
+              parcelStatus = "FedEx only";
+              parcelClass = "status-warn";
+            } else {
+              parcelStatus = "Freight";
+              parcelClass = "status-bad";
+            }
 
-              return `
-                <tr>
-                  <td>${escapeHtml(plan.item)}</td>
-                  <td>${number(plan.units)}</td>
-                  <td>${number(plan.count)}</td>
-                  <td>
-                    ${plan.dimensions.join(" × ")} in
-                  </td>
-                  <td>
-                    ${number(
-                      plan.actualWeight,
-                      1
-                    )} lb
-                  </td>
-                  <td>
-                    ${number(
-                      plan.upsDimensionalWeight
-                    )} lb
-                  </td>
-                  <td>
-                    ${number(
-                      plan.fedexDimensionalWeight
-                    )} lb
-                  </td>
-                  <td class="${parcelClass}">
-                    ${parcelStatus}
-                  </td>
-                </tr>
-              `;
-            })
-            .join("");
+            return `
+              <tr>
+                <td>${escapeHtml(plan.item)}</td>
+                <td>${formatNumber(plan.units)}</td>
+                <td>${formatNumber(plan.count)}</td>
+                <td>${plan.dimensions.join(" × ")} in</td>
+                <td>${formatNumber(plan.actualWeight, 1)} lb</td>
+                <td>${formatNumber(plan.upsDim)} lb</td>
+                <td>${formatNumber(plan.fedexDim)} lb</td>
+                <td class="${parcelClass}">
+                  ${parcelStatus}
+                </td>
+              </tr>
+            `;
+          }).join("");
 
         $("pallet-table").innerHTML =
-          palletRows
-            .map((row) => {
-              if (!row.pallet) {
-                return `
-                  <tr>
-                    <td>${escapeHtml(row.plan.item)}</td>
-                    <td
-                      colspan="6"
-                      class="status-bad"
-                    >
-                      Cannot fit selected pallet rules
-                    </td>
-                  </tr>
-                `;
-              }
-
+          palletRows.map(row => {
+            if (!row.pallet) {
               return `
                 <tr>
-                  <td>
-                    ${escapeHtml(row.plan.item)}
-                    • ${number(row.plan.units)}/ctn
-                  </td>
-
-                  <td>
-                    ${number(row.pallet.perLayer)}
-                  </td>
-
-                  <td>
-                    ${number(
-                      row.pallet.layersByHeight
-                    )}
-                  </td>
-
-                  <td>
-                    ${number(
-                      row.pallet.cartonsPerPallet
-                    )}
-                  </td>
-
-                  <td>
-                    ${number(row.pallet.pallets)}
-                  </td>
-
-                  <td>
-                    ${number(
-                      row.pallet.loadedHeight,
-                      1
-                    )} in
-                  </td>
-
-                  <td>
-                    ${number(
-                      row.pallet.maximumLoadedWeight,
-                      1
-                    )} lb max
+                  <td>${escapeHtml(row.plan.item)}</td>
+                  <td colspan="6" class="status-bad">
+                    Cannot fit selected pallet rules
                   </td>
                 </tr>
               `;
-            })
-            .join("");
+            }
+
+            return `
+              <tr>
+                <td>
+                  ${escapeHtml(row.plan.item)}
+                  • ${formatNumber(row.plan.units)}/box
+                </td>
+
+                <td>
+                  ${formatNumber(row.pallet.boxesPerLayer)}
+                </td>
+
+                <td>
+                  ${formatNumber(row.pallet.layersByHeight)}
+                </td>
+
+                <td>
+                  ${formatNumber(row.pallet.boxesPerPallet)}
+                </td>
+
+                <td>
+                  ${formatNumber(row.pallet.pallets)}
+                </td>
+
+                <td>
+                  ${formatNumber(row.pallet.loadedHeight, 1)} in
+                </td>
+
+                <td>
+                  ${formatNumber(
+                    row.pallet.maximumLoadedWeight,
+                    1
+                  )} lb max
+                </td>
+              </tr>
+            `;
+          }).join("");
 
         const alerts = [];
 
         if (
-          !hasOversizeExposure &&
-          allUpsEligible &&
-          allFedexEligible
+          !oversizeExposure &&
+          upsEligible &&
+          fedexEligible
         ) {
           alerts.push([
-            "All estimated cartons pass the parcel size and weight screens used by this calculator.",
+            "All estimated shipping boxes pass the parcel size and weight screens used by this calculator.",
             "good"
           ]);
         }
 
         if (
-          cartonPlans.some(
-            (plan) =>
-              plan.actualWeight > 70
+          boxPlans.some(
+            plan =>
+              plan.actualWeight >
+              settings.maxCartonWeight
           )
         ) {
           alerts.push([
-            "At least one package is over 70 lb. Confirm heavy-package labeling and handling requirements.",
-            "critical"
-          ]);
-        }
-
-        if (hasOversizeExposure) {
-          alerts.push([
-            "At least one carton may trigger large-package or oversize charges. Compare parcel pricing against LTL.",
-            "critical"
-          ]);
-        }
-
-        if (unpalletizable.length) {
-          alerts.push([
-            "One or more cartons cannot be palletized within the selected footprint, height and capacity. Use a larger pallet, crate or specialized freight review.",
+            "At least one shipping box exceeds the selected target weight because a single packed unit is already heavier than that target.",
             "critical"
           ]);
         }
 
         if (
-          cartonPlans.some(
-            (plan) =>
-              plan.upsDimensionalWeight >
+          boxPlans.some(
+            plan =>
+              plan.actualWeight > 70
+          )
+        ) {
+          alerts.push([
+            "At least one shipping box is over 70 lb. Confirm heavy-package labeling and handling requirements.",
+            "critical"
+          ]);
+        }
+
+        if (oversizeExposure) {
+          alerts.push([
+            "At least one shipping box may trigger a large-package or oversize charge. Compare parcel pricing with LTL.",
+            "critical"
+          ]);
+        }
+
+        if (cannotPalletize.length) {
+          alerts.push([
+            "One or more shipping boxes cannot fit the selected pallet footprint, height or capacity without overhang.",
+            "critical"
+          ]);
+        }
+
+        if (
+          boxPlans.some(
+            plan =>
+              plan.upsDim >
                 plan.actualWeight * 1.5 ||
-              plan.fedexDimensionalWeight >
+              plan.fedexDim >
                 plan.actualWeight * 1.5
           )
         ) {
           alerts.push([
-            "Dimensional weight materially exceeds actual weight. Reducing empty carton space may lower parcel cost.",
+            "Dimensional weight materially exceeds actual weight. Reducing empty shipping-box space may lower parcel charges.",
             ""
           ]);
         }
 
         if (
           state.items.some(
-            (item) => item.manualUnits
+            item => item.manualUnits
           )
         ) {
           alerts.push([
-            "Manual units-per-carton overrides automatic carton optimization for the applicable item.",
+            "Manual units-per-box overrides automatic box optimization for the applicable item.",
             ""
           ]);
         }
 
-        planningNotes.forEach((note) => {
+        planningNotes.forEach(note => {
           alerts.push([note, ""]);
         });
 
         alerts.push([
-          "Density class is guidance only. Confirm the commodity’s current NMFC item, handling, stowability and liability with the freight carrier or broker.",
+          "Freight class is a density-based estimate. Confirm the commodity’s current NMFC item, liability, handling and stowability.",
           ""
         ]);
 
         alerts.push([
-          "This page does not calculate price. Use exact packed measurements, accessorials, service date and negotiated account rates in live UPS, FedEx, LTL and FTL quotes.",
+          "This estimator does not calculate carrier price. Use exact packed measurements, accessorials, service date and negotiated rates when obtaining live quotes.",
           ""
         ]);
 
         $("warnings").innerHTML =
-          alerts
-            .map(
-              ([message, type]) => `
-                <div class="warning ${type}">
-                  ${message}
-                </div>
-              `
-            )
-            .join("");
+          alerts.map(([message, type]) => `
+            <div class="warning ${type}">
+              ${message}
+            </div>
+          `).join("");
 
-        const shipmentReference =
+        const reference =
           $("shipment-ref").value.trim() ||
           "Unreferenced shipment";
 
         state.lastSummary = [
-          `Freight plan — ${shipmentReference}`,
+          `Freight plan — ${reference}`,
           `Recommendation: ${title} (${mode})`,
           `Units: ${totalUnits}`,
-          `Cartons: ${totalCartons}`,
-          `Actual shipment weight: ${number(totalActualWeight, 1)} lb`,
-          `UPS billable weight: ${number(totalUpsBillableWeight)} lb`,
-          `FedEx billable weight: ${number(totalFedexBillableWeight)} lb`,
+          `Shipping boxes: ${totalBoxes}`,
+          `Actual shipment weight: ${formatNumber(actualShipmentWeight, 1)} lb`,
+          `UPS billable weight: ${formatNumber(totalUpsBillable)} lb`,
+          `FedEx billable weight: ${formatNumber(totalFedexBillable)} lb`,
           `Estimated pallets: ${totalPallets}`,
-          `Palletized weight: ${number(palletizedWeight, 1)} lb`,
-          `LTL density: ${density ? number(density, 1) : "—"} lb/ft³`,
+          `Palletized weight: ${formatNumber(freightWeight, 1)} lb`,
+          `Density: ${density ? formatNumber(density, 1) : "—"} lb/ft³`,
           `Freight class guidance: ${freightClass}`,
-          `Trailer utilization: ${number(trailerUtilization, 1)}%`,
+          `Trailer utilization: ${formatNumber(trailerUtilization, 1)}%`,
           `Reason: ${reason}`
         ].join("\n");
 
@@ -2956,6 +3128,7 @@
               height: 8,
               weight: 7.5,
               quantity: 48,
+              dimensionType: "product",
               protection: "standard",
               manualUnits: 4,
               upright: false
@@ -2968,6 +3141,7 @@
               height: 3,
               weight: 1.2,
               quantity: 96,
+              dimensionType: "packed",
               protection: "minimal",
               manualUnits: 12,
               upright: false
@@ -3019,6 +3193,17 @@
       $("print").addEventListener(
         "click",
         () => window.print()
+      );
+
+      $("dimension-type").addEventListener(
+        "change",
+        event => {
+          const isPacked =
+            event.target.value === "packed";
+
+          $("item-protection").disabled =
+            isPacked;
+        }
       );
 
       renderItems();
