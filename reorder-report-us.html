@@ -1,0 +1,273 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Regional inventory analysis for Stark Premium">
+  <title>Reorder Report | Stark Regional Inventory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles-us.css">
+  <style>
+    .report-table-panel .wide-reorder-table {
+      border-collapse: collapse;
+      border-spacing: 0;
+      min-width: 1450px;
+    }
+
+    .report-table-panel .wide-reorder-table th,
+    .report-table-panel .wide-reorder-table td {
+      border: 1px solid #c9d8e5 !important;
+      text-align: center !important;
+      vertical-align: middle !important;
+    }
+
+    .report-table-panel .wide-reorder-table th {
+      color: #ffffff;
+      background: #174f79;
+    }
+
+    .report-table-panel .wide-reorder-table tbody tr:nth-child(even) td {
+      background: #f7fafc;
+    }
+
+    .report-table-panel .wide-reorder-table tbody tr:hover td {
+      background: #eaf7f6;
+    }
+
+    .report-table-panel .wide-reorder-table td.num,
+    .report-table-panel .wide-reorder-table th.num {
+      text-align: center !important;
+    }
+  </style>
+
+  <script
+    src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"
+    defer
+  ></script>
+
+  <script
+    src="assets/jszip.min.js"
+    defer
+  ></script>
+
+  <script
+    src="assets/inventory-core-us.js"
+    defer
+  ></script>
+
+  <script
+    src="assets/inventory-pages-us.js"
+    defer
+  ></script>
+</head>
+<body data-page="reorder">
+  <header class="inventory-header">
+    <a
+      class="inventory-brand"
+      href="index.html"
+    >
+      <span>S</span>
+
+      <div>
+        <small>Stark Premium</small>
+        <strong>Regional Inventory</strong>
+      </div>
+    </a>
+    <div class="inventory-header-actions">
+      <label>
+        Region
+
+        <select id="region-select">
+          <option value="US">US</option>
+          <option value="EU">EU</option>
+          <option value="Canada">Canada</option>
+        </select>
+      </label>
+
+      <span
+        class="region-pill"
+        data-region-code
+      >
+        US
+      </span>
+
+      <a
+        class="button button-secondary"
+        data-region-link
+        href="index.html"
+      >
+        All regions
+      </a>
+    </div>
+  </header>
+  <main class="inventory-main">
+    <nav
+      class="inventory-nav"
+      aria-label="Inventory analysis pages"
+    >
+      <a
+        class="inventory-overview-link"
+        data-region-link
+        href="inventory-us.html"
+      >
+        Inventory Analysis
+      </a>
+
+      <a
+        data-inventory-page="dashboard"
+        data-region-link
+        href="inventory-dashboard-us.html"
+      >
+        Dashboard
+      </a>
+
+      <a
+        data-inventory-page="raw"
+        data-region-link
+        href="raw-report-us.html"
+      >
+        Raw Report
+      </a>
+
+      <a
+        class="active"
+        data-inventory-page="reorder"
+        data-region-link
+        href="reorder-report-us.html"
+      >
+        Reorder Report
+      </a>
+
+      <a
+        data-inventory-page="brands"
+        data-region-link
+        href="active-brands-us.html"
+      >
+        Active Brands
+      </a>
+
+      <a
+        data-inventory-page="instructions"
+        data-region-link
+        href="instructions-us.html"
+      >
+        Instructions
+      </a>
+    </nav>
+    <section class="inventory-page-heading">
+      <div>
+        <p class="eyebrow">
+          Inventory action •
+          <span data-region-name>
+            United States
+          </span>
+        </p>
+
+        <h1>Reorder Report</h1>
+
+        <p class="page-description">
+          Review active-brand items that meet the configured stock,
+          demand or supplier delivery reorder rules.
+        </p>
+      </div>
+
+      <div
+        class="file-status"
+        data-file-status
+      >
+        No Item Sales Report uploaded
+      </div>
+    </section>
+
+    <!-- Large empty-data panel intentionally removed. -->
+
+    <div
+      class="hidden"
+      data-requires-data
+    >
+      <section
+        class="inventory-filter-bar reorder-filters"
+      >
+        <label>
+          Brand
+          <select id="reorder-brand"></select>
+        </label>
+
+        <label class="wide-filter">
+          Model or item
+
+          <input
+            id="reorder-search"
+            type="search"
+            placeholder="Search model or title"
+          >
+        </label>
+
+        <button
+          class="button button-secondary"
+          id="export-reorder-csv"
+          type="button"
+        >
+          Export CSV
+        </button>
+
+        <button
+          class="button button-primary"
+          id="export-reorder-xlsx"
+          type="button"
+        >
+          Export Excel
+        </button>
+      </section>
+
+      <p
+        class="result-count"
+        id="reorder-result-count"
+      ></p>
+
+      <section
+        class="inventory-panel report-table-panel"
+      >
+        <div class="reorder-title">
+          Reorder Report — Active Brands / Status: LIVE, FASHION,
+          BACKORDER / Reorder Required Only
+        </div>
+
+        <div class="reorder-note">
+          Recommended quantity =
+          ((On Hand + Open Supplier Qty − Open Orders From Client)
+          × Lead Time from Active Brands) + Avg/Month.
+          Negative results are set to zero and quantities are rounded up.
+        </div>
+
+        <div
+          class="inventory-table-wrap inventory-long-table"
+        >
+          <table class="wide-reorder-table">
+            <thead>
+              <tr>
+                <th>Model#</th>
+                <th>Brand</th>
+                <th>Item Title</th>
+                <th>Status</th>
+                <th>Open Orders From Client</th>
+                <th>On Hand</th>
+                <th>Stock Available</th>
+                <th>Open Supplier Qty</th>
+                <th>Supplier Delivery Window</th>
+                <th>Days Until Supplier Delivery</th>
+                <th>Recommended Reorder Qty</th>
+                <th>Reorder Status</th>
+              </tr>
+            </thead>
+
+            <tbody id="reorder-table"></tbody>
+          </table>
+        </div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
