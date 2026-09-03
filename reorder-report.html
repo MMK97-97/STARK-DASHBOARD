@@ -25,6 +25,7 @@
     .report-table-panel .wide-reorder-table {
       border-collapse: collapse;
       border-spacing: 0;
+      min-width: 1450px;
     }
 
     .report-table-panel .wide-reorder-table th,
@@ -168,16 +169,6 @@
       </div>
     </section>
 
-    <section class="data-empty" data-empty-data>
-      <strong>No regional inventory data</strong>
-
-      <p>
-        <a data-region-link href="inventory-dashboard.html">
-          Upload the Item Sales Report on the Dashboard.
-        </a>
-      </p>
-    </section>
-
     <div class="hidden" data-requires-data>
       <section class="inventory-filter-bar reorder-filters">
         <label>
@@ -187,6 +178,7 @@
 
         <label class="wide-filter">
           Model or item
+
           <input
             id="reorder-search"
             type="search"
@@ -241,11 +233,6 @@
                 <th>Days Until Supplier Delivery</th>
                 <th>Recommended Reorder Qty</th>
                 <th>Reorder Status</th>
-                <th>Earlier Start Date</th>
-                <th>Latest End Date</th>
-                <th>Reorder Reason</th>
-                <th>Raw Row</th>
-                <th>Sort Rank</th>
               </tr>
             </thead>
 
