@@ -7,31 +7,30 @@
 
   <script
     src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"
-    onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'"
-  ></script>
+    onerror="this.onerror=null;this.src='https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js'">
+  </script>
 
   <style>
     :root {
       --navy: #082746;
-      --navy-2: #174f79;
+      --navy2: #174f79;
       --teal: #009b92;
-      --teal-dark: #007d76;
+      --teal2: #007d76;
       --green: #198754;
-      --green-light: #e6f6ee;
+      --green-bg: #e6f6ee;
       --amber: #b66a09;
-      --amber-light: #fff3da;
+      --amber-bg: #fff3da;
       --red: #c93f50;
-      --red-light: #fdebed;
+      --red-bg: #fdebed;
       --blue: #25689e;
-      --blue-light: #e7f1fb;
-      --background: #eef4f8;
+      --blue-bg: #e7f1fb;
+      --bg: #eef4f8;
       --surface: #ffffff;
-      --surface-2: #f8fbfd;
       --border: #d4e1ea;
       --text: #0b294b;
       --muted: #64758c;
       --shadow: 0 18px 42px rgba(8, 39, 70, 0.1);
-      --page-width: 1480px;
+      --width: 1480px;
     }
 
     * {
@@ -49,21 +48,15 @@
       margin: 0;
       overflow-x: hidden;
       color: var(--text);
-      font-family:
-        Inter,
-        ui-sans-serif,
-        system-ui,
-        -apple-system,
-        BlinkMacSystemFont,
-        "Segoe UI",
-        sans-serif;
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system,
+        BlinkMacSystemFont, "Segoe UI", sans-serif;
       background:
         radial-gradient(
           circle at 92% 0%,
           rgba(0, 155, 146, 0.1),
           transparent 30rem
         ),
-        linear-gradient(135deg, #f8fbfd, var(--background));
+        linear-gradient(135deg, #f8fbfd, var(--bg));
     }
 
     button,
@@ -101,9 +94,9 @@
     }
 
     .header-inner {
-      width: min(var(--page-width), calc(100% - 40px));
+      width: min(var(--width), calc(100% - 40px));
       min-height: 84px;
-      margin: 0 auto;
+      margin: auto;
       padding: 11px 0;
       display: flex;
       align-items: center;
@@ -128,14 +121,8 @@
       color: #ffffff;
       font-size: 22px;
       font-weight: 900;
-      background:
-        linear-gradient(
-          145deg,
-          var(--navy),
-          var(--navy-2)
-        );
-      box-shadow:
-        0 12px 23px rgba(8, 39, 70, 0.18);
+      background: linear-gradient(145deg, var(--navy), var(--navy2));
+      box-shadow: 0 12px 23px rgba(8, 39, 70, 0.18);
     }
 
     .brand-eyebrow {
@@ -173,8 +160,8 @@
       border: 1px solid #c5d7e3;
       border-radius: 13px;
       color: var(--text);
-      background: #ffffff;
       font-weight: 800;
+      background: #ffffff;
     }
 
     .region-badge {
@@ -182,15 +169,15 @@
       padding: 12px 16px;
       border-radius: 999px;
       color: #ffffff;
-      background: var(--navy);
       font-size: 14px;
       font-weight: 900;
       text-align: center;
+      background: var(--navy);
     }
 
     .page {
-      width: min(var(--page-width), calc(100% - 40px));
-      margin: 0 auto;
+      width: min(var(--width), calc(100% - 40px));
+      margin: auto;
       padding: 28px 0 64px;
     }
 
@@ -226,14 +213,8 @@
 
     .nav-link.active {
       color: #ffffff;
-      background:
-        linear-gradient(
-          135deg,
-          var(--navy),
-          #1d5987
-        );
-      box-shadow:
-        0 10px 19px rgba(8, 39, 70, 0.18);
+      background: linear-gradient(135deg, var(--navy), #1d5987);
+      box-shadow: 0 10px 19px rgba(8, 39, 70, 0.18);
     }
 
     .nav-link.back {
@@ -312,8 +293,8 @@
       display: flex;
       align-items: center;
       justify-content: flex-end;
-      flex-wrap: wrap;
       gap: 10px;
+      flex-wrap: wrap;
     }
 
     .button {
@@ -329,19 +310,13 @@
 
     .button:hover {
       transform: translateY(-1px);
-      box-shadow:
-        0 9px 18px rgba(8, 39, 70, 0.12);
+      box-shadow: 0 9px 18px rgba(8, 39, 70, 0.12);
     }
 
     .button-primary {
       border-color: var(--teal);
       color: #ffffff;
-      background:
-        linear-gradient(
-          135deg,
-          #08a59b,
-          var(--teal-dark)
-        );
+      background: linear-gradient(135deg, #08a59b, var(--teal2));
     }
 
     .button-hero {
@@ -389,7 +364,8 @@
       gap: 7px;
     }
 
-    .field label {
+    .field label,
+    .form-field label {
       color: var(--muted);
       font-size: 12px;
       font-weight: 900;
@@ -411,8 +387,7 @@
     .control:focus,
     .note-input:focus {
       border-color: var(--teal);
-      box-shadow:
-        0 0 0 4px rgba(0, 155, 146, 0.11);
+      box-shadow: 0 0 0 4px rgba(0, 155, 146, 0.11);
     }
 
     .table-meta {
@@ -442,11 +417,11 @@
     th {
       padding: 15px 14px;
       color: #ffffff;
-      background: var(--navy);
       font-size: 12px;
       letter-spacing: 0.02em;
       text-align: left;
       white-space: nowrap;
+      background: var(--navy);
     }
 
     td {
@@ -477,7 +452,7 @@
     }
 
     .po-link:hover {
-      color: var(--teal-dark);
+      color: var(--teal2);
     }
 
     .customer-name {
@@ -525,43 +500,38 @@
       background: currentColor;
     }
 
-    .good,
-    .shipped,
-    .complete {
+    .good {
       color: var(--green);
-      background: var(--green-light);
+      background: var(--green-bg);
     }
 
-    .low,
-    .cancelled {
+    .low {
       color: var(--red);
-      background: var(--red-light);
+      background: var(--red-bg);
     }
 
     .check {
       color: var(--amber);
-      background: var(--amber-light);
+      background: var(--amber-bg);
     }
 
-    .draft {
-      color: #6a788b;
-      background: #e9eff4;
-    }
-
-    .confirmed,
-    .allocating,
-    .ready-to-ship {
+    .firm-po {
       color: var(--blue);
-      background: var(--blue-light);
+      background: var(--blue-bg);
+    }
+
+    .hold-po {
+      color: var(--amber);
+      background: var(--amber-bg);
     }
 
     .notes-cell {
-      min-width: 270px;
+      min-width: 260px;
     }
 
     .notes-editor {
       display: grid;
-      grid-template-columns: minmax(175px, 1fr) auto;
+      grid-template-columns: minmax(170px, 1fr) auto;
       gap: 8px;
       align-items: stretch;
     }
@@ -569,7 +539,7 @@
     .note-input {
       width: 100%;
       min-height: 42px;
-      max-height: 90px;
+      max-height: 84px;
       padding: 9px 11px;
       resize: vertical;
       border: 1px solid #cbdbe6;
@@ -583,7 +553,7 @@
 
     .save-note {
       align-self: stretch;
-      min-width: 62px;
+      min-width: 60px;
       border: 1px solid #b9d8d5;
       border-radius: 10px;
       color: #ffffff;
@@ -593,9 +563,9 @@
     }
 
     .save-note:disabled {
-      border-color: #d5e1e8;
       color: #7e8e9e;
       background: #edf3f6;
+      border-color: #d5e1e8;
     }
 
     .row-actions {
@@ -651,8 +621,7 @@
       border-radius: 23px;
       color: var(--text);
       background: #ffffff;
-      box-shadow:
-        0 30px 90px rgba(3, 28, 52, 0.3);
+      box-shadow: 0 30px 90px rgba(3, 28, 52, 0.3);
     }
 
     dialog::backdrop {
@@ -671,12 +640,7 @@
       justify-content: space-between;
       gap: 20px;
       color: #ffffff;
-      background:
-        linear-gradient(
-          115deg,
-          var(--navy),
-          #17627c
-        );
+      background: linear-gradient(115deg, var(--navy), #17627c);
     }
 
     .dialog-header h2 {
@@ -718,8 +682,8 @@
 
     .footer-actions {
       display: flex;
-      flex-wrap: wrap;
       gap: 9px;
+      flex-wrap: wrap;
     }
 
     .form-grid {
@@ -737,14 +701,6 @@
       grid-column: 1 / -1;
     }
 
-    .form-field label {
-      color: var(--muted);
-      font-size: 12px;
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-    }
-
     .form-field input,
     .form-field select,
     .form-field textarea {
@@ -753,9 +709,9 @@
       padding: 10px 12px;
       border: 1px solid #cadbe6;
       border-radius: 11px;
-      outline: 0;
       color: var(--text);
       background: #ffffff;
+      outline: 0;
     }
 
     .form-field textarea {
@@ -875,16 +831,6 @@
       font-size: 13px;
     }
 
-    .status-ok {
-      color: var(--green);
-      font-weight: 850;
-    }
-
-    .status-bad {
-      color: var(--red);
-      font-weight: 850;
-    }
-
     .toast {
       position: fixed;
       right: 22px;
@@ -894,8 +840,7 @@
       border-radius: 12px;
       color: #ffffff;
       background: #0b3558;
-      box-shadow:
-        0 16px 40px rgba(8, 39, 70, 0.25);
+      box-shadow: 0 16px 40px rgba(8, 39, 70, 0.25);
       font-weight: 750;
       opacity: 0;
       transform: translateY(12px);
@@ -933,7 +878,7 @@
     @media (max-width: 720px) {
       .header-inner,
       .page {
-        width: min(100% - 22px, var(--page-width));
+        width: min(100% - 22px, var(--width));
       }
 
       .brand-title {
@@ -1022,11 +967,7 @@
       <div class="header-controls">
         <span class="region-label">Region</span>
 
-        <select
-          id="regionSelect"
-          class="region-select"
-          aria-label="Select region"
-        >
+        <select id="regionSelect" class="region-select" aria-label="Select region">
           <option value="US">US</option>
           <option value="EU">EU</option>
           <option value="CA">CA</option>
@@ -1051,7 +992,9 @@
         Sales Analysis
       </a>
 
-      <a class="nav-link active" href="#">Events</a>
+      <a class="nav-link active" href="#">
+        Events
+      </a>
     </nav>
 
     <section class="hero">
@@ -1063,42 +1006,26 @@
         <h1>Events Control Center</h1>
 
         <p class="hero-description">
-          Open any PO for a complete view, maintain saved notes directly
-          in the events list, and prepare one Outlook update containing
-          every event.
+          Open any PO for a complete view, maintain saved notes directly in
+          the events list, and prepare one Outlook update containing every
+          event.
         </p>
       </div>
 
       <div class="hero-actions">
-        <button
-          id="emailListButton"
-          class="button button-primary"
-          type="button"
-        >
+        <button id="emailListButton" class="button button-primary" type="button">
           ✉ Email events list
         </button>
 
-        <button
-          id="emailSettingsButton"
-          class="button button-hero"
-          type="button"
-        >
+        <button id="emailSettingsButton" class="button button-hero" type="button">
           Outlook settings
         </button>
 
-        <button
-          id="inventoryButton"
-          class="button button-hero"
-          type="button"
-        >
+        <button id="inventoryButton" class="button button-hero" type="button">
           Current inventory
         </button>
 
-        <button
-          id="newEventButton"
-          class="button button-hero"
-          type="button"
-        >
+        <button id="newEventButton" class="button button-hero" type="button">
           + New event
         </button>
       </div>
@@ -1113,22 +1040,16 @@
             id="searchInput"
             class="control"
             type="search"
-            placeholder="PO#, customer, model, planning or notes"
-          >
+            placeholder="PO#, customer, model, planning or notes">
         </div>
 
         <div class="field">
-          <label for="statusFilter">Current status</label>
+          <label for="poTypeFilter">PO type</label>
 
-          <select id="statusFilter" class="control">
-            <option value="">All statuses</option>
-            <option>Draft</option>
-            <option>Confirmed</option>
-            <option>Allocating</option>
-            <option>Ready to Ship</option>
-            <option>Shipped</option>
-            <option>Complete</option>
-            <option>Cancelled</option>
+          <select id="poTypeFilter" class="control">
+            <option value="">All PO types</option>
+            <option value="FIRM PO">FIRM PO</option>
+            <option value="HOLD PO">HOLD PO</option>
           </select>
         </div>
 
@@ -1155,11 +1076,7 @@
           </select>
         </div>
 
-        <button
-          id="clearFiltersButton"
-          class="button"
-          type="button"
-        >
+        <button id="clearFiltersButton" class="button" type="button">
           Clear filters
         </button>
       </div>
@@ -1184,7 +1101,7 @@
               <th>In-hands date</th>
               <th>Items</th>
               <th>Inventory</th>
-              <th>Current status</th>
+              <th>PO type</th>
               <th>Planning</th>
               <th>Notes</th>
               <th>Actions</th>
@@ -1204,8 +1121,7 @@
           <button
             id="emptyNewEventButton"
             class="button button-primary"
-            type="button"
-          >
+            type="button">
             + Create first event
           </button>
         </div>
@@ -1224,8 +1140,7 @@
         <button
           class="close-button"
           type="button"
-          data-close="eventDialog"
-        >
+          data-close="eventDialog">
           ×
         </button>
       </div>
@@ -1250,33 +1165,41 @@
           </div>
 
           <div class="form-field">
-            <label for="eventStatus">Current status</label>
+            <label for="poType">PO type</label>
 
-            <select id="eventStatus">
-              <option>Draft</option>
-              <option>Confirmed</option>
-              <option>Allocating</option>
-              <option>Ready to Ship</option>
-              <option>Shipped</option>
-              <option>Complete</option>
-              <option>Cancelled</option>
+            <select id="poType">
+              <option value="FIRM PO">FIRM PO</option>
+              <option value="HOLD PO">HOLD PO</option>
             </select>
           </div>
 
-          <div class="form-field">
+          <div class="form-field full">
             <label for="planning">Planning</label>
 
             <select id="planning">
-              <option>Planning not confirmed</option>
-              <option>Shipping directly to the customer</option>
-              <option>Bringing the items to our warehouse</option>
-              <option>Part direct and part through our warehouse</option>
-            </select>
-          </div>
+              <option value="Planning not confirmed">
+                Planning not confirmed
+              </option>
 
-          <div class="form-field">
-            <label for="followUpDate">Customer followed-up date</label>
-            <input id="followUpDate" type="date">
+              <option value="DROP SHIP PO will be sent">
+                DROP SHIP PO will be sent
+              </option>
+
+              <option value="LTL">LTL</option>
+              <option value="FTL">FTL</option>
+
+              <option value="Shipping directly to the customer">
+                Shipping directly to the customer
+              </option>
+
+              <option value="Bringing the items to our warehouse">
+                Bringing the items to our warehouse
+              </option>
+
+              <option value="Part direct and part through our warehouse">
+                Part direct and part through our warehouse
+              </option>
+            </select>
           </div>
 
           <div class="form-field full">
@@ -1284,8 +1207,7 @@
 
             <textarea
               id="eventNotes"
-              placeholder="Latest event notes"
-            ></textarea>
+              placeholder="Latest event notes"></textarea>
           </div>
         </div>
 
@@ -1312,8 +1234,7 @@
           id="addItemButton"
           class="button button-small"
           type="button"
-          style="margin-top:10px"
-        >
+          style="margin-top:10px">
           + Add item
         </button>
       </div>
@@ -1322,8 +1243,7 @@
         <button
           id="deleteEventButton"
           class="button button-danger hidden"
-          type="button"
-        >
+          type="button">
           Delete
         </button>
 
@@ -1331,15 +1251,11 @@
           <button
             class="button"
             type="button"
-            data-close="eventDialog"
-          >
+            data-close="eventDialog">
             Cancel
           </button>
 
-          <button
-            class="button button-primary"
-            type="submit"
-          >
+          <button class="button button-primary" type="submit">
             Save event
           </button>
         </div>
@@ -1358,8 +1274,7 @@
         <button
           class="close-button"
           type="button"
-          data-close="viewDialog"
-        >
+          data-close="viewDialog">
           ×
         </button>
       </div>
@@ -1375,16 +1290,14 @@
           <button
             class="button"
             type="button"
-            data-close="viewDialog"
-          >
+            data-close="viewDialog">
             Close
           </button>
 
           <button
             id="editFromViewButton"
             class="button button-primary"
-            type="button"
-          >
+            type="button">
             Edit event
           </button>
         </div>
@@ -1403,8 +1316,7 @@
         <button
           class="close-button"
           type="button"
-          data-close="inventoryDialog"
-        >
+          data-close="inventoryDialog">
           ×
         </button>
       </div>
@@ -1419,15 +1331,13 @@
               id="sarasotaFile"
               class="inventory-file"
               type="file"
-              accept=".xls,.xlsx,.csv,.tsv"
-            >
+              accept=".xls,.xlsx,.csv,.tsv">
 
             <button
               class="button button-primary"
               data-upload="Sarasota"
               type="button"
-              style="margin-top:10px"
-            >
+              style="margin-top:10px">
               Upload Sarasota
             </button>
           </section>
@@ -1440,15 +1350,13 @@
               id="texasFile"
               class="inventory-file"
               type="file"
-              accept=".xls,.xlsx,.csv,.tsv"
-            >
+              accept=".xls,.xlsx,.csv,.tsv">
 
             <button
               class="button button-primary"
               data-upload="Texas"
               type="button"
-              style="margin-top:10px"
-            >
+              style="margin-top:10px">
               Upload Texas
             </button>
           </section>
@@ -1461,8 +1369,7 @@
         <button
           class="button"
           type="button"
-          data-close="inventoryDialog"
-        >
+          data-close="inventoryDialog">
           Close
         </button>
       </div>
@@ -1475,16 +1382,15 @@
         <div>
           <h2>Outlook settings</h2>
           <p>
-            Set the internal recipients used for the complete
-            events-list draft.
+            Set the internal recipients used for the complete events-list
+            draft.
           </p>
         </div>
 
         <button
           class="close-button"
           type="button"
-          data-close="emailSettingsDialog"
-        >
+          data-close="emailSettingsDialog">
           ×
         </button>
       </div>
@@ -1498,8 +1404,7 @@
 
             <input
               id="organizationDomain"
-              placeholder="company.com"
-            >
+              placeholder="company.com">
           </div>
 
           <div class="form-field">
@@ -1509,8 +1414,7 @@
 
             <input
               id="defaultRecipients"
-              placeholder="person@company.com; team@company.com"
-            >
+              placeholder="person@company.com; team@company.com">
           </div>
 
           <div class="form-field full">
@@ -1518,15 +1422,14 @@
 
             <textarea
               id="emailSignature"
-              placeholder="Thank you,&#10;Your name"
-            ></textarea>
+              placeholder="Thank you,&#10;Your name"></textarea>
           </div>
         </div>
 
         <p class="email-note">
-          The email button creates one Outlook draft containing the
-          entire events list. A formatted HTML table is also copied to
-          the clipboard when browser permission allows it.
+          The button creates one Outlook draft for the entire events list.
+          A formatted HTML table is also copied to the clipboard when browser
+          permission allows it.
         </p>
       </div>
 
@@ -1537,15 +1440,11 @@
           <button
             class="button"
             type="button"
-            data-close="emailSettingsDialog"
-          >
+            data-close="emailSettingsDialog">
             Cancel
           </button>
 
-          <button
-            class="button button-primary"
-            type="submit"
-          >
+          <button class="button button-primary" type="submit">
             Save settings
           </button>
         </div>
@@ -1557,15 +1456,13 @@
     id="toast"
     class="toast"
     role="status"
-    aria-live="polite"
-  ></div>
+    aria-live="polite"></div>
 
   <script>
     (() => {
       "use strict";
 
-      const $ = id =>
-        document.getElementById(id);
+      const $ = (id) => document.getElementById(id);
 
       const REGIONS = {
         US: "United States",
@@ -1573,22 +1470,8 @@
         CA: "Canada"
       };
 
-      const VALID_REGIONS =
-        Object.keys(REGIONS);
-
-      const LOCATIONS = [
-        "Sarasota",
-        "Texas"
-      ];
-
-      const WORKFLOW = [
-        "Draft",
-        "Confirmed",
-        "Allocating",
-        "Ready to Ship",
-        "Shipped",
-        "Complete"
-      ];
+      const VALID_REGIONS = Object.keys(REGIONS);
+      const LOCATIONS = ["Sarasota", "Texas"];
 
       const MODEL_ALIASES = [
         "model",
@@ -1632,67 +1515,48 @@
         "atsquantity"
       ];
 
-      const parameters =
-        new URLSearchParams(
-          window.location.search
-        );
+      const params = new URLSearchParams(location.search);
 
-      let region =
-        (
-          parameters.get("region") ||
-          "US"
-        ).toUpperCase();
+      let region = (params.get("region") || "US").toUpperCase();
 
       if (!VALID_REGIONS.includes(region)) {
         region = "US";
       }
 
-      const eventStorageKey =
-        `stark_events_v6_${region}`;
+      const eventKey = `stark_events_v6_${region}`;
+      const emailKey = "stark_events_outlook_settings_v1";
 
-      const emailSettingsKey =
-        "stark_events_outlook_settings_v1";
+      let events = loadEvents();
 
-      let events =
-        loadExistingEvents();
+      let emailSettings = loadJson(emailKey, {
+        organizationDomain: "",
+        defaultRecipients: "",
+        emailSignature: ""
+      });
 
-      let emailSettings =
-        loadJson(
-          emailSettingsKey,
-          {
-            organizationDomain: "",
-            defaultRecipients: "",
-            emailSignature: ""
-          }
-        );
-
-      let locationReports = {
+      let reports = {
         Sarasota: null,
         Texas: null
       };
 
-      let locationMaps = {
+      let inventoryMaps = {
         Sarasota: new Map(),
         Texas: new Map()
       };
 
-      let viewingEventId = null;
+      let viewingId = null;
       let toastTimer;
 
       function loadJson(key, fallback) {
         try {
-          const value =
-            JSON.parse(
-              localStorage.getItem(key)
-            );
-
+          const value = JSON.parse(localStorage.getItem(key));
           return value ?? fallback;
         } catch {
           return fallback;
         }
       }
 
-      function loadExistingEvents() {
+      function loadEvents() {
         const keys = [
           `stark_events_v6_${region}`,
           `stark_events_v5_${region}`,
@@ -1700,8 +1564,7 @@
         ];
 
         for (const key of keys) {
-          const value =
-            loadJson(key, null);
+          const value = loadJson(key, null);
 
           if (Array.isArray(value)) {
             return value;
@@ -1711,112 +1574,74 @@
         return [];
       }
 
-      function createId() {
-        if (window.crypto?.randomUUID) {
-          return crypto.randomUUID();
-        }
-
-        return `${Date.now()}-${Math.random()
-          .toString(16)
-          .slice(2)}`;
-      }
-
-      function numberValue(value) {
-        if (
-          value === "" ||
-          value === null ||
-          value === undefined
-        ) {
-          return null;
-        }
-
-        const parsed =
-          Number(
-            String(value).replace(/,/g, "")
-          );
-
-        return Number.isFinite(parsed)
-          ? parsed
-          : null;
-      }
-
       function normalizeEvents() {
-        events = events.map(event => ({
-          id:
-            event.id ||
-            createId(),
+        events = events.map((event) => {
+          const poNumber = String(event.poNumber || "");
 
-          poNumber:
-            String(event.poNumber || ""),
+          return {
+            id: event.id || createId(),
+            poNumber,
+            customer: String(event.customer || ""),
+            inHandsDate: event.inHandsDate || "",
 
-          customer:
-            String(event.customer || ""),
+            poType:
+              event.poType ||
+              (/HOLD\s*PO/i.test(poNumber) ? "HOLD PO" : "FIRM PO"),
 
-          inHandsDate:
-            event.inHandsDate || "",
+            planning:
+              event.planning ||
+              event.fulfillmentPlanning ||
+              "Planning not confirmed",
 
-          status:
-            event.status || "Draft",
+            notes: String(event.notes || ""),
 
-          planning:
-            event.planning ||
-            event.fulfillmentPlanning ||
-            "Planning not confirmed",
-
-          customerFollowedUpDate:
-            event.customerFollowedUpDate || "",
-
-          notes:
-            String(event.notes || ""),
-
-          items:
-            Array.isArray(event.items)
-              ? event.items.map(item => ({
-                  model:
-                    String(item.model || ""),
-
-                  quantity:
-                    numberValue(
-                      item.quantity
-                    ),
-
-                  sarasota:
-                    numberValue(
-                      item.sarasota ??
-                      item.stockSarasota
-                    ),
-
-                  texas:
-                    numberValue(
-                      item.texas ??
-                      item.stockTexas
-                    ),
-
-                  total:
-                    numberValue(
-                      item.total ??
-                      item.stock
-                    )
+            items: Array.isArray(event.items)
+              ? event.items.map((item) => ({
+                  model: String(item.model || ""),
+                  quantity: toNumber(item.quantity),
+                  sarasota: toNumber(
+                    item.sarasota ?? item.stockSarasota
+                  ),
+                  texas: toNumber(
+                    item.texas ?? item.stockTexas
+                  ),
+                  total: toNumber(
+                    item.total ?? item.stock
+                  )
                 }))
               : [],
 
-          createdAt:
-            event.createdAt ||
-            new Date().toISOString(),
+            createdAt:
+              event.createdAt || new Date().toISOString(),
 
-          updatedAt:
-            event.updatedAt ||
-            new Date().toISOString()
-        }));
+            updatedAt:
+              event.updatedAt || new Date().toISOString()
+          };
+        });
 
         saveEvents();
       }
 
+      function createId() {
+        if (crypto.randomUUID) {
+          return crypto.randomUUID();
+        }
+
+        return `${Date.now()}-${Math.random().toString(16).slice(2)}`;
+      }
+
+      function toNumber(value) {
+        if (value === "" || value === null || value === undefined) {
+          return null;
+        }
+
+        const number = Number(String(value).replace(/,/g, ""));
+
+        return Number.isFinite(number) ? number : null;
+      }
+
       function saveEvents() {
-        localStorage.setItem(
-          eventStorageKey,
-          JSON.stringify(events)
-        );
+        localStorage.setItem(eventKey, JSON.stringify(events));
       }
 
       function escapeHtml(value) {
@@ -1833,21 +1658,17 @@
           return "Not recorded";
         }
 
-        const date =
-          new Date(`${value}T12:00:00`);
+        const date = new Date(`${value}T12:00:00`);
 
         if (Number.isNaN(date.getTime())) {
           return String(value);
         }
 
-        return date.toLocaleDateString(
-          "en-US",
-          {
-            month: "long",
-            day: "numeric",
-            year: "numeric"
-          }
-        );
+        return date.toLocaleDateString("en-US", {
+          month: "long",
+          day: "numeric",
+          year: "numeric"
+        });
       }
 
       function daysUntil(value) {
@@ -1855,36 +1676,28 @@
           return null;
         }
 
-        const target =
-          new Date(`${value}T12:00:00`);
-
-        const today =
-          new Date();
+        const targetDate = new Date(`${value}T12:00:00`);
+        const today = new Date();
 
         today.setHours(12, 0, 0, 0);
 
         return Math.ceil(
-          (
-            target.getTime() -
-            today.getTime()
-          ) / 86400000
+          (targetDate.getTime() - today.getTime()) / 86400000
         );
       }
 
-      function getDateMessage(event) {
-        const days =
-          daysUntil(event.inHandsDate);
+      function dateMessage(event) {
+        const days = daysUntil(event.inHandsDate);
 
         if (days === null) {
           return "Date not recorded";
         }
 
         if (days < 0) {
-          const overdue =
-            Math.abs(days);
+          const overdueDays = Math.abs(days);
 
-          return `${overdue} day${
-            overdue === 1 ? "" : "s"
+          return `${overdueDays} day${
+            overdueDays === 1 ? "" : "s"
           } overdue`;
         }
 
@@ -1892,9 +1705,7 @@
           return "Due today";
         }
 
-        return `${days} day${
-          days === 1 ? "" : "s"
-        } remaining`;
+        return `${days} day${days === 1 ? "" : "s"} remaining`;
       }
 
       function normalizeModel(value) {
@@ -1909,31 +1720,28 @@
           return "CHECK";
         }
 
-        let unknown = false;
-        let low = false;
+        let hasUnknownStock = false;
+        let hasLowStock = false;
 
-        event.items.forEach(item => {
-          const quantity =
-            numberValue(item.quantity);
-
-          const stock =
-            numberValue(item.total);
+        event.items.forEach((item) => {
+          const requiredQuantity = toNumber(item.quantity);
+          const availableStock = toNumber(item.total);
 
           if (
-            quantity === null ||
-            stock === null
+            requiredQuantity === null ||
+            availableStock === null
           ) {
-            unknown = true;
-          } else if (stock < quantity) {
-            low = true;
+            hasUnknownStock = true;
+          } else if (availableStock < requiredQuantity) {
+            hasLowStock = true;
           }
         });
 
-        if (low) {
+        if (hasLowStock) {
           return "LOW";
         }
 
-        if (unknown) {
+        if (hasUnknownStock) {
           return "CHECK";
         }
 
@@ -1946,7 +1754,194 @@
           .replace(/\s+/g, "-");
       }
 
-      function configureRegion() {
+      function getFilteredEvents() {
+        const search = $("searchInput").value
+          .trim()
+          .toLowerCase();
+
+        const poType = $("poTypeFilter").value;
+        const inventory = $("inventoryFilter").value;
+        const dateFilter = $("dateFilter").value;
+
+        return [...events]
+          .filter((event) => {
+            const searchableText = [
+              event.poNumber,
+              event.customer,
+              event.poType,
+              event.planning,
+              event.notes,
+              ...event.items.map((item) => item.model)
+            ]
+              .join(" ")
+              .toLowerCase();
+
+            if (
+              search &&
+              !searchableText.includes(search)
+            ) {
+              return false;
+            }
+
+            if (
+              poType &&
+              event.poType !== poType
+            ) {
+              return false;
+            }
+
+            if (
+              inventory &&
+              getInventoryStatus(event) !== inventory
+            ) {
+              return false;
+            }
+
+            if (dateFilter) {
+              const days = daysUntil(event.inHandsDate);
+
+              if (days === null) {
+                return false;
+              }
+
+              if (
+                dateFilter === "overdue" &&
+                days >= 0
+              ) {
+                return false;
+              }
+
+              if (
+                dateFilter !== "overdue" &&
+                (days < 0 || days > Number(dateFilter))
+              ) {
+                return false;
+              }
+            }
+
+            return true;
+          })
+          .sort((a, b) =>
+            (a.inHandsDate || "9999").localeCompare(
+              b.inHandsDate || "9999"
+            )
+          );
+      }
+
+      function render() {
+        renderEventsTable();
+        renderInventoryMeta();
+      }
+
+      function renderEventsTable() {
+        const list = getFilteredEvents();
+
+        $("recordCount").textContent =
+          `${list.length} ${list.length === 1 ? "event" : "events"}`;
+
+        $("tableContainer").classList.toggle(
+          "hidden",
+          !list.length
+        );
+
+        $("emptyState").classList.toggle(
+          "hidden",
+          Boolean(list.length)
+        );
+
+        $("eventsTableBody").innerHTML = list
+          .map((event) => {
+            const inventoryStatus = getInventoryStatus(event);
+
+            return `
+              <tr>
+                <td>
+                  <button
+                    class="po-link"
+                    type="button"
+                    onclick="window.eventsApp.view('${event.id}')">
+                    ${escapeHtml(event.poNumber || "Untitled PO")}
+                  </button>
+                </td>
+
+                <td>
+                  <div class="customer-name">
+                    ${escapeHtml(event.customer || "—")}
+                  </div>
+                </td>
+
+                <td>
+                  <div class="date-primary">
+                    ${escapeHtml(formatDate(event.inHandsDate))}
+                  </div>
+
+                  <div class="date-secondary">
+                    ${escapeHtml(dateMessage(event))}
+                  </div>
+                </td>
+
+                <td>
+                  <strong>${event.items.length}</strong>
+                  ${event.items.length === 1 ? "model" : "models"}
+                </td>
+
+                <td>
+                  <span class="status ${inventoryStatus.toLowerCase()}">
+                    ${inventoryStatus}
+                  </span>
+                </td>
+
+                <td>
+                  <span class="status ${statusClass(event.poType)}">
+                    ${escapeHtml(event.poType)}
+                  </span>
+                </td>
+
+                <td>
+                  <div class="planning-text">
+                    ${escapeHtml(
+                      event.planning || "Planning not confirmed"
+                    )}
+                  </div>
+                </td>
+
+                <td class="notes-cell">
+                  <div class="notes-editor">
+                    <textarea
+                      class="note-input"
+                      id="note-${event.id}"
+                      oninput="window.eventsApp.noteChanged('${event.id}')"
+                      placeholder="Add notes">${escapeHtml(event.notes)}</textarea>
+
+                    <button
+                      class="save-note"
+                      id="save-note-${event.id}"
+                      type="button"
+                      onclick="window.eventsApp.saveNote('${event.id}')"
+                      disabled>
+                      Save
+                    </button>
+                  </div>
+                </td>
+
+                <td>
+                  <div class="row-actions">
+                    <button
+                      class="icon-button"
+                      type="button"
+                      title="Edit event"
+                      onclick="window.eventsApp.edit('${event.id}')">
+                      ✎
+                    </button>
+                  </div>
+                </td>
+              </tr>
+            `;
+          })
+          .join("");
+      }
+
+      function configurePage() {
         $("regionSelect").value = region;
         $("regionBadge").textContent = region;
 
@@ -1963,274 +1958,25 @@
           `sales.html?region=${region}`;
       }
 
-      function getFilteredEvents() {
-        const query =
-          $("searchInput")
-            .value
-            .trim()
-            .toLowerCase();
-
-        const selectedStatus =
-          $("statusFilter").value;
-
-        const selectedInventory =
-          $("inventoryFilter").value;
-
-        const selectedDate =
-          $("dateFilter").value;
-
-        return [...events]
-          .filter(event => {
-            const searchable = [
-              event.poNumber,
-              event.customer,
-              event.planning,
-              event.notes,
-              ...event.items.map(
-                item => item.model
-              )
-            ]
-              .join(" ")
-              .toLowerCase();
-
-            if (
-              query &&
-              !searchable.includes(query)
-            ) {
-              return false;
-            }
-
-            if (
-              selectedStatus &&
-              event.status !== selectedStatus
-            ) {
-              return false;
-            }
-
-            if (
-              selectedInventory &&
-              getInventoryStatus(event) !==
-                selectedInventory
-            ) {
-              return false;
-            }
-
-            if (selectedDate) {
-              const days =
-                daysUntil(event.inHandsDate);
-
-              if (days === null) {
-                return false;
-              }
-
-              if (
-                selectedDate === "overdue" &&
-                days >= 0
-              ) {
-                return false;
-              }
-
-              if (
-                selectedDate !== "overdue" &&
-                (
-                  days < 0 ||
-                  days > Number(selectedDate)
-                )
-              ) {
-                return false;
-              }
-            }
-
-            return true;
-          })
-          .sort((a, b) =>
-            (
-              a.inHandsDate ||
-              "9999"
-            ).localeCompare(
-              b.inHandsDate ||
-              "9999"
-            )
-          );
-      }
-
-      function render() {
-        renderTable();
-        renderInventoryMeta();
-      }
-
-      function renderTable() {
-        const filteredEvents =
-          getFilteredEvents();
-
-        $("recordCount").textContent =
-          `${filteredEvents.length} ${
-            filteredEvents.length === 1
-              ? "event"
-              : "events"
-          }`;
-
-        $("tableContainer").classList.toggle(
-          "hidden",
-          !filteredEvents.length
-        );
-
-        $("emptyState").classList.toggle(
-          "hidden",
-          Boolean(filteredEvents.length)
-        );
-
-        $("eventsTableBody").innerHTML =
-          filteredEvents
-            .map(event => {
-              const inventoryStatus =
-                getInventoryStatus(event);
-
-              return `
-                <tr>
-                  <td>
-                    <button
-                      class="po-link"
-                      type="button"
-                      onclick="window.eventsApp.view('${event.id}')"
-                    >
-                      ${escapeHtml(
-                        event.poNumber ||
-                        "Untitled PO"
-                      )}
-                    </button>
-                  </td>
-
-                  <td>
-                    <div class="customer-name">
-                      ${escapeHtml(
-                        event.customer ||
-                        "—"
-                      )}
-                    </div>
-                  </td>
-
-                  <td>
-                    <div class="date-primary">
-                      ${escapeHtml(
-                        formatDate(
-                          event.inHandsDate
-                        )
-                      )}
-                    </div>
-
-                    <div class="date-secondary">
-                      ${escapeHtml(
-                        getDateMessage(event)
-                      )}
-                    </div>
-                  </td>
-
-                  <td>
-                    <strong>
-                      ${event.items.length}
-                    </strong>
-
-                    ${
-                      event.items.length === 1
-                        ? "model"
-                        : "models"
-                    }
-                  </td>
-
-                  <td>
-                    <span
-                      class="status ${inventoryStatus.toLowerCase()}"
-                    >
-                      ${inventoryStatus}
-                    </span>
-                  </td>
-
-                  <td>
-                    <span
-                      class="status ${statusClass(event.status)}"
-                    >
-                      ${escapeHtml(event.status)}
-                    </span>
-                  </td>
-
-                  <td>
-                    <div class="planning-text">
-                      ${escapeHtml(
-                        event.planning ||
-                        "Planning not confirmed"
-                      )}
-                    </div>
-                  </td>
-
-                  <td class="notes-cell">
-                    <div class="notes-editor">
-                      <textarea
-                        class="note-input"
-                        id="note-${event.id}"
-                        oninput="window.eventsApp.noteChanged('${event.id}')"
-                        placeholder="Add notes"
-                      >${escapeHtml(event.notes)}</textarea>
-
-                      <button
-                        class="save-note"
-                        id="save-note-${event.id}"
-                        type="button"
-                        onclick="window.eventsApp.saveNote('${event.id}')"
-                        disabled
-                      >
-                        Save
-                      </button>
-                    </div>
-                  </td>
-
-                  <td>
-                    <div class="row-actions">
-                      <button
-                        class="icon-button"
-                        type="button"
-                        title="Edit event"
-                        onclick="window.eventsApp.edit('${event.id}')"
-                      >
-                        ✎
-                      </button>
-
-                      <button
-                        class="icon-button"
-                        type="button"
-                        title="Move to next status"
-                        onclick="window.eventsApp.advance('${event.id}')"
-                      >
-                        →
-                      </button>
-                    </div>
-                  </td>
-                </tr>
-              `;
-            })
-            .join("");
-      }
-
       function bindEvents() {
-        $("regionSelect").addEventListener(
-          "change",
-          event => {
-            window.location.href =
-              `events.html?region=${event.target.value}`;
-          }
+        $("regionSelect").addEventListener("change", (event) => {
+          location.href =
+            `events.html?region=${event.target.value}`;
+        });
+
+        $("searchInput").addEventListener(
+          "input",
+          renderEventsTable
         );
 
         [
-          "searchInput",
-          "statusFilter",
+          "poTypeFilter",
           "inventoryFilter",
           "dateFilter"
-        ].forEach(id => {
+        ].forEach((id) => {
           $(id).addEventListener(
-            id === "searchInput"
-              ? "input"
-              : "change",
-            renderTable
+            "change",
+            renderEventsTable
           );
         });
 
@@ -2238,26 +1984,26 @@
           "click",
           () => {
             $("searchInput").value = "";
-            $("statusFilter").value = "";
+            $("poTypeFilter").value = "";
             $("inventoryFilter").value = "";
             $("dateFilter").value = "";
-            renderTable();
+            renderEventsTable();
           }
         );
 
         $("newEventButton").addEventListener(
           "click",
-          () => openEventEditor()
+          () => openEditor()
         );
 
         $("emptyNewEventButton").addEventListener(
           "click",
-          () => openEventEditor()
+          () => openEditor()
         );
 
         $("eventForm").addEventListener(
           "submit",
-          event => {
+          (event) => {
             event.preventDefault();
             saveEvent();
           }
@@ -2270,25 +2016,21 @@
 
         $("deleteEventButton").addEventListener(
           "click",
-          deleteCurrentEvent
+          deleteEvent
         );
 
         $("editFromViewButton").addEventListener(
           "click",
           () => {
-            const eventId =
-              viewingEventId;
-
+            const selectedId = viewingId;
             $("viewDialog").close();
-            openEventEditor(eventId);
+            openEditor(selectedId);
           }
         );
 
         $("inventoryButton").addEventListener(
           "click",
-          () => {
-            $("inventoryDialog").showModal();
-          }
+          () => $("inventoryDialog").showModal()
         );
 
         $("emailSettingsButton").addEventListener(
@@ -2298,7 +2040,7 @@
 
         $("emailSettingsForm").addEventListener(
           "submit",
-          event => {
+          (event) => {
             event.preventDefault();
             saveEmailSettings();
           }
@@ -2306,389 +2048,277 @@
 
         $("emailListButton").addEventListener(
           "click",
-          emailEntireEventsList
+          emailEntireList
         );
 
         document
           .querySelectorAll("[data-close]")
-          .forEach(button => {
-            button.addEventListener(
-              "click",
-              () => {
-                $(
-                  button.dataset.close
-                ).close();
-              }
-            );
+          .forEach((button) => {
+            button.addEventListener("click", () => {
+              $(button.dataset.close).close();
+            });
           });
 
         document
           .querySelectorAll("[data-upload]")
-          .forEach(button => {
-            button.addEventListener(
-              "click",
-              () => {
-                uploadInventory(
-                  button.dataset.upload
-                );
-              }
-            );
+          .forEach((button) => {
+            button.addEventListener("click", () => {
+              uploadInventory(button.dataset.upload);
+            });
           });
       }
 
-      function addItemRow(
-        item = {
-          model: "",
-          quantity: "",
-          sarasota: null,
-          texas: null,
-          total: null
-        }
-      ) {
-        $("itemsEditorBody")
-          .insertAdjacentHTML(
-            "beforeend",
-            `
-              <tr>
-                <td>
-                  <input
-                    data-model
-                    value="${escapeHtml(item.model)}"
-                    placeholder="Model#"
-                  >
-                </td>
+      function addItemRow(item = {}) {
+        const normalizedItem = {
+          model: item.model || "",
+          quantity: item.quantity ?? "",
+          sarasota: item.sarasota ?? null,
+          texas: item.texas ?? null,
+          total: item.total ?? null
+        };
 
-                <td>
-                  <input
-                    data-quantity
-                    type="number"
-                    min="0"
-                    value="${item.quantity ?? ""}"
-                  >
-                </td>
+        $("itemsEditorBody").insertAdjacentHTML(
+          "beforeend",
+          `
+            <tr>
+              <td>
+                <input
+                  data-model
+                  value="${escapeHtml(normalizedItem.model)}"
+                  placeholder="Model#">
+              </td>
 
-                <td data-sarasota>
-                  ${item.sarasota ?? "—"}
-                </td>
+              <td>
+                <input
+                  data-quantity
+                  type="number"
+                  min="0"
+                  value="${normalizedItem.quantity}">
+              </td>
 
-                <td data-texas>
-                  ${item.texas ?? "—"}
-                </td>
+              <td data-sarasota>
+                ${normalizedItem.sarasota ?? "—"}
+              </td>
 
-                <td data-total>
-                  ${item.total ?? "—"}
-                </td>
+              <td data-texas>
+                ${normalizedItem.texas ?? "—"}
+              </td>
 
-                <td>
-                  <button
-                    class="icon-button"
-                    data-remove-item
-                    type="button"
-                  >
-                    ×
-                  </button>
-                </td>
-              </tr>
-            `
-          );
+              <td data-total>
+                ${normalizedItem.total ?? "—"}
+              </td>
 
-        const row =
-          $("itemsEditorBody")
-            .lastElementChild;
+              <td>
+                <button
+                  class="icon-button"
+                  data-remove-item
+                  type="button">
+                  ×
+                </button>
+              </td>
+            </tr>
+          `
+        );
+
+        const row = $("itemsEditorBody").lastElementChild;
 
         row
           .querySelector("[data-model]")
-          .addEventListener(
-            "change",
-            () => syncEditorRow(row)
-          );
+          .addEventListener("change", () => {
+            synchronizeEditorRow(row);
+          });
 
         row
           .querySelector("[data-remove-item]")
-          .addEventListener(
-            "click",
-            () => row.remove()
-          );
+          .addEventListener("click", () => {
+            row.remove();
+          });
 
-        syncEditorRow(row);
+        synchronizeEditorRow(row);
       }
 
-      function syncEditorRow(row) {
-        const modelKey =
-          normalizeModel(
-            row
-              .querySelector("[data-model]")
-              .value
-          );
+      function synchronizeEditorRow(row) {
+        const modelKey = normalizeModel(
+          row.querySelector("[data-model]").value
+        );
 
-        const sarasota =
-          modelKey
-            ? locationMaps.Sarasota.get(
-                modelKey
-              )
-            : null;
+        const sarasota = modelKey
+          ? inventoryMaps.Sarasota.get(modelKey)
+          : null;
 
-        const texas =
-          modelKey
-            ? locationMaps.Texas.get(
-                modelKey
-              )
-            : null;
+        const texas = modelKey
+          ? inventoryMaps.Texas.get(modelKey)
+          : null;
 
         const total =
+          sarasota === null &&
           sarasota === undefined &&
+          texas === null &&
           texas === undefined
             ? null
-            : (sarasota || 0) +
-              (texas || 0);
+            : (sarasota || 0) + (texas || 0);
 
-        row
-          .querySelector("[data-sarasota]")
-          .textContent =
-            sarasota ?? "—";
+        row.querySelector("[data-sarasota]").textContent =
+          sarasota ?? "—";
 
-        row
-          .querySelector("[data-texas]")
-          .textContent =
-            texas ?? "—";
+        row.querySelector("[data-texas]").textContent =
+          texas ?? "—";
 
-        row
-          .querySelector("[data-total]")
-          .textContent =
-            total ?? "—";
+        row.querySelector("[data-total]").textContent =
+          total ?? "—";
 
-        row.dataset.sarasota =
-          sarasota ?? "";
-
-        row.dataset.texas =
-          texas ?? "";
-
-        row.dataset.total =
-          total ?? "";
+        row.dataset.sarasota = sarasota ?? "";
+        row.dataset.texas = texas ?? "";
+        row.dataset.total = total ?? "";
       }
 
-      function openEventEditor(eventId = null) {
-        const event =
-          eventId
-            ? events.find(
-                record =>
-                  record.id === eventId
-              )
-            : null;
+      function openEditor(eventId = null) {
+        const selectedEvent = eventId
+          ? events.find((event) => event.id === eventId)
+          : null;
 
-        $("eventDialogTitle").textContent =
-          event
-            ? `Edit PO ${event.poNumber}`
-            : "New event";
+        $("eventDialogTitle").textContent = selectedEvent
+          ? `Edit PO ${selectedEvent.poNumber}`
+          : "New event";
 
-        $("eventId").value =
-          event?.id || "";
-
-        $("poNumber").value =
-          event?.poNumber || "";
-
-        $("customer").value =
-          event?.customer || "";
-
+        $("eventId").value = selectedEvent?.id || "";
+        $("poNumber").value = selectedEvent?.poNumber || "";
+        $("customer").value = selectedEvent?.customer || "";
         $("inHandsDate").value =
-          event?.inHandsDate || "";
+          selectedEvent?.inHandsDate || "";
 
-        $("eventStatus").value =
-          event?.status || "Draft";
+        $("poType").value =
+          selectedEvent?.poType || "FIRM PO";
 
         $("planning").value =
-          event?.planning ||
+          selectedEvent?.planning ||
           "Planning not confirmed";
 
-        $("followUpDate").value =
-          event?.customerFollowedUpDate ||
-          "";
-
         $("eventNotes").value =
-          event?.notes || "";
+          selectedEvent?.notes || "";
 
         $("itemsEditorBody").innerHTML = "";
 
         const items =
-          event?.items?.length
-            ? event.items
+          selectedEvent?.items?.length
+            ? selectedEvent.items
             : [{}];
 
-        items.forEach(item =>
-          addItemRow(item)
-        );
+        items.forEach((item) => {
+          addItemRow(item);
+        });
 
-        $("deleteEventButton")
-          .classList.toggle(
-            "hidden",
-            !event
-          );
+        $("deleteEventButton").classList.toggle(
+          "hidden",
+          !selectedEvent
+        );
 
         $("eventDialog").showModal();
       }
 
       function collectItems() {
-        return [
-          ...$("itemsEditorBody").rows
-        ]
-          .map(row => ({
-            model:
-              row
-                .querySelector("[data-model]")
-                .value
-                .trim(),
+        return [...$("itemsEditorBody").rows]
+          .map((row) => ({
+            model: row
+              .querySelector("[data-model]")
+              .value.trim(),
 
-            quantity:
-              numberValue(
-                row
-                  .querySelector(
-                    "[data-quantity]"
-                  )
-                  .value
-              ),
+            quantity: toNumber(
+              row.querySelector("[data-quantity]").value
+            ),
 
-            sarasota:
-              numberValue(
-                row.dataset.sarasota
-              ),
-
-            texas:
-              numberValue(
-                row.dataset.texas
-              ),
-
-            total:
-              numberValue(
-                row.dataset.total
-              )
+            sarasota: toNumber(row.dataset.sarasota),
+            texas: toNumber(row.dataset.texas),
+            total: toNumber(row.dataset.total)
           }))
-          .filter(item =>
-            item.model ||
-            item.quantity !== null
+          .filter(
+            (item) =>
+              item.model ||
+              item.quantity !== null
           );
       }
 
       function saveEvent() {
-        if (
-          !$("eventForm").reportValidity()
-        ) {
+        if (!$("eventForm").reportValidity()) {
           return;
         }
 
-        const existing =
-          events.find(
-            event =>
-              event.id ===
-              $("eventId").value
-          );
+        const existingEvent = events.find(
+          (event) => event.id === $("eventId").value
+        );
 
         const event = {
-          id:
-            existing?.id ||
-            createId(),
-
-          poNumber:
-            $("poNumber").value.trim(),
-
-          customer:
-            $("customer").value.trim(),
-
-          inHandsDate:
-            $("inHandsDate").value,
-
-          status:
-            $("eventStatus").value,
-
-          planning:
-            $("planning").value,
-
-          customerFollowedUpDate:
-            $("followUpDate").value,
-
-          notes:
-            $("eventNotes")
-              .value
-              .trim(),
-
-          items:
-            collectItems(),
+          id: existingEvent?.id || createId(),
+          poNumber: $("poNumber").value.trim(),
+          customer: $("customer").value.trim(),
+          inHandsDate: $("inHandsDate").value,
+          poType: $("poType").value,
+          planning: $("planning").value,
+          notes: $("eventNotes").value.trim(),
+          items: collectItems(),
 
           createdAt:
-            existing?.createdAt ||
+            existingEvent?.createdAt ||
             new Date().toISOString(),
 
-          updatedAt:
-            new Date().toISOString()
+          updatedAt: new Date().toISOString()
         };
 
-        const existingIndex =
-          events.findIndex(
-            record =>
-              record.id === event.id
-          );
+        const index = events.findIndex(
+          (item) => item.id === event.id
+        );
 
-        if (existingIndex >= 0) {
-          events[existingIndex] = event;
+        if (index >= 0) {
+          events[index] = event;
         } else {
           events.push(event);
         }
 
         saveEvents();
         render();
-
         $("eventDialog").close();
 
-        showToast(
-          `PO ${event.poNumber} saved.`
-        );
+        showToast(`PO ${event.poNumber} saved.`);
       }
 
-      function deleteCurrentEvent() {
-        const event =
-          events.find(
-            record =>
-              record.id ===
-              $("eventId").value
-          );
+      function deleteEvent() {
+        const selectedEvent = events.find(
+          (event) => event.id === $("eventId").value
+        );
 
-        if (!event) {
+        if (!selectedEvent) {
           return;
         }
 
-        if (
-          !window.confirm(
-            `Delete PO ${event.poNumber}?`
-          )
-        ) {
+        const confirmed = confirm(
+          `Delete PO ${selectedEvent.poNumber}?`
+        );
+
+        if (!confirmed) {
           return;
         }
 
-        events =
-          events.filter(
-            record =>
-              record.id !== event.id
-          );
+        events = events.filter(
+          (event) => event.id !== selectedEvent.id
+        );
 
         saveEvents();
         render();
-
         $("eventDialog").close();
 
         showToast("Event deleted.");
       }
 
       function viewEvent(eventId) {
-        const event =
-          events.find(
-            record =>
-              record.id === eventId
-          );
+        const event = events.find(
+          (item) => item.id === eventId
+        );
 
         if (!event) {
           return;
         }
 
-        viewingEventId = event.id;
+        viewingId = event.id;
 
         const inventoryStatus =
           getInventoryStatus(event);
@@ -2699,113 +2329,85 @@
         $("viewSubtitle").textContent =
           event.customer;
 
-        const itemRows =
-          event.items
-            .map(item => {
-              const quantity =
-                numberValue(item.quantity);
+        const lineItems = event.items.length
+          ? event.items
+              .map((item) => {
+                const quantity = toNumber(item.quantity);
+                const total = toNumber(item.total);
 
-              const total =
-                numberValue(item.total);
+                const balance =
+                  quantity !== null && total !== null
+                    ? total - quantity
+                    : null;
 
-              const balance =
-                quantity !== null &&
-                total !== null
-                  ? total - quantity
-                  : null;
+                return `
+                  <tr>
+                    <td>${escapeHtml(item.model)}</td>
+                    <td>${quantity ?? "—"}</td>
+                    <td>${item.sarasota ?? "—"}</td>
+                    <td>${item.texas ?? "—"}</td>
+                    <td>${total ?? "—"}</td>
 
-              return `
-                <tr>
-                  <td>${escapeHtml(item.model)}</td>
-                  <td>${quantity ?? "—"}</td>
-                  <td>${item.sarasota ?? "—"}</td>
-                  <td>${item.texas ?? "—"}</td>
-                  <td>${total ?? "—"}</td>
-                  <td
-                    class="${
-                      balance !== null &&
-                      balance < 0
-                        ? "status-bad"
-                        : "status-ok"
-                    }"
-                  >
-                    ${balance ?? "—"}
-                  </td>
-                </tr>
-              `;
-            })
-            .join("");
+                    <td style="font-weight:850;color:${
+                      balance !== null && balance < 0
+                        ? "var(--red)"
+                        : "var(--green)"
+                    }">
+                      ${balance ?? "—"}
+                    </td>
+                  </tr>
+                `;
+              })
+              .join("")
+          : `
+              <tr>
+                <td colspan="6">No line items entered.</td>
+              </tr>
+            `;
 
         $("viewContent").innerHTML = `
           <div class="view-grid">
             <div class="view-card">
               <span>Customer</span>
-              <strong>
-                ${escapeHtml(event.customer)}
-              </strong>
+              <strong>${escapeHtml(event.customer)}</strong>
             </div>
 
             <div class="view-card">
               <span>In-hands date</span>
               <strong>
-                ${escapeHtml(
-                  formatDate(
-                    event.inHandsDate
-                  )
-                )}
+                ${escapeHtml(formatDate(event.inHandsDate))}
               </strong>
-
-              <p>
-                ${escapeHtml(
-                  getDateMessage(event)
-                )}
-              </p>
+              <p>${escapeHtml(dateMessage(event))}</p>
             </div>
 
             <div class="view-card">
               <span>Inventory</span>
-
               <strong>
-                <span
-                  class="status ${inventoryStatus.toLowerCase()}"
-                >
+                <span class="status ${inventoryStatus.toLowerCase()}">
                   ${inventoryStatus}
                 </span>
               </strong>
             </div>
 
             <div class="view-card">
-              <span>Current status</span>
+              <span>PO type</span>
               <strong>
-                ${escapeHtml(event.status)}
+                <span class="status ${statusClass(event.poType)}">
+                  ${escapeHtml(event.poType)}
+                </span>
               </strong>
             </div>
 
             <div class="view-card">
               <span>Planning</span>
-              <strong>
-                ${escapeHtml(event.planning)}
-              </strong>
-            </div>
-
-            <div class="view-card">
-              <span>Customer followed up</span>
-              <strong>
-                ${escapeHtml(
-                  formatDate(
-                    event.customerFollowedUpDate
-                  )
-                )}
-              </strong>
+              <strong>${escapeHtml(event.planning)}</strong>
             </div>
 
             <div class="view-card full">
               <span>Notes</span>
-
               <p>
                 ${escapeHtml(
-                  event.notes ||
-                  "No notes recorded."
+                  event.notes || "No notes recorded."
                 )}
               </p>
             </div>
@@ -2827,18 +2429,7 @@
                   </tr>
                 </thead>
 
-                <tbody>
-                  ${
-                    itemRows ||
-                    `
-                      <tr>
-                        <td colspan="6">
-                          No line items entered.
-                        </td>
-                      </tr>
-                    `
-                  }
-                </tbody>
+                <tbody>${lineItems}</tbody>
               </table>
             </div>
           </div>
@@ -2847,88 +2438,38 @@
         $("viewDialog").showModal();
       }
 
-      function saveInlineNote(eventId) {
-        const event =
-          events.find(
-            record =>
-              record.id === eventId
-          );
+      function saveNote(eventId) {
+        const event = events.find(
+          (item) => item.id === eventId
+        );
 
-        const input =
-          $(`note-${eventId}`);
+        const input = $(`note-${eventId}`);
 
         if (!event || !input) {
           return;
         }
 
-        event.notes =
-          input.value.trim();
-
-        event.updatedAt =
-          new Date().toISOString();
+        event.notes = input.value.trim();
+        event.updatedAt = new Date().toISOString();
 
         saveEvents();
 
-        $(`save-note-${eventId}`)
-          .disabled = true;
+        $(`save-note-${eventId}`).disabled = true;
 
         showToast(
           `Notes saved for PO ${event.poNumber}.`
         );
       }
 
-      function advanceEvent(eventId) {
-        const event =
-          events.find(
-            record =>
-              record.id === eventId
-          );
-
-        if (!event) {
-          return;
-        }
-
-        const currentIndex =
-          WORKFLOW.indexOf(event.status);
-
-        if (
-          currentIndex < 0 ||
-          currentIndex >=
-            WORKFLOW.length - 1
-        ) {
-          showToast(
-            "This event has no next workflow status."
-          );
-
-          return;
-        }
-
-        event.status =
-          WORKFLOW[currentIndex + 1];
-
-        event.updatedAt =
-          new Date().toISOString();
-
-        saveEvents();
-        render();
-
-        showToast(
-          `PO ${event.poNumber} moved to ${event.status}.`
-        );
-      }
-
       function openEmailSettings() {
         $("organizationDomain").value =
-          emailSettings.organizationDomain ||
-          "";
+          emailSettings.organizationDomain || "";
 
         $("defaultRecipients").value =
-          emailSettings.defaultRecipients ||
-          "";
+          emailSettings.defaultRecipients || "";
 
         $("emailSignature").value =
-          emailSettings.emailSignature ||
-          "";
+          emailSettings.emailSignature || "";
 
         $("emailSettingsDialog").showModal();
       }
@@ -2937,44 +2478,32 @@
         emailSettings = {
           organizationDomain:
             $("organizationDomain")
-              .value
-              .trim()
+              .value.trim()
               .replace(/^@/, "")
               .toLowerCase(),
 
           defaultRecipients:
-            $("defaultRecipients")
-              .value
-              .trim(),
+            $("defaultRecipients").value.trim(),
 
           emailSignature:
-            $("emailSignature")
-              .value
-              .trim()
+            $("emailSignature").value.trim()
         };
 
         localStorage.setItem(
-          emailSettingsKey,
+          emailKey,
           JSON.stringify(emailSettings)
         );
 
         $("emailSettingsDialog").close();
 
-        showToast(
-          "Outlook settings saved."
-        );
+        showToast("Outlook settings saved.");
       }
 
-      function getEmailEvents() {
-        return [...events].sort(
-          (a, b) =>
-            (
-              a.inHandsDate ||
-              "9999"
-            ).localeCompare(
-              b.inHandsDate ||
-              "9999"
-            )
+      function getEmailRows() {
+        return [...events].sort((a, b) =>
+          (a.inHandsDate || "9999").localeCompare(
+            b.inHandsDate || "9999"
+          )
         );
       }
 
@@ -2985,54 +2514,44 @@
           "IN-HANDS DATE",
           "ITEMS",
           "INVENTORY",
-          "CURRENT STATUS",
+          "PO TYPE",
           "PLANNING",
           "NOTES"
         ];
 
-        const rows =
-          list.map(event => [
-            event.poNumber,
-            event.customer,
-            formatDate(
-              event.inHandsDate
-            ),
+        const rows = list.map((event) => [
+          event.poNumber,
+          event.customer,
+          formatDate(event.inHandsDate),
 
-            `${event.items.length} ${
-              event.items.length === 1
-                ? "model"
-                : "models"
-            }`,
+          `${event.items.length} ${
+            event.items.length === 1 ? "model" : "models"
+          }`,
 
-            getInventoryStatus(event),
-            event.status,
-            event.planning,
-            event.notes || "—"
-          ].map(value =>
-            String(value ?? "")
-              .replace(
-                /[\r\n]+/g,
-                " "
-              )
-          ));
+          getInventoryStatus(event),
+          event.poType,
+          event.planning,
+          event.notes || "—"
+        ]);
+
+        const cleanedRows = rows.map((row) =>
+          row.map((value) =>
+            String(value ?? "").replace(/[\r\n]+/g, " ")
+          )
+        );
 
         return [
           columns.join(" | "),
 
           columns
-            .map(column =>
+            .map((column) =>
               "-".repeat(
-                Math.min(
-                  18,
-                  column.length + 4
-                )
+                Math.min(18, column.length + 4)
               )
             )
             .join(" | "),
 
-          ...rows.map(row =>
-            row.join(" | ")
-          )
+          ...cleanedRows.map((row) => row.join(" | "))
         ].join("\n");
       }
 
@@ -3043,102 +2562,116 @@
           "In-hands date",
           "Items",
           "Inventory",
-          "Current status",
+          "PO type",
           "Planning",
           "Notes"
         ];
 
         return `
-          <table
-            style="
-              width:100%;
-              border-collapse:collapse;
-              font-family:Arial,sans-serif;
-              font-size:12px;
-            "
-          >
+          <table style="
+            border-collapse:collapse;
+            width:100%;
+            font-family:Arial,sans-serif;
+            font-size:12px;
+          ">
             <thead>
               <tr>
                 ${headers
-                  .map(header => `
-                    <th
-                      style="
+                  .map(
+                    (header) => `
+                      <th style="
                         padding:9px;
                         border:1px solid #cad8e3;
                         color:#ffffff;
                         background:#082746;
                         text-align:left;
-                      "
-                    >
-                      ${header}
-                    </th>
-                  `)
+                      ">
+                        ${header}
+                      </th>
+                    `
+                  )
                   .join("")}
               </tr>
             </thead>
 
             <tbody>
               ${list
-                .map(event => `
-                  <tr>
-                    <td
-                      style="
+                .map(
+                  (event) => `
+                    <tr>
+                      <td style="
                         padding:8px;
                         border:1px solid #cad8e3;
                         font-weight:700;
-                      "
-                    >
-                      ${escapeHtml(event.poNumber)}
-                    </td>
+                      ">
+                        ${escapeHtml(event.poNumber)}
+                      </td>
 
-                    <td style="padding:8px;border:1px solid #cad8e3">
-                      ${escapeHtml(event.customer)}
-                    </td>
+                      <td style="
+                        padding:8px;
+                        border:1px solid #cad8e3;
+                      ">
+                        ${escapeHtml(event.customer)}
+                      </td>
 
-                    <td style="padding:8px;border:1px solid #cad8e3">
-                      ${escapeHtml(
-                        formatDate(
-                          event.inHandsDate
-                        )
-                      )}
-                    </td>
+                      <td style="
+                        padding:8px;
+                        border:1px solid #cad8e3;
+                      ">
+                        ${escapeHtml(
+                          formatDate(event.inHandsDate)
+                        )}
+                      </td>
 
-                    <td style="padding:8px;border:1px solid #cad8e3">
-                      ${event.items.length}
-                      ${
-                        event.items.length === 1
-                          ? "model"
-                          : "models"
-                      }
-                    </td>
+                      <td style="
+                        padding:8px;
+                        border:1px solid #cad8e3;
+                      ">
+                        ${event.items.length}
+                        ${
+                          event.items.length === 1
+                            ? "model"
+                            : "models"
+                        }
+                      </td>
 
-                    <td style="padding:8px;border:1px solid #cad8e3">
-                      ${getInventoryStatus(event)}
-                    </td>
+                      <td style="
+                        padding:8px;
+                        border:1px solid #cad8e3;
+                      ">
+                        ${getInventoryStatus(event)}
+                      </td>
 
-                    <td style="padding:8px;border:1px solid #cad8e3">
-                      ${escapeHtml(event.status)}
-                    </td>
+                      <td style="
+                        padding:8px;
+                        border:1px solid #cad8e3;
+                      ">
+                        ${escapeHtml(event.poType)}
+                      </td>
 
-                    <td style="padding:8px;border:1px solid #cad8e3">
-                      ${escapeHtml(event.planning)}
-                    </td>
+                      <td style="
+                        padding:8px;
+                        border:1px solid #cad8e3;
+                      ">
+                        ${escapeHtml(event.planning)}
+                      </td>
 
-                    <td style="padding:8px;border:1px solid #cad8e3">
-                      ${escapeHtml(
-                        event.notes ||
-                        "—"
-                      )}
-                    </td>
-                  </tr>
-                `)
+                      <td style="
+                        padding:8px;
+                        border:1px solid #cad8e3;
+                      ">
+                        ${escapeHtml(event.notes || "—")}
+                      </td>
+                    </tr>
+                  `
+                )
                 .join("")}
             </tbody>
           </table>
         `;
       }
 
-      async function copyFormattedEmailTable(list) {
+      async function copyRichTable(list) {
         if (
           !navigator.clipboard?.write ||
           !window.ClipboardItem
@@ -3161,36 +2694,27 @@
             ${
               emailSettings.emailSignature
                 ? `
-                  <p>
-                    ${escapeHtml(
-                      emailSettings.emailSignature
-                    ).replace(/\n/g, "<br>")}
-                  </p>
-                `
+                    <p>
+                      ${escapeHtml(
+                        emailSettings.emailSignature
+                      ).replace(/\n/g, "<br>")}
+                    </p>
+                  `
                 : ""
             }
           `;
 
-          const plain =
-            buildPlainEmailTable(list);
+          const plainText = buildPlainEmailTable(list);
 
           await navigator.clipboard.write([
             new ClipboardItem({
-              "text/html":
-                new Blob(
-                  [html],
-                  {
-                    type: "text/html"
-                  }
-                ),
+              "text/html": new Blob([html], {
+                type: "text/html"
+              }),
 
-              "text/plain":
-                new Blob(
-                  [plain],
-                  {
-                    type: "text/plain"
-                  }
-                )
+              "text/plain": new Blob([plainText], {
+                type: "text/plain"
+              })
             })
           ]);
 
@@ -3200,44 +2724,34 @@
         }
       }
 
-      async function emailEntireEventsList() {
-        const list =
-          getEmailEvents();
+      async function emailEntireList() {
+        const list = getEmailRows();
 
         if (!list.length) {
-          showToast(
-            "There are no events to email."
-          );
-
+          showToast("There are no events to email.");
           return;
         }
 
-        const recipients =
-          (
-            emailSettings.defaultRecipients ||
-            ""
-          )
-            .split(/[;,]/)
-            .map(address =>
-              address.trim()
-            )
-            .filter(Boolean);
+        const recipients = (
+          emailSettings.defaultRecipients || ""
+        )
+          .split(/[;,]/)
+          .map((value) => value.trim())
+          .filter(Boolean);
 
-        if (
-          emailSettings.organizationDomain
-        ) {
-          const externalRecipients =
-            recipients.filter(address =>
+        if (emailSettings.organizationDomain) {
+          const externalRecipients = recipients.filter(
+            (address) =>
               !address
                 .toLowerCase()
                 .endsWith(
                   `@${emailSettings.organizationDomain}`
                 )
-            );
+          );
 
           if (
             externalRecipients.length &&
-            !window.confirm(
+            !confirm(
               "Some recipients are outside the configured organization domain. Continue?"
             )
           ) {
@@ -3247,9 +2761,7 @@
 
         const subject =
           `Events Status Report | ${REGIONS[region]} | ` +
-          new Date().toLocaleDateString(
-            "en-US"
-          );
+          new Date().toLocaleDateString("en-US");
 
         const body = [
           "Hello,",
@@ -3257,31 +2769,21 @@
           "Please find the complete events update below.",
           "",
           `Region: ${REGIONS[region]}`,
-
-          `Generated: ${
-            new Date().toLocaleString(
-              "en-US"
-            )
-          }`,
-
+          `Generated: ${new Date().toLocaleString("en-US")}`,
           `Events: ${list.length}`,
           "",
           buildPlainEmailTable(list),
           "",
-          emailSettings.emailSignature ||
-          ""
+          emailSettings.emailSignature || ""
         ].join("\n");
-
-        const formattedTableCopied =
-          await copyFormattedEmailTable(list);
 
         const outlookUrl =
           "https://outlook.office.com/mail/deeplink/compose" +
-          `?to=${encodeURIComponent(
-            recipients.join(";")
-          )}` +
+          `?to=${encodeURIComponent(recipients.join(";"))}` +
           `&subject=${encodeURIComponent(subject)}` +
           `&body=${encodeURIComponent(body)}`;
+
+        const copied = await copyRichTable(list);
 
         window.open(
           outlookUrl,
@@ -3290,115 +2792,86 @@
         );
 
         showToast(
-          formattedTableCopied
-            ? "Outlook draft opened. The formatted table was also copied."
+          copied
+            ? "Outlook draft opened. A formatted table was also copied."
             : "Outlook draft opened with the complete events list."
         );
       }
 
-      function normalizedHeader(value) {
+      function headerKey(value) {
         return String(value ?? "")
           .toLowerCase()
           .replace(/[^a-z0-9]/g, "");
       }
 
-      function createUniqueHeaders(values) {
+      function uniqueHeaders(values) {
         const used = {};
 
-        return values.map(
-          (value, index) => {
-            let header =
-              String(value ?? "").trim() ||
-              `Column ${index + 1}`;
+        return values.map((value, index) => {
+          let header =
+            String(value ?? "").trim() ||
+            `Column ${index + 1}`;
 
-            used[header] =
-              (used[header] || 0) + 1;
+          used[header] = (used[header] || 0) + 1;
 
-            if (used[header] > 1) {
-              header =
-                `${header} ${used[header]}`;
-            }
-
-            return header;
+          if (used[header] > 1) {
+            header = `${header} ${used[header]}`;
           }
-        );
+
+          return header;
+        });
       }
 
-      async function parseInventoryFile(
+      async function parseInventory(
         file,
         locationName
       ) {
         if (!window.XLSX) {
           throw new Error(
-            "The Excel reader is unavailable. Refresh the page."
+            "Excel reader unavailable. Refresh the page."
           );
         }
 
-        const buffer =
-          await file.arrayBuffer();
+        const workbook = XLSX.read(
+          await file.arrayBuffer(),
+          {
+            type: "array",
+            cellDates: true,
+            cellText: true
+          }
+        );
 
-        const workbook =
-          XLSX.read(
-            buffer,
+        for (const sheetName of workbook.SheetNames) {
+          const matrix = XLSX.utils.sheet_to_json(
+            workbook.Sheets[sheetName],
             {
-              type: "array",
-              cellDates: true,
-              cellText: true
+              header: 1,
+              defval: "",
+              raw: false,
+              blankrows: false
             }
           );
 
-        for (
-          const sheetName of
-          workbook.SheetNames
-        ) {
-          const worksheet =
-            workbook.Sheets[sheetName];
-
-          const matrix =
-            XLSX.utils.sheet_to_json(
-              worksheet,
-              {
-                header: 1,
-                defval: "",
-                raw: false,
-                blankrows: false
-              }
-            );
-
-          const headerLimit =
-            Math.min(
-              50,
-              matrix.length
-            );
-
           for (
             let headerRow = 0;
-            headerRow < headerLimit;
+            headerRow < Math.min(50, matrix.length);
             headerRow += 1
           ) {
-            const rawHeaders =
-              matrix[headerRow].map(
-                value =>
-                  String(
-                    value ?? ""
-                  ).trim()
-              );
+            const rawHeaders = matrix[headerRow].map(
+              (value) => String(value ?? "").trim()
+            );
 
-            const keys =
-              rawHeaders.map(
-                normalizedHeader
-              );
+            const normalizedHeaders =
+              rawHeaders.map(headerKey);
 
             const modelIndex =
-              keys.findIndex(
-                key =>
-                  MODEL_ALIASES.includes(key)
+              normalizedHeaders.findIndex((header) =>
+                MODEL_ALIASES.includes(header)
               );
 
             const stockIndex =
-              keys.findIndex(
-                key =>
-                  STOCK_ALIASES.includes(key)
+              normalizedHeaders.findIndex((header) =>
+                STOCK_ALIASES.includes(header)
               );
 
             if (
@@ -3409,50 +2882,34 @@
             }
 
             const headers =
-              createUniqueHeaders(
-                rawHeaders
-              );
+              uniqueHeaders(rawHeaders);
 
-            const rows =
-              matrix
-                .slice(headerRow + 1)
-                .filter(row =>
-                  String(
-                    row[modelIndex] ??
-                    ""
-                  ).trim()
+            const rows = matrix
+              .slice(headerRow + 1)
+              .filter((row) =>
+                String(row[modelIndex] ?? "").trim()
+              )
+              .map((row) =>
+                Object.fromEntries(
+                  headers.map((header, index) => [
+                    header,
+                    row[index] ?? ""
+                  ])
                 )
-                .map(row =>
-                  Object.fromEntries(
-                    headers.map(
-                      (header, index) => [
-                        header,
-                        row[index] ?? ""
-                      ]
-                    )
-                  )
-                );
+              );
 
             if (rows.length) {
               return {
-                key:
-                  `${region}::${locationName}`,
-
+                key: `${region}::${locationName}`,
                 region,
                 location: locationName,
                 fileName: file.name,
                 sheetName,
                 headers,
                 rows,
-
-                modelHeader:
-                  headers[modelIndex],
-
-                stockHeader:
-                  headers[stockIndex],
-
-                uploadedAt:
-                  new Date().toISOString()
+                modelHeader: headers[modelIndex],
+                stockHeader: headers[stockIndex],
+                uploadedAt: new Date().toISOString()
               };
             }
           }
@@ -3463,228 +2920,166 @@
         );
       }
 
-      function openInventoryDatabase() {
-        return new Promise(
-          (resolve, reject) => {
-            const request =
-              indexedDB.open(
-                "StarkEventsInventoryDB",
-                1
-              );
+      function openDatabase() {
+        return new Promise((resolve, reject) => {
+          const request = indexedDB.open(
+            "StarkEventsInventoryDB",
+            1
+          );
 
-            request.onupgradeneeded =
-              () => {
-                const database =
-                  request.result;
+          request.onupgradeneeded = () => {
+            const database = request.result;
 
-                if (
-                  !database
-                    .objectStoreNames
-                    .contains(
-                      "locationReports"
-                    )
-                ) {
-                  database.createObjectStore(
-                    "locationReports",
-                    {
-                      keyPath: "key"
-                    }
-                  );
-                }
-              };
-
-            request.onsuccess =
-              () => resolve(
-                request.result
-              );
-
-            request.onerror =
-              () => reject(
-                request.error
-              );
-          }
-        );
-      }
-
-      async function saveLocationReport(report) {
-        const database =
-          await openInventoryDatabase();
-
-        return new Promise(
-          (resolve, reject) => {
-            const transaction =
-              database.transaction(
-                "locationReports",
-                "readwrite"
-              );
-
-            transaction
-              .objectStore(
+            if (
+              !database.objectStoreNames.contains(
                 "locationReports"
               )
-              .put(report);
-
-            transaction.oncomplete =
-              () => {
-                database.close();
-                resolve();
-              };
-
-            transaction.onerror =
-              () => {
-                database.close();
-                reject(
-                  transaction.error
-                );
-              };
-          }
-        );
-      }
-
-      async function loadStoredInventory() {
-        const database =
-          await openInventoryDatabase();
-
-        return new Promise(
-          (resolve, reject) => {
-            const transaction =
-              database.transaction(
+            ) {
+              database.createObjectStore(
                 "locationReports",
-                "readonly"
+                {
+                  keyPath: "key"
+                }
               );
+            }
+          };
 
-            const request =
-              transaction
-                .objectStore(
-                  "locationReports"
-                )
-                .getAll();
+          request.onsuccess = () => {
+            resolve(request.result);
+          };
 
-            request.onsuccess =
-              () => resolve(
-                request.result || []
-              );
-
-            request.onerror =
-              () => reject(
-                request.error
-              );
-
-            transaction.oncomplete =
-              () => database.close();
-          }
-        );
+          request.onerror = () => {
+            reject(request.error);
+          };
+        });
       }
 
-      function rebuildLocationMaps() {
-        LOCATIONS.forEach(
-          locationName => {
-            const map =
-              new Map();
+      async function saveReport(report) {
+        const database = await openDatabase();
 
-            const report =
-              locationReports[
-                locationName
-              ];
+        return new Promise((resolve, reject) => {
+          const transaction = database.transaction(
+            "locationReports",
+            "readwrite"
+          );
 
-            if (report) {
-              report.rows.forEach(row => {
-                const model =
-                  normalizeModel(
-                    row[
-                      report.modelHeader
-                    ]
-                  );
+          transaction
+            .objectStore("locationReports")
+            .put(report);
 
-                const stock =
-                  numberValue(
-                    row[
-                      report.stockHeader
-                    ]
-                  );
+          transaction.oncomplete = () => {
+            database.close();
+            resolve();
+          };
 
-                if (
-                  model &&
-                  stock !== null
-                ) {
-                  map.set(
-                    model,
-                    (
-                      map.get(model) ||
-                      0
-                    ) + stock
-                  );
-                }
-              });
-            }
+          transaction.onerror = () => {
+            database.close();
+            reject(transaction.error);
+          };
+        });
+      }
 
-            locationMaps[
-              locationName
-            ] = map;
+      async function loadReports() {
+        const database = await openDatabase();
+
+        return new Promise((resolve, reject) => {
+          const transaction = database.transaction(
+            "locationReports",
+            "readonly"
+          );
+
+          const request = transaction
+            .objectStore("locationReports")
+            .getAll();
+
+          request.onsuccess = () => {
+            resolve(request.result || []);
+          };
+
+          request.onerror = () => {
+            reject(request.error);
+          };
+
+          transaction.oncomplete = () => {
+            database.close();
+          };
+        });
+      }
+
+      function rebuildInventoryMaps() {
+        LOCATIONS.forEach((locationName) => {
+          const map = new Map();
+          const report = reports[locationName];
+
+          if (report) {
+            report.rows.forEach((row) => {
+              const modelKey = normalizeModel(
+                row[report.modelHeader]
+              );
+
+              const stock = toNumber(
+                row[report.stockHeader]
+              );
+
+              if (
+                modelKey &&
+                stock !== null
+              ) {
+                map.set(
+                  modelKey,
+                  (map.get(modelKey) || 0) + stock
+                );
+              }
+            });
           }
-        );
+
+          inventoryMaps[locationName] = map;
+        });
 
         synchronizeAllInventory();
       }
 
       function synchronizeAllInventory() {
-        events.forEach(event => {
-          event.items.forEach(item => {
-            const model =
-              normalizeModel(
-                item.model
-              );
+        events.forEach((event) => {
+          event.items.forEach((item) => {
+            const modelKey =
+              normalizeModel(item.model);
 
-            if (
-              locationReports.Sarasota
-            ) {
+            if (reports.Sarasota) {
               item.sarasota =
-                locationMaps
-                  .Sarasota
-                  .get(model) ??
+                inventoryMaps.Sarasota.get(modelKey) ??
                 null;
             }
 
-            if (locationReports.Texas) {
+            if (reports.Texas) {
               item.texas =
-                locationMaps
-                  .Texas
-                  .get(model) ??
+                inventoryMaps.Texas.get(modelKey) ??
                 null;
             }
 
             const sarasota =
-              numberValue(
-                item.sarasota
-              );
+              toNumber(item.sarasota);
 
             const texas =
-              numberValue(
-                item.texas
-              );
+              toNumber(item.texas);
 
             item.total =
               sarasota === null &&
               texas === null
                 ? null
-                : (sarasota || 0) +
-                  (texas || 0);
+                : (sarasota || 0) + (texas || 0);
           });
         });
 
         saveEvents();
       }
 
-      async function uploadInventory(
-        locationName
-      ) {
-        const fileInput =
-          $(
-            `${locationName.toLowerCase()}File`
-          );
+      async function uploadInventory(locationName) {
+        const input = $(
+          `${locationName.toLowerCase()}File`
+        );
 
-        const file =
-          fileInput.files[0];
+        const file = input.files[0];
 
         if (!file) {
           showToast(
@@ -3695,21 +3090,16 @@
         }
 
         try {
-          const report =
-            await parseInventoryFile(
-              file,
-              locationName
-            );
-
-          await saveLocationReport(
-            report
+          const report = await parseInventory(
+            file,
+            locationName
           );
 
-          locationReports[
-            locationName
-          ] = report;
+          await saveReport(report);
 
-          rebuildLocationMaps();
+          reports[locationName] = report;
+
+          rebuildInventoryMaps();
           render();
 
           showToast(
@@ -3720,111 +3110,85 @@
           console.error(error);
 
           showToast(
-            error.message ||
-            "Inventory upload failed."
+            error.message || "Inventory upload failed."
           );
         }
       }
 
       function renderInventoryMeta() {
-        LOCATIONS.forEach(
-          locationName => {
-            const report =
-              locationReports[
+        LOCATIONS.forEach((locationName) => {
+          const report = reports[locationName];
+
+          const element = $(
+            `${locationName.toLowerCase()}Meta`
+          );
+
+          element.textContent = report
+            ? `${report.fileName} · ` +
+              `${report.rows.length.toLocaleString()} rows · ` +
+              `${inventoryMaps[
                 locationName
-              ];
+              ].size.toLocaleString()} models`
+            : "No file uploaded.";
+        });
 
-            const element =
-              $(
-                `${locationName.toLowerCase()}Meta`
-              );
+        const liveLocations = LOCATIONS.filter(
+          (locationName) => reports[locationName]
+        ).length;
 
-            element.textContent =
-              report
-                ? `${report.fileName} · ` +
-                  `${report.rows.length.toLocaleString()} rows · ` +
-                  `${locationMaps[locationName].size.toLocaleString()} models`
-                : "No file uploaded.";
-          }
-        );
-
-        const liveLocations =
-          LOCATIONS.filter(
-            locationName =>
-              locationReports[
-                locationName
-              ]
-          ).length;
-
-        $("inventorySourceStatus")
-          .textContent =
-            liveLocations
-              ? `${liveLocations} of 2 inventory locations synchronized.`
-              : "Upload Sarasota and Texas inventory to synchronize stock.";
+        $("inventorySourceStatus").textContent =
+          liveLocations
+            ? `${liveLocations} of 2 inventory locations synchronized.`
+            : "Upload Sarasota and Texas inventory to synchronize stock.";
       }
 
       function showToast(message) {
         clearTimeout(toastTimer);
 
-        $("toast").textContent =
-          message;
+        $("toast").textContent = message;
+        $("toast").classList.add("visible");
 
-        $("toast").classList.add(
-          "visible"
-        );
-
-        toastTimer =
-          setTimeout(
-            () => {
-              $("toast")
-                .classList.remove(
-                  "visible"
-                );
-            },
-            3400
-          );
+        toastTimer = setTimeout(() => {
+          $("toast").classList.remove("visible");
+        }, 3400);
       }
 
       window.eventsApp = {
         view: viewEvent,
-        edit: openEventEditor,
-        advance: advanceEvent,
+        edit: openEditor,
 
         noteChanged(eventId) {
-          const button =
-            $(`save-note-${eventId}`);
+          const saveButton = $(
+            `save-note-${eventId}`
+          );
 
-          if (button) {
-            button.disabled = false;
+          if (saveButton) {
+            saveButton.disabled = false;
           }
         },
 
-        saveNote: saveInlineNote
+        saveNote
       };
 
       async function initialize() {
-        configureRegion();
+        configurePage();
         normalizeEvents();
         bindEvents();
 
         try {
-          const storedReports =
-            await loadStoredInventory();
+          const storedReports = await loadReports();
 
           storedReports
-            .filter(report =>
-              report.region === region &&
-              LOCATIONS.includes(
-                report.location
-              )
+            .filter(
+              (report) =>
+                report.region === region &&
+                LOCATIONS.includes(report.location)
             )
-            .forEach(report => {
-              locationReports[
-                report.location
-              ] = report;
+            .forEach((report) => {
+              reports[report.location] = report;
             });
 
-          rebuildLocationMaps();
+          rebuildInventoryMaps();
         } catch (error) {
           console.warn(error);
         }
