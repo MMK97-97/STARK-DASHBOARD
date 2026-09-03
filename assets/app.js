@@ -67,7 +67,8 @@
 
   function openModule(module) {
     if (module === "inventory") {
-      window.location.href = `inventory.html?region=${encodeURIComponent(state.region)}`;
+      const inventoryRoutes = { US: "inventory-us.html", EU: "inventory-eu.html", Canada: "inventory-ca.html" };
+      window.location.href = inventoryRoutes[state.region];
       return;
     }
     state.module = module;

@@ -3,7 +3,8 @@
 
   const SI = window.StarkInventory;
   const page = document.body.dataset.page || "inventory";
-  const region = SI.initFrame(page);
+  const region = "US";
+  SI.initFrame(page);
   let dataset = null, items = [];
   const number = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
   const decimal = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });

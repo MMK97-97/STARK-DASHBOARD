@@ -1,7 +1,8 @@
 (function (global) {
   "use strict";
 
-  const DB_NAME = "stark-regional-inventory";
+  const FIXED_REGION = "Canada";
+  const DB_NAME = "stark-regional-inventory-ca";
   const STORE_NAME = "datasets";
   const VERSION = 1;
   const REGION_NAMES = { US: "United States", EU: "European Union", Canada: "Canada" };
@@ -13,8 +14,7 @@
   };
 
   function getRegion() {
-    const value = new URLSearchParams(location.search).get("region") || "US";
-    return value === "EU" || value === "Canada" ? value : "US";
+    return FIXED_REGION;
   }
 
   function regionCode(region) { return region === "Canada" ? "CA" : region; }
@@ -332,12 +332,11 @@
   function downloadCsv(rows, filename) { const csv = rows.map(row => row.map(csvCell).join(",")).join("\n"), blob = new Blob(["\ufeff" + csv], { type: "text/csv;charset=utf-8" }), link = document.createElement("a"); link.href = URL.createObjectURL(blob); link.download = filename; link.click(); setTimeout(() => URL.revokeObjectURL(link.href), 100); }
 
   function initFrame(page) {
-    const region = getRegion(), code = regionCode(region);
+    const region = FIXED_REGION, code = regionCode(region);
     document.querySelectorAll("[data-region-name]").forEach(node => node.textContent = regionName(region));
     document.querySelectorAll("[data-region-code]").forEach(node => node.textContent = code);
-    document.querySelectorAll("[data-region-link]").forEach(link => { const url = new URL(link.getAttribute("href"), location.href); url.searchParams.set("region", region); link.setAttribute("href", url.pathname.split("/").pop() + url.search); });
     document.querySelectorAll("[data-inventory-page]").forEach(link => link.classList.toggle("active", link.dataset.inventoryPage === page));
-    const select = document.getElementById("region-select"); if (select) { select.value = region; select.addEventListener("change", () => { const url = new URL(location.href); url.searchParams.set("region", select.value); location.href = url.href; }); }
+    const select = document.getElementById("region-select"); if (select) { select.value = region; select.addEventListener("change", () => { const suffix = { US: "us", EU: "eu", Canada: "ca" }[select.value]; const route = { inventory: "inventory", dashboard: "inventory-dashboard", raw: "raw-report", reorder: "reorder-report", brands: "active-brands", instructions: "instructions" }[page] || "inventory"; location.href = `${route}-${suffix}.html`; }); }
     return region;
   }
 
