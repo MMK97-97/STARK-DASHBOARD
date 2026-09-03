@@ -4,7 +4,6 @@
   const DB_NAME = "stark-regional-inventory";
   const STORE_NAME = "datasets";
   const VERSION = 1;
-  const SUPPLIER_REORDER_WINDOW_DAYS = 15;
 
   const REGION_NAMES = {
     US: "United States",
@@ -21,9 +20,7 @@
   };
 
   const ITEM_ALIASES = {
-    brand: [
-      "brand"
-    ],
+    brand: ["brand"],
 
     itemid: [
       "itemid",
@@ -44,13 +41,8 @@
       "description"
     ],
 
-    status: [
-      "status"
-    ],
-
-    eta: [
-      "eta"
-    ],
+    status: ["status"],
+    eta: ["eta"],
 
     vol3: [
       "vol past 3m",
@@ -72,8 +64,7 @@
       "avg per m past 3m",
       "average per month past 3m",
       "avg monthly sales",
-      "avg/month",
-      "average monthly demand"
+      "avg/month"
     ],
 
     stockQty: [
@@ -281,8 +272,8 @@
   }
 
   /*
-   * Lead times are converted to months because
-   * sales demand is measured as Avg/Month.
+   * Lead time is converted into months because
+   * demand is measured using Avg/Month.
    *
    * Examples:
    * 2 = 2 months
@@ -347,7 +338,7 @@
           );
 
         request.onupgradeneeded =
-          () => {
+          function () {
             if (
               !request.result
                 .objectStoreNames
@@ -361,10 +352,14 @@
           };
 
         request.onsuccess =
-          () => resolve(request.result);
+          function () {
+            resolve(request.result);
+          };
 
         request.onerror =
-          () => reject(request.error);
+          function () {
+            reject(request.error);
+          };
       }
     );
   }
@@ -392,13 +387,19 @@
           action(store);
 
         request.onsuccess =
-          () => resolve(request.result);
+          function () {
+            resolve(request.result);
+          };
 
         request.onerror =
-          () => reject(request.error);
+          function () {
+            reject(request.error);
+          };
 
         transaction.oncomplete =
-          () => db.close();
+          function () {
+            db.close();
+          };
       }
     );
   }
@@ -582,38 +583,38 @@
       );
     }
 
-    if (global.XLSX) {
-      const workbook =
-        XLSX.read(bytes, {
-          type: "array",
-          cellDates: true
-        });
-
-      const candidates = [];
-
-      workbook.SheetNames.forEach(
-        name => {
-          candidates.push(
-            XLSX.utils.sheet_to_json(
-              workbook.Sheets[name],
-              {
-                defval: "",
-                raw: false
-              }
-            )
-          );
-        }
+    if (!global.XLSX) {
+      throw new Error(
+        "The Excel reader did not load."
       );
-
-      return candidates.sort(
-        (a, b) =>
-          b.length - a.length
-      )[0] || [];
     }
 
-    throw new Error(
-      "The Excel reader did not load. Confirm that the assets folder was uploaded with the HTML files."
+    const workbook =
+      XLSX.read(bytes, {
+        type: "array",
+        cellDates: true
+      });
+
+    const candidates = [];
+
+    workbook.SheetNames.forEach(
+      sheetName => {
+        candidates.push(
+          XLSX.utils.sheet_to_json(
+            workbook.Sheets[sheetName],
+            {
+              defval: "",
+              raw: false
+            }
+          )
+        );
+      }
     );
+
+    return candidates.sort(
+      (a, b) =>
+        b.length - a.length
+    )[0] || [];
   }
 
   function parseDelimitedReport(
@@ -706,6 +707,7 @@
               values[column] || ""
             ]
           ),
+
           [
             "__rawRow",
             index + 2
@@ -725,16 +727,19 @@
   }
 
   function parseHtmlReport(text) {
-    const doc =
-      new DOMParser()
-        .parseFromString(
-          text,
-          "text/html"
-        );
+    const documentObject =
+      new DOMParser().parseFromString(
+        text,
+        "text/html"
+      );
 
     const table =
-      doc.querySelector("#gvreport") ||
-      doc.querySelector("table");
+      documentObject.querySelector(
+        "#gvreport"
+      ) ||
+      documentObject.querySelector(
+        "table"
+      );
 
     if (!table) {
       return [];
@@ -860,10 +865,10 @@
       )
     );
 
-    let qty = 0;
+    let quantity = 0;
 
     const windows = [];
-    const pos = [];
+    const purchaseOrders = [];
 
     nestedRows.forEach(cells => {
       const values =
@@ -881,7 +886,7 @@
             header.includes("po")
         );
 
-      const qtyIndex =
+      const quantityIndex =
         headers.findIndex(
           header =>
             header === "qty" ||
@@ -902,15 +907,15 @@
         poIndex >= 0 &&
         values[poIndex]
       ) {
-        pos.push(
+        purchaseOrders.push(
           values[poIndex]
         );
       }
 
-      if (qtyIndex >= 0) {
-        qty += finite(
+      if (quantityIndex >= 0) {
+        quantity += finite(
           toNumber(
-            values[qtyIndex]
+            values[quantityIndex]
           )
         );
       }
@@ -929,11 +934,11 @@
       windowRange(windows);
 
     return {
-      qty,
+      qty: quantity,
       windowText:
         windows.join(" | "),
       pos:
-        pos.join(", "),
+        purchaseOrders.join(", "),
       start:
         range.start,
       end:
@@ -979,6 +984,7 @@
     return {
       start:
         dates[0] || null,
+
       end:
         dates[
           dates.length - 1
@@ -1081,17 +1087,17 @@
             )
           );
 
-        const parsed =
+        const parsedSupplier =
           parseSupplierText(
             supplierText
           );
 
-        const avgInput =
+        const averageInput =
           finite(
             toNumber(get("avg3"))
           );
 
-        const vol3 =
+        const volumeThreeMonths =
           finite(
             toNumber(get("vol3"))
           );
@@ -1131,7 +1137,8 @@
               parseDate(get("eta"))
             ),
 
-          vol3,
+          vol3:
+            volumeThreeMonths,
 
           last30:
             finite(
@@ -1141,7 +1148,8 @@
             ),
 
           avg3:
-            avgInput || vol3 / 3,
+            averageInput ||
+            volumeThreeMonths / 3,
 
           stockQty:
             finite(
@@ -1200,11 +1208,15 @@
 
           supplierStart:
             row.__supplierStart ||
-            dateIso(parsed.start),
+            dateIso(
+              parsedSupplier.start
+            ),
 
           supplierEnd:
             row.__supplierEnd ||
-            dateIso(parsed.end)
+            dateIso(
+              parsedSupplier.end
+            )
         });
       }
     );
@@ -1223,6 +1235,7 @@
       );
 
     const today = new Date();
+
     today.setHours(
       0,
       0,
@@ -1335,43 +1348,27 @@
           );
 
         /*
-         * Supplier quantity is considered only
-         * when the supplier delivery is due
-         * within 15 days.
-         *
-         * Blank delivery dates and deliveries
-         * beyond 15 days contribute zero.
-         */
-        const qualifyingSupplierQty =
-          Number.isFinite(
-            daysUntil
-          ) &&
-          daysUntil <=
-            SUPPLIER_REORDER_WINDOW_DAYS
-            ? Math.max(
-                0,
-                row.openSupplier
-              )
-            : 0;
-
-        /*
-         * Requested formula:
+         * RECOMMENDED REORDER FORMULA
          *
          * ((On Hand
-         *   + qualifying Open Supplier Qty
+         *   + Open Supplier Quantity
          *   - Open Orders From Client)
-         *   × Lead Time)
-         *   + Avg/Month
+         *   × Lead Time from Active Brands)
+         *   + Average Monthly Sales
          */
         const calculatedRecommendation =
           (
             row.stockQty +
-            qualifyingSupplierQty -
+            row.openSupplier -
             row.openClient
           ) *
             leadTimeMonths +
           row.avg3;
 
+        /*
+         * Reorder quantities cannot be negative
+         * and must be whole units.
+         */
         const recommended =
           reorderRequired
             ? Math.max(
@@ -1390,7 +1387,6 @@
           daysUntil,
           leadTime,
           leadTimeMonths,
-          qualifyingSupplierQty,
           reorderRequired,
           reorderReason:
             reasons.join(" | "),
@@ -1501,10 +1497,11 @@
     link.click();
 
     setTimeout(
-      () =>
+      function () {
         URL.revokeObjectURL(
           link.href
-        ),
+        );
+      },
       100
     );
   }
@@ -1582,7 +1579,7 @@
 
       select.addEventListener(
         "change",
-        () => {
+        function () {
           const url =
             new URL(
               location.href
