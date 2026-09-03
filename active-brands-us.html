@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Regional inventory analysis for Stark Premium">
+  <title>Active Brands | Stark Regional Inventory</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles-us.css">
+  <style>.brand-toolbar-actions{display:flex;align-items:center;gap:9px}@media(max-width:540px){.brand-toolbar-actions{align-items:stretch;flex-direction:column}}</style>
+  <script src="assets/jszip.min.js" defer></script>
+  <script src="assets/inventory-core-us.js" defer></script>
+  <script src="assets/inventory-pages-us.js" defer></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" async></script>
+</head>
+<body data-page="brands">
+  <header class="inventory-header">
+    <a class="inventory-brand" href="index.html"><span>S</span><div><small>Stark Premium</small><strong>Regional Inventory</strong></div></a>
+    <div class="inventory-header-actions">
+      <label>Region<select id="region-select" aria-label="Select region"><option value="US">US</option><option value="EU">EU</option><option value="Canada">Canada</option></select></label>
+      <span class="region-pill" data-region-code>US</span>
+      <a class="button button-secondary" data-region-link href="index.html">All regions</a>
+    </div>
+  </header>
+  <main class="inventory-main">
+    <nav class="inventory-nav" aria-label="Inventory analysis pages">
+      <a class="inventory-overview-link" data-region-link href="inventory-us.html">Inventory Analysis</a>
+      <a data-inventory-page="dashboard" data-region-link href="inventory-dashboard-us.html">Dashboard</a>
+      <a data-inventory-page="raw" data-region-link href="raw-report-us.html">Raw Report</a>
+      <a data-inventory-page="reorder" data-region-link href="reorder-report-us.html">Reorder Report</a>
+      <a class="active" data-inventory-page="brands" data-region-link href="active-brands-us.html">Active Brands</a>
+      <a data-inventory-page="instructions" data-region-link href="instructions-us.html">Instructions</a>
+    </nav>
+    <section class="inventory-page-heading">
+      <div><p class="eyebrow">Reorder scope • <span data-region-name>United States</span></p><h1>Active Brands</h1><p class="page-description">Control which brands are included in reorder analysis and maintain the supplier lead time for each brand.</p></div>
+      <div class="file-status" data-file-status>No Item Sales Report uploaded</div>
+    </section>
+    <section class="data-empty" data-empty-data><strong>No regional inventory data</strong><p><a data-region-link href="inventory-dashboard-us.html">Upload the Item Sales Report on the Dashboard.</a></p></section>
+    <div class="hidden" data-requires-data>
+      <section class="inventory-filter-bar brand-filters">
+        <label class="wide-filter">Brand<input id="brand-search" type="search" placeholder="Search brand"></label>
+        <button class="button button-secondary" id="activate-all" type="button">Activate all</button>
+        <button class="button button-secondary" id="deactivate-all" type="button">Deactivate all</button>
+        <div class="brand-toolbar-actions"><button class="button button-secondary" id="save-lead-times" type="button">Save lead times</button><button class="button button-primary" id="export-brands" type="button">Export CSV</button></div>
+      </section>
+      <p class="result-count" id="brand-result-count"></p>
+      <section class="inventory-panel">
+        <div class="panel-heading"><div><p class="eyebrow">Reorder eligibility</p><h2>Brand controls and lead times</h2></div><p>Inactive brands remain in the Raw Report but are excluded from the Reorder Report.</p></div>
+        <div class="inventory-table-wrap"><table><thead><tr><th>Included</th><th>Active Brand</th><th class="num">Items</th><th>Lead Time</th></tr></thead><tbody id="brands-table"></tbody></table></div>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
