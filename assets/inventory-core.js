@@ -4,6 +4,7 @@
   const DB_NAME = "stark-regional-inventory";
   const STORE_NAME = "datasets";
   const VERSION = 1;
+  const SUPPLIER_REORDER_WINDOW_DAYS = 15;
 
   const REGION_NAMES = {
     US: "United States",
@@ -20,7 +21,9 @@
   };
 
   const ITEM_ALIASES = {
-    brand: ["brand"],
+    brand: [
+      "brand"
+    ],
 
     itemid: [
       "itemid",
@@ -41,8 +44,13 @@
       "description"
     ],
 
-    status: ["status"],
-    eta: ["eta"],
+    status: [
+      "status"
+    ],
+
+    eta: [
+      "eta"
+    ],
 
     vol3: [
       "vol past 3m",
@@ -104,23 +112,30 @@
 
   function getRegion() {
     const value =
-      new URLSearchParams(location.search).get("region") || "US";
+      new URLSearchParams(location.search)
+        .get("region") || "US";
 
-    return value === "EU" || value === "Canada"
+    return value === "EU" ||
+      value === "Canada"
       ? value
       : "US";
   }
 
   function regionCode(region) {
-    return region === "Canada" ? "CA" : region;
+    return region === "Canada"
+      ? "CA"
+      : region;
   }
 
   function regionName(region) {
-    return REGION_NAMES[region] || REGION_NAMES.US;
+    return REGION_NAMES[region] ||
+      REGION_NAMES.US;
   }
 
   function cleanText(value) {
-    return String(value == null ? "" : value)
+    return String(
+      value == null ? "" : value
+    )
       .replace(/\u00a0/g, " ")
       .replace(/\s+/g, " ")
       .trim();
@@ -136,11 +151,15 @@
   }
 
   function textValue(value, fallback) {
-    return cleanText(value) || fallback || "";
+    return cleanText(value) ||
+      fallback ||
+      "";
   }
 
   function finite(value) {
-    return Number.isFinite(value) ? value : 0;
+    return Number.isFinite(value)
+      ? value
+      : 0;
   }
 
   function toNumber(value) {
@@ -148,13 +167,16 @@
       return value;
     }
 
-    const raw = String(value == null ? "" : value).trim();
+    const raw = String(
+      value == null ? "" : value
+    ).trim();
 
     if (!raw) {
       return NaN;
     }
 
-    const negative = /^\(.*\)$/.test(raw);
+    const negative =
+      /^\(.*\)$/.test(raw);
 
     const result = Number(
       raw
@@ -162,11 +184,16 @@
         .replace(/\s/g, "")
     );
 
-    return negative ? -result : result;
+    return negative
+      ? -result
+      : result;
   }
 
   function parseDate(value) {
-    if (value instanceof Date && !isNaN(value)) {
+    if (
+      value instanceof Date &&
+      !isNaN(value)
+    ) {
       return value;
     }
 
@@ -182,17 +209,22 @@
         : raw
     );
 
-    return isNaN(parsed) ? null : parsed;
+    return isNaN(parsed)
+      ? null
+      : parsed;
   }
 
   function dateIso(date) {
-    return date instanceof Date && !isNaN(date)
+    return date instanceof Date &&
+      !isNaN(date)
       ? date.toISOString()
       : "";
   }
 
   function reviveDate(value) {
-    return value ? parseDate(value) : null;
+    return value
+      ? parseDate(value)
+      : null;
   }
 
   function dateText(value) {
@@ -202,16 +234,21 @@
         : reviveDate(value);
 
     return date
-      ? date.toLocaleDateString("en-US", {
-          month: "2-digit",
-          day: "2-digit",
-          year: "numeric"
-        })
+      ? date.toLocaleDateString(
+          "en-US",
+          {
+            month: "2-digit",
+            day: "2-digit",
+            year: "numeric"
+          }
+        )
       : "";
   }
 
   function escapeHtml(value) {
-    return String(value == null ? "" : value).replace(
+    return String(
+      value == null ? "" : value
+    ).replace(
       /[&<>\"]/g,
       character => ({
         "&": "&amp;",
@@ -223,7 +260,9 @@
   }
 
   function csvCell(value) {
-    const text = String(value == null ? "" : value);
+    const text = String(
+      value == null ? "" : value
+    );
 
     return /[",\n]/.test(text)
       ? `"${text.replace(/"/g, '""')}"`
@@ -233,30 +272,36 @@
   function unique(values) {
     return Array.from(
       new Set(values.filter(Boolean))
-    ).sort((a, b) =>
-      String(a).localeCompare(String(b))
+    ).sort(
+      (a, b) =>
+        String(a).localeCompare(
+          String(b)
+        )
     );
   }
 
   /*
-   * Lead-time values are converted to months because the formula uses
-   * average monthly sales.
+   * Lead times are converted to months because
+   * sales demand is measured as Avg/Month.
    *
    * Examples:
-   * 2          = 2 months
-   * 2 months   = 2 months
-   * 2 weeks    = approximately 0.46 months
-   * 30 days    = approximately 0.99 months
-   * 1 year     = 12 months
+   * 2 = 2 months
+   * 2 months = 2 months
+   * 2 weeks = approximately 0.46 months
+   * 30 days = approximately 0.99 months
+   * 1 year = 12 months
    */
   function leadTimeInMonths(value) {
-    const text = cleanText(value).toLowerCase();
+    const text =
+      cleanText(value).toLowerCase();
 
     if (!text) {
       return 0;
     }
 
-    const match = text.match(/-?\d+(?:\.\d+)?/);
+    const match = text.match(
+      /-?\d+(?:\.\d+)?/
+    );
 
     if (!match) {
       return 0;
@@ -283,67 +328,90 @@
   }
 
   function openDb() {
-    return new Promise((resolve, reject) => {
-      if (!global.indexedDB) {
-        reject(new Error("IndexedDB is unavailable."));
-        return;
-      }
-
-      const request = indexedDB.open(
-        DB_NAME,
-        VERSION
-      );
-
-      request.onupgradeneeded = () => {
-        if (
-          !request.result.objectStoreNames.contains(
-            STORE_NAME
-          )
-        ) {
-          request.result.createObjectStore(
-            STORE_NAME
+    return new Promise(
+      (resolve, reject) => {
+        if (!global.indexedDB) {
+          reject(
+            new Error(
+              "IndexedDB is unavailable."
+            )
           );
+
+          return;
         }
-      };
 
-      request.onsuccess = () =>
-        resolve(request.result);
+        const request =
+          indexedDB.open(
+            DB_NAME,
+            VERSION
+          );
 
-      request.onerror = () =>
-        reject(request.error);
-    });
+        request.onupgradeneeded =
+          () => {
+            if (
+              !request.result
+                .objectStoreNames
+                .contains(STORE_NAME)
+            ) {
+              request.result
+                .createObjectStore(
+                  STORE_NAME
+                );
+            }
+          };
+
+        request.onsuccess =
+          () => resolve(request.result);
+
+        request.onerror =
+          () => reject(request.error);
+      }
+    );
   }
 
-  async function databaseAction(mode, action) {
+  async function databaseAction(
+    mode,
+    action
+  ) {
     const db = await openDb();
 
-    return new Promise((resolve, reject) => {
-      const transaction = db.transaction(
-        STORE_NAME,
-        mode
-      );
+    return new Promise(
+      (resolve, reject) => {
+        const transaction =
+          db.transaction(
+            STORE_NAME,
+            mode
+          );
 
-      const store =
-        transaction.objectStore(STORE_NAME);
+        const store =
+          transaction.objectStore(
+            STORE_NAME
+          );
 
-      const request = action(store);
+        const request =
+          action(store);
 
-      request.onsuccess = () =>
-        resolve(request.result);
+        request.onsuccess =
+          () => resolve(request.result);
 
-      request.onerror = () =>
-        reject(request.error);
+        request.onerror =
+          () => reject(request.error);
 
-      transaction.oncomplete = () =>
-        db.close();
-    });
+        transaction.oncomplete =
+          () => db.close();
+      }
+    );
   }
 
-  async function saveDataset(region, dataset) {
+  async function saveDataset(
+    region,
+    dataset
+  ) {
     try {
       return await databaseAction(
         "readwrite",
-        store => store.put(dataset, region)
+        store =>
+          store.put(dataset, region)
       );
     } catch (_) {
       sessionStorage.setItem(
@@ -364,11 +432,14 @@
         )
       ) || null;
     } catch (_) {
-      const raw = sessionStorage.getItem(
-        `stark-inventory-${region}`
-      );
+      const raw =
+        sessionStorage.getItem(
+          `stark-inventory-${region}`
+        );
 
-      return raw ? JSON.parse(raw) : null;
+      return raw
+        ? JSON.parse(raw)
+        : null;
     }
   }
 
@@ -404,11 +475,16 @@
         )
       };
     } catch (_) {
-      return { ...DEFAULT_SETTINGS };
+      return {
+        ...DEFAULT_SETTINGS
+      };
     }
   }
 
-  function saveSettings(region, settings) {
+  function saveSettings(
+    region,
+    settings
+  ) {
     localStorage.setItem(
       settingsKey(region),
       JSON.stringify({
@@ -430,44 +506,57 @@
     }
   }
 
-  function saveBrandSettings(region, settings) {
+  function saveBrandSettings(
+    region,
+    settings
+  ) {
     localStorage.setItem(
       brandKey(region),
       JSON.stringify(settings)
     );
   }
 
-  function ensureBrandSettings(region, rows) {
-    const saved = loadBrandSettings(region);
+  function ensureBrandSettings(
+    region,
+    rows
+  ) {
+    const saved =
+      loadBrandSettings(region);
 
-    unique(rows.map(row => row.brand)).forEach(
-      brand => {
-        if (!saved[brand]) {
-          saved[brand] = {
-            active: true,
-            leadTime: ""
-          };
-        }
+    unique(
+      rows.map(row => row.brand)
+    ).forEach(brand => {
+      if (!saved[brand]) {
+        saved[brand] = {
+          active: true,
+          leadTime: ""
+        };
       }
-    );
+    });
 
-    saveBrandSettings(region, saved);
+    saveBrandSettings(
+      region,
+      saved
+    );
 
     return saved;
   }
 
   async function readReportFile(file) {
-    const bytes = await file.arrayBuffer();
+    const bytes =
+      await file.arrayBuffer();
 
-    const prefix = new TextDecoder("utf-8")
-      .decode(bytes.slice(0, 5000))
-      .trim()
-      .toLowerCase();
+    const prefix =
+      new TextDecoder("utf-8")
+        .decode(bytes.slice(0, 5000))
+        .trim()
+        .toLowerCase();
 
-    const extension = String(file.name || "")
-      .split(".")
-      .pop()
-      .toLowerCase();
+    const extension =
+      String(file.name || "")
+        .split(".")
+        .pop()
+        .toLowerCase();
 
     if (
       prefix.includes("<table") ||
@@ -475,39 +564,50 @@
       prefix.startsWith("<html")
     ) {
       return parseHtmlReport(
-        new TextDecoder("utf-8").decode(bytes)
+        new TextDecoder("utf-8")
+          .decode(bytes)
       );
     }
 
-    if (["csv", "tsv"].includes(extension)) {
+    if (
+      extension === "csv" ||
+      extension === "tsv"
+    ) {
       return parseDelimitedReport(
-        new TextDecoder("utf-8").decode(bytes),
-        extension === "tsv" ? "\t" : ","
+        new TextDecoder("utf-8")
+          .decode(bytes),
+        extension === "tsv"
+          ? "\t"
+          : ","
       );
     }
 
     if (global.XLSX) {
-      const workbook = XLSX.read(bytes, {
-        type: "array",
-        cellDates: true
-      });
+      const workbook =
+        XLSX.read(bytes, {
+          type: "array",
+          cellDates: true
+        });
 
       const candidates = [];
 
-      workbook.SheetNames.forEach(name => {
-        candidates.push(
-          XLSX.utils.sheet_to_json(
-            workbook.Sheets[name],
-            {
-              defval: "",
-              raw: false
-            }
-          )
-        );
-      });
+      workbook.SheetNames.forEach(
+        name => {
+          candidates.push(
+            XLSX.utils.sheet_to_json(
+              workbook.Sheets[name],
+              {
+                defval: "",
+                raw: false
+              }
+            )
+          );
+        }
+      );
 
       return candidates.sort(
-        (a, b) => b.length - a.length
+        (a, b) =>
+          b.length - a.length
       )[0] || [];
     }
 
@@ -516,7 +616,10 @@
     );
   }
 
-  function parseDelimitedReport(text, delimiter) {
+  function parseDelimitedReport(
+    text,
+    delimiter
+  ) {
     const records = [];
 
     let row = [];
@@ -528,7 +631,8 @@
       index < text.length;
       index += 1
     ) {
-      const character = text[index];
+      const character =
+        text[index];
 
       if (
         character === '"' &&
@@ -546,8 +650,10 @@
         row.push(value);
         value = "";
       } else if (
-        (character === "\n" ||
-          character === "\r") &&
+        (
+          character === "\n" ||
+          character === "\r"
+        ) &&
         !quoted
       ) {
         if (
@@ -560,7 +666,9 @@
         row.push(value);
 
         if (
-          row.some(cell => cleanText(cell))
+          row.some(cell =>
+            cleanText(cell)
+          )
         ) {
           records.push(row);
         }
@@ -574,7 +682,11 @@
 
     row.push(value);
 
-    if (row.some(cell => cleanText(cell))) {
+    if (
+      row.some(cell =>
+        cleanText(cell)
+      )
+    ) {
       records.push(row);
     }
 
@@ -585,19 +697,27 @@
     const headers =
       records.shift().map(cleanText);
 
-    return records.map((values, index) =>
-      Object.fromEntries([
-        ...headers.map((header, column) => [
-          header,
-          values[column] || ""
-        ]),
-        ["__rawRow", index + 2]
-      ])
+    return records.map(
+      (values, index) =>
+        Object.fromEntries([
+          ...headers.map(
+            (header, column) => [
+              header,
+              values[column] || ""
+            ]
+          ),
+          [
+            "__rawRow",
+            index + 2
+          ]
+        ])
     );
   }
 
   function directCells(row) {
-    return Array.from(row.children).filter(
+    return Array.from(
+      row.children
+    ).filter(
       child =>
         child.tagName === "TD" ||
         child.tagName === "TH"
@@ -605,10 +725,12 @@
   }
 
   function parseHtmlReport(text) {
-    const doc = new DOMParser().parseFromString(
-      text,
-      "text/html"
-    );
+    const doc =
+      new DOMParser()
+        .parseFromString(
+          text,
+          "text/html"
+        );
 
     const table =
       doc.querySelector("#gvreport") ||
@@ -620,15 +742,20 @@
 
     const rows = Array.from(
       table.querySelectorAll("tr")
-    ).filter(row => row.closest("table") === table);
+    ).filter(
+      row =>
+        row.closest("table") === table
+    );
 
     if (!rows.length) {
       return [];
     }
 
-    const headers = directCells(rows[0]).map(
-      cell => cleanText(cell.textContent)
-    );
+    const headers =
+      directCells(rows[0]).map(
+        cell =>
+          cleanText(cell.textContent)
+      );
 
     return rows
       .slice(1)
@@ -637,51 +764,63 @@
           __rawRow: rowIndex + 2
         };
 
-        const cells = directCells(row);
+        const cells =
+          directCells(row);
 
-        headers.forEach((header, index) => {
-          const cell = cells[index];
+        headers.forEach(
+          (header, index) => {
+            const cell =
+              cells[index];
 
-          if (!cell) {
-            result[header] = "";
-            return;
+            if (!cell) {
+              result[header] = "";
+              return;
+            }
+
+            if (
+              normalizeHeader(header) ===
+              "open orders to supplier"
+            ) {
+              const supplier =
+                parseSupplierCell(cell);
+
+              result[header] =
+                supplier.windowText;
+
+              result.__supplierQty =
+                supplier.qty;
+
+              result.__supplierPOs =
+                supplier.pos;
+
+              result.__supplierStart =
+                dateIso(
+                  supplier.start
+                );
+
+              result.__supplierEnd =
+                dateIso(
+                  supplier.end
+                );
+            } else {
+              const clone =
+                cell.cloneNode(true);
+
+              clone
+                .querySelectorAll(
+                  "table"
+                )
+                .forEach(nested =>
+                  nested.remove()
+                );
+
+              result[header] =
+                cleanText(
+                  clone.textContent
+                );
+            }
           }
-
-          if (
-            normalizeHeader(header) ===
-            "open orders to supplier"
-          ) {
-            const supplier =
-              parseSupplierCell(cell);
-
-            result[header] =
-              supplier.windowText;
-
-            result.__supplierQty =
-              supplier.qty;
-
-            result.__supplierPOs =
-              supplier.pos;
-
-            result.__supplierStart =
-              dateIso(supplier.start);
-
-            result.__supplierEnd =
-              dateIso(supplier.end);
-          } else {
-            const clone =
-              cell.cloneNode(true);
-
-            clone
-              .querySelectorAll("table")
-              .forEach(nested =>
-                nested.remove()
-              );
-
-            result[header] =
-              cleanText(clone.textContent);
-          }
-        });
+        );
 
         return result;
       })
@@ -695,7 +834,8 @@
   }
 
   function parseSupplierCell(cell) {
-    const nested = cell.querySelector("table");
+    const nested =
+      cell.querySelector("table");
 
     if (!nested) {
       return parseSupplierText(
@@ -703,16 +843,21 @@
       );
     }
 
-    const nestedRows = Array.from(
-      nested.querySelectorAll("tr")
-    )
-      .map(directCells)
-      .filter(cells => cells.length);
+    const nestedRows =
+      Array.from(
+        nested.querySelectorAll("tr")
+      )
+        .map(directCells)
+        .filter(
+          cells => cells.length
+        );
 
     const headers = (
       nestedRows.shift() || []
     ).map(cell =>
-      normalizeHeader(cell.textContent)
+      normalizeHeader(
+        cell.textContent
+      )
     );
 
     let qty = 0;
@@ -721,38 +866,52 @@
     const pos = [];
 
     nestedRows.forEach(cells => {
-      const values = cells.map(cell =>
-        cleanText(cell.textContent)
-      );
+      const values =
+        cells.map(cell =>
+          cleanText(
+            cell.textContent
+          )
+        );
 
-      const poIndex = headers.findIndex(
-        header =>
-          header === "po" ||
-          header === "po#" ||
-          header.includes("po")
-      );
+      const poIndex =
+        headers.findIndex(
+          header =>
+            header === "po" ||
+            header === "po#" ||
+            header.includes("po")
+        );
 
-      const qtyIndex = headers.findIndex(
-        header =>
-          header === "qty" ||
-          header.includes("quantity")
-      );
+      const qtyIndex =
+        headers.findIndex(
+          header =>
+            header === "qty" ||
+            header.includes(
+              "quantity"
+            )
+        );
 
       const windowIndex =
-        headers.findIndex(header =>
-          header.includes("delivery window")
+        headers.findIndex(
+          header =>
+            header.includes(
+              "delivery window"
+            )
         );
 
       if (
         poIndex >= 0 &&
         values[poIndex]
       ) {
-        pos.push(values[poIndex]);
+        pos.push(
+          values[poIndex]
+        );
       }
 
       if (qtyIndex >= 0) {
         qty += finite(
-          toNumber(values[qtyIndex])
+          toNumber(
+            values[qtyIndex]
+          )
         );
       }
 
@@ -760,18 +919,25 @@
         windowIndex >= 0 &&
         values[windowIndex]
       ) {
-        windows.push(values[windowIndex]);
+        windows.push(
+          values[windowIndex]
+        );
       }
     });
 
-    const range = windowRange(windows);
+    const range =
+      windowRange(windows);
 
     return {
       qty,
-      windowText: windows.join(" | "),
-      pos: pos.join(", "),
-      start: range.start,
-      end: range.end
+      windowText:
+        windows.join(" | "),
+      pos:
+        pos.join(", "),
+      start:
+        range.start,
+      end:
+        range.end
     };
   }
 
@@ -781,15 +947,20 @@
         /\d{1,2}\/\d{1,2}\/\d{4}\s*-\s*\d{1,2}\/\d{1,2}\/\d{4}/g
       ) || [];
 
-    const range = windowRange(windows);
+    const range =
+      windowRange(windows);
 
     return {
       qty: 0,
       windowText:
-        windows.join(" | ") || text || "",
+        windows.join(" | ") ||
+        text ||
+        "",
       pos: "",
-      start: range.start,
-      end: range.end
+      start:
+        range.start,
+      end:
+        range.end
     };
   }
 
@@ -801,48 +972,64 @@
           .map(parseDate)
           .filter(Boolean)
       )
-      .sort((a, b) => a - b);
+      .sort(
+        (a, b) => a - b
+      );
 
     return {
-      start: dates[0] || null,
-      end: dates[dates.length - 1] || null
+      start:
+        dates[0] || null,
+      end:
+        dates[
+          dates.length - 1
+        ] || null
     };
   }
 
-  function detectMapping(headers, aliases) {
-    const normalized = headers.map(original => ({
-      original,
-      normalized: normalizeHeader(original)
-    }));
+  function detectMapping(
+    headers,
+    aliases
+  ) {
+    const normalized =
+      headers.map(original => ({
+        original,
+        normalized:
+          normalizeHeader(original)
+      }));
 
     const result = {};
 
     Object.entries(aliases).forEach(
       ([key, values]) => {
-        const targets = values.map(
-          normalizeHeader
-        );
+        const targets =
+          values.map(
+            normalizeHeader
+          );
 
-        const exact = normalized.find(
-          header =>
-            targets.includes(header.normalized)
-        );
+        const exact =
+          normalized.find(
+            header =>
+              targets.includes(
+                header.normalized
+              )
+          );
 
-        const fuzzy = normalized.find(
-          header =>
-            targets.some(
-              target =>
-                header.normalized.includes(
-                  target
-                ) ||
-                target.includes(
+        const fuzzy =
+          normalized.find(
+            header =>
+              targets.some(
+                target =>
                   header.normalized
-                )
-            )
-        );
+                    .includes(target) ||
+                  target.includes(
+                    header.normalized
+                  )
+              )
+          );
 
         result[key] =
-          (exact || fuzzy || {}).original || "";
+          (exact || fuzzy || {})
+            .original || "";
       }
     );
 
@@ -854,308 +1041,453 @@
       return [];
     }
 
-    const mapping = detectMapping(
-      Object.keys(rows[0]),
-      ITEM_ALIASES
-    );
+    const mapping =
+      detectMapping(
+        Object.keys(rows[0]),
+        ITEM_ALIASES
+      );
 
     const normalized = [];
 
-    rows.forEach((row, index) => {
-      const get = key =>
-        mapping[key] ? row[mapping[key]] : "";
+    rows.forEach(
+      (row, index) => {
+        const get = key =>
+          mapping[key]
+            ? row[mapping[key]]
+            : "";
 
-      const model = textValue(get("model"));
-      const product = textValue(get("product"));
-      const brand = textValue(get("brand"));
+        const model =
+          textValue(get("model"));
 
-      if (!model && !product && !brand) {
-        return;
-      }
+        const product =
+          textValue(get("product"));
 
-      const supplierText = textValue(
-        get("supplierWindow"),
-        textValue(get("openSupplier"))
-      );
+        const brand =
+          textValue(get("brand"));
 
-      const parsed =
-        parseSupplierText(supplierText);
+        if (
+          !model &&
+          !product &&
+          !brand
+        ) {
+          return;
+        }
 
-      const avgInput = finite(
-        toNumber(get("avg3"))
-      );
-
-      const vol3 = finite(
-        toNumber(get("vol3"))
-      );
-
-      normalized.push({
-        id: index + 1,
-
-        rawRow:
-          finite(toNumber(row.__rawRow)) ||
-          index + 2,
-
-        brand:
-          brand || "Unspecified",
-
-        itemid:
-          textValue(get("itemid")),
-
-        model:
-          model || product,
-
-        product:
-          product || model,
-
-        status:
+        const supplierText =
           textValue(
-            get("status"),
-            "Unspecified"
-          ),
+            get("supplierWindow"),
+            textValue(
+              get("openSupplier")
+            )
+          );
 
-        eta:
-          dateIso(parseDate(get("eta"))),
+        const parsed =
+          parseSupplierText(
+            supplierText
+          );
 
-        vol3,
-
-        last30:
-          finite(toNumber(get("last30"))),
-
-        avg3:
-          avgInput || vol3 / 3,
-
-        stockQty:
-          finite(toNumber(get("stockQty"))),
-
-        available:
-          finite(toNumber(get("available"))),
-
-        stockDifference:
+        const avgInput =
           finite(
-            toNumber(get("stockDifference"))
-          ),
+            toNumber(get("avg3"))
+          );
 
-        openClient:
-          finite(toNumber(get("openClient"))),
+        const vol3 =
+          finite(
+            toNumber(get("vol3"))
+          );
 
-        openSupplier:
-          Number.isFinite(
-            toNumber(row.__supplierQty)
-          )
-            ? toNumber(row.__supplierQty)
-            : finite(
-                toNumber(get("openSupplier"))
-              ),
+        normalized.push({
+          id:
+            index + 1,
 
-        supplierWindow:
-          supplierText,
+          rawRow:
+            finite(
+              toNumber(row.__rawRow)
+            ) ||
+            index + 2,
 
-        supplierPOs:
-          textValue(row.__supplierPOs),
+          brand:
+            brand || "Unspecified",
 
-        supplierStart:
-          row.__supplierStart ||
-          dateIso(parsed.start),
+          itemid:
+            textValue(
+              get("itemid")
+            ),
 
-        supplierEnd:
-          row.__supplierEnd ||
-          dateIso(parsed.end)
-      });
-    });
+          model:
+            model || product,
+
+          product:
+            product || model,
+
+          status:
+            textValue(
+              get("status"),
+              "Unspecified"
+            ),
+
+          eta:
+            dateIso(
+              parseDate(get("eta"))
+            ),
+
+          vol3,
+
+          last30:
+            finite(
+              toNumber(
+                get("last30")
+              )
+            ),
+
+          avg3:
+            avgInput || vol3 / 3,
+
+          stockQty:
+            finite(
+              toNumber(
+                get("stockQty")
+              )
+            ),
+
+          available:
+            finite(
+              toNumber(
+                get("available")
+              )
+            ),
+
+          stockDifference:
+            finite(
+              toNumber(
+                get(
+                  "stockDifference"
+                )
+              )
+            ),
+
+          openClient:
+            finite(
+              toNumber(
+                get("openClient")
+              )
+            ),
+
+          openSupplier:
+            Number.isFinite(
+              toNumber(
+                row.__supplierQty
+              )
+            )
+              ? toNumber(
+                  row.__supplierQty
+                )
+              : finite(
+                  toNumber(
+                    get(
+                      "openSupplier"
+                    )
+                  )
+                ),
+
+          supplierWindow:
+            supplierText,
+
+          supplierPOs:
+            textValue(
+              row.__supplierPOs
+            ),
+
+          supplierStart:
+            row.__supplierStart ||
+            dateIso(parsed.start),
+
+          supplierEnd:
+            row.__supplierEnd ||
+            dateIso(parsed.end)
+        });
+      }
+    );
 
     return normalized;
   }
 
   function analyze(rows, region) {
-    const settings = loadSettings(region);
+    const settings =
+      loadSettings(region);
 
-    const brands = ensureBrandSettings(
-      region,
-      rows
-    );
-
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-
-    const items = rows.map(row => {
-      const statusUpper = String(
-        row.status
-      )
-        .trim()
-        .toUpperCase();
-
-      const excluded = [
-        "FEEDS ONLY",
-        "INTERNAL USE",
-        "PRESENTATION"
-      ].some(value =>
-        statusUpper.includes(value)
+    const brands =
+      ensureBrandSettings(
+        region,
+        rows
       );
 
-      const eligible = [
-        "LIVE",
-        "FASHION",
-        "BACKORDER"
-      ].includes(statusUpper);
-
-      const activeBrand =
-        brands[row.brand]
-          ? brands[row.brand].active !== false
-          : true;
-
-      const supplierEnd =
-        reviveDate(row.supplierEnd);
-
-      const daysUntil = supplierEnd
-        ? Math.ceil(
-            (supplierEnd - today) / 86400000
-          )
-        : null;
-
-      const reasons = [];
-
-      if (
-        activeBrand &&
-        eligible &&
-        !excluded
-      ) {
-        if (
-          row.available + row.openSupplier <=
-          settings.critical
-        ) {
-          reasons.push(
-            `Available + supplier qty <= ${settings.critical}`
-          );
-        }
-
-        if (row.openClient > row.available) {
-          reasons.push(
-            "Open client orders exceed available stock"
-          );
-        }
-
-        if (
-          Number.isFinite(daysUntil) &&
-          daysUntil > settings.delay
-        ) {
-          reasons.push(
-            `Supplier delivery exceeds ${settings.delay} days`
-          );
-        }
-
-        if (
-          row.avg3 >
-          row.available + row.openSupplier
-        ) {
-          reasons.push(
-            "Average monthly sales exceed available + supplier qty"
-          );
-        }
-      }
-
-      const reorderRequired =
-        reasons.length > 0;
-
-      const leadTime =
-        brands[row.brand]?.leadTime || "";
-
-      const leadTimeMonths =
-        leadTimeInMonths(leadTime);
-
-      /*
-       * Requested formula:
-       * (Stock On Hand - Open Orders From Client)
-       * × Lead Time
-       * + Average Monthly Sales
-       */
-      const calculatedRecommendation =
-        (row.stockQty - row.openClient) *
-          leadTimeMonths +
-        row.avg3;
-
-      const recommended = reorderRequired
-        ? Math.max(
-            0,
-            Math.ceil(
-              calculatedRecommendation
-            )
-          )
-        : 0;
-
-      return {
-        ...row,
-        activeBrand,
-        eligible,
-        excluded,
-        daysUntil,
-        leadTime,
-        leadTimeMonths,
-        reorderRequired,
-        reorderReason: reasons.join(" | "),
-        recommended,
-
-        monthsCover:
-          row.avg3 > 0
-            ? row.available / row.avg3
-            : null,
-
-        abc: "C",
-        rank: 0,
-        contribution: 0,
-        cumulative: 0
-      };
-    });
-
-    const ranked = items
-      .slice()
-      .sort((a, b) => b.vol3 - a.vol3);
-
-    const total = ranked.reduce(
-      (sum, item) =>
-        sum + Math.max(0, item.vol3),
+    const today = new Date();
+    today.setHours(
+      0,
+      0,
+      0,
       0
     );
 
+    const items =
+      rows.map(row => {
+        const statusUpper =
+          String(row.status)
+            .trim()
+            .toUpperCase();
+
+        const excluded = [
+          "FEEDS ONLY",
+          "INTERNAL USE",
+          "PRESENTATION"
+        ].some(value =>
+          statusUpper.includes(value)
+        );
+
+        const eligible = [
+          "LIVE",
+          "FASHION",
+          "BACKORDER"
+        ].includes(statusUpper);
+
+        const activeBrand =
+          brands[row.brand]
+            ? brands[row.brand]
+                .active !== false
+            : true;
+
+        const supplierEnd =
+          reviveDate(
+            row.supplierEnd
+          );
+
+        const daysUntil =
+          supplierEnd
+            ? Math.ceil(
+                (
+                  supplierEnd -
+                  today
+                ) /
+                86400000
+              )
+            : null;
+
+        const reasons = [];
+
+        if (
+          activeBrand &&
+          eligible &&
+          !excluded
+        ) {
+          if (
+            row.available +
+              row.openSupplier <=
+            settings.critical
+          ) {
+            reasons.push(
+              `Available + supplier qty <= ${settings.critical}`
+            );
+          }
+
+          if (
+            row.openClient >
+            row.available
+          ) {
+            reasons.push(
+              "Open client orders exceed available stock"
+            );
+          }
+
+          if (
+            Number.isFinite(
+              daysUntil
+            ) &&
+            daysUntil >
+              settings.delay
+          ) {
+            reasons.push(
+              `Supplier delivery exceeds ${settings.delay} days`
+            );
+          }
+
+          if (
+            row.avg3 >
+            row.available +
+              row.openSupplier
+          ) {
+            reasons.push(
+              "Average monthly sales exceed available + supplier qty"
+            );
+          }
+        }
+
+        const reorderRequired =
+          reasons.length > 0;
+
+        const leadTime =
+          brands[row.brand]
+            ?.leadTime || "";
+
+        const leadTimeMonths =
+          leadTimeInMonths(
+            leadTime
+          );
+
+        /*
+         * Supplier quantity is considered only
+         * when the supplier delivery is due
+         * within 15 days.
+         *
+         * Blank delivery dates and deliveries
+         * beyond 15 days contribute zero.
+         */
+        const qualifyingSupplierQty =
+          Number.isFinite(
+            daysUntil
+          ) &&
+          daysUntil <=
+            SUPPLIER_REORDER_WINDOW_DAYS
+            ? Math.max(
+                0,
+                row.openSupplier
+              )
+            : 0;
+
+        /*
+         * Requested formula:
+         *
+         * ((On Hand
+         *   + qualifying Open Supplier Qty
+         *   - Open Orders From Client)
+         *   × Lead Time)
+         *   + Avg/Month
+         */
+        const calculatedRecommendation =
+          (
+            row.stockQty +
+            qualifyingSupplierQty -
+            row.openClient
+          ) *
+            leadTimeMonths +
+          row.avg3;
+
+        const recommended =
+          reorderRequired
+            ? Math.max(
+                0,
+                Math.ceil(
+                  calculatedRecommendation
+                )
+              )
+            : 0;
+
+        return {
+          ...row,
+          activeBrand,
+          eligible,
+          excluded,
+          daysUntil,
+          leadTime,
+          leadTimeMonths,
+          qualifyingSupplierQty,
+          reorderRequired,
+          reorderReason:
+            reasons.join(" | "),
+          recommended,
+
+          monthsCover:
+            row.avg3 > 0
+              ? row.available /
+                row.avg3
+              : null,
+
+          abc: "C",
+          rank: 0,
+          contribution: 0,
+          cumulative: 0
+        };
+      });
+
+    const ranked =
+      items
+        .slice()
+        .sort(
+          (a, b) =>
+            b.vol3 - a.vol3
+        );
+
+    const total =
+      ranked.reduce(
+        (sum, item) =>
+          sum +
+          Math.max(
+            0,
+            item.vol3
+          ),
+        0
+      );
+
     let cumulative = 0;
 
-    ranked.forEach((item, index) => {
-      const prior = cumulative;
+    ranked.forEach(
+      (item, index) => {
+        const prior =
+          cumulative;
 
-      const contribution = total
-        ? Math.max(0, item.vol3) / total
-        : 0;
+        const contribution =
+          total
+            ? Math.max(
+                0,
+                item.vol3
+              ) / total
+            : 0;
 
-      cumulative += contribution;
+        cumulative +=
+          contribution;
 
-      item.rank = index + 1;
-      item.contribution = contribution;
-      item.cumulative = cumulative;
+        item.rank =
+          index + 1;
 
-      item.abc =
-        prior < settings.a / 100
-          ? "A"
-          : prior < settings.b / 100
-            ? "B"
-            : "C";
-    });
+        item.contribution =
+          contribution;
+
+        item.cumulative =
+          cumulative;
+
+        item.abc =
+          prior <
+          settings.a / 100
+            ? "A"
+            : prior <
+                settings.b / 100
+              ? "B"
+              : "C";
+      }
+    );
 
     return items;
   }
 
-  function downloadCsv(rows, filename) {
-    const csv = rows
-      .map(row =>
-        row.map(csvCell).join(",")
-      )
-      .join("\n");
+  function downloadCsv(
+    rows,
+    filename
+  ) {
+    const csv =
+      rows
+        .map(row =>
+          row.map(csvCell).join(",")
+        )
+        .join("\n");
 
-    const blob = new Blob(
-      ["\ufeff" + csv],
-      {
-        type: "text/csv;charset=utf-8"
-      }
-    );
+    const blob =
+      new Blob(
+        ["\ufeff" + csv],
+        {
+          type:
+            "text/csv;charset=utf-8"
+        }
+      );
 
     const link =
       document.createElement("a");
@@ -1163,38 +1495,55 @@
     link.href =
       URL.createObjectURL(blob);
 
-    link.download = filename;
+    link.download =
+      filename;
+
     link.click();
 
     setTimeout(
-      () => URL.revokeObjectURL(link.href),
+      () =>
+        URL.revokeObjectURL(
+          link.href
+        ),
       100
     );
   }
 
   function initFrame(page) {
-    const region = getRegion();
-    const code = regionCode(region);
+    const region =
+      getRegion();
+
+    const code =
+      regionCode(region);
 
     document
-      .querySelectorAll("[data-region-name]")
+      .querySelectorAll(
+        "[data-region-name]"
+      )
       .forEach(node => {
-        node.textContent = regionName(region);
+        node.textContent =
+          regionName(region);
       });
 
     document
-      .querySelectorAll("[data-region-code]")
+      .querySelectorAll(
+        "[data-region-code]"
+      )
       .forEach(node => {
-        node.textContent = code;
+        node.textContent =
+          code;
       });
 
     document
-      .querySelectorAll("[data-region-link]")
+      .querySelectorAll(
+        "[data-region-link]"
+      )
       .forEach(link => {
-        const url = new URL(
-          link.getAttribute("href"),
-          location.href
-        );
+        const url =
+          new URL(
+            link.getAttribute("href"),
+            location.href
+          );
 
         url.searchParams.set(
           "region",
@@ -1203,17 +1552,22 @@
 
         link.setAttribute(
           "href",
-          url.pathname.split("/").pop() +
+          url.pathname
+            .split("/")
+            .pop() +
             url.search
         );
       });
 
     document
-      .querySelectorAll("[data-inventory-page]")
+      .querySelectorAll(
+        "[data-inventory-page]"
+      )
       .forEach(link => {
         link.classList.toggle(
           "active",
-          link.dataset.inventoryPage === page
+          link.dataset
+            .inventoryPage === page
         );
       });
 
@@ -1223,21 +1577,24 @@
       );
 
     if (select) {
-      select.value = region;
+      select.value =
+        region;
 
       select.addEventListener(
         "change",
         () => {
-          const url = new URL(
-            location.href
-          );
+          const url =
+            new URL(
+              location.href
+            );
 
           url.searchParams.set(
             "region",
             select.value
           );
 
-          location.href = url.href;
+          location.href =
+            url.href;
         }
       );
     }
