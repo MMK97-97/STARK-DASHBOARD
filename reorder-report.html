@@ -2,19 +2,47 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Regional inventory analysis for Stark Premium">
-  <title>Reorder Report | Stark Regional Inventory</title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles.css">
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="Regional inventory analysis for Stark Premium"
+  >
+
+  <title>
+    Reorder Report | Stark Regional Inventory
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/styles.css"
+  >
 
   <style>
     .report-table-panel .wide-reorder-table {
       border-collapse: collapse;
       border-spacing: 0;
+      min-width: 1450px;
     }
 
     .report-table-panel .wide-reorder-table th,
@@ -25,7 +53,7 @@
     }
 
     .report-table-panel .wide-reorder-table th {
-      color: #fff;
+      color: #ffffff;
       background: #174f79;
     }
 
@@ -43,16 +71,30 @@
     }
   </style>
 
-  <script src="assets/jszip.min.js" defer></script>
-  <script src="assets/inventory-core.js" defer></script>
-  <script src="assets/inventory-pages.js" defer></script>
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" async></script>
+  <script
+    src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"
+    defer
+  ></script>
+
+  <script
+    src="assets/inventory-core.js"
+    defer
+  ></script>
+
+  <script
+    src="assets/inventory-pages.js"
+    defer
+  ></script>
 </head>
 
 <body data-page="reorder">
   <header class="inventory-header">
-    <a class="inventory-brand" href="index.html">
+    <a
+      class="inventory-brand"
+      href="index.html"
+    >
       <span>S</span>
+
       <div>
         <small>Stark Premium</small>
         <strong>Regional Inventory</strong>
@@ -62,38 +104,82 @@
     <div class="inventory-header-actions">
       <label>
         Region
-        <select id="region-select" aria-label="Select region">
+
+        <select id="region-select">
           <option value="US">US</option>
           <option value="EU">EU</option>
           <option value="Canada">Canada</option>
         </select>
       </label>
 
-      <span class="region-pill" data-region-code>US</span>
-      <a class="button button-secondary" data-region-link href="index.html">
+      <span
+        class="region-pill"
+        data-region-code
+      >
+        US
+      </span>
+
+      <a
+        class="button button-secondary"
+        data-region-link
+        href="index.html"
+      >
         All regions
       </a>
     </div>
   </header>
 
   <main class="inventory-main">
-    <nav class="inventory-nav" aria-label="Inventory analysis pages">
-      <a class="inventory-overview-link" data-region-link href="inventory.html">
+    <nav
+      class="inventory-nav"
+      aria-label="Inventory analysis pages"
+    >
+      <a
+        class="inventory-overview-link"
+        data-region-link
+        href="inventory.html"
+      >
         Inventory Analysis
       </a>
-      <a data-inventory-page="dashboard" data-region-link href="inventory-dashboard.html">
+
+      <a
+        data-inventory-page="dashboard"
+        data-region-link
+        href="inventory-dashboard.html"
+      >
         Dashboard
       </a>
-      <a data-inventory-page="raw" data-region-link href="raw-report.html">
+
+      <a
+        data-inventory-page="raw"
+        data-region-link
+        href="raw-report.html"
+      >
         Raw Report
       </a>
-      <a class="active" data-inventory-page="reorder" data-region-link href="reorder-report.html">
+
+      <a
+        class="active"
+        data-inventory-page="reorder"
+        data-region-link
+        href="reorder-report.html"
+      >
         Reorder Report
       </a>
-      <a data-inventory-page="brands" data-region-link href="active-brands.html">
+
+      <a
+        data-inventory-page="brands"
+        data-region-link
+        href="active-brands.html"
+      >
         Active Brands
       </a>
-      <a data-inventory-page="instructions" data-region-link href="instructions.html">
+
+      <a
+        data-inventory-page="instructions"
+        data-region-link
+        href="instructions.html"
+      >
         Instructions
       </a>
     </nav>
@@ -101,31 +187,37 @@
     <section class="inventory-page-heading">
       <div>
         <p class="eyebrow">
-          Inventory action • <span data-region-name>United States</span>
+          Inventory action •
+          <span data-region-name>
+            United States
+          </span>
         </p>
+
         <h1>Reorder Report</h1>
+
         <p class="page-description">
           Review active-brand items that meet the configured stock,
           demand or supplier delivery reorder rules.
         </p>
       </div>
 
-      <div class="file-status" data-file-status>
+      <div
+        class="file-status"
+        data-file-status
+      >
         No Item Sales Report uploaded
       </div>
     </section>
 
-    <section class="data-empty" data-empty-data>
-      <strong>No regional inventory data</strong>
-      <p>
-        <a data-region-link href="inventory-dashboard.html">
-          Upload the Item Sales Report on the Dashboard.
-        </a>
-      </p>
-    </section>
+    <!-- Large empty-data panel intentionally removed. -->
 
-    <div class="hidden" data-requires-data>
-      <section class="inventory-filter-bar reorder-filters">
+    <div
+      class="hidden"
+      data-requires-data
+    >
+      <section
+        class="inventory-filter-bar reorder-filters"
+      >
         <label>
           Brand
           <select id="reorder-brand"></select>
@@ -133,6 +225,7 @@
 
         <label class="wide-filter">
           Model or item
+
           <input
             id="reorder-search"
             type="search"
@@ -157,22 +250,32 @@
         </button>
       </section>
 
-      <p class="result-count" id="reorder-result-count"></p>
+      <p
+        class="result-count"
+        id="reorder-result-count"
+      ></p>
 
-      <section class="inventory-panel report-table-panel">
+      <section
+        class="inventory-panel report-table-panel"
+      >
         <div class="reorder-title">
-          Active Brands • Status: LIVE, FASHION, BACKORDER • Reorder Required Only
+          Reorder Report — Active Brands / Status: LIVE, FASHION,
+          BACKORDER / Reorder Required Only
         </div>
 
         <div class="reorder-note">
-          Lead time is maintained on Active Brands and used in the calculation,
-          but is hidden from this report.
+          Recommended quantity =
+          ((On Hand + Open Supplier Qty − Open Orders From Client)
+          × Lead Time from Active Brands) + Avg/Month.
+          Negative results are set to zero and quantities are rounded up.
         </div>
 
-        <div class="inventory-table-wrap inventory-long-table">
+        <div
+          class="inventory-table-wrap inventory-long-table"
+        >
           <table class="wide-reorder-table">
             <thead>
-              <tr id="reorder-table-head">
+              <tr>
                 <th>Model#</th>
                 <th>Brand</th>
                 <th>Item Title</th>
