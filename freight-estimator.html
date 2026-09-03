@@ -1,0 +1,2555 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="Carton, pallet, dimensional weight and freight mode estimator"
+  >
+
+  <title>
+    Freight Estimator | Stark Premium
+  </title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap"
+    rel="stylesheet"
+  >
+
+  <style>
+    :root {
+      --navy: #092b4d;
+      --navy-light: #164d76;
+      --teal: #008d89;
+      --ink: #082647;
+      --muted: #65758e;
+      --line: #cfdeeb;
+      --soft: #f1f7fb;
+      --white: #ffffff;
+      --green: #0f9f8f;
+      --amber: #d98b13;
+      --red: #d6455d;
+      --shadow: 0 18px 45px rgba(20, 55, 86, 0.13);
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(
+          circle at 90% 15%,
+          rgba(19, 169, 165, 0.12),
+          transparent 26%
+        ),
+        #f3f8fc;
+      font-family: "DM Sans", sans-serif;
+    }
+
+    .hidden {
+      display: none !important;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .app-header {
+      min-height: 118px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 22px clamp(24px, 5vw, 72px);
+      border-bottom: 1px solid var(--line);
+      background: #ffffff;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 72px;
+      height: 72px;
+      display: grid;
+      place-items: center;
+      border-radius: 22px;
+      color: #ffffff;
+      background: linear-gradient(
+        145deg,
+        #092b4d,
+        #1b5b86
+      );
+      box-shadow: 0 14px 28px rgba(9, 43, 77, 0.2);
+      font: 800 26px/1 "Manrope";
+    }
+
+    .brand small,
+    .eyebrow {
+      display: block;
+      color: #00877f;
+      font-weight: 800;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+    }
+
+    .brand strong {
+      display: block;
+      margin-top: 5px;
+      font: 800 clamp(21px, 2vw, 30px)/1.1 "Manrope";
+    }
+
+    .header-actions {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .header-actions label {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: var(--muted);
+      font-weight: 700;
+    }
+
+    select,
+    input {
+      min-height: 46px;
+      padding: 0 13px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #ffffff;
+      color: var(--ink);
+    }
+
+    .region-pill {
+      padding: 12px 18px;
+      border-radius: 999px;
+      color: #ffffff;
+      background: var(--navy);
+      font-weight: 800;
+    }
+
+    .button {
+      min-height: 46px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 12px;
+      background: #ffffff;
+      color: var(--ink);
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .button:hover {
+      transform: translateY(-1px);
+    }
+
+    .button-primary {
+      border-color: #0d9c94;
+      color: #ffffff;
+      background: linear-gradient(
+        135deg,
+        #0aa69c,
+        #087f7d
+      );
+      box-shadow: 0 10px 24px rgba(8, 143, 137, 0.22);
+    }
+
+    .button-danger {
+      color: #b62943;
+      background: #ffffff;
+    }
+
+    .shell {
+      width: min(1500px, calc(100% - 48px));
+      margin: 0 auto;
+      padding: 30px 0 60px;
+    }
+
+    .nav-bar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 28px;
+      padding: 10px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .nav-bar a {
+      flex: 1;
+      min-height: 52px;
+      display: grid;
+      place-items: center;
+      padding: 0 14px;
+      border-radius: 12px;
+      color: var(--muted);
+      text-decoration: none;
+      font-weight: 800;
+    }
+
+    .nav-bar a:first-child {
+      flex: 0 0 auto;
+      border: 1px solid var(--line);
+      color: var(--ink);
+    }
+
+    .nav-bar a.active {
+      color: #ffffff;
+      background: linear-gradient(
+        135deg,
+        #123d68,
+        #205c87
+      );
+      box-shadow: 0 10px 24px rgba(15, 55, 91, 0.2);
+    }
+
+    .hero {
+      position: relative;
+      overflow: hidden;
+      min-height: 230px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 30px;
+      margin-bottom: 24px;
+      padding: 46px clamp(30px, 5vw, 68px);
+      border-radius: 30px;
+      color: #ffffff;
+      background: linear-gradient(
+        110deg,
+        #082b50 0%,
+        #194e77 66%,
+        #15838a 120%
+      );
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -100px;
+      top: -180px;
+      width: 470px;
+      height: 470px;
+      border: 1px solid rgba(255, 255, 255, 0.17);
+      border-radius: 50%;
+      box-shadow:
+        0 0 0 58px rgba(255, 255, 255, 0.04),
+        0 0 0 116px rgba(255, 255, 255, 0.025);
+    }
+
+    .hero > div {
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero h1 {
+      margin: 12px 0;
+      font: 800 clamp(38px, 5vw, 64px)/1 "Manrope";
+      letter-spacing: -0.045em;
+    }
+
+    .hero p:last-child {
+      max-width: 820px;
+      margin: 0;
+      color: #d8e8f3;
+      font-size: 17px;
+      line-height: 1.6;
+    }
+
+    .hero-badge {
+      min-width: 220px;
+      padding: 20px 24px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 18px;
+      background: rgba(255, 255, 255, 0.1);
+      backdrop-filter: blur(8px);
+    }
+
+    .hero-badge span {
+      display: block;
+      color: #aee7e0;
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+    }
+
+    .hero-badge strong {
+      display: block;
+      margin-top: 6px;
+      font: 800 22px/1.2 "Manrope";
+    }
+
+    .workspace {
+      display: grid;
+      grid-template-columns:
+        minmax(0, 0.9fr)
+        minmax(0, 1.5fr);
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      background: #ffffff;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 16px;
+      padding: 24px 26px 18px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .panel-head h2 {
+      margin: 5px 0 0;
+      font-family: "Manrope";
+    }
+
+    .panel-head p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .panel-body {
+      padding: 24px 26px;
+    }
+
+    .form-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 15px;
+    }
+
+    .form-grid label {
+      display: grid;
+      gap: 7px;
+      color: var(--muted);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .form-grid .span-2 {
+      grid-column: span 2;
+    }
+
+    .section-label {
+      grid-column: span 2;
+      margin: 10px 0 -2px;
+      padding-top: 12px;
+      border-top: 1px solid var(--line);
+      color: var(--teal);
+      font-size: 12px;
+      font-weight: 800;
+      letter-spacing: 0.13em;
+      text-transform: uppercase;
+    }
+
+    .item-actions {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .item-list {
+      margin-top: 18px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+    }
+
+    .item-row {
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) auto;
+      gap: 12px;
+      align-items: center;
+      padding: 13px 14px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .item-row:last-child {
+      border-bottom: 0;
+    }
+
+    .item-row strong,
+    .item-row small {
+      display: block;
+    }
+
+    .item-row small {
+      margin-top: 4px;
+      color: var(--muted);
+    }
+
+    .icon-button {
+      width: 36px;
+      height: 36px;
+      border: 1px solid var(--line);
+      border-radius: 10px;
+      color: #b52b45;
+      background: #ffffff;
+      cursor: pointer;
+    }
+
+    .calculate-bar {
+      display: flex;
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .calculate-bar .button-primary {
+      flex: 1;
+    }
+
+    .results-empty {
+      min-height: 460px;
+      display: grid;
+      place-items: center;
+      align-content: center;
+      padding: 40px;
+      color: var(--muted);
+      text-align: center;
+    }
+
+    .results-empty i {
+      width: 74px;
+      height: 74px;
+      display: grid;
+      place-items: center;
+      margin-bottom: 16px;
+      border-radius: 22px;
+      color: var(--teal);
+      background: #e3f5f3;
+      font-style: normal;
+      font-size: 34px;
+    }
+
+    .recommendation {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+      margin-bottom: 18px;
+      padding: 22px;
+      border-radius: 18px;
+      color: #ffffff;
+      background: linear-gradient(
+        120deg,
+        #092f54,
+        #17637b
+      );
+    }
+
+    .recommendation small {
+      display: block;
+      color: #8ce5dc;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+    }
+
+    .recommendation h2 {
+      margin: 7px 0 6px;
+      font: 800 29px/1.1 "Manrope";
+    }
+
+    .recommendation p {
+      margin: 0;
+      color: #d4e7f0;
+    }
+
+    .mode-chip {
+      flex: none;
+      padding: 14px 18px;
+      border: 1px solid rgba(255, 255, 255, 0.25);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.12);
+      font-weight: 800;
+    }
+
+    .kpis {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .kpi {
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #f8fbfd;
+    }
+
+    .kpi span,
+    .kpi small {
+      display: block;
+      color: var(--muted);
+    }
+
+    .kpi span {
+      font-size: 11px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .kpi strong {
+      display: block;
+      margin: 8px 0 4px;
+      font: 800 23px/1.1 "Manrope";
+    }
+
+    .kpi small {
+      font-size: 11px;
+    }
+
+    .result-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+      margin-top: 14px;
+    }
+
+    .result-card {
+      padding: 20px;
+      border: 1px solid var(--line);
+      border-radius: 16px;
+    }
+
+    .result-card.full {
+      grid-column: span 2;
+    }
+
+    .result-card h3 {
+      margin: 0 0 13px;
+      font: 800 17px/1.2 "Manrope";
+    }
+
+    .status-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 9px 0;
+      border-bottom: 1px solid #e5edf4;
+    }
+
+    .status-line:last-child {
+      border-bottom: 0;
+    }
+
+    .status-line span {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .status-ok {
+      color: var(--green) !important;
+      font-weight: 800;
+    }
+
+    .status-warn {
+      color: var(--amber) !important;
+      font-weight: 800;
+    }
+
+    .status-bad {
+      color: var(--red) !important;
+      font-weight: 800;
+    }
+
+    .table-wrap {
+      overflow: auto;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+    }
+
+    th,
+    td {
+      padding: 11px 10px;
+      border: 1px solid var(--line);
+      text-align: center;
+      white-space: nowrap;
+    }
+
+    th {
+      color: #ffffff;
+      background: #184f78;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+    }
+
+    tbody tr:nth-child(even) {
+      background: #f7fafc;
+    }
+
+    .warnings {
+      display: grid;
+      gap: 8px;
+    }
+
+    .warning {
+      padding: 11px 13px;
+      border-left: 4px solid var(--amber);
+      border-radius: 8px;
+      background: #fff8e9;
+      color: #65450f;
+      font-size: 12px;
+      line-height: 1.45;
+    }
+
+    .warning.critical {
+      border-left-color: var(--red);
+      background: #fff0f3;
+      color: #7a1c31;
+    }
+
+    .method {
+      margin-top: 24px;
+      padding: 20px 24px;
+      border: 1px solid var(--line);
+      border-radius: 18px;
+      background: #ffffff;
+    }
+
+    .method h3 {
+      margin: 0 0 8px;
+    }
+
+    .method p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.6;
+    }
+
+    .footer {
+      padding: 22px 0;
+      color: var(--muted);
+      text-align: center;
+      font-size: 12px;
+    }
+
+    @media (max-width: 1050px) {
+      .workspace {
+        grid-template-columns: 1fr;
+      }
+
+      .results-empty {
+        min-height: 260px;
+      }
+
+      .header-actions label {
+        display: none;
+      }
+    }
+
+    @media (max-width: 720px) {
+      .app-header {
+        align-items: flex-start;
+      }
+
+      .header-actions .region-pill {
+        display: none;
+      }
+
+      .shell {
+        width: min(100% - 24px, 1500px);
+      }
+
+      .nav-bar {
+        overflow: auto;
+      }
+
+      .nav-bar a {
+        min-width: 145px;
+      }
+
+      .hero {
+        align-items: flex-start;
+        flex-direction: column;
+        padding: 34px 26px;
+      }
+
+      .hero-badge {
+        min-width: 0;
+        width: 100%;
+      }
+
+      .form-grid,
+      .result-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .form-grid .span-2,
+      .section-label,
+      .result-card.full {
+        grid-column: span 1;
+      }
+
+      .kpis {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .recommendation {
+        align-items: flex-start;
+        flex-direction: column;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .brand-mark {
+        width: 56px;
+        height: 56px;
+      }
+
+      .brand strong {
+        font-size: 18px;
+      }
+
+      .kpis {
+        grid-template-columns: 1fr;
+      }
+
+      .panel-body,
+      .panel-head {
+        padding-left: 17px;
+        padding-right: 17px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <a
+      class="brand"
+      href="index.html"
+    >
+      <span class="brand-mark">S</span>
+
+      <span>
+        <small>Stark Premium</small>
+        <strong>Regional Freight Intelligence</strong>
+      </span>
+    </a>
+
+    <div class="header-actions">
+      <label>
+        Region
+
+        <select id="region-select">
+          <option value="US">US</option>
+          <option value="EU">EU</option>
+          <option value="Canada">Canada</option>
+        </select>
+      </label>
+
+      <span
+        class="region-pill"
+        id="region-pill"
+      >
+        US
+      </span>
+    </div>
+  </header>
+
+  <main class="shell">
+    <nav class="nav-bar">
+      <a
+        id="back-modules"
+        href="index.html"
+      >
+        ← Regional modules
+      </a>
+
+      <a
+        id="inventory-link"
+        href="inventory-dashboard.html"
+      >
+        Inventory Dashboard
+      </a>
+
+      <a
+        id="events-link"
+        href="events.html"
+      >
+        Events
+      </a>
+
+      <a
+        class="active"
+        href="#"
+      >
+        Freight Estimator
+      </a>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">
+          Packaging &amp; transportation planning •
+          <span id="region-name">United States</span>
+        </p>
+
+        <h1>Freight Estimator</h1>
+
+        <p>
+          Build an efficient carton and pallet plan from item dimensions,
+          weight and quantity. Compare parcel eligibility, dimensional
+          weight, LTL density and truckload utilization before requesting
+          carrier quotes.
+        </p>
+      </div>
+
+      <div class="hero-badge">
+        <span>Planning standard</span>
+        <strong>UPS • FedEx • LTL • FTL</strong>
+      </div>
+    </section>
+
+    <div class="workspace">
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">Shipment inputs</span>
+            <h2>Add item details</h2>
+            <p>Use packed unit dimensions whenever available.</p>
+          </div>
+        </div>
+
+        <div class="panel-body">
+          <div class="form-grid">
+            <label class="span-2">
+              Model / description
+
+              <input
+                id="item-name"
+                value="Sample item"
+                placeholder="Model number or item name"
+              >
+            </label>
+
+            <label>
+              Length (in)
+
+              <input
+                id="item-length"
+                type="number"
+                min="0.01"
+                step="0.01"
+                value="12"
+              >
+            </label>
+
+            <label>
+              Width (in)
+
+              <input
+                id="item-width"
+                type="number"
+                min="0.01"
+                step="0.01"
+                value="8"
+              >
+            </label>
+
+            <label>
+              Height (in)
+
+              <input
+                id="item-height"
+                type="number"
+                min="0.01"
+                step="0.01"
+                value="5"
+              >
+            </label>
+
+            <label>
+              Unit weight (lb)
+
+              <input
+                id="item-weight"
+                type="number"
+                min="0.01"
+                step="0.01"
+                value="2"
+              >
+            </label>
+
+            <label>
+              Quantity
+
+              <input
+                id="item-quantity"
+                type="number"
+                min="1"
+                step="1"
+                value="100"
+              >
+            </label>
+
+            <label>
+              Protection level
+
+              <select id="item-protection">
+                <option value="minimal">
+                  Retail boxed / minimal
+                </option>
+
+                <option
+                  value="standard"
+                  selected
+                >
+                  Standard cushioning
+                </option>
+
+                <option value="fragile">
+                  Fragile / double cushioning
+                </option>
+
+                <option value="soft">
+                  Soft goods / compressible
+                </option>
+              </select>
+            </label>
+
+            <div class="section-label">
+              Carton assumptions
+            </div>
+
+            <label>
+              Units per carton
+
+              <input
+                id="units-per-carton"
+                type="number"
+                min="1"
+                step="1"
+                placeholder="Auto optimize"
+              >
+            </label>
+
+            <label>
+              Target carton max (lb)
+
+              <input
+                id="max-carton-weight"
+                type="number"
+                min="1"
+                max="150"
+                step="1"
+                value="65"
+              >
+            </label>
+
+            <label>
+              Carton tare (lb)
+
+              <input
+                id="carton-tare"
+                type="number"
+                min="0"
+                step="0.1"
+                value="1"
+              >
+            </label>
+
+            <label>
+              UPS rate type
+
+              <select id="ups-rate-type">
+                <option value="139">
+                  Daily/account — divisor 139
+                </option>
+
+                <option value="166">
+                  Retail — divisor 166
+                </option>
+              </select>
+            </label>
+
+            <div class="section-label">
+              Pallet assumptions
+            </div>
+
+            <label>
+              Pallet maximum height (in)
+
+              <input
+                id="pallet-height"
+                type="number"
+                min="24"
+                max="102"
+                step="1"
+                value="72"
+              >
+            </label>
+
+            <label>
+              Pallet maximum weight (lb)
+
+              <input
+                id="pallet-weight"
+                type="number"
+                min="250"
+                step="50"
+                value="2000"
+              >
+            </label>
+          </div>
+
+          <div class="item-actions">
+            <button
+              class="button button-primary"
+              id="add-item"
+              type="button"
+            >
+              Add item to shipment
+            </button>
+          </div>
+
+          <div
+            class="item-list"
+            id="item-list"
+          ></div>
+
+          <div class="calculate-bar">
+            <button
+              class="button button-primary"
+              id="calculate"
+              type="button"
+            >
+              Calculate shipment plan
+            </button>
+
+            <button
+              class="button button-danger"
+              id="clear"
+              type="button"
+            >
+              Clear
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="panel-head">
+          <div>
+            <span class="eyebrow">Planning output</span>
+            <h2>Shipment recommendation</h2>
+            <p>Verify final packed measurements before tendering.</p>
+          </div>
+        </div>
+
+        <div
+          id="results-empty"
+          class="results-empty"
+        >
+          <i>▦</i>
+          <strong>Add an item and calculate</strong>
+
+          <p>
+            Your carton, pallet and mode recommendation will appear here.
+          </p>
+        </div>
+
+        <div
+          id="results"
+          class="panel-body hidden"
+        >
+          <div class="recommendation">
+            <div>
+              <small>Recommended shipping mode</small>
+              <h2 id="mode-title">—</h2>
+              <p id="mode-reason"></p>
+            </div>
+
+            <span
+              class="mode-chip"
+              id="mode-chip"
+            >
+              —
+            </span>
+          </div>
+
+          <div
+            class="kpis"
+            id="kpis"
+          ></div>
+
+          <div class="result-grid">
+            <article class="result-card">
+              <h3>Carrier qualification</h3>
+              <div id="carrier-results"></div>
+            </article>
+
+            <article class="result-card">
+              <h3>Pallet &amp; freight profile</h3>
+              <div id="freight-results"></div>
+            </article>
+
+            <article class="result-card full">
+              <h3>Estimated carton plan</h3>
+
+              <div class="table-wrap">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>Item</th>
+                      <th>Units/carton</th>
+                      <th>Cartons</th>
+                      <th>Estimated carton</th>
+                      <th>Actual/carton</th>
+                      <th>DIM/carton</th>
+                      <th>Billable/carton</th>
+                    </tr>
+                  </thead>
+
+                  <tbody id="carton-table"></tbody>
+                </table>
+              </div>
+            </article>
+
+            <article class="result-card full">
+              <h3>Planning alerts</h3>
+
+              <div
+                class="warnings"
+                id="warnings"
+              ></div>
+            </article>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <section class="method">
+      <h3>How this estimator works</h3>
+
+      <p>
+        Parcel calculations round dimensions up and compare actual weight
+        with dimensional weight. UPS Daily and FedEx use a 139 divisor;
+        UPS Retail can use 166. UPS screening uses 150 lb, 108-inch length
+        and 165-inch length-plus-girth limits. FedEx screening uses 150 lb
+        and 165-inch length-plus-girth limits, with oversize alerts above
+        96 inches in length or 130 inches length-plus-girth. Freight
+        planning uses a 48 × 40-inch pallet, configurable height and
+        weight limits, density-based LTL class guidance and a
+        26-pallet/45,000-lb dry-van planning reference. This is a planning
+        estimate, not a carrier rate quote or final NMFC classification.
+      </p>
+    </section>
+
+    <footer class="footer">
+      Stark Premium • Regional shipment planning • Data stays in this
+      browser
+    </footer>
+  </main>
+
+  <script>
+    (function () {
+      "use strict";
+
+      const REGION_NAMES = {
+        US: "United States",
+        EU: "European Union",
+        Canada: "Canada"
+      };
+
+      const PALLET = {
+        length: 48,
+        width: 40,
+        tare: 45
+      };
+
+      const TRAILER = {
+        pallets: 26,
+        payload: 45000
+      };
+
+      const PROTECTION = {
+        minimal: 0.25,
+        standard: 0.5,
+        fragile: 2,
+        soft: 0.15
+      };
+
+      const state = {
+        items: []
+      };
+
+      const element = id =>
+        document.getElementById(id);
+
+      function formatNumber(
+        value,
+        digits = 0
+      ) {
+        return Number(value).toLocaleString(
+          "en-US",
+          {
+            maximumFractionDigits: digits
+          }
+        );
+      }
+
+      function roundTwo(value) {
+        return Math.round(value * 100) / 100;
+      }
+
+      const regionParameter =
+        new URLSearchParams(
+          location.search
+        ).get("region");
+
+      let region =
+        REGION_NAMES[regionParameter]
+          ? regionParameter
+          : "US";
+
+      function regionCode(value) {
+        return value === "Canada"
+          ? "CA"
+          : value;
+      }
+
+      function applyRegion() {
+        element("region-select").value =
+          region;
+
+        element("region-pill").textContent =
+          regionCode(region);
+
+        element("region-name").textContent =
+          REGION_NAMES[region];
+
+        const links = [
+          [
+            "back-modules",
+            "index.html"
+          ],
+          [
+            "inventory-link",
+            "inventory-dashboard.html"
+          ],
+          [
+            "events-link",
+            "events.html"
+          ]
+        ];
+
+        links.forEach(
+          ([id, path]) => {
+            element(id).href =
+              path +
+              "?region=" +
+              encodeURIComponent(region);
+          }
+        );
+      }
+
+      element("region-select")
+        .addEventListener(
+          "change",
+          event => {
+            region =
+              event.target.value;
+
+            const url =
+              new URL(location.href);
+
+            url.searchParams.set(
+              "region",
+              region
+            );
+
+            location.href = url.href;
+          }
+        );
+
+      applyRegion();
+
+      function inputNumber(id) {
+        return Number(
+          element(id).value
+        );
+      }
+
+      function validPositive(value) {
+        return (
+          Number.isFinite(value) &&
+          value > 0
+        );
+      }
+
+      function escapeHtml(value) {
+        return String(
+          value == null ? "" : value
+        ).replace(
+          /[&<>\"]/g,
+          character => ({
+            "&": "&amp;",
+            "<": "&lt;",
+            ">": "&gt;",
+            "\"": "&quot;"
+          })[character]
+        );
+      }
+
+      function permutations(values) {
+        const [a, b, c] = values;
+
+        const results = [
+          [a, b, c],
+          [a, c, b],
+          [b, a, c],
+          [b, c, a],
+          [c, a, b],
+          [c, b, a]
+        ];
+
+        return results.filter(
+          (entry, index) =>
+            results.findIndex(
+              other =>
+                other.every(
+                  (value, position) =>
+                    value ===
+                    entry[position]
+                )
+            ) === index
+        );
+      }
+
+      function normalizedDimensions(
+        dimensions
+      ) {
+        return dimensions
+          .map(Math.ceil)
+          .sort((a, b) => b - a);
+      }
+
+      function lengthAndGirth(
+        dimensions
+      ) {
+        const [length, width, height] =
+          normalizedDimensions(
+            dimensions
+          );
+
+        return (
+          length +
+          2 * (width + height)
+        );
+      }
+
+      function carrierCheck(
+        dimensions,
+        weight,
+        carrier
+      ) {
+        const [length] =
+          normalizedDimensions(
+            dimensions
+          );
+
+        const combined =
+          lengthAndGirth(
+            dimensions
+          );
+
+        if (carrier === "UPS") {
+          return {
+            eligible:
+              weight <= 150 &&
+              length <= 108 &&
+              combined <= 165,
+
+            oversize:
+              length > 96 ||
+              combined > 130,
+
+            length,
+            girth: combined
+          };
+        }
+
+        return {
+          eligible:
+            weight <= 150 &&
+            combined <= 165,
+
+          oversize:
+            length > 96 ||
+            combined > 130,
+
+          length,
+          girth: combined
+        };
+      }
+
+      function layoutForUnits(
+        item,
+        units,
+        padding
+      ) {
+        let best = null;
+
+        permutations([
+          item.length,
+          item.width,
+          item.height
+        ]).forEach(oriented => {
+          for (
+            let x = 1;
+            x <= units;
+            x += 1
+          ) {
+            for (
+              let y = 1;
+              y <= Math.ceil(units / x);
+              y += 1
+            ) {
+              const z =
+                Math.ceil(
+                  units / (x * y)
+                );
+
+              const rawDimensions = [
+                oriented[0] * x +
+                  padding * 2,
+
+                oriented[1] * y +
+                  padding * 2,
+
+                oriented[2] * z +
+                  padding * 2
+              ];
+
+              const dimensions =
+                normalizedDimensions(
+                  rawDimensions
+                );
+
+              const volume =
+                dimensions[0] *
+                dimensions[1] *
+                dimensions[2];
+
+              const unusedPositions =
+                x * y * z - units;
+
+              const score =
+                volume *
+                (
+                  1 +
+                  (
+                    unusedPositions /
+                    Math.max(units, 1)
+                  ) *
+                  0.05
+                );
+
+              if (
+                !best ||
+                score < best.score
+              ) {
+                best = {
+                  dimensions,
+                  grid: [x, y, z],
+                  score
+                };
+              }
+            }
+          }
+        });
+
+        return best;
+      }
+
+      function chooseUnitsPerCarton(
+        item,
+        settings
+      ) {
+        const manual =
+          Number(
+            settings.unitsPerCarton
+          );
+
+        if (validPositive(manual)) {
+          return Math.max(
+            1,
+            Math.min(
+              item.quantity,
+              Math.floor(manual)
+            )
+          );
+        }
+
+        const weightCapacity =
+          Math.max(
+            1,
+            Math.floor(
+              (
+                settings.maxCartonWeight -
+                settings.cartonTare
+              ) /
+              item.weight
+            )
+          );
+
+        const maximum =
+          Math.max(
+            1,
+            Math.min(
+              item.quantity,
+              weightCapacity,
+              150
+            )
+          );
+
+        let best = null;
+
+        for (
+          let units = 1;
+          units <= maximum;
+          units += 1
+        ) {
+          const layout =
+            layoutForUnits(
+              item,
+              units,
+              PROTECTION[
+                item.protection
+              ]
+            );
+
+          const actualWeight =
+            item.weight * units +
+            settings.cartonTare;
+
+          const [
+            length,
+            width,
+            height
+          ] = layout.dimensions;
+
+          const dimensionalWeight =
+            Math.ceil(
+              (
+                length *
+                width *
+                height
+              ) /
+              139
+            );
+
+          const ups =
+            carrierCheck(
+              layout.dimensions,
+              actualWeight,
+              "UPS"
+            );
+
+          const fedex =
+            carrierCheck(
+              layout.dimensions,
+              actualWeight,
+              "FedEx"
+            );
+
+          if (
+            !ups.eligible &&
+            !fedex.eligible
+          ) {
+            continue;
+          }
+
+          const oversizePenalty =
+            ups.oversize &&
+            fedex.oversize
+              ? 40
+              : 0;
+
+          const score =
+            Math.max(
+              actualWeight,
+              dimensionalWeight
+            ) /
+              units +
+            oversizePenalty /
+              units +
+            0.025 /
+              units;
+
+          if (
+            !best ||
+            score < best.score ||
+            (
+              score === best.score &&
+              units > best.units
+            )
+          ) {
+            best = {
+              units,
+              score
+            };
+          }
+        }
+
+        return best
+          ? best.units
+          : 1;
+      }
+
+      function buildPlan(
+        item,
+        settings
+      ) {
+        const unitsPerCarton =
+          chooseUnitsPerCarton(
+            item,
+            settings
+          );
+
+        const fullCartons =
+          Math.floor(
+            item.quantity /
+            unitsPerCarton
+          );
+
+        const remainder =
+          item.quantity %
+          unitsPerCarton;
+
+        const groups = [];
+
+        if (fullCartons) {
+          groups.push({
+            units: unitsPerCarton,
+            count: fullCartons
+          });
+        }
+
+        if (remainder) {
+          groups.push({
+            units: remainder,
+            count: 1
+          });
+        }
+
+        return groups.map(group => {
+          const layout =
+            layoutForUnits(
+              item,
+              group.units,
+              PROTECTION[
+                item.protection
+              ]
+            );
+
+          const dimensions =
+            layout.dimensions;
+
+          const actualWeight =
+            roundTwo(
+              item.weight *
+                group.units +
+              settings.cartonTare
+            );
+
+          const upsDimensionalWeight =
+            Math.ceil(
+              (
+                dimensions[0] *
+                dimensions[1] *
+                dimensions[2]
+              ) /
+              settings.upsDivisor
+            );
+
+          const fedexDimensionalWeight =
+            Math.ceil(
+              (
+                dimensions[0] *
+                dimensions[1] *
+                dimensions[2]
+              ) /
+              139
+            );
+
+          return {
+            item: item.name,
+            units: group.units,
+            count: group.count,
+            dimensions,
+            actualWeight,
+            upsDimensionalWeight,
+            fedexDimensionalWeight,
+
+            upsBillableWeight:
+              Math.max(
+                Math.ceil(actualWeight),
+                upsDimensionalWeight
+              ),
+
+            fedexBillableWeight:
+              Math.max(
+                Math.ceil(actualWeight),
+                fedexDimensionalWeight
+              ),
+
+            ups:
+              carrierCheck(
+                dimensions,
+                actualWeight,
+                "UPS"
+              ),
+
+            fedex:
+              carrierCheck(
+                dimensions,
+                actualWeight,
+                "FedEx"
+              ),
+
+            volume:
+              dimensions[0] *
+              dimensions[1] *
+              dimensions[2]
+          };
+        });
+      }
+
+      function densityClass(density) {
+        if (density < 1) {
+          return 400;
+        }
+
+        if (density < 2) {
+          return 300;
+        }
+
+        if (density < 4) {
+          return 250;
+        }
+
+        if (density < 6) {
+          return 175;
+        }
+
+        if (density < 8) {
+          return 125;
+        }
+
+        if (density < 10) {
+          return 100;
+        }
+
+        if (density < 12) {
+          return 92.5;
+        }
+
+        if (density < 15) {
+          return 85;
+        }
+
+        if (density < 22.5) {
+          return 70;
+        }
+
+        if (density < 30) {
+          return 65;
+        }
+
+        if (density < 35) {
+          return 60;
+        }
+
+        if (density < 50) {
+          return 55;
+        }
+
+        return 50;
+      }
+
+      function getSettings() {
+        return {
+          unitsPerCarton:
+            inputNumber(
+              "units-per-carton"
+            ),
+
+          maxCartonWeight:
+            inputNumber(
+              "max-carton-weight"
+            ),
+
+          cartonTare:
+            inputNumber(
+              "carton-tare"
+            ),
+
+          upsDivisor:
+            inputNumber(
+              "ups-rate-type"
+            ),
+
+          palletHeight:
+            inputNumber(
+              "pallet-height"
+            ),
+
+          palletWeight:
+            inputNumber(
+              "pallet-weight"
+            )
+        };
+      }
+
+      function addItem() {
+        const item = {
+          id:
+            Date.now() +
+            Math.random(),
+
+          name:
+            element("item-name")
+              .value
+              .trim() ||
+            "Unnamed item",
+
+          length:
+            inputNumber(
+              "item-length"
+            ),
+
+          width:
+            inputNumber(
+              "item-width"
+            ),
+
+          height:
+            inputNumber(
+              "item-height"
+            ),
+
+          weight:
+            inputNumber(
+              "item-weight"
+            ),
+
+          quantity:
+            Math.floor(
+              inputNumber(
+                "item-quantity"
+              )
+            ),
+
+          protection:
+            element(
+              "item-protection"
+            ).value
+        };
+
+        const requiredValues = [
+          item.length,
+          item.width,
+          item.height,
+          item.weight,
+          item.quantity
+        ];
+
+        if (
+          !requiredValues.every(
+            validPositive
+          )
+        ) {
+          alert(
+            "Enter a positive length, width, height, unit weight and quantity."
+          );
+
+          return;
+        }
+
+        state.items.push(item);
+        renderItems();
+      }
+
+      function renderItems() {
+        const container =
+          element("item-list");
+
+        if (!state.items.length) {
+          container.innerHTML = `
+            <div class="item-row">
+              <div>
+                <strong>No items added</strong>
+                <small>
+                  Add at least one line item to calculate a shipment.
+                </small>
+              </div>
+            </div>
+          `;
+
+          return;
+        }
+
+        container.innerHTML =
+          state.items
+            .map(item => `
+              <div class="item-row">
+                <div>
+                  <strong>
+                    ${escapeHtml(item.name)}
+                  </strong>
+
+                  <small>
+                    ${formatNumber(item.length, 2)}
+                    ×
+                    ${formatNumber(item.width, 2)}
+                    ×
+                    ${formatNumber(item.height, 2)}
+                    in •
+                    ${formatNumber(item.weight, 2)}
+                    lb • Qty
+                    ${formatNumber(item.quantity)}
+                  </small>
+                </div>
+
+                <button
+                  class="icon-button"
+                  type="button"
+                  data-remove="${item.id}"
+                  aria-label="Remove item"
+                >
+                  ×
+                </button>
+              </div>
+            `)
+            .join("");
+
+        document
+          .querySelectorAll(
+            "[data-remove]"
+          )
+          .forEach(button => {
+            button.addEventListener(
+              "click",
+              () => {
+                state.items =
+                  state.items.filter(
+                    item =>
+                      String(item.id) !==
+                      button.dataset.remove
+                  );
+
+                renderItems();
+              }
+            );
+          });
+      }
+
+      function calculate() {
+        if (!state.items.length) {
+          alert(
+            "Add at least one item to the shipment."
+          );
+
+          return;
+        }
+
+        const settings =
+          getSettings();
+
+        const settingsValid =
+          validPositive(
+            settings.maxCartonWeight
+          ) &&
+          settings.maxCartonWeight <=
+            150 &&
+          Number.isFinite(
+            settings.cartonTare
+          ) &&
+          settings.cartonTare >= 0 &&
+          validPositive(
+            settings.palletHeight
+          ) &&
+          validPositive(
+            settings.palletWeight
+          );
+
+        if (!settingsValid) {
+          alert(
+            "Review the carton and pallet assumptions."
+          );
+
+          return;
+        }
+
+        const plans =
+          state.items.flatMap(
+            item =>
+              buildPlan(
+                item,
+                settings
+              )
+          );
+
+        const totalCartons =
+          plans.reduce(
+            (total, plan) =>
+              total + plan.count,
+            0
+          );
+
+        const itemWeight =
+          state.items.reduce(
+            (total, item) =>
+              total +
+              item.weight *
+                item.quantity,
+            0
+          );
+
+        const parcelActualWeight =
+          itemWeight +
+          totalCartons *
+            settings.cartonTare;
+
+        const totalVolume =
+          plans.reduce(
+            (total, plan) =>
+              total +
+              plan.volume *
+                plan.count,
+            0
+          );
+
+        const upsBillableWeight =
+          plans.reduce(
+            (total, plan) =>
+              total +
+              plan.upsBillableWeight *
+                plan.count,
+            0
+          );
+
+        const fedexBillableWeight =
+          plans.reduce(
+            (total, plan) =>
+              total +
+              plan.fedexBillableWeight *
+                plan.count,
+            0
+          );
+
+        const upsEligible =
+          plans.every(
+            plan =>
+              plan.ups.eligible
+          );
+
+        const fedexEligible =
+          plans.every(
+            plan =>
+              plan.fedex.eligible
+          );
+
+        const upsOversize =
+          plans.some(
+            plan =>
+              plan.ups.oversize
+          );
+
+        const fedexOversize =
+          plans.some(
+            plan =>
+              plan.fedex.oversize
+          );
+
+        const usablePalletCube =
+          PALLET.length *
+          PALLET.width *
+          Math.max(
+            1,
+            settings.palletHeight - 6
+          ) *
+          0.82;
+
+        const palletsByCube =
+          Math.ceil(
+            totalVolume /
+            usablePalletCube
+          );
+
+        const palletsByWeight =
+          Math.ceil(
+            parcelActualWeight /
+            Math.max(
+              1,
+              settings.palletWeight -
+                PALLET.tare
+            )
+          );
+
+        const estimatedPallets =
+          Math.max(
+            1,
+            palletsByCube,
+            palletsByWeight
+          );
+
+        const estimatedLoadHeight =
+          Math.min(
+            settings.palletHeight,
+
+            Math.max(
+              12,
+
+              6 +
+              totalVolume /
+                (
+                  estimatedPallets *
+                  PALLET.length *
+                  PALLET.width *
+                  0.82
+                )
+            )
+          );
+
+        const freightWeight =
+          parcelActualWeight +
+          estimatedPallets *
+            PALLET.tare;
+
+        const palletCubeFeet =
+          (
+            estimatedPallets *
+            PALLET.length *
+            PALLET.width *
+            estimatedLoadHeight
+          ) /
+          1728;
+
+        const density =
+          freightWeight /
+          palletCubeFeet;
+
+        const freightClass =
+          densityClass(density);
+
+        const trailerUtilization =
+          Math.max(
+            estimatedPallets /
+              TRAILER.pallets,
+
+            freightWeight /
+              TRAILER.payload
+          ) *
+          100;
+
+        let mode;
+        let title;
+        let reason;
+
+        if (
+          estimatedPallets >= 12 ||
+          freightWeight >= 20000
+        ) {
+          mode = "FTL";
+          title = "Full Truckload";
+
+          reason =
+            "The estimated pallet positions or shipment weight favors dedicated truck capacity.";
+        } else if (
+          (
+            !upsEligible &&
+            !fedexEligible
+          ) ||
+          estimatedPallets >= 2 ||
+          parcelActualWeight >= 1000 ||
+          totalCartons > 20
+        ) {
+          mode = "LTL";
+          title = "Less-Than-Truckload";
+
+          reason =
+            "Palletized freight is the safer planning mode for this carton count, cube and weight.";
+        } else if (
+          totalCartons >= 8 ||
+          parcelActualWeight >= 350 ||
+          upsOversize ||
+          fedexOversize
+        ) {
+          mode = "COMPARE";
+          title = "Rate-shop Parcel vs LTL";
+
+          reason =
+            "The shipment is parcel-eligible, but package count, dimensional weight or oversize exposure may make LTL more economical.";
+        } else if (
+          upsEligible &&
+          fedexEligible
+        ) {
+          mode = "PARCEL";
+          title = "UPS or FedEx Ground";
+
+          reason =
+            "All estimated cartons fit both carriers’ standard maximum package limits. Compare your contracted rates.";
+        } else if (upsEligible) {
+          mode = "UPS";
+          title = "UPS Ground";
+
+          reason =
+            "The estimated cartons qualify for UPS screening but not FedEx screening.";
+        } else {
+          mode = "FEDEX";
+          title = "FedEx Ground";
+
+          reason =
+            "The estimated cartons qualify for FedEx screening but not UPS screening.";
+        }
+
+        element(
+          "mode-title"
+        ).textContent = title;
+
+        element(
+          "mode-reason"
+        ).textContent = reason;
+
+        element(
+          "mode-chip"
+        ).textContent = mode;
+
+        const cards = [
+          [
+            "Cartons",
+            formatNumber(totalCartons),
+            "Estimated shipping cartons"
+          ],
+          [
+            "Actual parcel weight",
+            `${formatNumber(parcelActualWeight, 1)} lb`,
+            "Items + carton tare"
+          ],
+          [
+            "UPS billable",
+            `${formatNumber(upsBillableWeight)} lb`,
+            `${settings.upsDivisor} DIM divisor`
+          ],
+          [
+            "FedEx billable",
+            `${formatNumber(fedexBillableWeight)} lb`,
+            "139 DIM divisor"
+          ],
+          [
+            "Estimated pallets",
+            formatNumber(
+              estimatedPallets
+            ),
+            `48 × 40 × ${formatNumber(estimatedLoadHeight, 1)} in`
+          ],
+          [
+            "LTL density",
+            `${formatNumber(density, 1)} lb/ft³`,
+            `Density class ${freightClass}`
+          ]
+        ];
+
+        element("kpis").innerHTML =
+          cards
+            .map(card => `
+              <article class="kpi">
+                <span>${card[0]}</span>
+                <strong>${card[1]}</strong>
+                <small>${card[2]}</small>
+              </article>
+            `)
+            .join("");
+
+        element(
+          "carrier-results"
+        ).innerHTML =
+          statusLine(
+            "UPS package limits",
+            upsEligible
+              ? "Eligible"
+              : "Exceeds limit",
+            upsEligible
+              ? "ok"
+              : "bad"
+          ) +
+          statusLine(
+            "FedEx package limits",
+            fedexEligible
+              ? "Eligible"
+              : "Exceeds limit",
+            fedexEligible
+              ? "ok"
+              : "bad"
+          ) +
+          statusLine(
+            "UPS oversize exposure",
+            upsOversize
+              ? "Possible"
+              : "No",
+            upsOversize
+              ? "warn"
+              : "ok"
+          ) +
+          statusLine(
+            "FedEx oversize exposure",
+            fedexOversize
+              ? "Possible"
+              : "No",
+            fedexOversize
+              ? "warn"
+              : "ok"
+          );
+
+        element(
+          "freight-results"
+        ).innerHTML =
+          statusLine(
+            "Palletized weight",
+            `${formatNumber(freightWeight, 1)} lb`
+          ) +
+          statusLine(
+            "Pallet profile",
+            `${estimatedPallets} × 48 × 40 × ${formatNumber(estimatedLoadHeight, 1)} in`
+          ) +
+          statusLine(
+            "Shipment cube",
+            `${formatNumber(palletCubeFeet, 1)} ft³`
+          ) +
+          statusLine(
+            "Density class estimate",
+            String(freightClass)
+          ) +
+          statusLine(
+            "Dry-van utilization",
+            `${formatNumber(trailerUtilization, 1)}%`
+          );
+
+        element(
+          "carton-table"
+        ).innerHTML =
+          plans
+            .map(plan => `
+              <tr>
+                <td>
+                  ${escapeHtml(plan.item)}
+                </td>
+
+                <td>
+                  ${plan.units}
+                </td>
+
+                <td>
+                  ${plan.count}
+                </td>
+
+                <td>
+                  ${plan.dimensions.join(" × ")} in
+                </td>
+
+                <td>
+                  ${formatNumber(plan.actualWeight, 1)} lb
+                </td>
+
+                <td>
+                  UPS ${plan.upsDimensionalWeight}
+                  /
+                  FedEx ${plan.fedexDimensionalWeight}
+                  lb
+                </td>
+
+                <td>
+                  UPS ${plan.upsBillableWeight}
+                  /
+                  FedEx ${plan.fedexBillableWeight}
+                  lb
+                </td>
+              </tr>
+            `)
+            .join("");
+
+        const alerts = [];
+
+        if (
+          plans.some(
+            plan =>
+              plan.actualWeight > 70
+          )
+        ) {
+          alerts.push([
+            "Packages over 70 lb generally require heavy-package handling and labeling.",
+            "critical"
+          ]);
+        }
+
+        if (
+          upsOversize ||
+          fedexOversize
+        ) {
+          alerts.push([
+            "At least one carton may trigger large-package or oversize surcharges. Rate-shop against LTL.",
+            "critical"
+          ]);
+        }
+
+        if (
+          settings.unitsPerCarton
+        ) {
+          alerts.push([
+            "Manual units-per-carton overrides automatic carton optimization.",
+            ""
+          ]);
+        }
+
+        if (
+          state.items.length > 1
+        ) {
+          alerts.push([
+            "Different SKUs are planned in separate cartons. Mixed-SKU co-packing is not simulated.",
+            ""
+          ]);
+        }
+
+        alerts.push([
+          "Confirm packed dimensions on a physical sample. The estimator assumes rectangular, axis-aligned packing and configurable cushioning.",
+          ""
+        ]);
+
+        alerts.push([
+          "Final LTL class can change based on NMFC commodity, liability, handling and stowability—not density alone.",
+          ""
+        ]);
+
+        alerts.push([
+          "Obtain live UPS, FedEx and freight quotes using origin/destination ZIP codes, service level and your negotiated account rates.",
+          ""
+        ]);
+
+        element("warnings").innerHTML =
+          alerts
+            .map(
+              ([message, type]) => `
+                <div class="warning ${type}">
+                  ${message}
+                </div>
+              `
+            )
+            .join("");
+
+        element(
+          "results-empty"
+        ).classList.add("hidden");
+
+        element(
+          "results"
+        ).classList.remove("hidden");
+      }
+
+      function statusLine(
+        label,
+        value,
+        status = ""
+      ) {
+        return `
+          <div class="status-line">
+            <span>${label}</span>
+
+            <strong class="${status ? `status-${status}` : ""}">
+              ${value}
+            </strong>
+          </div>
+        `;
+      }
+
+      element("add-item")
+        .addEventListener(
+          "click",
+          addItem
+        );
+
+      element("calculate")
+        .addEventListener(
+          "click",
+          calculate
+        );
+
+      element("clear")
+        .addEventListener(
+          "click",
+          () => {
+            state.items = [];
+
+            renderItems();
+
+            element(
+              "results"
+            ).classList.add("hidden");
+
+            element(
+              "results-empty"
+            ).classList.remove("hidden");
+          }
+        );
+
+      renderItems();
+    })();
+  </script>
+</body>
+</html>
