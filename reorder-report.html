@@ -2,24 +2,41 @@
 <html lang="en">
 <head>
   <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  <meta
+    name="viewport"
+    content="width=device-width, initial-scale=1"
+  >
 
   <meta
     name="description"
     content="Regional inventory analysis for Stark Premium"
   >
 
-  <title>Reorder Report | Stark Regional Inventory</title>
+  <title>
+    Reorder Report | Stark Regional Inventory
+  </title>
 
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
 
   <link
     href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap"
     rel="stylesheet"
   >
 
-  <link rel="stylesheet" href="assets/styles.css">
+  <link
+    rel="stylesheet"
+    href="assets/styles.css"
+  >
 
   <style>
     .report-table-panel .wide-reorder-table {
@@ -59,13 +76,23 @@
     defer
   ></script>
 
-  <script src="assets/inventory-core.js" defer></script>
-  <script src="assets/inventory-pages.js" defer></script>
+  <script
+    src="assets/inventory-core.js"
+    defer
+  ></script>
+
+  <script
+    src="assets/inventory-pages.js"
+    defer
+  ></script>
 </head>
 
 <body data-page="reorder">
   <header class="inventory-header">
-    <a class="inventory-brand" href="index.html">
+    <a
+      class="inventory-brand"
+      href="index.html"
+    >
       <span>S</span>
 
       <div>
@@ -85,7 +112,12 @@
         </select>
       </label>
 
-      <span class="region-pill" data-region-code>US</span>
+      <span
+        class="region-pill"
+        data-region-code
+      >
+        US
+      </span>
 
       <a
         class="button button-secondary"
@@ -164,8 +196,8 @@
         <h1>Reorder Report</h1>
 
         <p class="page-description">
-          Review active-brand items that meet the configured stock, demand
-          or supplier delivery reorder rules.
+          Review active-brand items that meet the configured stock,
+          demand or supplier delivery reorder rules.
         </p>
       </div>
 
@@ -176,6 +208,8 @@
         No Item Sales Report uploaded
       </div>
     </section>
+
+    <!-- Large empty-data panel intentionally removed. -->
 
     <div
       class="hidden"
@@ -231,8 +265,8 @@
 
         <div class="reorder-note">
           Recommended quantity =
-          ((On Hand + Open Supplier Qty due within 15 days −
-          Open Orders From Client) × Lead Time) + Avg/Month.
+          ((On Hand + Open Supplier Qty − Open Orders From Client)
+          × Lead Time from Active Brands) + Avg/Month.
           Negative results are set to zero and quantities are rounded up.
         </div>
 
