@@ -138,13 +138,79 @@
   function emptyRow(columns, message) { return `<tr><td colspan="${columns}">${message || "No data matches the current filters."}</td></tr>`; }
 
   function initPageTransitions() {
-    document.querySelectorAll(".inventory-nav a, .workspace-back").forEach(link => link.addEventListener("click", event => {
-      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target === "_blank") return;
-      const destination = new URL(link.href, location.href);
-      if (destination.origin !== location.origin) return;
-      event.preventDefault();
-      document.body.classList.add("page-leaving");
-      window.setTimeout(() => { location.href = destination.href; }, 145);
-    }));
-  }
-})();
+  const navigationLinks =
+    document.querySelectorAll(
+      ".inventory-nav a, .workspace-back"
+    );
+
+  navigationLinks.forEach(link => {
+    link.addEventListener(
+      "click",
+      event => {
+        const modifiedClick =
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey;
+
+        if (
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          modifiedClick ||
+          link.target === "_blank"
+        ) {
+          return;
+        }
+
+        const destination = new URL(
+          link.href,
+          window.location.href
+        );
+
+        if (
+          destination.origin !==
+          window.location.origin
+        ) {
+          return;
+        }
+
+        event.preventDefault();
+
+        link.classList.add(
+          "tab-pressed"
+        );
+
+        const supportsViewTransitions =
+          typeof document.startViewTransition ===
+            "function" &&
+          window.CSS &&
+          CSS.supports(
+            "view-transition-name: inventory-active-tab"
+          );
+
+        /*
+          Modern Chrome handles the cross-page transition.
+          Navigate immediately to prevent a double animation.
+        */
+        if (supportsViewTransitions) {
+          window.location.href =
+            destination.href;
+
+          return;
+        }
+
+        /*
+          Fallback for browsers without View Transitions.
+        */
+        document.body.classList.add(
+          "page-leaving"
+        );
+
+        window.setTimeout(() => {
+          window.location.href =
+            destination.href;
+        }, 120);
+      }
+    );
+  });
+}
