@@ -17,6 +17,7 @@
     dataset = await SI.loadDataset(region);
     items = dataset ? SI.analyze(dataset.rows, region) : [];
     renderDataNote();
+    initPageTransitions();
     if (page === "dashboard") initDashboard();
     if (page === "raw") initRaw();
     if (page === "reorder") initReorder();
@@ -135,4 +136,15 @@
   function sum(rows, accessor) { return rows.reduce((total, row) => total + (Number(accessor(row)) || 0), 0); }
   function fillSelect(id, values, label) { el(id).innerHTML = `<option value="">${label}</option>` + values.map(value => `<option value="${SI.escapeHtml(value)}">${SI.escapeHtml(value)}</option>`).join(""); }
   function emptyRow(columns, message) { return `<tr><td colspan="${columns}">${message || "No data matches the current filters."}</td></tr>`; }
+
+  function initPageTransitions() {
+    document.querySelectorAll(".inventory-nav a, .workspace-back").forEach(link => link.addEventListener("click", event => {
+      if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target === "_blank") return;
+      const destination = new URL(link.href, location.href);
+      if (destination.origin !== location.origin) return;
+      event.preventDefault();
+      document.body.classList.add("page-leaving");
+      window.setTimeout(() => { location.href = destination.href; }, 145);
+    }));
+  }
 })();

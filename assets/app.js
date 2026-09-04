@@ -19,7 +19,16 @@
 
   function init() {
     bindEvents();
-    updateRegionUI();
+    const requestedWorkspace = new URLSearchParams(location.search).get("workspace");
+    if (["US", "EU", "Canada"].includes(requestedWorkspace)) {
+      state.region = requestedWorkspace;
+      el("home-screen").classList.add("hidden");
+      el("regional-app").classList.add("hidden");
+      el("module-screen").classList.remove("hidden");
+      updateModuleScreen();
+    } else {
+      updateRegionUI();
+    }
     setHeaderWorkspaceActions(false);
   }
 
@@ -67,7 +76,7 @@
 
   function openModule(module) {
     if (module === "inventory") {
-      const inventoryRoutes = { US: "inventory-us.html", EU: "inventory-eu.html", Canada: "inventory-ca.html" };
+      const inventoryRoutes = { US: "inventory-dashboard-us.html", EU: "inventory-dashboard-eu.html", Canada: "inventory-dashboard-ca.html" };
       window.location.href = inventoryRoutes[state.region];
       return;
     }
@@ -99,6 +108,7 @@
     el("module-screen").classList.add("hidden");
     el("home-screen").classList.remove("hidden");
     setHeaderWorkspaceActions(false);
+    history.replaceState(null, "", "index.html");
     window.scrollTo({ top: 0, behavior: "smooth" });
   }
 
