@@ -3,48 +3,715 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
-  <meta name="description" content="Regional inventory analysis for Stark Premium">
+  <meta
+    name="description"
+    content="United States active brands and supplier lead times"
+  >
+
   <title>Active Brands | Stark Regional Inventory</title>
+
   <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap"
+    rel="stylesheet"
+  >
+
   <link rel="stylesheet" href="assets/styles-us.css">
-  <style>.brand-toolbar-actions{display:flex;align-items:center;gap:9px}@media(max-width:540px){.brand-toolbar-actions{align-items:stretch;flex-direction:column}}</style>
-  <script src="assets/jszip.min.js" defer></script>
-  <script src="assets/inventory-core-us.js" defer></script>
-  <script src="assets/inventory-pages-us.js" defer></script>
-  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" async></script>
+
+  <style>
+    .brand-filters {
+      grid-template-columns:
+        minmax(260px, 2fr)
+        auto
+        auto
+        auto
+        auto !important;
+    }
+
+    .brand-toolbar-actions {
+      display: flex;
+      align-items: center;
+      gap: 9px;
+    }
+
+    @media (max-width: 820px) {
+      .brand-filters {
+        grid-template-columns:
+          repeat(2, minmax(0, 1fr)) !important;
+      }
+
+      .brand-filters .wide-filter {
+        grid-column: 1 / -1;
+      }
+    }
+
+    @media (max-width: 540px) {
+      .brand-filters {
+        grid-template-columns: 1fr !important;
+      }
+
+      .brand-filters .wide-filter {
+        grid-column: auto;
+      }
+
+      .brand-toolbar-actions {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
+
+  <script
+    src="assets/inventory-core-us.js"
+    defer
+  ></script>
 </head>
+
 <body data-page="brands">
   <header class="inventory-header">
-    <a class="inventory-brand" href="index.html"><span>S</span><div><small>Stark Premium</small><strong>Regional Inventory</strong></div></a>
+    <a class="inventory-brand" href="index.html">
+      <span>S</span>
+
+      <div>
+        <small>Stark Premium</small>
+        <strong>Regional Inventory</strong>
+      </div>
+    </a>
   </header>
+
   <main class="inventory-main">
-    <nav class="inventory-nav" aria-label="Inventory analysis pages">
-      <a data-inventory-page="dashboard" data-region-link href="inventory-dashboard-us.html">Dashboard</a>
-      <a data-inventory-page="raw" data-region-link href="raw-report-us.html">Raw Report</a>
-      <a data-inventory-page="reorder" data-region-link href="reorder-report-us.html">Reorder Report</a>
-      <a class="active" data-inventory-page="brands" data-region-link href="active-brands-us.html">Active Brands</a>
-      <a data-inventory-page="instructions" data-region-link href="instructions-us.html">Instructions</a>
+    <nav
+      class="inventory-nav"
+      aria-label="Inventory analysis pages"
+    >
+      <a
+        data-inventory-page="dashboard"
+        href="inventory-dashboard-us.html"
+      >
+        Dashboard
+      </a>
+
+      <a
+        data-inventory-page="raw"
+        href="raw-report-us.html"
+      >
+        Raw Report
+      </a>
+
+      <a
+        data-inventory-page="reorder"
+        href="reorder-report-us.html"
+      >
+        Reorder Report
+      </a>
+
+      <a
+        class="active"
+        data-inventory-page="brands"
+        href="active-brands-us.html"
+        aria-current="page"
+      >
+        Active Brands
+      </a>
+
+      <a
+        data-inventory-page="instructions"
+        href="instructions-us.html"
+      >
+        Instructions
+      </a>
     </nav>
+
     <section class="inventory-page-heading">
-      <div><p class="eyebrow">Reorder scope • <span data-region-name>United States</span></p><h1>Active Brands</h1><p class="page-description">Control which brands are included in reorder analysis and maintain the supplier lead time for each brand.</p></div>
-      <div class="file-status" data-file-status>No Item Sales Report uploaded</div>
+      <div>
+        <p class="eyebrow">
+          Reorder scope •
+          <span data-region-name>
+            United States
+          </span>
+        </p>
+
+        <h1>Active Brands</h1>
+
+        <p class="page-description">
+          Control which brands are included in reorder analysis and
+          maintain the supplier lead time for each brand.
+        </p>
+      </div>
+
+      <div
+        class="file-status"
+        id="brand-file-status"
+      >
+        No Item Sales Report uploaded
+      </div>
     </section>
-    <section class="data-empty" data-empty-data><strong>No regional inventory data</strong><p><a data-region-link href="inventory-dashboard-us.html">Upload the Item Sales Report on the Dashboard.</a></p></section>
-    <div class="hidden" data-requires-data>
-      <section class="inventory-filter-bar brand-filters">
-        <label class="wide-filter">Brand<input id="brand-search" type="search" placeholder="Search brand"></label>
-        <button class="button button-secondary" id="activate-all" type="button">Activate all</button>
-        <button class="button button-secondary" id="deactivate-all" type="button">Deactivate all</button>
-        <div class="brand-toolbar-actions"><button class="button button-secondary" id="save-lead-times" type="button">Save lead times</button><button class="button button-primary" id="export-brands" type="button">Export CSV</button></div>
-      </section>
-      <p class="result-count" id="brand-result-count"></p>
-      <section class="inventory-panel">
-        <div class="panel-heading"><div><p class="eyebrow">Reorder eligibility</p><h2>Brand controls and lead times</h2></div><p>Inactive brands remain in the Raw Report but are excluded from the Reorder Report.</p></div>
-        <div class="inventory-table-wrap"><table><thead><tr><th>Included</th><th>Active Brand</th><th class="num">Items</th><th>Lead Time</th></tr></thead><tbody id="brands-table"></tbody></table></div>
-      </section>
-    </div>
+
+    <section class="inventory-filter-bar brand-filters">
+      <label class="wide-filter">
+        Brand
+
+        <input
+          id="brand-search"
+          type="search"
+          placeholder="Search brand"
+        >
+      </label>
+
+      <button
+        class="button button-secondary"
+        id="add-brand"
+        type="button"
+      >
+        Add brand
+      </button>
+
+      <button
+        class="button button-secondary"
+        id="activate-all"
+        type="button"
+      >
+        Activate all
+      </button>
+
+      <button
+        class="button button-secondary"
+        id="deactivate-all"
+        type="button"
+      >
+        Deactivate all
+      </button>
+
+      <div class="brand-toolbar-actions">
+        <button
+          class="button button-secondary"
+          id="save-lead-times"
+          type="button"
+        >
+          Save lead times
+        </button>
+
+        <button
+          class="button button-primary"
+          id="export-brands"
+          type="button"
+        >
+          Export CSV
+        </button>
+      </div>
+    </section>
+
+    <p
+      class="result-count"
+      id="brand-result-count"
+    ></p>
+
+    <section class="inventory-panel">
+      <div class="panel-heading">
+        <div>
+          <p class="eyebrow">
+            Reorder eligibility
+          </p>
+
+          <h2>
+            Brand controls and lead times
+          </h2>
+        </div>
+
+        <p>
+          Manually added brands remain available for future reports.
+          Inactive brands are excluded from the Reorder Report.
+        </p>
+      </div>
+
+      <div class="inventory-table-wrap">
+        <table>
+          <thead>
+            <tr>
+              <th>Included</th>
+              <th>Active Brand</th>
+              <th class="num">Items</th>
+              <th>Lead Time</th>
+            </tr>
+          </thead>
+
+          <tbody id="brands-table"></tbody>
+        </table>
+      </div>
+    </section>
   </main>
+
+  <script>
+    (() => {
+      "use strict";
+
+      const REGION = "US";
+
+      let SI;
+      let dataset = null;
+
+      const numberFormatter = new Intl.NumberFormat(
+        "en-US",
+        {
+          maximumFractionDigits: 0
+        }
+      );
+
+      const element = id => document.getElementById(id);
+
+      document.addEventListener(
+        "DOMContentLoaded",
+        initialize
+      );
+
+      async function initialize() {
+        SI = window.StarkInventory;
+
+        SI.initFrame("brands");
+
+        dataset = await SI.loadDataset(REGION);
+
+        if (dataset) {
+          SI.ensureBrandSettings(
+            REGION,
+            dataset.rows
+          );
+        }
+
+        renderFileStatus();
+        bindEvents();
+        renderBrands();
+        initializeTransitions();
+      }
+
+      function datasetRows() {
+        return dataset?.rows || [];
+      }
+
+      function loadSettings() {
+        return SI.loadBrandSettings(REGION);
+      }
+
+      function allBrandNames() {
+        return SI.unique([
+          ...datasetRows().map(row => row.brand),
+          ...Object.keys(loadSettings())
+        ]);
+      }
+
+      function displayedBrands() {
+        const settings = loadSettings();
+
+        const search = element("brand-search")
+          .value
+          .trim()
+          .toLowerCase();
+
+        return allBrandNames()
+          .filter(brand => {
+            return (
+              !search ||
+              brand.toLowerCase().includes(search)
+            );
+          })
+          .map(brand => {
+            const brandSettings =
+              settings[brand] || {
+                active: true,
+                leadTime: ""
+              };
+
+            const itemCount = datasetRows().filter(row => {
+              return (
+                String(row.brand).toLowerCase() ===
+                brand.toLowerCase()
+              );
+            }).length;
+
+            return {
+              brand,
+              ...brandSettings,
+              items: itemCount
+            };
+          });
+      }
+
+      function bindEvents() {
+        element("brand-search").addEventListener(
+          "input",
+          renderBrands
+        );
+
+        element("add-brand").addEventListener(
+          "click",
+          addBrand
+        );
+
+        element("activate-all").addEventListener(
+          "click",
+          () => setAllBrands(true)
+        );
+
+        element("deactivate-all").addEventListener(
+          "click",
+          () => setAllBrands(false)
+        );
+
+        element("save-lead-times").addEventListener(
+          "click",
+          saveLeadTimes
+        );
+
+        element("export-brands").addEventListener(
+          "click",
+          exportBrands
+        );
+      }
+
+      function renderFileStatus() {
+        const status =
+          element("brand-file-status");
+
+        status.textContent = dataset
+          ? (
+              `${dataset.fileName} • ` +
+              `${numberFormatter.format(datasetRows().length)} items`
+            )
+          : "No Item Sales Report uploaded";
+
+        status.classList.toggle(
+          "ready",
+          Boolean(dataset)
+        );
+      }
+
+      function renderBrands() {
+        const brands = displayedBrands();
+
+        const activeCount = brands.filter(brand => {
+          return brand.active !== false;
+        }).length;
+
+        element("brand-result-count").textContent =
+          `${numberFormatter.format(activeCount)} active of ` +
+          `${numberFormatter.format(brands.length)} displayed brands`;
+
+        element("brands-table").innerHTML =
+          brands.length
+            ? brands.map(row => `
+                <tr>
+                  <td>
+                    <label class="switch-label">
+                      <input
+                        type="checkbox"
+                        data-brand-active="${SI.escapeHtml(row.brand)}"
+                        ${row.active !== false ? "checked" : ""}
+                      >
+
+                      <span>Active</span>
+                    </label>
+                  </td>
+
+                  <td>
+                    <strong>
+                      ${SI.escapeHtml(row.brand)}
+                    </strong>
+                  </td>
+
+                  <td class="num">
+                    ${numberFormatter.format(row.items)}
+                  </td>
+
+                  <td>
+                    <input
+                      class="lead-time-input"
+                      data-brand-lead="${SI.escapeHtml(row.brand)}"
+                      value="${SI.escapeHtml(row.leadTime)}"
+                      placeholder="e.g. 2 weeks"
+                    >
+                  </td>
+                </tr>
+              `).join("")
+            : `
+                <tr>
+                  <td colspan="4">
+                    No brands match the current search.
+                    Select Add brand to create one.
+                  </td>
+                </tr>
+              `;
+
+        document
+          .querySelectorAll("[data-brand-active]")
+          .forEach(input => {
+            input.addEventListener(
+              "change",
+              saveBrandActive
+            );
+          });
+
+        document
+          .querySelectorAll("[data-brand-lead]")
+          .forEach(input => {
+            input.addEventListener(
+              "keydown",
+              event => {
+                if (event.key === "Enter") {
+                  event.preventDefault();
+                  saveLeadTimes();
+                }
+              }
+            );
+          });
+      }
+
+      function addBrand() {
+        const enteredName = window.prompt(
+          "Enter the new brand name:"
+        );
+
+        const brand = SI.cleanText(
+          enteredName
+        );
+
+        if (!brand) {
+          return;
+        }
+
+        const existingBrand =
+          allBrandNames().find(name => {
+            return (
+              name.toLowerCase() ===
+              brand.toLowerCase()
+            );
+          });
+
+        if (existingBrand) {
+          element("brand-search").value =
+            existingBrand;
+
+          renderBrands();
+
+          window.alert(
+            `${existingBrand} is already in the ` +
+            `${SI.regionName(REGION)} brand list.`
+          );
+
+          return;
+        }
+
+        const settings = loadSettings();
+
+        settings[brand] = {
+          active: true,
+          leadTime: ""
+        };
+
+        SI.saveBrandSettings(
+          REGION,
+          settings
+        );
+
+        element("brand-search").value = "";
+
+        renderBrands();
+
+        const leadTimeInput = Array.from(
+          document.querySelectorAll(
+            "[data-brand-lead]"
+          )
+        ).find(input => {
+          return (
+            input.dataset.brandLead === brand
+          );
+        });
+
+        if (leadTimeInput) {
+          leadTimeInput.focus();
+
+          leadTimeInput.scrollIntoView({
+            behavior: "smooth",
+            block: "center"
+          });
+        }
+      }
+
+      function saveBrandActive(event) {
+        const settings = loadSettings();
+
+        const brand =
+          event.target.dataset.brandActive;
+
+        settings[brand] =
+          settings[brand] || {
+            active: true,
+            leadTime: ""
+          };
+
+        settings[brand].active =
+          event.target.checked;
+
+        SI.saveBrandSettings(
+          REGION,
+          settings
+        );
+
+        renderVisibleCount();
+      }
+
+      function renderVisibleCount() {
+        const inputs = Array.from(
+          document.querySelectorAll(
+            "[data-brand-active]"
+          )
+        );
+
+        const activeCount =
+          inputs.filter(input => {
+            return input.checked;
+          }).length;
+
+        element("brand-result-count").textContent =
+          `${numberFormatter.format(activeCount)} active of ` +
+          `${numberFormatter.format(inputs.length)} displayed brands`;
+      }
+
+      function saveLeadTimes() {
+        const settings = loadSettings();
+
+        document
+          .querySelectorAll("[data-brand-lead]")
+          .forEach(input => {
+            const brand =
+              input.dataset.brandLead;
+
+            settings[brand] =
+              settings[brand] || {
+                active: true,
+                leadTime: ""
+              };
+
+            settings[brand].leadTime =
+              input.value.trim();
+          });
+
+        SI.saveBrandSettings(
+          REGION,
+          settings
+        );
+
+        const button =
+          element("save-lead-times");
+
+        button.textContent = "Saved ✓";
+        button.disabled = true;
+
+        window.setTimeout(() => {
+          button.textContent =
+            "Save lead times";
+
+          button.disabled = false;
+        }, 1500);
+      }
+
+      function setAllBrands(active) {
+        const settings = loadSettings();
+
+        allBrandNames().forEach(brand => {
+          settings[brand] =
+            settings[brand] || {
+              active: true,
+              leadTime: ""
+            };
+
+          settings[brand].active = active;
+        });
+
+        SI.saveBrandSettings(
+          REGION,
+          settings
+        );
+
+        renderBrands();
+      }
+
+      function exportBrands() {
+        const brands = displayedBrands();
+
+        SI.downloadCsv(
+          [
+            [
+              "Active Brand",
+              "Included",
+              "Lead Time",
+              "Item Count"
+            ],
+
+            ...brands.map(row => [
+              row.brand,
+              row.active !== false
+                ? "Yes"
+                : "No",
+              row.leadTime,
+              row.items
+            ])
+          ],
+          `Active Brands ${SI.regionCode(REGION)}.csv`
+        );
+      }
+
+      function initializeTransitions() {
+        document
+          .querySelectorAll(
+            ".inventory-nav a, .inventory-brand"
+          )
+          .forEach(link => {
+            link.addEventListener(
+              "click",
+              event => {
+                if (
+                  event.defaultPrevented ||
+                  event.button !== 0 ||
+                  event.metaKey ||
+                  event.ctrlKey ||
+                  event.shiftKey ||
+                  event.altKey
+                ) {
+                  return;
+                }
+
+                const destination = new URL(
+                  link.href,
+                  window.location.href
+                );
+
+                if (
+                  destination.origin !==
+                  window.location.origin
+                ) {
+                  return;
+                }
+
+                event.preventDefault();
+
+                document.body.classList.add(
+                  "page-leaving"
+                );
+
+                window.setTimeout(() => {
+                  window.location.href =
+                    destination.href;
+                }, 145);
+              }
+            );
+          });
+      }
+    })();
+  </script>
 </body>
 </html>
