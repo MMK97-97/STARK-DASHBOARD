@@ -1,6 +1,358 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><meta name="description" content="Regional inventory analysis for Stark Premium"><title>Inventory Dashboard | Stark Regional Inventory</title><link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet"><link rel="stylesheet" href="assets/styles-eu.css"><script src="assets/jszip.min.js" defer></script><script src="assets/inventory-core-eu.js" defer></script><script src="assets/inventory-pages-eu.js" defer></script><script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" async></script></head><body data-page="dashboard"><header class="inventory-header"><a class="inventory-brand" href="index.html"><span>S</span><div><small>Stark Premium</small><strong>Regional Inventory</strong></div></a>
-  </header><main class="inventory-main"><nav class="inventory-nav" aria-label="Inventory analysis pages"><a class="workspace-back" href="index.html?workspace=EU">← Workspace</a><a data-inventory-page="dashboard" data-region-link href="inventory-dashboard-eu.html" class="active">Dashboard</a><a data-inventory-page="raw" data-region-link href="raw-report-eu.html" class="">Raw Report</a><a data-inventory-page="reorder" data-region-link href="reorder-report-eu.html" class="">Reorder Report</a><a data-inventory-page="brands" data-region-link href="active-brands-eu.html" class="">Active Brands</a><a data-inventory-page="instructions" data-region-link href="instructions-eu.html" class="">Instructions</a></nav><section class="inventory-page-heading"><div><p class="eyebrow">Inventory overview • <span data-region-name>United States</span></p><h1>Inventory Dashboard</h1></div><div class="file-status" data-file-status>No Item Sales Report uploaded</div></section>
-<section class="inventory-upload-strip"><div><strong>Item Sales Report</strong><span>Upload or replace the source file on Raw Report.</span></div><div class="upload-actions"><a class="button button-primary" data-region-link href="raw-report-eu.html">Open Raw Report</a><button class="button button-ghost" id="clear-inventory-data" type="button">Clear data</button></div></section>
-<section class="inventory-settings"><label>Critical stock<input id="setting-critical" type="number" min="0"></label><label>Coverage months<input id="setting-coverage" type="number" min="0" step=".5"></label><label>Supplier delay days<input id="setting-delay" type="number" min="0"></label><label>ABC A threshold %<input id="setting-a" type="number" min="1" max="99"></label><label>ABC B threshold %<input id="setting-b" type="number" min="1" max="100"></label><button class="button button-secondary" id="save-inventory-settings" type="button">Save settings</button></section>
-<section class="data-empty" data-empty-data><strong>Upload the regional Item Sales Report</strong><p><a data-region-link href="raw-report-eu.html">Open Raw Report to upload the source file.</a></p></section>
-<div data-requires-data class="hidden"><section class="inventory-kpi-grid" id="dashboard-kpis"></section><section class="inventory-dashboard-grid"><article class="inventory-panel"><div class="panel-heading"><div><p class="eyebrow">Portfolio priority</p><h2>ABC item distribution</h2></div></div><div class="abc-layout"><div class="abc-donut-css" id="abc-donut-css"><span><strong id="abc-donut-total">0</strong><small>items</small></span></div><div id="abc-summary" class="abc-summary"></div></div></article><article class="inventory-panel"><div class="panel-heading"><div><p class="eyebrow">Inventory action</p><h2>Reorder units by brand</h2></div></div><div class="bar-list" id="reorder-brand-bars"></div></article><article class="inventory-panel inventory-panel-full"><div class="panel-heading"><div><p class="eyebrow">Priority list</p><h2>Highest reorder recommendations</h2></div><a data-region-link href="reorder-report-eu.html">Open full report →</a></div><div class="inventory-table-wrap"><table><thead><tr><th>Model#</th><th>Brand</th><th>Item Title</th><th class="num">Available</th><th class="num">Avg/Month</th><th class="num">Reorder</th><th>Reason</th></tr></thead><tbody id="attention-table"></tbody></table></div></article></section></div></main></body></html>
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+
+  <meta
+    name="viewport"
+    content="width=device-width,initial-scale=1"
+  >
+
+  <meta
+    name="description"
+    content="European Union regional inventory dashboard for Stark Premium"
+  >
+
+  <title>Inventory Dashboard | Stark Regional Inventory</title>
+
+  <link
+    rel="preconnect"
+    href="https://fonts.googleapis.com"
+  >
+
+  <link
+    rel="preconnect"
+    href="https://fonts.gstatic.com"
+    crossorigin
+  >
+
+  <link
+    href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap"
+    rel="stylesheet"
+  >
+
+  <link
+    rel="stylesheet"
+    href="assets/styles-eu.css"
+  >
+
+  <script
+    src="assets/jszip.min.js"
+    defer
+  ></script>
+
+  <script
+    src="assets/inventory-core-eu.js"
+    defer
+  ></script>
+
+  <script
+    src="assets/inventory-pages-eu.js"
+    defer
+  ></script>
+
+  <script
+    src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js"
+    async
+  ></script>
+</head>
+
+<body data-page="dashboard">
+  <header class="inventory-header">
+    <a
+      class="inventory-brand"
+      href="index.html"
+    >
+      <span>S</span>
+
+      <div>
+        <small>Stark Premium</small>
+        <strong>Regional Inventory</strong>
+      </div>
+    </a>
+  </header>
+
+  <main class="inventory-main">
+    <nav
+      class="inventory-nav"
+      aria-label="Inventory analysis pages"
+    >
+      <a
+        class="workspace-back"
+        href="index.html?workspace=EU"
+      >
+        ← Workspace
+      </a>
+
+      <a
+        class="active"
+        data-inventory-page="dashboard"
+        href="inventory-dashboard-eu.html"
+        aria-current="page"
+      >
+        Dashboard
+      </a>
+
+      <a
+        data-inventory-page="raw"
+        href="raw-report-eu.html"
+      >
+        Raw Report
+      </a>
+
+      <a
+        data-inventory-page="reorder"
+        href="reorder-report-eu.html"
+      >
+        Reorder Report
+      </a>
+
+      <a
+        data-inventory-page="brands"
+        href="active-brands-eu.html"
+      >
+        Active Brands
+      </a>
+
+      <a
+        data-inventory-page="ats"
+        href="ats-eu.html"
+      >
+        ATS
+      </a>
+
+      <a
+        data-inventory-page="instructions"
+        href="instructions-eu.html"
+      >
+        Instructions
+      </a>
+    </nav>
+
+    <section class="inventory-page-heading">
+      <div>
+        <p class="eyebrow">
+          Inventory overview • European Union
+        </p>
+
+        <h1>Inventory Dashboard</h1>
+
+        <p class="page-description">
+          Monitor European Union inventory, demand, stock availability
+          and reorder requirements.
+        </p>
+      </div>
+
+      <div
+        class="file-status"
+        data-file-status
+      >
+        No Item Sales Report uploaded
+      </div>
+    </section>
+
+    <section class="inventory-upload-strip">
+      <div>
+        <strong>Item Sales Report</strong>
+
+        <span>
+          Upload or replace the European Union source file on the
+          Raw Report page.
+        </span>
+      </div>
+
+      <div class="upload-actions">
+        <a
+          class="button button-primary"
+          href="raw-report-eu.html"
+        >
+          Open Raw Report
+        </a>
+
+        <button
+          class="button button-ghost"
+          id="clear-inventory-data"
+          type="button"
+        >
+          Clear data
+        </button>
+      </div>
+    </section>
+
+    <section class="inventory-settings">
+      <label>
+        Critical stock
+
+        <input
+          id="setting-critical"
+          type="number"
+          min="0"
+        >
+      </label>
+
+      <label>
+        Coverage months
+
+        <input
+          id="setting-coverage"
+          type="number"
+          min="0"
+          step="0.5"
+        >
+      </label>
+
+      <label>
+        Supplier delay days
+
+        <input
+          id="setting-delay"
+          type="number"
+          min="0"
+        >
+      </label>
+
+      <label>
+        ABC A threshold %
+
+        <input
+          id="setting-a"
+          type="number"
+          min="1"
+          max="99"
+        >
+      </label>
+
+      <label>
+        ABC B threshold %
+
+        <input
+          id="setting-b"
+          type="number"
+          min="1"
+          max="100"
+        >
+      </label>
+
+      <button
+        class="button button-secondary"
+        id="save-inventory-settings"
+        type="button"
+      >
+        Save settings
+      </button>
+    </section>
+
+    <section
+      class="data-empty"
+      data-empty-data
+    >
+      <strong>
+        Upload the European Union Item Sales Report
+      </strong>
+
+      <p>
+        <a href="raw-report-eu.html">
+          Open Raw Report to upload the source file.
+        </a>
+      </p>
+    </section>
+
+    <div
+      class="hidden"
+      data-requires-data
+    >
+      <section
+        class="inventory-kpi-grid"
+        id="dashboard-kpis"
+      ></section>
+
+      <section class="inventory-dashboard-grid">
+        <article class="inventory-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">
+                Portfolio priority
+              </p>
+
+              <h2>ABC item distribution</h2>
+            </div>
+          </div>
+
+          <div class="abc-layout">
+            <div
+              class="abc-donut-css"
+              id="abc-donut-css"
+            >
+              <span>
+                <strong id="abc-donut-total">
+                  0
+                </strong>
+
+                <small>items</small>
+              </span>
+            </div>
+
+            <div
+              class="abc-summary"
+              id="abc-summary"
+            ></div>
+          </div>
+        </article>
+
+        <article class="inventory-panel">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">
+                Inventory action
+              </p>
+
+              <h2>Reorder units by brand</h2>
+            </div>
+          </div>
+
+          <div
+            class="bar-list"
+            id="reorder-brand-bars"
+          ></div>
+        </article>
+
+        <article class="inventory-panel inventory-panel-full">
+          <div class="panel-heading">
+            <div>
+              <p class="eyebrow">
+                Priority list
+              </p>
+
+              <h2>
+                Highest reorder recommendations
+              </h2>
+            </div>
+
+            <a href="reorder-report-eu.html">
+              Open full report →
+            </a>
+          </div>
+
+          <div class="inventory-table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Model#</th>
+                  <th>Brand</th>
+                  <th>Item Title</th>
+                  <th class="num">Available</th>
+                  <th class="num">Avg/Month</th>
+                  <th class="num">Reorder</th>
+                  <th>Reason</th>
+                </tr>
+              </thead>
+
+              <tbody id="attention-table"></tbody>
+            </table>
+          </div>
+        </article>
+      </section>
+    </div>
+  </main>
+</body>
+</html>
