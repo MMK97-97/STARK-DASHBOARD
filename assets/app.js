@@ -87,19 +87,42 @@
   }
 
   function openModule(module) {
-    if (module === "inventory") {
-      const inventoryRoutes = { US: "inventory-dashboard-us.html", EU: "inventory-dashboard-eu.html", Canada: "inventory-dashboard-ca.html" };
-      window.location.href = inventoryRoutes[state.region];
-      return;
-    }
-    state.module = module;
-    state.tab = module === "sales" ? "sales" : "overview";
-    el("module-screen").classList.add("hidden");
-    el("regional-app").classList.remove("hidden");
-    setHeaderWorkspaceActions(true);
-    updateRegionUI();
-    window.scrollTo({ top: 0, behavior: "smooth" });
+  if (module === "inventory") {
+    const inventoryRoutes = {
+      US: "inventory-dashboard-us.html",
+      EU: "inventory-dashboard-eu.html",
+      Canada: "inventory-dashboard-ca.html"
+    };
+
+    navigateWithTransition(inventoryRoutes[state.region]);
+    return;
   }
+
+  if (module === "events") {
+    const eventRegion =
+      state.region === "Canada" ? "CA" : state.region;
+
+    navigateWithTransition(
+      `events.html?region=${eventRegion}`
+    );
+
+    return;
+  }
+
+  state.module = module;
+  state.tab = module === "sales" ? "sales" : "overview";
+
+  el("module-screen").classList.add("hidden");
+  el("regional-app").classList.remove("hidden");
+
+  setHeaderWorkspaceActions(true);
+  updateRegionUI();
+
+  window.scrollTo({
+    top: 0,
+    behavior: "smooth"
+  });
+}
 
   function showModules() {
     el("regional-app").classList.add("hidden");
@@ -111,18 +134,23 @@
   }
 
   function updateModuleScreen() {
-    el("module-title").textContent = `${REGION_NAMES[state.region]} workspace`;
-    el("module-region-pill").textContent = state.region === "Canada" ? "CA" : state.region;
-  }
+  document.documentElement.dataset.region =
+    state.region === "Canada" ? "CA" : state.region;
 
-  function showHome() {
-    el("regional-app").classList.add("hidden");
-    el("module-screen").classList.add("hidden");
-    el("home-screen").classList.remove("hidden");
-    setHeaderWorkspaceActions(false);
-    history.replaceState(null, "", "index.html");
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  }
+  el("module-title").textContent =
+    `${REGION_NAMES[state.region]} workspace`;
+
+  el("module-region-pill").textContent =
+    state.region === "Canada" ? "CA" : state.region;
+}
+
+  function navigateWithTransition(url) {
+  document.body.classList.add("page-leaving");
+
+  window.setTimeout(() => {
+    window.location.href = url;
+  }, 145);
+}
 
   function setHeaderWorkspaceActions(show) {
     el("settings-button").classList.toggle("hidden", !show);
@@ -136,9 +164,11 @@
   }
 
   function updateRegionUI() {
-    const region = current();
-    document.querySelectorAll(".region-tab").forEach(button => {
-      const active = button.dataset.region === state.region;
+  document.documentElement.dataset.region =
+    state.region === "Canada" ? "CA" : state.region;
+
+  const region = current();
+
       button.classList.toggle("active", active);
       button.setAttribute("aria-selected", String(active));
     });
