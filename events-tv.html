@@ -266,7 +266,7 @@
     .table-header,
     .event-row {
       display: grid;
-      grid-template-columns: minmax(185px,1.05fr) minmax(220px,1.35fr) minmax(125px,.7fr) minmax(190px,.9fr);
+      grid-template-columns: minmax(420px,2.25fr) minmax(220px,.75fr);
       align-items: center;
       column-gap: clamp(12px,1.3vw,24px);
       min-width: 0;
@@ -325,15 +325,23 @@
     }
 
     .po-number {
-      overflow: hidden;
       color: var(--white);
-      font: 800 clamp(.88rem,1.08vw,1.14rem)/1.15 "Manrope";
-      letter-spacing: -.02em;
-      text-overflow: ellipsis;
-      white-space: nowrap;
+      font: 800 clamp(1.16rem,1.45vw,1.62rem)/1.08 "Manrope";
+      letter-spacing: -.025em;
+      overflow-wrap: anywhere;
+      word-break: break-word;
+      white-space: normal;
     }
 
     .po-meta { margin-top: 5px; color: var(--muted); font-size: clamp(.64rem,.7vw,.75rem); font-weight: 700; }
+
+    .event-info {
+      min-width: 0;
+      display: flex;
+      align-items: flex-start;
+      flex-direction: column;
+      gap: 9px;
+    }
 
     .customer-name {
       overflow: hidden;
@@ -345,6 +353,22 @@
       font-size: clamp(.82rem,.95vw,1rem);
       font-weight: 700;
       white-space: nowrap;
+    }
+
+    .customer-block {
+      min-width: 0;
+      display: flex;
+      align-items: center;
+      gap: clamp(12px,1.15vw,22px);
+    }
+
+    .customer-block .customer-name {
+      min-width: 0;
+      flex: 1 1 auto;
+    }
+
+    .customer-block .po-type {
+      flex: 0 0 auto;
     }
 
     .po-type {
@@ -469,7 +493,7 @@
       .audio-button { width: 46px; padding: 0; justify-content: center; }
       .clock-panel { min-width: 105px; }
       .table-header,
-      .event-row { grid-template-columns: minmax(155px,1.05fr) minmax(180px,1.25fr) 115px minmax(155px,.9fr); }
+      .event-row { grid-template-columns: minmax(330px,2fr) minmax(175px,.8fr); }
     }
 
     @media (max-width: 760px) {
@@ -481,13 +505,14 @@
       .table-header { display: none; }
       .event-list { display: block; }
       .event-row {
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: 1fr;
         gap: 12px;
         margin: 10px;
         padding: 17px;
         border: 1px solid var(--line);
         border-radius: 16px;
       }
+      .customer-block { flex-wrap: wrap; }
       .board-footer { padding: 4px; }
     }
 
@@ -537,9 +562,7 @@
 
     <section class="events-board" aria-live="polite">
       <div class="table-header" aria-hidden="true">
-        <span>PO#</span>
-        <span>Customer</span>
-        <span>PO type</span>
+        <span>PO# / Customer / PO type</span>
         <span>In-hands</span>
       </div>
       <div id="eventList" class="event-list"></div>
@@ -572,7 +595,7 @@
 
       const VALID_REGIONS = ["US", "EU", "CA"];
       const REGION_NAMES = { US: "United States", EU: "European Union", CA: "Canada" };
-      const ROTATION_MS = 14000;
+      const ROTATION_MS = 60000;
       const REFRESH_MS = 5000;
       const GREETING_DURATION_MS = 14000;
       const SCHEDULED_GREETINGS = {
@@ -590,7 +613,7 @@
       let events = [];
       let pages = [];
       let pageIndex = 0;
-      let rowsPerPage = calculateRowsPerPage();
+      const rowsPerPage = 5;
       let paused = false;
       let rotationStartedAt = Date.now();
       let lastFingerprint = "";
@@ -602,13 +625,6 @@
       let pausedBeforeGreeting = false;
 
       initialize();
-
-      function calculateRowsPerPage() {
-        if (innerHeight >= 1040) return 9;
-        if (innerHeight >= 880) return 7;
-        if (innerHeight >= 730) return 6;
-        return 5;
-      }
 
       function initialize() {
         $("regionSelect").value = region;
@@ -637,15 +653,6 @@
 
         addEventListener("storage", event => {
           if (event.key && event.key.startsWith("stark_events_v")) refreshData(false);
-        });
-
-        addEventListener("resize", () => {
-          const nextCount = calculateRowsPerPage();
-          if (nextCount !== rowsPerPage) {
-            rowsPerPage = nextCount;
-            buildPages();
-            render();
-          }
         });
 
         addEventListener("keydown", event => {
@@ -740,9 +747,10 @@
         const typeClass = /hold/i.test(event.poType) ? "hold" : "firm";
         return `
           <article class="event-row ${urgency.className}" style="animation-delay:${index * 42}ms">
-            <div class="event-main"><div><div class="po-number" title="${escapeHtml(event.poNumber)}">${escapeHtml(event.poNumber)}</div><div class="po-meta">${event.items.length} model${event.items.length === 1 ? "" : "s"}</div></div></div>
-            <div class="customer-name" title="${escapeHtml(event.customer)}">${escapeHtml(event.customer)}</div>
-            <div><span class="po-type ${typeClass}">${escapeHtml(event.poType)}</span></div>
+            <div class="event-info">
+              <div class="event-main"><div><div class="po-number" title="${escapeHtml(event.poNumber)}">${escapeHtml(event.poNumber)}</div><div class="po-meta">${event.items.length} model${event.items.length === 1 ? "" : "s"}</div></div></div>
+              <div class="customer-block"><div class="customer-name" title="${escapeHtml(event.customer)}">${escapeHtml(event.customer)}</div><span class="po-type ${typeClass}">${escapeHtml(event.poType)}</span></div>
+            </div>
             <div class="date-block"><span class="in-hands">${escapeHtml(formatDate(event.inHandsDate))}</span><span class="date-status">${escapeHtml(urgency.label)}</span></div>
           </article>`;
       }
