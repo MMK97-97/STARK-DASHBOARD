@@ -18,31 +18,25 @@
   document.addEventListener("DOMContentLoaded", init);
 
   function init() {
-  bindEvents();
-
-  const query = new URLSearchParams(location.search);
-  const requestedWorkspace = query.get("workspace");
-  const requestedModule = query.get("module");
-
-  if (["US", "EU", "Canada"].includes(requestedWorkspace)) {
-    state.region = requestedWorkspace;
-    el("home-screen").classList.add("hidden");
-
-    if (requestedModule === "sales") {
-      openModule("sales");
-      return;
+    bindEvents();
+    const query = new URLSearchParams(location.search);
+    const requestedWorkspace = query.get("workspace");
+    const requestedModule = query.get("module");
+    if (["US", "EU", "Canada"].includes(requestedWorkspace)) {
+      state.region = requestedWorkspace;
+      el("home-screen").classList.add("hidden");
+      if (requestedModule === "sales") {
+        openModule("sales");
+      } else {
+        el("regional-app").classList.add("hidden");
+        el("module-screen").classList.remove("hidden");
+        updateModuleScreen();
+      }
+    } else {
+      updateRegionUI();
     }
-
-    el("regional-app").classList.add("hidden");
-    el("module-screen").classList.remove("hidden");
-
-    updateModuleScreen();
-  } else {
-    updateRegionUI();
+    setHeaderWorkspaceActions(false);
   }
-
-  setHeaderWorkspaceActions(false);
-}
 
   function bindEvents() {
     document.querySelectorAll(".country-button").forEach(button => button.addEventListener("click", () => openRegion(button.dataset.country)));
@@ -87,42 +81,24 @@
   }
 
   function openModule(module) {
-  if (module === "inventory") {
-    const inventoryRoutes = {
-      US: "inventory-dashboard-us.html",
-      EU: "inventory-dashboard-eu.html",
-      Canada: "inventory-dashboard-ca.html"
-    };
-
-    navigateWithTransition(inventoryRoutes[state.region]);
-    return;
+    if (module === "inventory") {
+      const inventoryRoutes = { US: "inventory-dashboard-us.html", EU: "inventory-dashboard-eu.html", Canada: "inventory-dashboard-ca.html" };
+      navigateWithTransition(inventoryRoutes[state.region]);
+      return;
+    }
+    if (module === "events") {
+      const eventRegion = state.region === "Canada" ? "CA" : state.region;
+      navigateWithTransition(`events.html?region=${eventRegion}`);
+      return;
+    }
+    state.module = module;
+    state.tab = module === "sales" ? "sales" : "overview";
+    el("module-screen").classList.add("hidden");
+    el("regional-app").classList.remove("hidden");
+    setHeaderWorkspaceActions(true);
+    updateRegionUI();
+    window.scrollTo({ top: 0, behavior: "smooth" });
   }
-
-  if (module === "events") {
-    const eventRegion =
-      state.region === "Canada" ? "CA" : state.region;
-
-    navigateWithTransition(
-      `events.html?region=${eventRegion}`
-    );
-
-    return;
-  }
-
-  state.module = module;
-  state.tab = module === "sales" ? "sales" : "overview";
-
-  el("module-screen").classList.add("hidden");
-  el("regional-app").classList.remove("hidden");
-
-  setHeaderWorkspaceActions(true);
-  updateRegionUI();
-
-  window.scrollTo({
-    top: 0,
-    behavior: "smooth"
-  });
-}
 
   function showModules() {
     el("regional-app").classList.add("hidden");
@@ -134,23 +110,24 @@
   }
 
   function updateModuleScreen() {
-  document.documentElement.dataset.region =
-    state.region === "Canada" ? "CA" : state.region;
+    document.documentElement.dataset.region = state.region === "Canada" ? "CA" : state.region;
+    el("module-title").textContent = `${REGION_NAMES[state.region]} workspace`;
+    el("module-region-pill").textContent = state.region === "Canada" ? "CA" : state.region;
+  }
 
-  el("module-title").textContent =
-    `${REGION_NAMES[state.region]} workspace`;
-
-  el("module-region-pill").textContent =
-    state.region === "Canada" ? "CA" : state.region;
-}
+  function showHome() {
+    el("regional-app").classList.add("hidden");
+    el("module-screen").classList.add("hidden");
+    el("home-screen").classList.remove("hidden");
+    setHeaderWorkspaceActions(false);
+    history.replaceState(null, "", "index.html");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
 
   function navigateWithTransition(url) {
-  document.body.classList.add("page-leaving");
-
-  window.setTimeout(() => {
-    window.location.href = url;
-  }, 145);
-}
+    document.body.classList.add("page-leaving");
+    window.setTimeout(() => { window.location.href = url; }, 145);
+  }
 
   function setHeaderWorkspaceActions(show) {
     el("settings-button").classList.toggle("hidden", !show);
@@ -164,11 +141,10 @@
   }
 
   function updateRegionUI() {
-  document.documentElement.dataset.region =
-    state.region === "Canada" ? "CA" : state.region;
-
-  const region = current();
-
+    document.documentElement.dataset.region = state.region === "Canada" ? "CA" : state.region;
+    const region = current();
+    document.querySelectorAll(".region-tab").forEach(button => {
+      const active = button.dataset.region === state.region;
       button.classList.toggle("active", active);
       button.setAttribute("aria-selected", String(active));
     });
