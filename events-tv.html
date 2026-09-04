@@ -81,7 +81,7 @@
       height: 100svh;
       min-height: 640px;
       display: grid;
-      grid-template-rows: 72px auto minmax(0,1fr) 34px;
+      grid-template-rows: 72px minmax(0,1fr) 34px;
       gap: 14px;
       padding: 15px clamp(16px,2vw,36px) 12px;
     }
@@ -251,72 +251,6 @@
 
     .audio-button.speaking { color: #031426; background: var(--teal); }
 
-    .summary-strip {
-      display: grid;
-      grid-template-columns: minmax(280px,1.5fr) repeat(3,minmax(120px,.48fr));
-      gap: 12px;
-    }
-
-    .summary-lead,
-    .metric {
-      min-width: 0;
-      min-height: 104px;
-      border: 1px solid var(--line);
-      border-radius: 20px;
-      background: linear-gradient(145deg,rgba(12,48,80,.9),rgba(6,31,54,.86));
-      box-shadow: 0 20px 48px rgba(0,8,18,.18), inset 0 1px rgba(255,255,255,.06);
-      backdrop-filter: blur(14px);
-    }
-
-    .summary-lead {
-      position: relative;
-      overflow: hidden;
-      padding: 19px 22px;
-    }
-
-    .summary-lead::after {
-      content: "";
-      position: absolute;
-      width: 230px;
-      height: 230px;
-      right: -90px;
-      top: -145px;
-      border: 1px solid rgba(45,225,209,.22);
-      border-radius: 50%;
-      box-shadow: 0 0 0 30px rgba(45,225,209,.035), 0 0 0 62px rgba(45,225,209,.025);
-    }
-
-    .summary-lead h2 {
-      position: relative;
-      z-index: 1;
-      margin: 4px 0 4px;
-      font: 800 clamp(1.4rem,2vw,2rem)/1.08 "Manrope";
-      letter-spacing: -.04em;
-    }
-
-    .summary-copy { margin: 0; color: var(--muted); font-size: .8rem; }
-
-    .metric {
-      justify-content: space-between;
-      gap: 12px;
-      padding: 16px 18px;
-    }
-
-    .metric-label { color: var(--muted); font-size: .69rem; font-weight: 800; letter-spacing: .09em; text-transform: uppercase; }
-    .metric-value { display: block; margin-top: 6px; font: 800 clamp(1.35rem,1.9vw,2rem)/1 "Manrope"; }
-
-    .metric-icon {
-      width: 38px;
-      height: 38px;
-      flex: 0 0 38px;
-      display: grid;
-      place-items: center;
-      border-radius: 12px;
-      color: var(--teal);
-      background: rgba(45,225,209,.09);
-      font-weight: 800;
-    }
-
     .events-board {
       min-height: 0;
       overflow: hidden;
@@ -332,7 +266,7 @@
     .table-header,
     .event-row {
       display: grid;
-      grid-template-columns: minmax(165px,1.15fr) minmax(190px,1.25fr) minmax(118px,.7fr) minmax(176px,.9fr) minmax(220px,1.25fr);
+      grid-template-columns: minmax(185px,1.05fr) minmax(220px,1.35fr) minmax(125px,.7fr) minmax(190px,.9fr);
       align-items: center;
       column-gap: clamp(12px,1.3vw,24px);
       min-width: 0;
@@ -401,8 +335,7 @@
 
     .po-meta { margin-top: 5px; color: var(--muted); font-size: clamp(.64rem,.7vw,.75rem); font-weight: 700; }
 
-    .customer-name,
-    .planning-text {
+    .customer-name {
       overflow: hidden;
       text-overflow: ellipsis;
     }
@@ -444,15 +377,6 @@
     .event-row.critical .date-status { color: #ff93a1; }
     .event-row.warning .date-status { color: #ffd77e; }
     .event-row.good .date-status { color: #75e7ae; }
-
-    .planning-text {
-      display: -webkit-box;
-      color: #bed0de;
-      font-size: clamp(.72rem,.82vw,.88rem);
-      line-height: 1.25;
-      -webkit-box-orient: vertical;
-      -webkit-line-clamp: 2;
-    }
 
     .empty-state {
       min-height: 100%;
@@ -544,18 +468,15 @@
       .clock-date { display: none; }
       .audio-button { width: 46px; padding: 0; justify-content: center; }
       .clock-panel { min-width: 105px; }
-      .summary-strip { grid-template-columns: 1.35fr repeat(3,.55fr); }
       .table-header,
-      .event-row { grid-template-columns: minmax(140px,1.1fr) minmax(150px,1fr) 110px minmax(145px,.9fr) minmax(170px,1fr); }
+      .event-row { grid-template-columns: minmax(155px,1.05fr) minmax(180px,1.25fr) 115px minmax(155px,.9fr); }
     }
 
     @media (max-width: 760px) {
       body { overflow: auto; }
-      .tv-app { height: auto; min-height: 100svh; grid-template-rows: auto auto auto auto; }
+      .tv-app { height: auto; min-height: 100svh; grid-template-rows: auto minmax(520px,1fr) auto; }
       .topbar { align-items: flex-start; }
       .topbar-actions { flex-wrap: wrap; }
-      .summary-strip { grid-template-columns: repeat(3,1fr); }
-      .summary-lead { grid-column: 1/-1; }
       .events-board { overflow: auto; }
       .table-header { display: none; }
       .event-list { display: block; }
@@ -567,7 +488,6 @@
         border: 1px solid var(--line);
         border-radius: 16px;
       }
-      .planning-text { grid-column: 1/-1; }
       .board-footer { padding: 4px; }
     }
 
@@ -615,25 +535,12 @@
       </div>
     </header>
 
-    <section class="summary-strip" aria-label="Event summary">
-      <article class="summary-lead">
-        <p class="section-eyebrow">Live regional schedule</p>
-        <h2 id="regionTitle">United States events</h2>
-        <p class="summary-copy" id="summaryCopy">All saved purchase-order events, prioritized by in-hands date.</p>
-      </article>
-
-      <article class="metric"><div><span class="metric-label">All events</span><strong class="metric-value" id="totalEvents">0</strong></div><span class="metric-icon">PO</span></article>
-      <article class="metric"><div><span class="metric-label">Due in 7 days</span><strong class="metric-value" id="dueSoon">0</strong></div><span class="metric-icon">7D</span></article>
-      <article class="metric"><div><span class="metric-label">Overdue</span><strong class="metric-value" id="overdueEvents">0</strong></div><span class="metric-icon">!</span></article>
-    </section>
-
     <section class="events-board" aria-live="polite">
       <div class="table-header" aria-hidden="true">
         <span>PO#</span>
         <span>Customer</span>
         <span>PO type</span>
         <span>In-hands</span>
-        <span>Planning</span>
       </div>
       <div id="eventList" class="event-list"></div>
     </section>
@@ -811,11 +718,6 @@
       }
 
       function render() {
-        $("regionTitle").textContent = `${REGION_NAMES[region]} events`;
-        $("totalEvents").textContent = formatNumber(events.length);
-        $("dueSoon").textContent = formatNumber(events.filter(event => { const days = daysUntil(event.inHandsDate); return days !== null && days >= 0 && days <= 7; }).length);
-        $("overdueEvents").textContent = formatNumber(events.filter(event => { const days = daysUntil(event.inHandsDate); return days !== null && days < 0; }).length);
-
         if (!pages.length) {
           $("eventList").style.gridTemplateRows = "1fr";
           $("eventList").innerHTML = `<div class="empty-state"><div><strong>No saved events</strong><span>Add events on the Events page for ${escapeHtml(REGION_NAMES[region])}.</span></div></div>`;
@@ -842,7 +744,6 @@
             <div class="customer-name" title="${escapeHtml(event.customer)}">${escapeHtml(event.customer)}</div>
             <div><span class="po-type ${typeClass}">${escapeHtml(event.poType)}</span></div>
             <div class="date-block"><span class="in-hands">${escapeHtml(formatDate(event.inHandsDate))}</span><span class="date-status">${escapeHtml(urgency.label)}</span></div>
-            <div class="planning-text" title="${escapeHtml(event.planning)}">${escapeHtml(event.planning)}</div>
           </article>`;
       }
 
