@@ -666,52 +666,72 @@
       }
 
       function initializeTransitions() {
-        document
-          .querySelectorAll(
-            ".inventory-nav a, .inventory-brand"
-          )
-          .forEach(link => {
-            link.addEventListener(
-              "click",
-              event => {
-                if (
-                  event.defaultPrevented ||
-                  event.button !== 0 ||
-                  event.metaKey ||
-                  event.ctrlKey ||
-                  event.shiftKey ||
-                  event.altKey
-                ) {
-                  return;
-                }
+  const navigationLinks =
+    document.querySelectorAll(
+      ".inventory-nav a, .inventory-brand"
+    );
 
-                const destination = new URL(
-                  link.href,
-                  window.location.href
-                );
+  navigationLinks.forEach(link => {
+    link.addEventListener(
+      "click",
+      event => {
+        const modifiedClick =
+          event.metaKey ||
+          event.ctrlKey ||
+          event.shiftKey ||
+          event.altKey;
 
-                if (
-                  destination.origin !==
-                  window.location.origin
-                ) {
-                  return;
-                }
+        if (
+          event.defaultPrevented ||
+          event.button !== 0 ||
+          modifiedClick ||
+          link.target === "_blank"
+        ) {
+          return;
+        }
 
-                event.preventDefault();
+        const destination = new URL(
+          link.href,
+          window.location.href
+        );
 
-                document.body.classList.add(
-                  "page-leaving"
-                );
+        if (
+          destination.origin !==
+          window.location.origin
+        ) {
+          return;
+        }
 
-                window.setTimeout(() => {
-                  window.location.href =
-                    destination.href;
-                }, 145);
-              }
-            );
-          });
+        event.preventDefault();
+
+        link.classList.add(
+          "tab-pressed"
+        );
+
+        const supportsViewTransitions =
+          typeof document.startViewTransition ===
+            "function" &&
+          window.CSS &&
+          CSS.supports(
+            "view-transition-name: inventory-active-tab"
+          );
+
+        if (supportsViewTransitions) {
+          window.location.href =
+            destination.href;
+
+          return;
+        }
+
+        document.body.classList.add(
+          "page-leaving"
+        );
+
+        window.setTimeout(() => {
+          window.location.href =
+            destination.href;
+        }, 120);
       }
-    })();
-  </script>
-</body>
-</html>
+    );
+  });
+}
