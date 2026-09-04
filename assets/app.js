@@ -18,19 +18,31 @@
   document.addEventListener("DOMContentLoaded", init);
 
   function init() {
-    bindEvents();
-    const requestedWorkspace = new URLSearchParams(location.search).get("workspace");
-    if (["US", "EU", "Canada"].includes(requestedWorkspace)) {
-      state.region = requestedWorkspace;
-      el("home-screen").classList.add("hidden");
-      el("regional-app").classList.add("hidden");
-      el("module-screen").classList.remove("hidden");
-      updateModuleScreen();
-    } else {
-      updateRegionUI();
+  bindEvents();
+
+  const query = new URLSearchParams(location.search);
+  const requestedWorkspace = query.get("workspace");
+  const requestedModule = query.get("module");
+
+  if (["US", "EU", "Canada"].includes(requestedWorkspace)) {
+    state.region = requestedWorkspace;
+    el("home-screen").classList.add("hidden");
+
+    if (requestedModule === "sales") {
+      openModule("sales");
+      return;
     }
-    setHeaderWorkspaceActions(false);
+
+    el("regional-app").classList.add("hidden");
+    el("module-screen").classList.remove("hidden");
+
+    updateModuleScreen();
+  } else {
+    updateRegionUI();
   }
+
+  setHeaderWorkspaceActions(false);
+}
 
   function bindEvents() {
     document.querySelectorAll(".country-button").forEach(button => button.addEventListener("click", () => openRegion(button.dataset.country)));
