@@ -82,6 +82,11 @@
   }
 
   function openModule(module) {
+    if (module === "freight") {
+      if (state.region !== "US") return;
+      navigateWithTransition("freight-estimator.html");
+      return;
+    }
     if (module === "inventory") {
       const inventoryRoutes = { US: "inventory-dashboard-us.html", EU: "inventory-dashboard-eu.html", Canada: "inventory-dashboard-ca.html" };
       navigateWithTransition(inventoryRoutes[state.region]);
@@ -114,6 +119,8 @@
     document.documentElement.dataset.region = state.region === "Canada" ? "CA" : state.region;
     el("module-title").textContent = `${REGION_NAMES[state.region]} workspace`;
     el("module-region-pill").textContent = state.region === "Canada" ? "CA" : state.region;
+    const freightButton = document.querySelector('[data-module="freight"]');
+    if (freightButton) freightButton.classList.toggle("hidden", state.region !== "US");
   }
 
   function showHome() {

@@ -660,3 +660,41 @@ select:focus {
     transform: none !important;
   }
 }
+
+/* United States-only Freight Estimator module */
+.module-freight {
+  background: linear-gradient(145deg,#064f68 0%,#078b8b 58%,#12b6a8 100%);
+}
+
+.module-freight .module-icon {
+  font-size: 62px;
+  transform: rotate(-4deg);
+}
+
+html[data-region="US"] .module-grid {
+  width: min(1420px,100%);
+  grid-template-columns: repeat(4,minmax(0,1fr));
+  gap: clamp(16px,1.8vw,24px);
+}
+
+html[data-region="US"] .module-screen-top {
+  width: min(1420px,100%);
+}
+
+html[data-region="US"] .module-button {
+  min-height: 272px;
+}
+
+@media (max-width: 1180px) {
+  html[data-region="US"] .module-grid {
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    max-width: 860px;
+  }
+}
+
+@media (max-width: 600px) {
+  html[data-region="US"] .module-grid {
+    grid-template-columns: 1fr;
+    max-width: 620px;
+  }
+}
