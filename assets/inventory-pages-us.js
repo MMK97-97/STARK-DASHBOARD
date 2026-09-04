@@ -120,14 +120,16 @@
 
   function initBrands() {
     if (!dataset) return;
-    ensureBrands(); el("brand-search").addEventListener("input", renderBrands); el("activate-all").addEventListener("click", () => setAllBrands(true)); el("deactivate-all").addEventListener("click", () => setAllBrands(false)); el("save-lead-times").addEventListener("click", saveAllLeadTimes); el("export-brands").addEventListener("click", exportBrands); renderBrands();
+    ensureBrands(); el("brand-search").addEventListener("input", renderBrands); el("add-brand").addEventListener("click", addBrand); el("activate-all").addEventListener("click", () => setAllBrands(true)); el("deactivate-all").addEventListener("click", () => setAllBrands(false)); el("save-lead-times").addEventListener("click", saveAllLeadTimes); el("export-brands").addEventListener("click", exportBrands); renderBrands();
   }
   function ensureBrands() { SI.ensureBrandSettings(region, dataset.rows); }
-  function brandRows() { const settings = SI.loadBrandSettings(region), search = el("brand-search").value.trim().toLowerCase(); return SI.unique(dataset.rows.map(row => row.brand)).filter(brand => !search || brand.toLowerCase().includes(search)).map(brand => ({ brand, ...(settings[brand] || { active: true, leadTime: "" }), items: dataset.rows.filter(row => row.brand === brand).length })); }
+  function allBrandNames() { return SI.unique([...dataset.rows.map(row => row.brand), ...Object.keys(SI.loadBrandSettings(region))]); }
+  function brandRows() { const settings = SI.loadBrandSettings(region), search = el("brand-search").value.trim().toLowerCase(); return allBrandNames().filter(brand => !search || brand.toLowerCase().includes(search)).map(brand => ({ brand, ...(settings[brand] || { active: true, leadTime: "" }), items: dataset.rows.filter(row => row.brand.toLowerCase() === brand.toLowerCase()).length })); }
+  function addBrand() { const entered = prompt("Enter the new brand name:"); const brand = SI.cleanText(entered); if (!brand) return; const settings = SI.loadBrandSettings(region), existing = allBrandNames().find(name => name.toLowerCase() === brand.toLowerCase()); if (existing) { el("brand-search").value = existing; renderBrands(); alert(`${existing} is already in the ${SI.regionName(region)} brand list.`); return; } settings[brand] = { active: true, leadTime: "" }; SI.saveBrandSettings(region, settings); el("brand-search").value = ""; renderBrands(); const input = Array.from(document.querySelectorAll("[data-brand-lead]")).find(node => node.dataset.brandLead === brand); if (input) { input.focus(); input.scrollIntoView({ behavior: "smooth", block: "center" }); } }
   function renderBrands() { const rows = brandRows(); el("brand-result-count").textContent = `${number.format(rows.filter(row => row.active !== false).length)} active of ${number.format(rows.length)} displayed brands`; el("brands-table").innerHTML = rows.map(row => `<tr><td><label class="switch-label"><input type="checkbox" data-brand-active="${SI.escapeHtml(row.brand)}" ${row.active !== false ? "checked" : ""}><span>Active</span></label></td><td><strong>${SI.escapeHtml(row.brand)}</strong></td><td class="num">${number.format(row.items)}</td><td><input class="lead-time-input" data-brand-lead="${SI.escapeHtml(row.brand)}" value="${SI.escapeHtml(row.leadTime)}" placeholder="e.g. 2 weeks"></td></tr>`).join("") || emptyRow(4); document.querySelectorAll("[data-brand-active]").forEach(input => input.addEventListener("change", saveBrandActive)); document.querySelectorAll("[data-brand-lead]").forEach(input => input.addEventListener("keydown", event => { if (event.key === "Enter") { event.preventDefault(); saveAllLeadTimes(); } })); }
   function saveBrandActive(event) { const settings = SI.loadBrandSettings(region), brand = event.target.dataset.brandActive; settings[brand] = settings[brand] || { active: true, leadTime: "" }; settings[brand].active = event.target.checked; SI.saveBrandSettings(region, settings); items = SI.analyze(dataset.rows, region); const displayed = document.querySelectorAll("[data-brand-active]"); el("brand-result-count").textContent = `${number.format(Array.from(displayed).filter(input => input.checked).length)} active of ${number.format(displayed.length)} displayed brands`; }
   function saveAllLeadTimes() { const settings = SI.loadBrandSettings(region); document.querySelectorAll("[data-brand-lead]").forEach(input => { const brand = input.dataset.brandLead; settings[brand] = settings[brand] || { active: true, leadTime: "" }; settings[brand].leadTime = input.value.trim(); }); SI.saveBrandSettings(region, settings); items = SI.analyze(dataset.rows, region); const button = el("save-lead-times"); button.textContent = "Saved ✓"; button.disabled = true; window.setTimeout(() => { button.textContent = "Save lead times"; button.disabled = false; }, 1600); }
-  function setAllBrands(active) { const settings = SI.loadBrandSettings(region); SI.unique(dataset.rows.map(row => row.brand)).forEach(brand => { settings[brand] = settings[brand] || { active: true, leadTime: "" }; settings[brand].active = active; }); SI.saveBrandSettings(region, settings); items = SI.analyze(dataset.rows, region); renderBrands(); }
+  function setAllBrands(active) { const settings = SI.loadBrandSettings(region); allBrandNames().forEach(brand => { settings[brand] = settings[brand] || { active: true, leadTime: "" }; settings[brand].active = active; }); SI.saveBrandSettings(region, settings); items = SI.analyze(dataset.rows, region); renderBrands(); }
   function exportBrands() { const rows = brandRows(); SI.downloadCsv([["Active Brand", "Included", "Lead Time", "Item Count"], ...rows.map(row => [row.brand, row.active !== false ? "Yes" : "No", row.leadTime, row.items])], `Active Brands ${SI.regionCode(region)}.csv`); }
 
   function renderKpis(id, cards) { el(id).innerHTML = cards.map(card => `<article class="inventory-kpi"><span>${card[0]}</span><strong>${card[1]}</strong><small>${card[2]}</small></article>`).join(""); }
@@ -138,79 +140,21 @@
   function emptyRow(columns, message) { return `<tr><td colspan="${columns}">${message || "No data matches the current filters."}</td></tr>`; }
 
   function initPageTransitions() {
-  const navigationLinks =
-    document.querySelectorAll(
-      ".inventory-nav a, .workspace-back"
-    );
-
-  navigationLinks.forEach(link => {
-    link.addEventListener(
-      "click",
-      event => {
-        const modifiedClick =
-          event.metaKey ||
-          event.ctrlKey ||
-          event.shiftKey ||
-          event.altKey;
-
-        if (
-          event.defaultPrevented ||
-          event.button !== 0 ||
-          modifiedClick ||
-          link.target === "_blank"
-        ) {
-          return;
-        }
-
-        const destination = new URL(
-          link.href,
-          window.location.href
-        );
-
-        if (
-          destination.origin !==
-          window.location.origin
-        ) {
-          return;
-        }
-
+    document.querySelectorAll(".inventory-nav a, .workspace-back").forEach(link => {
+      link.addEventListener("click", event => {
+        if (event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey || link.target === "_blank") return;
+        const destination = new URL(link.href, location.href);
+        if (destination.origin !== location.origin) return;
         event.preventDefault();
-
-        link.classList.add(
-          "tab-pressed"
-        );
-
-        const supportsViewTransitions =
-          typeof document.startViewTransition ===
-            "function" &&
-          window.CSS &&
-          CSS.supports(
-            "view-transition-name: inventory-active-tab"
-          );
-
-        /*
-          Modern Chrome handles the cross-page transition.
-          Navigate immediately to prevent a double animation.
-        */
-        if (supportsViewTransitions) {
-          window.location.href =
-            destination.href;
-
+        link.classList.add("tab-pressed");
+        const supportsNavigationTransition = typeof document.startViewTransition === "function" && CSS.supports("view-transition-name: inventory-active-tab");
+        if (supportsNavigationTransition) {
+          location.href = destination.href;
           return;
         }
-
-        /*
-          Fallback for browsers without View Transitions.
-        */
-        document.body.classList.add(
-          "page-leaving"
-        );
-
-        window.setTimeout(() => {
-          window.location.href =
-            destination.href;
-        }, 120);
-      }
-    );
-  });
-}
+        document.body.classList.add("page-leaving");
+        window.setTimeout(() => { location.href = destination.href; }, 120);
+      });
+    });
+  }
+})();

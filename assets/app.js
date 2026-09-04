@@ -27,6 +27,7 @@
       el("home-screen").classList.add("hidden");
       if (requestedModule === "sales") {
         openModule("sales");
+        return;
       } else {
         el("regional-app").classList.add("hidden");
         el("module-screen").classList.remove("hidden");

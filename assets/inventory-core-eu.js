@@ -70,10 +70,13 @@
 
   function settingsKey(region) { return `stark-inventory-settings-${region}`; }
   function brandKey(region) { return `stark-active-brands-${region}`; }
+  function atsKey(region) { return `stark-ats-${region}`; }
   function loadSettings(region) { try { return { ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.getItem(settingsKey(region)) || "{}") }; } catch (_) { return { ...DEFAULT_SETTINGS }; } }
   function saveSettings(region, settings) { localStorage.setItem(settingsKey(region), JSON.stringify({ ...DEFAULT_SETTINGS, ...settings })); }
   function loadBrandSettings(region) { try { return JSON.parse(localStorage.getItem(brandKey(region)) || "{}"); } catch (_) { return {}; } }
   function saveBrandSettings(region, settings) { localStorage.setItem(brandKey(region), JSON.stringify(settings)); }
+  function loadAtsSettings(region) { try { return JSON.parse(localStorage.getItem(atsKey(region)) || "{}"); } catch (_) { return {}; } }
+  function saveAtsSettings(region, settings) { localStorage.setItem(atsKey(region), JSON.stringify(settings || {})); }
   function ensureBrandSettings(region, rows) {
     const saved = loadBrandSettings(region);
     unique(rows.map(row => row.brand)).forEach(brand => { if (!saved[brand]) saved[brand] = { active: true, leadTime: "" }; });
@@ -304,7 +307,7 @@
   }
 
   function analyze(rows, region) {
-    const settings = loadSettings(region), brands = ensureBrandSettings(region, rows), today = new Date(); today.setHours(0, 0, 0, 0);
+    const settings = loadSettings(region), brands = ensureBrandSettings(region, rows), atsSettings = loadAtsSettings(region), today = new Date(); today.setHours(0, 0, 0, 0);
     const items = rows.map(row => {
       const statusUpper = String(row.status).trim().toUpperCase(), excluded = ["FEEDS ONLY", "INTERNAL USE", "PRESENTATION"].some(value => statusUpper.includes(value)), eligible = ["LIVE", "FASHION", "BACKORDER"].includes(statusUpper), activeBrand = brands[row.brand] ? brands[row.brand].active !== false : true;
       const supplierDate = region === "EU" ? (reviveDate(row.supplierStart) || reviveDate(row.supplierEnd)) : reviveDate(row.supplierEnd), daysUntil = supplierDate ? Math.ceil((supplierDate - today) / 86400000) : null, reasons = [];
@@ -317,12 +320,14 @@
       const reorderRequired = reasons.length > 0;
       const leadTime = brands[row.brand]?.leadTime || "";
       const leadTimeMonths = leadTimeInMonths(leadTime);
-      const actualAvailable = row.stockQty + finite(row.ats);
+      const modelKey = cleanText(row.model).toUpperCase();
+      const savedAts = Object.prototype.hasOwnProperty.call(atsSettings, modelKey) ? finite(toNumber(atsSettings[modelKey])) : finite(row.ats);
+      const actualAvailable = row.stockQty + savedAts;
       const upcomingAvailability = row.stockQty - row.openClient;
       const supplierDueQty = Number.isFinite(row.supplierDueQty) ? row.supplierDueQty : (Number.isFinite(daysUntil) && daysUntil <= 30 ? row.openSupplier : 0);
       const calculatedRecommendation = (row.stockQty + row.openSupplier - row.openClient) * leadTimeMonths + row.avg3;
       const recommended = reorderRequired ? Math.max(0, Math.ceil(calculatedRecommendation)) : 0;
-      return { ...row, actualAvailable, upcomingAvailability, supplierDueQty, activeBrand, eligible, excluded, daysUntil, leadTime, leadTimeMonths, reorderRequired, reorderReason: reasons.join(" | "), recommended, monthsCover: row.avg3 > 0 ? row.available / row.avg3 : null, abc: "C", rank: 0, contribution: 0, cumulative: 0 };
+      return { ...row, ats: savedAts, actualAvailable, upcomingAvailability, supplierDueQty, activeBrand, eligible, excluded, daysUntil, leadTime, leadTimeMonths, reorderRequired, reorderReason: reasons.join(" | "), recommended, monthsCover: row.avg3 > 0 ? row.available / row.avg3 : null, abc: "C", rank: 0, contribution: 0, cumulative: 0 };
     });
     const ranked = items.slice().sort((a, b) => b.vol3 - a.vol3), total = ranked.reduce((sum, item) => sum + Math.max(0, item.vol3), 0); let cumulative = 0;
     ranked.forEach((item, index) => { const prior = cumulative, contribution = total ? Math.max(0, item.vol3) / total : 0; cumulative += contribution; item.rank = index + 1; item.contribution = contribution; item.cumulative = cumulative; item.abc = prior < settings.a / 100 ? "A" : prior < settings.b / 100 ? "B" : "C"; });
@@ -340,5 +345,5 @@
     return region;
   }
 
-  global.StarkInventory = { REGION_NAMES, DEFAULT_SETTINGS, getRegion, regionCode, regionName, cleanText, normalizeHeader, toNumber, dateText, escapeHtml, unique, readReportFile, normalizeItemRows, analyze, saveDataset, loadDataset, clearDataset, loadSettings, saveSettings, loadBrandSettings, saveBrandSettings, ensureBrandSettings, downloadCsv, initFrame };
+  global.StarkInventory = { REGION_NAMES, DEFAULT_SETTINGS, getRegion, regionCode, regionName, cleanText, normalizeHeader, toNumber, dateText, escapeHtml, unique, readReportFile, normalizeItemRows, analyze, saveDataset, loadDataset, clearDataset, loadSettings, saveSettings, loadBrandSettings, saveBrandSettings, ensureBrandSettings, loadAtsSettings, saveAtsSettings, downloadCsv, initFrame };
 })(window);
