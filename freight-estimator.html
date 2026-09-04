@@ -4,7 +4,7 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width,initial-scale=1">
   <meta name="description" content="Carton, parcel, pallet and freight planning estimator for Stark Premium.">
-  <title>Freight Estimator | Stark Premium</title>
+  <title>US Freight Estimator | Stark Premium</title>
 
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -940,6 +940,202 @@
         -webkit-print-color-adjust: exact;
       }
     }
+    /* 2026 US operations-console refinement */
+    body {
+      background:
+        radial-gradient(circle at 92% 4%, rgba(40, 206, 194, .14), transparent 25rem),
+        radial-gradient(circle at 7% 86%, rgba(42, 104, 164, .10), transparent 30rem),
+        linear-gradient(180deg, #f8fbfe 0%, #eef5fa 100%);
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      min-height: 88px;
+      border-bottom-color: rgba(145, 171, 194, .38);
+      background: rgba(255, 255, 255, .84);
+      box-shadow: 0 8px 30px rgba(18, 53, 82, .06);
+    }
+
+    .brand-mark {
+      width: 58px;
+      height: 58px;
+      border-radius: 18px;
+      box-shadow:
+        0 15px 34px rgba(9, 43, 77, .24),
+        inset 0 1px rgba(255,255,255,.22);
+    }
+
+    .us-scope {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      padding: 10px 15px;
+      border: 1px solid rgba(11, 158, 150, .25);
+      border-radius: 999px;
+      color: #075e5a;
+      background: rgba(232, 250, 248, .9);
+      font-weight: 800;
+      box-shadow: inset 0 1px rgba(255,255,255,.8);
+    }
+
+    .us-scope::before {
+      content: "";
+      width: 9px;
+      height: 9px;
+      border-radius: 50%;
+      background: var(--teal);
+      box-shadow: 0 0 0 6px rgba(11,158,150,.1);
+    }
+
+    .nav-bar {
+      position: sticky;
+      top: 101px;
+      z-index: 35;
+      overflow: hidden;
+      border-color: rgba(162, 184, 203, .42);
+      background: rgba(255,255,255,.82);
+      backdrop-filter: blur(18px) saturate(140%);
+    }
+
+    .nav-bar a {
+      position: relative;
+      transition: color .2s ease, background .2s ease, transform .2s ease, box-shadow .25s ease;
+    }
+
+    .nav-bar a:hover {
+      color: var(--navy);
+      background: #f0f7fb;
+      transform: translateY(-1px);
+    }
+
+    .nav-bar a.active {
+      background: linear-gradient(135deg, #082c50, #1a6287);
+    }
+
+    .hero {
+      min-height: 218px;
+      border: 1px solid rgba(255,255,255,.14);
+      background:
+        radial-gradient(circle at 87% 18%, rgba(73,222,210,.2), transparent 25%),
+        linear-gradient(112deg, #062847 0%, #164c73 58%, #0b777b 118%);
+      box-shadow: 0 28px 65px rgba(8,44,80,.18);
+    }
+
+    .hero::before {
+      content: "";
+      position: absolute;
+      inset: 0;
+      pointer-events: none;
+      background-image:
+        linear-gradient(rgba(255,255,255,.025) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255,255,255,.025) 1px, transparent 1px);
+      background-size: 34px 34px;
+      mask-image: linear-gradient(90deg, transparent, #000 45%, #000);
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+
+    .hero h1 {
+      letter-spacing: -.045em;
+      text-wrap: balance;
+    }
+
+    .hero-badge {
+      border: 1px solid rgba(255,255,255,.22);
+      background: rgba(4,31,54,.3);
+      backdrop-filter: blur(16px);
+      box-shadow: inset 0 1px rgba(255,255,255,.12);
+    }
+
+    .workspace {
+      align-items: start;
+      gap: 24px;
+    }
+
+    .panel {
+      overflow: hidden;
+      border-color: rgba(165, 187, 205, .55);
+      background: rgba(255,255,255,.93);
+      box-shadow: 0 22px 55px rgba(18,55,86,.10);
+    }
+
+    .panel-head {
+      background: linear-gradient(180deg, rgba(248,252,255,.96), rgba(243,248,252,.72));
+    }
+
+    .section-label {
+      color: #087a74;
+      letter-spacing: .13em;
+    }
+
+    label {
+      color: #526b82;
+      font-weight: 750;
+    }
+
+    input,
+    select {
+      border-color: #c6d7e5;
+      background: rgba(255,255,255,.96);
+      box-shadow: inset 0 1px 2px rgba(10,43,70,.025);
+    }
+
+    input:hover,
+    select:hover {
+      border-color: #9eb8cc;
+    }
+
+    .item-list > * {
+      border-color: rgba(155,181,202,.5) !important;
+      background: linear-gradient(180deg, #fff, #f8fbfd) !important;
+    }
+
+    .recommendation {
+      border: 1px solid rgba(255,255,255,.16);
+      background:
+        radial-gradient(circle at 92% 20%, rgba(73,222,210,.18), transparent 34%),
+        linear-gradient(130deg, #082c50, #174f79) !important;
+      box-shadow: 0 18px 42px rgba(8,44,80,.2);
+    }
+
+    .kpi,
+    .result-card {
+      border-color: rgba(161,184,203,.52);
+      box-shadow: 0 12px 30px rgba(19,55,85,.07);
+    }
+
+    .result-card {
+      transition: transform .25s ease, box-shadow .25s ease;
+    }
+
+    .result-card:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 18px 38px rgba(19,55,85,.11);
+    }
+
+    .button:focus-visible,
+    input:focus-visible,
+    select:focus-visible,
+    a:focus-visible {
+      outline: 3px solid rgba(36,177,168,.3);
+      outline-offset: 3px;
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      body { animation: freight-page-in .42s cubic-bezier(.2,.8,.2,1) both; }
+      @keyframes freight-page-in {
+        from { opacity: 0; transform: translateY(8px); }
+        to { opacity: 1; transform: none; }
+      }
+    }
+
+    @media (max-width: 760px) {
+      .app-header { position: static; }
+      .nav-bar { position: static; }
+      .us-scope { font-size: 13px; }
+    }
   </style>
 </head>
 
@@ -950,38 +1146,28 @@
 
       <span>
         <small>Stark Premium</small>
-        <strong>Regional Freight Intelligence</strong>
+        <strong>US Freight Intelligence</strong>
       </span>
     </a>
 
     <div class="header-actions">
-      <label>
-        Region
-
-        <select id="region-select">
-          <option value="US">US</option>
-          <option value="EU">EU</option>
-          <option value="CA">CA</option>
-        </select>
-      </label>
-
-      <span class="region-pill" id="region-pill">US</span>
+      <span class="us-scope">United States operations</span>
+      <span class="region-pill">US</span>
     </div>
   </header>
 
   <main class="shell">
     <nav class="nav-bar">
-      <a id="back-modules" href="index.html">← Regional modules</a>
-      <a id="inventory-link" href="inventory-dashboard.html">Inventory Dashboard</a>
-      <a id="events-link" href="events.html">Events</a>
+      <a id="back-modules" href="index.html">← US workspace</a>
+      <a id="inventory-link" href="inventory-dashboard-us.html">Inventory Dashboard</a>
+      <a id="events-link" href="events.html?region=US">Events</a>
       <a class="active" href="#">Freight Estimator</a>
     </nav>
 
     <section class="hero">
       <div>
         <span class="eyebrow">
-          Packaging &amp; transport planning •
-          <span id="region-name">United States</span>
+          Packaging &amp; transport planning • United States
         </span>
 
         <h1>Freight Estimator</h1>
@@ -1407,17 +1593,18 @@
       <h3>Calculation standard</h3>
 
       <p>
-        Shipping-box dimensions are rounded up before DIM-weight and
-        carrier-size screening. Billable parcel weight is the greater of
-        rounded actual weight or dimensional weight. Pallet calculations
-        test carton orientations, mixed orientations on each layer, loaded
-        height and pallet weight. Freight class remains a density-based
-        estimate and must be verified against the current NMFC commodity.
+        U.S. parcel screening uses a conservative 150 lb, 108 in longest-side
+        and 165 in length-plus-girth limit. Shipping-box dimensions are
+        rounded up before DIM-weight screening; billable weight is the greater
+        of rounded actual or dimensional weight. Pallet calculations test
+        carton orientations, layer utilization, loaded height and weight.
+        Freight class uses the 2025 NMFC density scale and must still be
+        verified against the commodity's current NMFC item and carrier tariff.
       </p>
     </section>
 
     <footer class="footer">
-      Stark Premium • Regional shipment planning • Calculations remain in this browser
+      Stark Premium • United States shipment planning • Calculations remain in this browser
     </footer>
   </main>
 
@@ -1428,12 +1615,6 @@
       "use strict";
 
       const $ = id => document.getElementById(id);
-
-      const REGIONS = {
-        US: "United States",
-        EU: "European Union",
-        CA: "Canada"
-      };
 
       const PROTECTION_PADDING = {
         minimal: 0.25,
@@ -1483,34 +1664,17 @@
       const plural = (value, word) =>
         `${formatNumber(value)} ${word}${value === 1 ? "" : "s"}`;
 
-      let region =
-        new URLSearchParams(location.search).get("region");
-
-      if (!REGIONS[region]) {
-        region = "US";
-      }
+      const region = "US";
 
       function applyRegion() {
-        $("region-select").value = region;
-        $("region-pill").textContent = region;
-        $("region-name").textContent = REGIONS[region];
-
         [
           ["back-modules", "index.html"],
-          ["inventory-link", "inventory-dashboard.html"],
+          ["inventory-link", "inventory-dashboard-us.html"],
           ["events-link", "events.html"]
         ].forEach(([id, path]) => {
-          $(id).href =
-            `${path}?region=${encodeURIComponent(region)}`;
+          $(id).href = path === "index.html" ? path : `${path}?region=US`;
         });
       }
-
-      $("region-select").addEventListener("change", event => {
-        location.href =
-          `freight-estimator.html?region=${encodeURIComponent(
-            event.target.value
-          )}`;
-      });
 
       applyRegion();
 
@@ -1587,13 +1751,14 @@
         const combinedSize =
           lengthAndGirth(dimensions);
 
+        /* Conservative U.S. Ground screen for both listed carriers. */
+        const maximumLength = 108;
+
         const eligible =
           actualWeight <= 150 &&
+          length <= maximumLength &&
           combinedSize <= 165 &&
-          (
-            carrierName !== "UPS" ||
-            length <= 108
-          );
+          Boolean(carrierName);
 
         return {
           eligible,
@@ -2634,21 +2799,21 @@
           reason =
             "At least one shipping box cannot fit the selected pallet footprint, height or weight limit without overhang.";
         } else if (
-          totalPallets >= 12 ||
-          freightWeight >= 20000
+          totalPallets >= 18 ||
+          freightWeight >= 30000
         ) {
           mode = "FTL";
           title = "Request an FTL quote";
           reason =
-            "Estimated pallet positions or shipment weight justify comparing dedicated truckload service.";
+            "Estimated pallet positions or shipment weight are in a range where dedicated truckload service should be quoted.";
         } else if (
           totalPallets >= 8 ||
           freightWeight >= 10000
         ) {
           mode = "VOLUME";
-          title = "Compare volume LTL and FTL";
+          title = "Compare volume LTL, partial and FTL";
           reason =
-            "This shipment is in the crossover range where volume-LTL and truckload quotes should be compared.";
+            "This shipment is in the lane-dependent crossover range where volume-LTL, partial-truckload and full-truckload quotes should be compared.";
         } else if (
           (
             !upsEligible &&
