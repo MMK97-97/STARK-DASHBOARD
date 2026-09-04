@@ -1,37 +1,5 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-  <title>Opening Inventory Dashboard</title>
-
-  <script>
-    (() => {
-      const validRegions = ["US", "EU", "CA"];
-      const params = new URLSearchParams(window.location.search);
-
-      let region = (params.get("region") || "US").toUpperCase();
-
-      if (!validRegions.includes(region)) {
-        region = "US";
-      }
-
-      window.location.replace(
-        `inventory-dashboard.html?region=${encodeURIComponent(region)}`
-      );
-    })();
-  </script>
-</head>
-
-<body>
-  <noscript>
-    <p>
-      JavaScript is required to continue.
-      <a href="inventory-dashboard.html?region=US">
-        Open the Inventory Dashboard
-      </a>
-    </p>
-  </noscript>
-</body>
+<!doctype html>
+<html lang="en" data-route="inventory-dashboard">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Opening Regional Inventory</title><script src="assets/region-router.js"></script></head>
+<body><p>Opening the selected regional inventory workspace…</p></body>
 </html>
