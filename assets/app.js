@@ -82,6 +82,11 @@
   }
 
   function openModule(module) {
+    if (module === "tracking") {
+      if (state.region !== "US") return;
+      navigateWithTransition("shipment-tracking.html");
+      return;
+    }
     if (module === "freight") {
       if (state.region !== "US") return;
       navigateWithTransition("freight-estimator.html");
@@ -121,6 +126,8 @@
     el("module-region-pill").textContent = state.region === "Canada" ? "CA" : state.region;
     const freightButton = document.querySelector('[data-module="freight"]');
     if (freightButton) freightButton.classList.toggle("hidden", state.region !== "US");
+    const trackingButton = document.querySelector('[data-module="tracking"]');
+    if (trackingButton) trackingButton.classList.toggle("hidden", state.region !== "US");
   }
 
   function showHome() {

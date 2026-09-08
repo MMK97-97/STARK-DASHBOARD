@@ -1,0 +1,639 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Secure UPS and FedEx shipment tracking for Stark Premium United States operations.">
+  <title>UPS &amp; FedEx Tracking | Stark Premium</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --navy: #082c50;
+      --navy-2: #174f79;
+      --teal: #0b9e96;
+      --cyan: #49ded2;
+      --ink: #082746;
+      --muted: #687b91;
+      --line: #cfdeea;
+      --soft: #f2f7fb;
+      --white: #fff;
+      --green: #0f9d7d;
+      --amber: #d58a18;
+      --red: #d8445c;
+      --blue: #2f73bd;
+      --shadow: 0 18px 48px rgba(20,55,86,.12);
+    }
+
+    * { box-sizing: border-box; }
+    html { min-height: 100%; }
+    body {
+      min-height: 100vh;
+      margin: 0;
+      color: var(--ink);
+      background:
+        radial-gradient(circle at 92% 8%,rgba(15,164,156,.12),transparent 26rem),
+        #f3f8fc;
+      font-family: "DM Sans",sans-serif;
+    }
+
+    button,input { font: inherit; }
+    button { cursor: pointer; }
+    .hidden { display: none !important; }
+
+    .app-header {
+      min-height: 106px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+      padding: 18px clamp(22px,4vw,70px);
+      border-bottom: 1px solid var(--line);
+      background: rgba(255,255,255,.95);
+      backdrop-filter: blur(16px);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      color: inherit;
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 66px;
+      height: 66px;
+      display: grid;
+      place-items: center;
+      border-radius: 20px;
+      color: #fff;
+      background: linear-gradient(145deg,#092b4d,#1b5b86);
+      box-shadow: 0 14px 28px rgba(9,43,77,.2);
+      font: 800 25px/1 "Manrope";
+    }
+
+    .brand small,.eyebrow {
+      display: block;
+      color: #00877f;
+      font-weight: 800;
+      letter-spacing: .14em;
+      text-transform: uppercase;
+    }
+
+    .brand strong {
+      display: block;
+      margin-top: 4px;
+      font: 800 clamp(20px,2vw,28px)/1.1 "Manrope";
+    }
+
+    .header-actions { display: flex; align-items: center; gap: 11px; }
+    .scope {
+      padding: 11px 16px;
+      border: 1px solid #b9ddd9;
+      border-radius: 999px;
+      color: #087a74;
+      background: #e7f8f6;
+      font-weight: 800;
+    }
+    .region-pill {
+      padding: 12px 17px;
+      border-radius: 999px;
+      color: #fff;
+      background: var(--navy);
+      font-weight: 800;
+    }
+
+    .shell {
+      width: min(1480px,calc(100% - 44px));
+      margin: auto;
+      padding: 28px 0 58px;
+    }
+
+    .hero {
+      position: relative;
+      min-height: 190px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 28px;
+      overflow: hidden;
+      padding: 36px clamp(28px,4.5vw,62px);
+      border-radius: 27px;
+      color: #fff;
+      background: linear-gradient(110deg,#082b50 0%,#174f79 64%,#16858a 120%);
+      box-shadow: var(--shadow);
+    }
+
+    .hero::after {
+      content: "";
+      position: absolute;
+      right: -85px;
+      top: -190px;
+      width: 445px;
+      height: 445px;
+      border: 1px solid rgba(255,255,255,.16);
+      border-radius: 50%;
+      box-shadow: 0 0 0 55px rgba(255,255,255,.04),0 0 0 110px rgba(255,255,255,.025);
+    }
+
+    .hero > * { position: relative; z-index: 1; }
+    .hero h1 {
+      margin: 9px 0 0;
+      font: 800 clamp(35px,4.3vw,58px)/1 "Manrope";
+      letter-spacing: -.045em;
+    }
+
+    .workspace-button {
+      min-height: 54px;
+      display: inline-flex;
+      align-items: center;
+      padding: 0 23px;
+      border: 1px solid rgba(255,255,255,.3);
+      border-radius: 14px;
+      color: #fff;
+      background: rgba(5,42,70,.52);
+      font-weight: 800;
+      text-decoration: none;
+      backdrop-filter: blur(10px);
+      transition: transform .18s ease,background .18s ease;
+    }
+    .workspace-button:hover { transform: translateY(-2px); background: rgba(5,42,70,.7); }
+
+    .tracking-panel {
+      margin-top: 22px;
+      overflow: hidden;
+      border: 1px solid var(--line);
+      border-radius: 23px;
+      background: #fff;
+      box-shadow: var(--shadow);
+    }
+
+    .panel-head {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 18px;
+      padding: 24px 27px 20px;
+      border-bottom: 1px solid var(--line);
+    }
+    .panel-head h2 { margin: 5px 0 0; font: 800 24px/1.2 "Manrope"; }
+    .panel-head p { margin: 7px 0 0; color: var(--muted); font-size: 14px; }
+    .secure-badge {
+      flex: 0 0 auto;
+      padding: 9px 12px;
+      border-radius: 999px;
+      color: #087a74;
+      background: #e5f7f5;
+      font-size: 12px;
+      font-weight: 800;
+    }
+
+    .search-area { padding: 24px 27px 27px; }
+    .carrier-picker {
+      width: fit-content;
+      display: flex;
+      gap: 5px;
+      margin-bottom: 14px;
+      padding: 5px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: var(--soft);
+    }
+    .carrier-button {
+      min-height: 38px;
+      padding: 0 17px;
+      border: 0;
+      border-radius: 9px;
+      color: var(--muted);
+      background: transparent;
+      font-weight: 800;
+      transition: color .18s ease,background .18s ease,box-shadow .18s ease;
+    }
+    .carrier-button.active {
+      color: #fff;
+      background: linear-gradient(135deg,var(--navy),var(--navy-2));
+      box-shadow: 0 8px 18px rgba(12,48,82,.18);
+    }
+
+    .tracking-form {
+      display: grid;
+      grid-template-columns: minmax(0,1fr) auto;
+      gap: 11px;
+    }
+    .tracking-input {
+      min-height: 58px;
+      padding: 0 18px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      outline: 0;
+      color: var(--ink);
+      background: #fff;
+      font: 700 17px/1 "DM Sans";
+      letter-spacing: .025em;
+      text-transform: uppercase;
+      transition: border-color .18s ease,box-shadow .18s ease;
+    }
+    .tracking-input:focus { border-color: var(--teal); box-shadow: 0 0 0 4px rgba(11,158,150,.12); }
+    .track-button {
+      min-width: 180px;
+      min-height: 58px;
+      padding: 0 24px;
+      border: 0;
+      border-radius: 13px;
+      color: #fff;
+      background: linear-gradient(135deg,#0aa69c,#087f7d);
+      box-shadow: 0 11px 25px rgba(8,143,137,.22);
+      font-weight: 800;
+    }
+    .track-button:disabled { opacity: .58; cursor: wait; }
+
+    .message { min-height: 22px; margin: 11px 1px 0; color: var(--muted); font-size: 14px; }
+    .message.error { color: var(--red); font-weight: 700; }
+
+    .empty-state {
+      min-height: 350px;
+      display: grid;
+      place-items: center;
+      padding: 48px 24px;
+      border-top: 1px solid var(--line);
+      color: var(--muted);
+      text-align: center;
+    }
+    .empty-icon {
+      width: 76px;
+      height: 76px;
+      display: grid;
+      place-items: center;
+      margin: 0 auto 17px;
+      border-radius: 22px;
+      color: var(--teal);
+      background: #e4f6f4;
+      font: 800 32px/1 "Manrope";
+    }
+    .empty-state strong { display: block; color: var(--ink); font: 800 22px/1.2 "Manrope"; }
+    .empty-state p { max-width: 500px; margin: 8px auto 0; line-height: 1.55; }
+
+    .tracking-results { border-top: 1px solid var(--line); }
+    .status-hero {
+      display: grid;
+      grid-template-columns: minmax(0,1.3fr) repeat(2,minmax(180px,.55fr));
+      gap: 16px;
+      padding: 27px;
+      background: linear-gradient(135deg,#f6fafc,#eef7f7);
+    }
+    .status-main { display: flex; align-items: center; gap: 16px; }
+    .carrier-mark {
+      width: 62px;
+      height: 62px;
+      flex: 0 0 62px;
+      display: grid;
+      place-items: center;
+      border-radius: 18px;
+      color: #fff;
+      background: var(--navy);
+      font: 800 16px/1 "Manrope";
+    }
+    .status-main h2 { margin: 4px 0 0; font: 800 clamp(24px,2.5vw,36px)/1.1 "Manrope"; }
+    .status-kicker,.detail-label { color: var(--muted); font-size: 12px; font-weight: 800; letter-spacing: .08em; text-transform: uppercase; }
+    .status-main.delivered h2 { color: var(--green); }
+    .status-main.warning h2 { color: var(--amber); }
+    .status-main.exception h2 { color: var(--red); }
+    .status-detail {
+      min-width: 0;
+      display: grid;
+      align-content: center;
+      padding: 15px 17px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: rgba(255,255,255,.8);
+    }
+    .status-detail strong { margin-top: 7px; overflow-wrap: anywhere; font: 800 17px/1.25 "Manrope"; }
+
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(4,minmax(0,1fr));
+      gap: 12px;
+      padding: 22px 27px;
+      border-top: 1px solid var(--line);
+    }
+    .detail-card {
+      min-width: 0;
+      padding: 17px;
+      border: 1px solid var(--line);
+      border-radius: 15px;
+      background: #fff;
+    }
+    .detail-card strong { display: block; margin-top: 7px; overflow-wrap: anywhere; font-size: 15px; }
+
+    .history { padding: 3px 27px 30px; }
+    .history h3 { margin: 19px 0 17px; font: 800 20px/1.2 "Manrope"; }
+    .timeline { position: relative; display: grid; gap: 0; }
+    .timeline::before {
+      content: "";
+      position: absolute;
+      left: 9px;
+      top: 8px;
+      bottom: 8px;
+      width: 2px;
+      background: #d8e5ed;
+    }
+    .scan {
+      position: relative;
+      display: grid;
+      grid-template-columns: 20px minmax(155px,.45fr) minmax(0,1.4fr) minmax(145px,.6fr);
+      gap: 14px;
+      padding: 0 0 22px;
+    }
+    .scan:last-child { padding-bottom: 0; }
+    .scan-dot {
+      z-index: 1;
+      width: 20px;
+      height: 20px;
+      border: 5px solid #d9f2ef;
+      border-radius: 50%;
+      background: var(--teal);
+    }
+    .scan time,.scan-location { color: var(--muted); font-size: 14px; line-height: 1.4; }
+    .scan strong { line-height: 1.4; }
+
+    @media (max-width: 900px) {
+      .status-hero { grid-template-columns: 1fr 1fr; }
+      .status-main { grid-column: 1/-1; }
+      .details-grid { grid-template-columns: 1fr 1fr; }
+      .scan { grid-template-columns: 20px minmax(130px,.5fr) minmax(0,1fr); }
+      .scan-location { grid-column: 2/-1; }
+    }
+
+    @media (max-width: 620px) {
+      .app-header { min-height: 86px; padding: 14px 18px; }
+      .brand-mark { width: 52px; height: 52px; border-radius: 16px; }
+      .scope { display: none; }
+      .shell { width: min(100% - 24px,1480px); padding-top: 16px; }
+      .hero { min-height: 175px; align-items: flex-start; flex-direction: column; padding: 27px 24px; border-radius: 21px; }
+      .workspace-button { min-height: 47px; }
+      .panel-head { align-items: flex-start; flex-direction: column; padding: 21px 20px 17px; }
+      .search-area { padding: 20px; }
+      .carrier-picker { width: 100%; }
+      .carrier-button { flex: 1; padding-inline: 9px; }
+      .tracking-form { grid-template-columns: 1fr; }
+      .track-button { width: 100%; }
+      .status-hero,.details-grid { grid-template-columns: 1fr; padding: 20px; }
+      .status-main { grid-column: auto; }
+      .history { padding: 2px 20px 24px; }
+      .scan { grid-template-columns: 20px minmax(0,1fr); }
+      .scan time,.scan-location { grid-column: 2; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      *,*::before,*::after { scroll-behavior: auto !important; animation: none !important; transition: none !important; }
+    }
+  </style>
+</head>
+
+<body>
+  <header class="app-header">
+    <a class="brand" href="index.html?workspace=US">
+      <span class="brand-mark">S</span>
+      <span><small>Stark Premium</small><strong>US Tracking Intelligence</strong></span>
+    </a>
+    <div class="header-actions">
+      <span class="scope">Secure carrier connection</span>
+      <span class="region-pill">US</span>
+    </div>
+  </header>
+
+  <main class="shell">
+    <section class="hero">
+      <div>
+        <span class="eyebrow">Shipment visibility • United States</span>
+        <h1>UPS &amp; FedEx Tracking</h1>
+      </div>
+      <a class="workspace-button" href="index.html?workspace=US">←&nbsp; US Workspace</a>
+    </section>
+
+    <section class="tracking-panel">
+      <div class="panel-head">
+        <div>
+          <span class="eyebrow">Live carrier status</span>
+          <h2>Track a shipment</h2>
+          <p>Enter a UPS or FedEx tracking number to view its status here.</p>
+        </div>
+        <span class="secure-badge">Credentials protected</span>
+      </div>
+
+      <div class="search-area">
+        <div class="carrier-picker" role="group" aria-label="Carrier selection">
+          <button class="carrier-button active" type="button" data-carrier="auto" aria-pressed="true">Auto detect</button>
+          <button class="carrier-button" type="button" data-carrier="UPS" aria-pressed="false">UPS</button>
+          <button class="carrier-button" type="button" data-carrier="FEDEX" aria-pressed="false">FedEx</button>
+        </div>
+
+        <form class="tracking-form" id="tracking-form">
+          <input class="tracking-input" id="tracking-number" maxlength="35" autocomplete="off" spellcheck="false" placeholder="Enter tracking number" aria-label="Tracking number" required>
+          <button class="track-button" id="track-button" type="submit">Track shipment</button>
+        </form>
+        <p class="message" id="tracking-message" role="status" aria-live="polite"></p>
+      </div>
+
+      <div class="empty-state" id="tracking-empty">
+        <div>
+          <span class="empty-icon">◎</span>
+          <strong>Shipment details will appear here</strong>
+          <p>The carrier is detected automatically, or you can choose UPS or FedEx before searching.</p>
+        </div>
+      </div>
+
+      <div class="tracking-results hidden" id="tracking-results">
+        <div class="status-hero">
+          <div class="status-main" id="status-main">
+            <span class="carrier-mark" id="carrier-mark">—</span>
+            <div><span class="status-kicker" id="tracking-label">Tracking</span><h2 id="shipment-status">—</h2></div>
+          </div>
+          <div class="status-detail"><span class="detail-label">Estimated delivery</span><strong id="estimated-delivery">—</strong></div>
+          <div class="status-detail"><span class="detail-label">Last update</span><strong id="last-updated">—</strong></div>
+        </div>
+
+        <div class="details-grid">
+          <article class="detail-card"><span class="detail-label">Service</span><strong id="service">—</strong></article>
+          <article class="detail-card"><span class="detail-label">Origin</span><strong id="origin">—</strong></article>
+          <article class="detail-card"><span class="detail-label">Destination</span><strong id="destination">—</strong></article>
+          <article class="detail-card"><span class="detail-label">Delivered</span><strong id="actual-delivery">—</strong></article>
+        </div>
+
+        <section class="history">
+          <h3>Carrier scan history</h3>
+          <div class="timeline" id="scan-history"></div>
+        </section>
+      </div>
+    </section>
+  </main>
+
+  <script src="assets/tracking-config.js"></script>
+  <script>
+    (() => {
+      "use strict";
+
+      const $ = id => document.getElementById(id);
+      const buttons = Array.from(document.querySelectorAll("[data-carrier]"));
+      let selectedCarrier = "auto";
+      let activeRequest = null;
+
+      buttons.forEach(button => button.addEventListener("click", () => {
+        selectedCarrier = button.dataset.carrier;
+        buttons.forEach(candidate => {
+          const active = candidate === button;
+          candidate.classList.toggle("active", active);
+          candidate.setAttribute("aria-pressed", String(active));
+        });
+        clearMessage();
+      }));
+
+      $("tracking-number").addEventListener("input", event => {
+        event.target.value = cleanTrackingNumber(event.target.value);
+        clearMessage();
+      });
+
+      $("tracking-form").addEventListener("submit", trackShipment);
+
+      function cleanTrackingNumber(value) {
+        return String(value || "").toUpperCase().replace(/[^A-Z0-9]/g, "").slice(0, 35);
+      }
+
+      function detectCarrier(number) {
+        if (/^1Z[A-Z0-9]{16}$/.test(number)) return "UPS";
+        if (/^\d{12}$|^\d{15}$|^\d{20}$|^\d{22}$/.test(number)) return "FEDEX";
+        return "";
+      }
+
+      function apiEndpoint() {
+        const base = String(window.STARK_TRACKING_API_URL || "").trim().replace(/\/$/, "");
+        if (!base) return "";
+        return /\/track$/i.test(base) ? base : `${base}/track`;
+      }
+
+      async function trackShipment(event) {
+        event.preventDefault();
+        const trackingNumber = cleanTrackingNumber($("tracking-number").value);
+        const carrier = selectedCarrier === "auto" ? detectCarrier(trackingNumber) : selectedCarrier;
+        const endpoint = apiEndpoint();
+
+        if (trackingNumber.length < 8) return showError("Enter a valid tracking number.");
+        if (!carrier) return showError("Carrier could not be detected. Select UPS or FedEx and try again.");
+        if (!endpoint) return showError("The secure tracking service is not connected. Add its URL in assets/tracking-config.js.");
+
+        if (activeRequest) activeRequest.abort();
+        activeRequest = new AbortController();
+        setLoading(true, `Checking ${carrier}…`);
+
+        try {
+          const response = await fetch(endpoint, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ carrier, trackingNumber }),
+            signal: activeRequest.signal
+          });
+          const payload = await response.json().catch(() => ({}));
+          if (!response.ok) throw new Error(payload.error || "Tracking information is unavailable.");
+          renderTracking(payload);
+          showMessage(`${carrier} tracking updated successfully.`);
+        } catch (error) {
+          if (error.name !== "AbortError") showError(error.message || "Unable to retrieve tracking information.");
+        } finally {
+          setLoading(false);
+        }
+      }
+
+      function renderTracking(data) {
+        const status = String(data.status || "Status unavailable");
+        const statusClass = statusTone(status, data.statusCode);
+        $("status-main").className = `status-main ${statusClass}`;
+        $("carrier-mark").textContent = data.carrier || "—";
+        $("tracking-label").textContent = data.trackingNumber || "Tracking";
+        $("shipment-status").textContent = status;
+        $("estimated-delivery").textContent = formatDate(data.estimatedDelivery);
+        $("last-updated").textContent = formatDate(data.lastUpdated, true);
+        $("service").textContent = data.service || "—";
+        $("origin").textContent = data.origin || "—";
+        $("destination").textContent = data.destination || "—";
+        $("actual-delivery").textContent = formatDate(data.actualDelivery, true);
+        renderScans(Array.isArray(data.events) ? data.events : []);
+        $("tracking-empty").classList.add("hidden");
+        $("tracking-results").classList.remove("hidden");
+      }
+
+      function renderScans(events) {
+        const container = $("scan-history");
+        container.textContent = "";
+        if (!events.length) {
+          const empty = document.createElement("p");
+          empty.className = "message";
+          empty.textContent = "No carrier scans are available yet.";
+          container.appendChild(empty);
+          return;
+        }
+
+        events.forEach(scan => {
+          const row = document.createElement("article");
+          row.className = "scan";
+          const dot = document.createElement("span");
+          dot.className = "scan-dot";
+          const time = document.createElement("time");
+          time.textContent = formatDate(scan.date, true);
+          const description = document.createElement("strong");
+          description.textContent = scan.description || "Carrier scan";
+          const location = document.createElement("span");
+          location.className = "scan-location";
+          location.textContent = scan.location || "—";
+          row.append(dot, time, description, location);
+          container.appendChild(row);
+        });
+      }
+
+      function statusTone(status, code) {
+        const value = `${status} ${code || ""}`.toLowerCase();
+        if (value.includes("deliver")) return "delivered";
+        if (/exception|failed|damage|lost|return/.test(value)) return "exception";
+        if (/delay|pending|weather|attempt/.test(value)) return "warning";
+        return "";
+      }
+
+      function formatDate(value, includeTime) {
+        if (!value) return "—";
+        const date = new Date(value);
+        if (Number.isNaN(date.getTime())) return String(value);
+        return new Intl.DateTimeFormat("en-US", {
+          month: "short",
+          day: "numeric",
+          year: "numeric",
+          ...(includeTime ? { hour: "numeric", minute: "2-digit" } : {})
+        }).format(date);
+      }
+
+      function setLoading(loading, message) {
+        $("track-button").disabled = loading;
+        $("track-button").textContent = loading ? "Checking…" : "Track shipment";
+        if (message) showMessage(message);
+      }
+
+      function showMessage(message) {
+        $("tracking-message").className = "message";
+        $("tracking-message").textContent = message;
+      }
+
+      function showError(message) {
+        $("tracking-message").className = "message error";
+        $("tracking-message").textContent = message;
+      }
+
+      function clearMessage() {
+        $("tracking-message").className = "message";
+        $("tracking-message").textContent = "";
+      }
+    })();
+  </script>
+</body>
+</html>

@@ -671,14 +671,22 @@ select:focus {
   transform: rotate(-4deg);
 }
 
+.module-tracking {
+  background: linear-gradient(145deg,#0d416e 0%,#126f91 58%,#1aa89e 100%);
+}
+
+.module-tracking .module-icon {
+  font-size: 66px;
+}
+
 html[data-region="US"] .module-grid {
-  width: min(1420px,100%);
-  grid-template-columns: repeat(4,minmax(0,1fr));
+  width: min(1540px,100%);
+  grid-template-columns: repeat(5,minmax(0,1fr));
   gap: clamp(16px,1.8vw,24px);
 }
 
 html[data-region="US"] .module-screen-top {
-  width: min(1420px,100%);
+  width: min(1540px,100%);
 }
 
 html[data-region="US"] .module-button {
