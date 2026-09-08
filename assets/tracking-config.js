@@ -1,6 +1,14 @@
+"use strict";
+
 /*
-  Paste the deployed secure tracking-worker URL between the quotes.
-  Example: "https://stark-tracking.your-account.workers.dev"
-  Never place UPS or FedEx client secrets in this public file.
+  Enter the public URL of the deployed tracking-worker.js below.
+
+  Example:
+  https://stark-tracking.example.workers.dev
+
+  Do not place UPS or FedEx API credentials in this public file.
+  Those credentials must remain securely configured in the worker.
 */
-window.STARK_TRACKING_API_URL = "";
+
+window.STARK_TRACKING_API_URL =
+  "https://YOUR-TRACKING-WORKER.workers.dev";
