@@ -45,7 +45,7 @@
       </div>
       <div class="hero-status">
         <span>Analysis scope</span>
-        <strong>LIVE &bull; FASHION &bull; BACKORDER</strong>
+        <strong>ACTIVE BRANDS &bull; LIVE &bull; FASHION &bull; BACKORDER</strong>
         <small id="hero-data-state">Upload a sales report to begin</small>
       </div>
     </section>
@@ -53,7 +53,7 @@
     <section class="upload-section" aria-labelledby="upload-heading">
       <div class="section-heading">
         <div><p class="eyebrow">Regional data center</p><h2 id="upload-heading">Build the analysis</h2></div>
-        <p>Upload the monthly item stock sales report first. Add a price list to calculate estimated revenue, stock value and excess value.</p>
+        <p>Upload the monthly item stock sales report first. Add the item price list to calculate NetPrice revenue and Cost-based inventory, excess and dead-stock exposure.</p>
       </div>
       <div class="upload-grid">
         <article class="upload-card">
@@ -67,11 +67,11 @@
 
         <article class="upload-card">
           <div class="card-top"><span class="step">02</span><span class="file-state optional" id="price-file-state">Optional</span></div>
-          <h3>Price list</h3>
-          <p>Match by Model# or Item ID. Recognizes Price, Unit Price, Selling Price, List Price, MSRP and Retail.</p>
+          <h3>NetPrice and cost list</h3>
+          <p>Matches the All Items report by ItemID first, then Model#. NetPrice drives revenue and contribution; Cost drives inventory exposure.</p>
           <label class="button button-secondary upload-button" for="price-file">Upload price list</label>
           <input id="price-file" type="file" accept=".xlsx,.xls,.csv,.tsv" hidden>
-          <small class="file-detail" id="price-file-detail">Revenue remains unavailable until prices are matched</small>
+          <small class="file-detail" id="price-file-detail">Net revenue and cost exposure remain unavailable until the price list is matched</small>
         </article>
 
         <article class="upload-card readiness-card">
@@ -100,7 +100,7 @@
         <div class="quality-pills">
           <span id="period-pill">0 periods</span>
           <span id="eligible-pill">0 eligible models</span>
-          <span id="price-pill">No prices</span>
+          <span id="price-pill">No price-list matches</span>
         </div>
       </div>
 
@@ -109,7 +109,7 @@
         <label><span>Brand</span><select id="brand-filter"><option value="ALL">All brands</option></select></label>
         <label><span>Seller tier</span><select id="tier-filter"><option value="ALL">All tiers</option><option value="High">High sellers</option><option value="Medium">Medium sellers</option><option value="Low">Low sellers</option></select></label>
         <label><span>Stock condition</span><select id="stock-filter"><option value="ALL">All conditions</option><option value="Dead">Dead stock</option><option value="Excess">Excess stock</option><option value="Balanced">Balanced stock</option><option value="Low Cover">Under 1 month</option></select></label>
-        <label><span>Chart metric</span><select id="metric-filter"><option value="units">Sales units</option><option value="revenue">Estimated revenue</option></select></label>
+        <label><span>Chart metric</span><select id="metric-filter"><option value="units">Sales units</option><option value="revenue">Net revenue</option></select></label>
         <label class="search-field"><span>Model or item</span><input id="search-filter" type="search" placeholder="Search model, title or item ID"></label>
         <button class="button button-ghost" id="reset-filters" type="button">Reset</button>
       </section>
@@ -144,19 +144,19 @@
           <article class="panel"><div class="panel-heading"><div><span>Annual comparison</span><h3>Sales by year</h3></div></div><div class="chart chart-tall" id="annual-chart"></div></article>
           <article class="panel panel-full"><div class="panel-heading"><div><span>Brand performance</span><h3>Sales contribution by brand</h3></div></div><div class="chart" id="year-brand-chart"></div></article>
         </div>
-        <article class="panel table-panel"><div class="panel-heading"><div><span>Period register</span><h3>Monthly analysis detail</h3></div><small id="year-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Period</th><th>Year</th><th class="num">Models selling</th><th class="num">Net units</th><th class="num">Demand units</th><th class="num">Estimated revenue</th><th class="num">Change vs prior month</th></tr></thead><tbody id="year-table"></tbody></table></div></article>
+        <article class="panel table-panel"><div class="panel-heading"><div><span>Period register</span><h3>Monthly analysis detail</h3></div><small id="year-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Period</th><th>Year</th><th class="num">Models selling</th><th class="num">Net units</th><th class="num">Demand units</th><th class="num">Net revenue</th><th class="num">COGS</th><th class="num">Gross margin</th><th class="num">Margin %</th><th class="num">Change vs prior month</th></tr></thead><tbody id="year-table"></tbody></table></div></article>
       </section>
 
       <section class="tab-panel" id="stock-panel" data-panel="stock" hidden>
         <div class="panel-toolbar"><div><p class="eyebrow">Nine-month demand baseline</p><h2>Stock health and excess</h2></div><button class="button button-secondary export-section" data-export="stock" type="button">Export stock health</button></div>
-        <div class="method-note">Dead stock has positive current stock and zero demand in the last nine complete months. Excess stock is current stock above two months of average demand.</div>
+        <div class="method-note">Dead stock has positive current stock and zero demand in the last nine complete months. Excess stock is current stock above two months of average demand. Financial exposure uses Cost.</div>
         <div class="kpi-grid" id="stock-kpis"></div>
         <div class="chart-grid">
           <article class="panel"><div class="panel-heading"><div><span>Coverage risk</span><h3>Models by months of cover</h3></div></div><div class="chart chart-tall" id="coverage-chart"></div></article>
           <article class="panel panel-wide"><div class="panel-heading"><div><span>Capital exposure</span><h3>Excess inventory by brand</h3></div></div><div class="chart chart-tall" id="excess-brand-chart"></div></article>
           <article class="panel panel-full"><div class="panel-heading"><div><span>Model exceptions</span><h3>Largest excess and dead-stock positions</h3></div></div><div class="chart" id="stock-model-chart"></div></article>
         </div>
-        <article class="panel table-panel"><div class="panel-heading"><div><span>Action register</span><h3>Model-level stock analysis</h3></div><small id="stock-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Model#</th><th>Brand</th><th>Item title</th><th>Status</th><th>Condition</th><th class="num">Current stock</th><th class="num">9M demand</th><th class="num">Avg/month</th><th class="num">Months cover</th><th class="num">2M target</th><th class="num">Excess units</th><th class="num">Excess value</th></tr></thead><tbody id="stock-table"></tbody></table></div></article>
+        <article class="panel table-panel"><div class="panel-heading"><div><span>Action register</span><h3>Model-level stock analysis</h3></div><small id="stock-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Model#</th><th>Brand</th><th>Item title</th><th>Status</th><th>Condition</th><th class="num">Current stock</th><th class="num">Unit cost</th><th class="num">Inventory cost</th><th class="num">9M demand</th><th class="num">Avg/month</th><th class="num">Months cover</th><th class="num">2M target</th><th class="num">Excess units</th><th class="num">Excess cost</th><th class="num">Dead-stock cost</th></tr></thead><tbody id="stock-table"></tbody></table></div></article>
       </section>
 
       <section class="tab-panel" id="tiers-panel" data-panel="tiers" hidden>
@@ -168,7 +168,7 @@
           <article class="panel"><div class="panel-heading"><div><span>Portfolio breadth</span><h3>Models by seller tier</h3></div></div><div class="chart chart-tall" id="tier-count-chart"></div></article>
           <article class="panel panel-full"><div class="panel-heading"><div><span>Brand quality</span><h3>High seller contribution by brand</h3></div></div><div class="chart" id="tier-brand-chart"></div></article>
         </div>
-        <article class="panel table-panel"><div class="panel-heading"><div><span>Seller register</span><h3>Velocity and contribution detail</h3></div><small id="tier-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Tier</th><th>Rank</th><th>Model#</th><th>Brand</th><th>Item title</th><th class="num">9M demand</th><th class="num">Avg/month</th><th class="num">Unit contribution</th><th class="num">Cumulative contribution</th><th class="num">Revenue contribution</th></tr></thead><tbody id="tier-table"></tbody></table></div></article>
+        <article class="panel table-panel"><div class="panel-heading"><div><span>Seller register</span><h3>Velocity and contribution detail</h3></div><small id="tier-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Tier</th><th>Rank</th><th>Model#</th><th>Brand</th><th>Item title</th><th class="num">9M demand</th><th class="num">Avg/month</th><th class="num">Net revenue</th><th class="num">Gross margin</th><th class="num">Margin %</th><th class="num">Unit contribution</th><th class="num">Cumulative contribution</th><th class="num">Net revenue share</th></tr></thead><tbody id="tier-table"></tbody></table></div></article>
       </section>
 
       <section class="tab-panel" id="contribution-panel" data-panel="contribution" hidden>
@@ -178,7 +178,7 @@
           <article class="panel panel-wide"><div class="panel-heading"><div><span>Portfolio contribution</span><h3>Top models</h3></div></div><div class="chart chart-tall" id="model-contribution-chart"></div></article>
           <article class="panel"><div class="panel-heading"><div><span>Brand contribution</span><h3>Sales mix</h3></div></div><div class="chart chart-tall" id="brand-contribution-chart"></div></article>
         </div>
-        <article class="panel table-panel"><div class="panel-heading"><div><span>Contribution register</span><h3>Model share within brand and portfolio</h3></div><small id="contribution-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Portfolio rank</th><th>Brand rank</th><th>Model#</th><th>Brand</th><th>Item title</th><th class="num">Units</th><th class="num">Estimated revenue</th><th class="num">Share of brand units</th><th class="num">Share of brand revenue</th><th class="num">Share of total units</th><th class="num">Share of total revenue</th></tr></thead><tbody id="contribution-table"></tbody></table></div></article>
+        <article class="panel table-panel"><div class="panel-heading"><div><span>Contribution register</span><h3>Model share within brand and portfolio</h3></div><small id="contribution-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Portfolio rank</th><th>Brand rank</th><th>Model#</th><th>Brand</th><th>Item title</th><th class="num">Units</th><th class="num">Net revenue</th><th class="num">Gross margin</th><th class="num">Margin %</th><th class="num">Share of brand units</th><th class="num">Share of brand revenue</th><th class="num">Share of total units</th><th class="num">Share of total revenue</th></tr></thead><tbody id="contribution-table"></tbody></table></div></article>
       </section>
 
       <section class="tab-panel" id="forecast-panel" data-panel="forecast" hidden>
@@ -189,13 +189,13 @@
           <article class="panel panel-wide"><div class="panel-heading"><div><span>Next month outlook</span><h3>Average demand versus selected forecast</h3></div></div><div class="chart chart-tall" id="forecast-chart"></div></article>
           <article class="panel"><div class="panel-heading"><div><span>Model confidence</span><h3>Forecast confidence mix</h3></div></div><div class="chart chart-tall" id="accuracy-chart"></div></article>
         </div>
-        <article class="panel table-panel"><div class="panel-heading"><div><span>Forecast register</span><h3>Model-level forecast and accuracy</h3></div><small id="forecast-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Model#</th><th>Brand</th><th>Item title</th><th>Selected method</th><th>Confidence</th><th class="num">History months</th><th class="num">9M avg</th><th class="num">Next month</th><th class="num">3M forecast</th><th class="num">Backtest WAPE</th><th class="num">Current stock</th><th class="num">Projected cover</th></tr></thead><tbody id="forecast-table"></tbody></table></div></article>
+        <article class="panel table-panel"><div class="panel-heading"><div><span>Forecast register</span><h3>Model-level forecast and accuracy</h3></div><small id="forecast-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Model#</th><th>Brand</th><th>Item title</th><th>Demand pattern</th><th>Selected method</th><th>Confidence</th><th class="num">History months</th><th class="num">9M avg</th><th class="num">Next month</th><th class="num">Forecast revenue</th><th class="num">3M forecast</th><th class="num">Backtest WAPE</th><th class="num">Forecast bias</th><th class="num">Current stock</th><th class="num">Projected cover</th></tr></thead><tbody id="forecast-table"></tbody></table></div></article>
       </section>
 
       <section class="tab-panel" id="data-panel" data-panel="data" hidden>
         <div class="panel-toolbar"><div><p class="eyebrow">Validation and lineage</p><h2>Data quality</h2></div><button class="button button-secondary export-section" data-export="data" type="button">Export validated data</button></div>
         <div class="kpi-grid" id="data-kpis"></div>
-        <article class="panel table-panel"><div class="panel-heading"><div><span>Eligible source</span><h3>Normalized model records</h3></div><small id="data-row-count"></small></div><div class="table-wrap data-table"><table><thead><tr><th>Model#</th><th>Item ID</th><th>Brand</th><th>Item title</th><th>Status</th><th class="num">Current stock</th><th class="num">Periods</th><th class="num">Price</th><th>Price match</th><th>Latest complete period</th></tr></thead><tbody id="data-table"></tbody></table></div></article>
+        <article class="panel table-panel"><div class="panel-heading"><div><span>Eligible source</span><h3>Normalized model records</h3></div><small id="data-row-count"></small></div><div class="table-wrap data-table"><table><thead><tr><th>Model#</th><th>Item ID</th><th>Brand</th><th>Item title</th><th>Status</th><th class="num">Current stock</th><th class="num">Periods</th><th class="num">NetPrice</th><th class="num">Cost</th><th>Price match</th><th>Latest complete period</th></tr></thead><tbody id="data-table"></tbody></table></div></article>
       </section>
     </section>
   </main>
