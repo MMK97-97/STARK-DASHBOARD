@@ -82,6 +82,11 @@
   }
 
   function openModule(module) {
+    if (module === "sales") {
+      const salesRegion = state.region === "Canada" ? "CA" : state.region;
+      navigateWithTransition(`sales-analysis.html?region=${salesRegion}`);
+      return;
+    }
     if (module === "tracking") {
       if (state.region !== "US") return;
       navigateWithTransition("shipment-tracking.html");
