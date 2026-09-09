@@ -16,7 +16,7 @@
     region: normalizeRegion(new URLSearchParams(location.search).get("region")),
     tab: "overview",
     regions: { US: emptyRegion(), EU: emptyRegion(), CA: emptyRegion() },
-    filters: { year: "ALL", brand: "ALL", tier: "ALL", stock: "ALL", metric: "units", search: "" },
+    filters: { year: "ALL", brand: "ALL", tier: "ALL", pattern: "ALL", stock: "ALL", metric: "units", search: "" },
     crossFilter: null
   };
 
@@ -69,7 +69,7 @@
     document.querySelectorAll(".region-tab").forEach(button => button.addEventListener("click", () => selectRegion(button.dataset.region)));
     document.querySelectorAll(".analysis-tab").forEach(button => button.addEventListener("click", () => activateTab(button.dataset.tab)));
     document.querySelectorAll(".export-section").forEach(button => button.addEventListener("click", () => exportWorkbook(button.dataset.export)));
-    ["year-filter", "brand-filter", "tier-filter", "stock-filter", "metric-filter"].forEach(id => {
+    ["year-filter", "brand-filter", "tier-filter", "pattern-filter", "stock-filter", "metric-filter"].forEach(id => {
       $(id).addEventListener("change", updateFilters);
     });
     $("search-filter").addEventListener("input", debounce(updateFilters, 150));
@@ -299,6 +299,9 @@
       const history = completePeriods.map(period => Math.max(0, finiteNumber(source.monthly[period])));
       const demand9 = sum(baselineHistory);
       const avg9 = baselinePeriods.length ? demand9 / baselinePeriods.length : 0;
+      const recentAvg3 = mean(baselineHistory.slice(-3));
+      const priorAvg3 = mean(baselineHistory.slice(-6, -3));
+      const demandTrend = priorAvg3 > 0 ? (recentAvg3 - priorAvg3) / priorAvg3 : recentAvg3 > 0 ? 1 : 0;
       const currentStock = Math.max(0, finiteNumber(source.stock));
       const target2 = avg9 * 2;
       const excessUnits = Math.max(0, currentStock - target2);
@@ -312,6 +315,15 @@
       const excessCost = excessUnits * cost;
       const deadStockCost = deadStock ? inventoryCost : 0;
       const sellThrough9 = demand9 + currentStock > 0 ? demand9 / (demand9 + currentStock) : 0;
+      const demandError = Number.isFinite(forecast.mae) ? forecast.mae : standardDeviation(baselineHistory);
+      const safetyStock = Math.max(0, 1.65 * demandError);
+      const reorderPoint = Math.max(0, forecast.next + safetyStock);
+      const suggestedQty = Math.max(0, reorderPoint - currentStock);
+      const errorSigma = Math.max(0, forecast.rmse || demandError);
+      const stockoutProbability = forecast.next <= 0 ? 0 : errorSigma > 0 ? clamp(1 - normalCdf((currentStock - forecast.next) / errorSigma), 0, 1) : currentStock < forecast.next ? 1 : 0;
+      const revenueAtRisk = suggestedQty * price;
+      const marginAtRisk = suggestedQty * Math.max(0, price - cost);
+      const planningSignal = deadStock ? "Liquidate" : stockoutProbability >= .65 || currentStock < forecast.low ? "Replenish now" : suggestedQty > .5 ? "Replenish" : excessStock ? "Reduce" : "Healthy";
       return {
         ...source,
         price,
@@ -326,9 +338,21 @@
         excessCost,
         deadStockCost,
         sellThrough9,
+        recentAvg3,
+        priorAvg3,
+        demandTrend,
         demandPattern: demandProfile.pattern,
         demandCv: demandProfile.cv,
         demandAdi: demandProfile.adi,
+        demandCvSquared: demandProfile.cvSquared,
+        zeroDemandRate: demandProfile.zeroRate,
+        safetyStock,
+        reorderPoint,
+        suggestedQty,
+        stockoutProbability,
+        revenueAtRisk,
+        marginAtRisk,
+        planningSignal,
         deadStock,
         monthsCover,
         stockCondition,
@@ -345,6 +369,17 @@
       const tier = item.demand9 <= 0 ? "Low" : cumulative < .8 ? "High" : cumulative < .95 ? "Medium" : "Low";
       cumulative += contribution;
       Object.assign(item, { rank: index + 1, unitContribution9: contribution, cumulativeContribution9: cumulative, tier });
+    });
+
+    const revenueRanked = items.slice().sort((a, b) => (b.demand9 * b.price) - (a.demand9 * a.price) || b.demand9 - a.demand9);
+    const totalRevenue9 = sum(revenueRanked.map(item => item.demand9 * item.price));
+    let revenueCumulative = 0;
+    revenueRanked.forEach(item => {
+      const contribution = totalRevenue9 ? item.demand9 * item.price / totalRevenue9 : 0;
+      const abcClass = totalRevenue9 === 0 ? "C" : revenueCumulative < .8 ? "A" : revenueCumulative < .95 ? "B" : "C";
+      revenueCumulative += contribution;
+      const xyzClass = item.demandPattern === "Smooth" ? "X" : item.demandPattern === "Erratic" ? "Y" : "Z";
+      Object.assign(item, { abcClass, xyzClass, abcXyz: `${abcClass}${xyzClass}`, revenueContribution9: contribution, cumulativeRevenueContribution9: revenueCumulative });
     });
 
     return {
@@ -364,54 +399,79 @@
 
   function forecastDemand(history) {
     const clean = history.map(value => Math.max(0, finiteNumber(value)));
-    if (!clean.length) return { method: "No history", next: 0, threeMonth: 0, wape: null, bias: null, mae: null, confidence: "Low", observations: 0 };
+    if (!clean.length) return { method: "No history", next: 0, low: 0, high: 0, threeMonth: 0, wape: null, smape: null, mase: null, rmse: null, bias: null, mae: null, confidence: "Low", observations: 0 };
     const candidates = [
       { name: "Last month", predict: values => values[values.length - 1] || 0 },
       { name: "3-month average", predict: values => mean(values.slice(-3)) },
       { name: "6-month weighted", predict: weightedForecast },
+      { name: "Adaptive smoothing", predict: adaptiveExponentialForecast },
       { name: "Damped trend", predict: dampedTrendForecast }
     ];
     if (clean.length >= 12) candidates.push({ name: "Seasonal naive", predict: values => values.length >= 12 ? values[values.length - 12] : mean(values) });
     if (clean.filter(value => value === 0).length / clean.length >= .35) candidates.push({ name: "Croston SBA", predict: crostonForecast });
+    const ensembleMembers = candidates.slice();
+    candidates.push({ name: "Robust ensemble", predict: values => median(ensembleMembers.map(candidate => constrainForecast(candidate.predict(values), values))) });
 
     const validationStart = Math.max(3, clean.length - 6);
+    const scaleHistory = clean.slice(0, Math.max(2, validationStart));
+    const naiveScale = mean(scaleHistory.slice(1).map((value, index) => Math.abs(value - scaleHistory[index])));
     let best = null;
     candidates.forEach(candidate => {
       let absoluteError = 0;
+      let squaredError = 0;
       let signedError = 0;
       let actualTotal = 0;
+      let symmetricError = 0;
       let tests = 0;
       for (let index = validationStart; index < clean.length; index += 1) {
         const prediction = constrainForecast(candidate.predict(clean.slice(0, index)), clean.slice(0, index));
-        absoluteError += Math.abs(clean[index] - prediction);
-        signedError += prediction - clean[index];
-        actualTotal += clean[index];
+        const actual = clean[index];
+        const error = prediction - actual;
+        absoluteError += Math.abs(error);
+        squaredError += error * error;
+        signedError += error;
+        actualTotal += actual;
+        symmetricError += actual === 0 && prediction === 0 ? 0 : 2 * Math.abs(error) / (Math.abs(actual) + Math.abs(prediction));
         tests += 1;
       }
       const denominator = actualTotal || Math.max(1, tests * mean(clean.slice(0, validationStart)));
       const wape = tests ? absoluteError / denominator : Infinity;
       const bias = tests ? signedError / denominator : 0;
       const mae = tests ? absoluteError / tests : null;
-      if (!best || wape < best.wape) best = { ...candidate, wape, bias, mae, tests };
+      const smape = tests ? symmetricError / tests : Infinity;
+      const rmse = tests ? Math.sqrt(squaredError / tests) : null;
+      const mase = tests && naiveScale > 0 ? mae / naiveScale : null;
+      const score = wape + .35 * smape + .15 * Math.abs(bias) + (Number.isFinite(mase) ? .05 * Math.min(mase, 3) : 0);
+      if (!best || score < best.score) best = { ...candidate, wape, smape, mase, rmse, bias, mae, score, tests };
     });
 
     const next = constrainForecast(best.predict(clean), clean);
-    const confidence = clean.length >= 9 && best.wape <= .30 ? "High" : clean.length >= 6 && best.wape <= .65 ? "Medium" : "Low";
+    const band = 1.28 * (best.mae || 0);
+    const low = Math.max(0, next - band);
+    const high = constrainForecast(next + band, clean);
+    const confidence = clean.length >= 9 && best.wape <= .30 && best.smape <= .40 ? "High" : clean.length >= 6 && best.wape <= .65 && best.smape <= .85 ? "Medium" : "Low";
     return {
       method: best.name,
       next,
+      low,
+      high,
       threeMonth: next * 3,
       wape: Number.isFinite(best.wape) ? best.wape : null,
+      smape: Number.isFinite(best.smape) ? best.smape : null,
+      mase: Number.isFinite(best.mase) ? best.mase : null,
+      rmse: Number.isFinite(best.rmse) ? best.rmse : null,
       bias: Number.isFinite(best.bias) ? best.bias : null,
       mae: best.mae,
       confidence,
-      observations: clean.length
+      observations: clean.length,
+      backtestTests: best.tests,
+      selectionScore: best.score
     };
   }
 
   function demandClassification(history) {
     const positive = history.filter(value => value > 0);
-    if (!history.length || !positive.length) return { pattern: "No demand", adi: Infinity, cv: 0 };
+    if (!history.length || !positive.length) return { pattern: "No demand", adi: Infinity, cv: 0, cvSquared: 0, zeroRate: history.length ? 1 : 0 };
     const adi = history.length / positive.length;
     const average = mean(positive);
     const cv = average > 0 ? standardDeviation(positive) / average : 0;
@@ -419,7 +479,22 @@
     const pattern = adi < 1.32
       ? (cvSquared < .49 ? "Smooth" : "Erratic")
       : (cvSquared < .49 ? "Intermittent" : "Lumpy");
-    return { pattern, adi, cv };
+    return { pattern, adi, cv, cvSquared, zeroRate: history.length ? 1 - positive.length / history.length : 0 };
+  }
+
+  function adaptiveExponentialForecast(values) {
+    if (!values.length) return 0;
+    if (values.length === 1) return values[0];
+    let best = { error: Infinity, level: values[0] };
+    for (let alpha = .1; alpha <= .9; alpha += .1) {
+      let level = values[0], error = 0;
+      for (let index = 1; index < values.length; index += 1) {
+        error += (values[index] - level) ** 2;
+        level = alpha * values[index] + (1 - alpha) * level;
+      }
+      if (error < best.error) best = { error, level };
+    }
+    return best.level;
   }
 
   function weightedForecast(values) {
@@ -464,7 +539,7 @@
 
   function selectRegion(region, updateUrl = true) {
     state.region = normalizeRegion(region);
-    state.filters = { year: "ALL", brand: "ALL", tier: "ALL", stock: "ALL", metric: "units", search: "" };
+    state.filters = { year: "ALL", brand: "ALL", tier: "ALL", pattern: "ALL", stock: "ALL", metric: "units", search: "" };
     state.crossFilter = null;
     document.documentElement.dataset.region = state.region;
     document.querySelectorAll(".region-tab").forEach(button => {
@@ -490,6 +565,7 @@
     fillSelect($("year-filter"), [{ value: "ALL", label: "All years" }, ...years.map(year => ({ value: year, label: year }))], state.filters.year);
     fillSelect($("brand-filter"), [{ value: "ALL", label: "All brands" }, ...brands.map(brand => ({ value: brand, label: brand }))], state.filters.brand);
     $("tier-filter").value = state.filters.tier;
+    $("pattern-filter").value = state.filters.pattern;
     $("stock-filter").value = state.filters.stock;
     $("metric-filter").value = state.filters.metric;
     $("search-filter").value = state.filters.search;
@@ -500,6 +576,7 @@
     state.filters.year = $("year-filter").value;
     state.filters.brand = $("brand-filter").value;
     state.filters.tier = $("tier-filter").value;
+    state.filters.pattern = $("pattern-filter").value;
     state.filters.stock = $("stock-filter").value;
     state.filters.metric = $("metric-filter").value;
     state.filters.search = cleanText($("search-filter").value).toLowerCase();
@@ -512,7 +589,7 @@
   }
 
   function resetFilters() {
-    state.filters = { year: "ALL", brand: "ALL", tier: "ALL", stock: "ALL", metric: "units", search: "" };
+    state.filters = { year: "ALL", brand: "ALL", tier: "ALL", pattern: "ALL", stock: "ALL", metric: "units", search: "" };
     state.crossFilter = null;
     initializeFilters();
     renderAll();
@@ -524,6 +601,7 @@
     return analysis.items.filter(item => {
       if (state.filters.brand !== "ALL" && item.brand !== state.filters.brand) return false;
       if (state.filters.tier !== "ALL" && item.tier !== state.filters.tier) return false;
+      if (state.filters.pattern !== "ALL" && item.demandPattern !== state.filters.pattern) return false;
       if (state.filters.stock !== "ALL" && item.stockCondition !== state.filters.stock) return false;
       if (state.filters.search && !`${item.model} ${item.itemId} ${item.title} ${item.brand}`.toLowerCase().includes(state.filters.search)) return false;
       return true;
@@ -607,9 +685,11 @@
         { type: "priceSales", value: "1", label },
         { type: "costPriceSales", value: "1", label },
         { type: "costPriceSales", value: "1", label },
-        { type: "hasDemand", value: "1", label },
+        { type: "trendPositive", value: "1", label },
         { type: "costStock", value: "1", label },
         { type: "finiteCoverage", value: "1", label },
+        { type: "suggestedPositive", value: "1", label },
+        { type: "revenueAtRisk", value: "1", label },
         { type: "stock", value: "Excess", label }
       ][index] || action;
     } else if (group === "year-kpis") {
@@ -633,7 +713,9 @@
         { type: "stock", value: "Dead", label },
         { type: "stock", value: "Excess", label },
         { type: "stock", value: "Excess", label },
-        { type: "stock", value: "Excess", label },
+        { type: "planningSignal", value: "Replenish now", label },
+        { type: "suggestedPositive", value: "1", label },
+        { type: "revenueAtRisk", value: "1", label },
         { type: "costStock", value: "1", label },
         { type: "coverAtLeast", value: String(median(finiteCovers)), label },
         { type: "sellThroughAtMost", value: String(median(sellThrough)), label }
@@ -643,6 +725,7 @@
         { type: "tier", value: "High", label },
         { type: "tier", value: "Medium", label },
         { type: "tier", value: "Low", label },
+        { type: "abcXyz", value: "AX", label },
         { type: "hasDemand", value: "1", label },
         { type: "zeroDemand", value: "1", label },
         { type: "hasDemand", value: "1", label },
@@ -663,16 +746,23 @@
       ][index] || action;
     } else if (group === "forecast-kpis") {
       const wapes = items.map(item => item.forecast.wape).filter(Number.isFinite);
+      const smapes = items.map(item => item.forecast.smape).filter(Number.isFinite);
+      const mases = items.map(item => item.forecast.mase).filter(Number.isFinite);
       const biases = items.map(item => Math.abs(item.forecast.bias)).filter(Number.isFinite);
+      const risks = items.map(item => item.stockoutProbability).filter(Number.isFinite);
       action = [
         { type: "hasForecast", value: "1", label },
         { type: "hasForecast", value: "1", label },
         { type: "hasForecast", value: "1", label },
         { type: "forecastConfidence", value: "High", label },
         { type: "wapeAtMost", value: String(median(wapes)), label },
+        { type: "smapeAtMost", value: String(median(smapes)), label },
+        { type: "maseAtMost", value: String(median(mases)), label },
         { type: "absoluteBiasAtMost", value: String(median(biases)), label },
+        { type: "planningSignal", value: "Replenish now", label },
+        { type: "stockoutAtLeast", value: String(median(risks)), label },
+        { type: "revenueAtRisk", value: "1", label },
         { type: "finiteProjectedCover", value: "1", label },
-        { type: "hasForecast", value: "1", label }
       ][index] || action;
     } else if (group === "data-kpis") {
       action = [
@@ -706,7 +796,10 @@
       case "year": return current().analysis.periods.some(period => period.startsWith(filter.value) && finiteNumber(item.monthly[period]) !== 0);
       case "brand": return item.brand === filter.value;
       case "tier": return item.tier === filter.value;
+      case "demandPattern": return item.demandPattern === filter.value;
+      case "abcXyz": return item.abcXyz === filter.value;
       case "stock": return item.stockCondition === filter.value;
+      case "planningSignal": return item.planningSignal === filter.value;
       case "model": return item.key === filter.value;
       case "modelKeys": return filter.value.split("\u001f").includes(item.key);
       case "priceMatched": return item.price > 0;
@@ -714,10 +807,14 @@
       case "priceSales": return item.price > 0 && hasSales;
       case "costPriceSales": return item.price > 0 && item.cost > 0 && hasSales;
       case "hasDemand": return item.demand9 > 0;
+      case "trendPositive": return item.demandTrend > 0;
       case "zeroDemand": return item.demand9 === 0;
       case "hasStock": return item.stock > 0;
       case "costStock": return item.stock > 0 && item.cost > 0;
       case "costMatched": return item.cost > 0;
+      case "suggestedPositive": return item.suggestedQty > .5;
+      case "revenueAtRisk": return item.revenueAtRisk > 0;
+      case "stockoutAtLeast": return item.stockoutProbability >= finiteNumber(filter.value);
       case "finiteCoverage": return Number.isFinite(item.monthsCover) && item.monthsCover > 0;
       case "coverAtLeast": return Number.isFinite(item.monthsCover) && item.monthsCover >= finiteNumber(filter.value);
       case "sellThroughAtMost": return item.sellThrough9 <= finiteNumber(filter.value);
@@ -729,6 +826,8 @@
       case "forecastConfidence": return item.forecast.confidence === filter.value;
       case "hasForecast": return item.forecast.next > 0;
       case "wapeAtMost": return Number.isFinite(item.forecast.wape) && item.forecast.wape <= finiteNumber(filter.value);
+      case "smapeAtMost": return Number.isFinite(item.forecast.smape) && item.forecast.smape <= finiteNumber(filter.value);
+      case "maseAtMost": return Number.isFinite(item.forecast.mase) && item.forecast.mase <= finiteNumber(filter.value);
       case "absoluteBiasAtMost": return Number.isFinite(item.forecast.bias) && Math.abs(item.forecast.bias) <= finiteNumber(filter.value);
       case "finiteProjectedCover": return Number.isFinite(item.projectedCover);
       default: return true;
@@ -753,15 +852,22 @@
     const inventoryCost = sum(items.map(item => item.inventoryCost));
     const monthlyDemand = sum(items.map(item => item.avg9));
     const excessCost = sum(items.map(item => item.excessCost));
+    const recentDemand = sum(items.map(item => item.recentAvg3));
+    const priorDemand = sum(items.map(item => item.priorAvg3));
+    const demandTrend = priorDemand > 0 ? (recentDemand - priorDemand) / priorDemand : recentDemand > 0 ? 1 : 0;
+    const suggestedQty = sum(items.map(item => item.suggestedQty));
+    const revenueAtRisk = sum(items.map(item => item.revenueAtRisk));
     const coverage = monthlyDemand > 0 ? currentStock / monthlyDemand : Infinity;
     renderKpis("overview-kpis", [
       ["Net sales units", formatNumber(netUnits), `${periods.length} selected periods`],
       ["Net revenue", formatMoney(revenue), netPriceCoverageText(items)],
       ["Gross margin", formatMoney(grossMargin), "Net revenue less product cost"],
       ["Gross margin %", revenue ? percent.format(grossMargin / revenue) : "—", costCoverageText(items)],
-      ["Average monthly demand", formatNumber(monthlyDemand), "Last nine complete months"],
+      ["Three-month demand trend", percent.format(demandTrend), "Latest 3M average versus prior 3M", demandTrend < 0 ? "risk" : "good"],
       ["Inventory cost", formatMoney(inventoryCost), costCoverageText(items)],
       ["Portfolio coverage", formatCover(coverage), "Current stock ÷ monthly demand", coverage > 4 ? "warn" : "good"],
+      ["Suggested replenishment", formatNumber(suggestedQty), "Forecast plus demand buffer less stock", suggestedQty > 0 ? "warn" : "good"],
+      ["Revenue opportunity at risk", formatMoney(revenueAtRisk), "Suggested units valued at NetPrice", revenueAtRisk > 0 ? "risk" : "good"],
       ["Excess inventory cost", formatMoney(excessCost), "Cost above two months of demand", excessCost > 0 ? "risk" : "good"]
     ]);
     drawLine("monthly-trend-chart", periodRows.map(row => ({ key: periodLabel(row.period), value: metricPeriod(row), filterValue: row.period })), metricFormatter(), "period");
@@ -811,14 +917,19 @@
     const excessCost = sum(excess.map(item => item.excessCost));
     const deadStockCost = sum(dead.map(item => item.deadStockCost));
     const inventoryCost = sum(items.map(item => item.inventoryCost));
+    const replenishNow = items.filter(item => item.planningSignal === "Replenish now");
+    const suggestedQty = sum(items.map(item => item.suggestedQty));
+    const revenueAtRisk = sum(items.map(item => item.revenueAtRisk));
     const covers = items.map(item => item.monthsCover).filter(Number.isFinite).sort((a,b) => a-b);
     const sellThrough = items.map(item => item.sellThrough9).filter(Number.isFinite).sort((a,b) => a-b);
     renderKpis("stock-kpis", [
       ["Dead-stock models", formatNumber(dead.length), "Stock with zero 9M demand", dead.length ? "risk" : "good"],
       ["Dead-stock cost", formatMoney(deadStockCost), costCoverageText(dead)],
       ["Excess-stock models", formatNumber(excess.length), "Above the two-month target", excess.length ? "warn" : "good"],
-      ["Excess units", formatNumber(excessUnits), "Current stock less 2M target"],
       ["Excess inventory cost", formatMoney(excessCost), costCoverageText(excess)],
+      ["Replenish-now models", formatNumber(replenishNow.length), "Stock below the P80 forecast floor", replenishNow.length ? "risk" : "good"],
+      ["Suggested replenishment", formatNumber(suggestedQty), "One-month forecast plus 95% buffer"],
+      ["Revenue opportunity at risk", formatMoney(revenueAtRisk), "Suggested units valued at NetPrice", revenueAtRisk > 0 ? "risk" : "good"],
       ["Current inventory cost", formatMoney(inventoryCost), costCoverageText(items)],
       ["Median coverage", formatCover(median(covers)), "Across finite model coverage"],
       ["Median sell-through", sellThrough.length ? percent.format(median(sellThrough)) : "—", "9M demand ÷ demand plus stock"]
@@ -835,7 +946,7 @@
     drawHorizontalBars("stock-model-chart", topBy(items.filter(item => item.deadStock || item.excessStock), item => state.filters.metric === "revenue" ? (item.deadStockCost + item.excessCost) : item.excessUnits, 18).map(item => ({ key: item.model, filterValue: item.key, value: state.filters.metric === "revenue" ? (item.deadStockCost + item.excessCost) : item.excessUnits })), metricFormatter(), COLORS.red, { filterType: "model" });
     const sorted = items.slice().sort((a,b) => stockPriority(b) - stockPriority(a));
     $("stock-row-count").textContent = tableCount(sorted);
-    $("stock-table").innerHTML = sorted.slice(0, 350).map(item => `<tr class="linked-row" role="button" tabindex="0" data-filter-type="model" data-filter-value="${escapeHtml(item.key)}" data-filter-label="Model ${escapeHtml(item.model)}"><td class="model-cell">${escapeHtml(item.model)}</td><td>${escapeHtml(item.brand)}</td><td class="title-cell">${escapeHtml(item.title)}</td><td>${statusBadge(item.status)}</td><td>${conditionBadge(item.stockCondition)}</td><td class="num">${formatNumber(item.stock)}</td><td class="num">${item.cost ? formatMoney(item.cost) : "—"}</td><td class="num">${formatMoney(item.inventoryCost)}</td><td class="num">${formatNumber(item.demand9)}</td><td class="num">${formatNumber(item.avg9)}</td><td class="num">${formatCover(item.monthsCover)}</td><td class="num">${formatNumber(item.target2)}</td><td class="num">${formatNumber(item.excessUnits)}</td><td class="num">${formatMoney(item.excessCost)}</td><td class="num">${formatMoney(item.deadStockCost)}</td></tr>`).join("") || emptyTable(15);
+    $("stock-table").innerHTML = sorted.slice(0, 350).map(item => `<tr class="linked-row" role="button" tabindex="0" data-filter-type="model" data-filter-value="${escapeHtml(item.key)}" data-filter-label="Model ${escapeHtml(item.model)}"><td class="model-cell">${escapeHtml(item.model)}</td><td>${escapeHtml(item.brand)}</td><td class="title-cell">${escapeHtml(item.title)}</td><td>${statusBadge(item.status)}</td><td>${conditionBadge(item.stockCondition)}</td><td>${conditionBadge(item.planningSignal)}</td><td class="num">${formatNumber(item.stock)}</td><td class="num">${item.cost ? formatMoney(item.cost) : "—"}</td><td class="num">${formatMoney(item.inventoryCost)}</td><td class="num">${formatNumber(item.demand9)}</td><td class="num">${formatNumber(item.avg9)}</td><td class="num">${percent.format(item.demandTrend)}</td><td class="num">${formatCover(item.monthsCover)}</td><td class="num">${percent.format(item.stockoutProbability)}</td><td class="num">${formatNumber(item.safetyStock)}</td><td class="num">${formatNumber(item.reorderPoint)}</td><td class="num">${formatNumber(item.suggestedQty)}</td><td class="num">${formatMoney(item.revenueAtRisk)}</td><td class="num">${formatNumber(item.target2)}</td><td class="num">${formatNumber(item.excessUnits)}</td><td class="num">${formatMoney(item.excessCost)}</td><td class="num">${formatMoney(item.deadStockCost)}</td></tr>`).join("") || emptyTable(22);
   }
 
   function renderTiers(items) {
@@ -846,6 +957,7 @@
       `${percent.format(total ? sum(group.items.map(item => item.demand9)) / total : 0)} of selected demand`,
       group.tier === "High" ? "good" : group.tier === "Medium" ? "warn" : "risk"
     ]).concat([
+      ["A-X models", formatNumber(items.filter(item => item.abcXyz === "AX").length), "High revenue and stable demand"],
       ["Selling models", formatNumber(items.filter(item => item.demand9 > 0).length), "Positive demand in baseline"],
       ["Zero-demand models", formatNumber(items.filter(item => item.demand9 === 0).length), "Included in low sellers", items.some(item => item.demand9 === 0) ? "risk" : "good"],
       ["9M demand", formatNumber(total), "Active-brand eligible models"],
@@ -854,6 +966,8 @@
     ]));
     drawDonut("tier-contribution-chart", groups.map(group => ({ key: group.tier, value: sum(group.items.map(item => item.demand9)) })), "Demand", value => formatNumber(value), [COLORS.green, COLORS.orange, COLORS.red], "tier");
     drawColumns("tier-count-chart", groups.map(group => ({ key: group.tier, value: group.items.length })), value => integer.format(value), COLORS.teal, true, "tier");
+    drawDonut("pattern-chart", ["Smooth","Erratic","Intermittent","Lumpy","No demand"].map(key => ({ key, value: items.filter(item => item.demandPattern === key).length })), "Patterns", value => integer.format(value), [COLORS.green,COLORS.orange,COLORS.blue,COLORS.purple,COLORS.red], "demandPattern");
+    drawColumns("abcxyz-chart", ["AX","AY","AZ","BX","BY","BZ","CX","CY","CZ"].map(key => ({ key, value: items.filter(item => item.abcXyz === key).length })), value => integer.format(value), COLORS.blue, false, "abcXyz");
     const brands = unique(items.map(item => item.brand)).map(brand => {
       const brandItems = items.filter(item => item.brand === brand);
       const brandTotal = sum(brandItems.map(item => item.demand9));
@@ -863,7 +977,7 @@
     const sorted = items.slice().sort((a,b) => a.rank - b.rank);
     const totalRevenue = sum(items.map(item => item.demand9 * item.price));
     $("tier-row-count").textContent = tableCount(sorted);
-    $("tier-table").innerHTML = sorted.slice(0,350).map(item => { const netRevenue=item.demand9*item.price, grossMargin=item.demand9*(item.price-item.cost); return `<tr class="linked-row" role="button" tabindex="0" data-filter-type="model" data-filter-value="${escapeHtml(item.key)}" data-filter-label="Model ${escapeHtml(item.model)}"><td>${tierBadge(item.tier)}</td><td class="num">${integer.format(item.rank)}</td><td class="model-cell">${escapeHtml(item.model)}</td><td>${escapeHtml(item.brand)}</td><td class="title-cell">${escapeHtml(item.title)}</td><td class="num">${formatNumber(item.demand9)}</td><td class="num">${formatNumber(item.avg9)}</td><td class="num">${formatMoney(netRevenue)}</td><td class="num">${formatMoney(grossMargin)}</td><td class="num">${netRevenue ? percent.format(grossMargin/netRevenue) : "—"}</td><td class="num">${percent.format(item.unitContribution9)}</td><td class="num">${percent.format(item.cumulativeContribution9)}</td><td class="num">${totalRevenue && item.price ? percent.format(netRevenue / totalRevenue) : "—"}</td></tr>`; }).join("") || emptyTable(13);
+    $("tier-table").innerHTML = sorted.slice(0,350).map(item => { const netRevenue=item.demand9*item.price, grossMargin=item.demand9*(item.price-item.cost); return `<tr class="linked-row" role="button" tabindex="0" data-filter-type="model" data-filter-value="${escapeHtml(item.key)}" data-filter-label="Model ${escapeHtml(item.model)}"><td>${tierBadge(item.tier)}</td><td><span class="status-badge">${escapeHtml(item.abcXyz)}</span></td><td>${escapeHtml(item.demandPattern)}</td><td class="num">${integer.format(item.rank)}</td><td class="model-cell">${escapeHtml(item.model)}</td><td>${escapeHtml(item.brand)}</td><td class="title-cell">${escapeHtml(item.title)}</td><td class="num">${formatNumber(item.demand9)}</td><td class="num">${formatNumber(item.avg9)}</td><td class="num">${percent.format(item.demandCv)}</td><td class="num">${formatMoney(netRevenue)}</td><td class="num">${formatMoney(grossMargin)}</td><td class="num">${netRevenue ? percent.format(grossMargin/netRevenue) : "—"}</td><td class="num">${percent.format(item.unitContribution9)}</td><td class="num">${percent.format(item.cumulativeContribution9)}</td><td class="num">${totalRevenue && item.price ? percent.format(netRevenue / totalRevenue) : "—"}</td></tr>`; }).join("") || emptyTable(16);
   }
 
   function renderContribution(items, periods) {
@@ -887,7 +1001,7 @@
     drawHorizontalBars("model-contribution-chart", rows.slice(0,18).map(row => ({ key: row.model, filterValue: row.key, value: state.filters.metric === "revenue" ? row.revenue : row.units })), metricFormatter(), COLORS.blue, { filterType: "model" });
     drawDonut("brand-contribution-chart", rollupItems(items, item => item.brand, item => metricItem(item, periods), 8), "Brand mix", metricFormatter(), [COLORS.teal, COLORS.blue, COLORS.purple, COLORS.orange, COLORS.green, COLORS.red, "#5f6f84", "#9bb3c7"], "brand");
     $("contribution-row-count").textContent = tableCount(rows);
-    $("contribution-table").innerHTML = rows.slice(0,350).map(row => `<tr class="linked-row" role="button" tabindex="0" data-filter-type="model" data-filter-value="${escapeHtml(row.key)}" data-filter-label="Model ${escapeHtml(row.model)}"><td class="num">${row.portfolioRank}</td><td class="num">${row.brandRank}</td><td class="model-cell">${escapeHtml(row.model)}</td><td>${escapeHtml(row.brand)}</td><td class="title-cell">${escapeHtml(row.title)}</td><td class="num">${formatNumber(row.units)}</td><td class="num">${formatMoney(row.revenue)}</td><td class="num">${formatMoney(row.grossMargin)}</td><td class="num">${row.revenue ? percent.format(row.grossMargin/row.revenue) : "—"}</td><td class="num">${percent.format(row.brandUnitShare)}</td><td class="num">${row.brandRevenueShare == null ? "—" : percent.format(row.brandRevenueShare)}</td><td class="num">${percent.format(row.portfolioUnitShare)}</td><td class="num">${row.portfolioRevenueShare == null ? "—" : percent.format(row.portfolioRevenueShare)}</td></tr>`).join("") || emptyTable(13);
+    $("contribution-table").innerHTML = rows.slice(0,350).map(row => `<tr class="linked-row" role="button" tabindex="0" data-filter-type="model" data-filter-value="${escapeHtml(row.key)}" data-filter-label="Model ${escapeHtml(row.model)}"><td class="num">${row.portfolioRank}</td><td class="num">${row.brandRank}</td><td class="num">${row.marginRank}</td><td class="model-cell">${escapeHtml(row.model)}</td><td>${escapeHtml(row.brand)}</td><td class="title-cell">${escapeHtml(row.title)}</td><td class="num">${formatNumber(row.units)}</td><td class="num">${formatMoney(row.revenue)}</td><td class="num">${formatMoney(row.grossMargin)}</td><td class="num">${row.revenue ? percent.format(row.grossMargin/row.revenue) : "—"}</td><td class="num">${percent.format(row.portfolioGrossMarginShare)}</td><td class="num">${percent.format(row.brandUnitShare)}</td><td class="num">${row.brandRevenueShare == null ? "—" : percent.format(row.brandRevenueShare)}</td><td class="num">${percent.format(row.portfolioUnitShare)}</td><td class="num">${row.portfolioRevenueShare == null ? "—" : percent.format(row.portfolioRevenueShare)}</td></tr>`).join("") || emptyTable(15);
   }
 
   function renderForecast(items) {
@@ -896,25 +1010,36 @@
     const three = sum(rows.map(item => item.forecast.threeMonth));
     const high = rows.filter(item => item.forecast.confidence === "High").length;
     const validWapes = rows.map(item => item.forecast.wape).filter(Number.isFinite);
+    const validSmapes = rows.map(item => item.forecast.smape).filter(Number.isFinite);
+    const validMases = rows.map(item => item.forecast.mase).filter(Number.isFinite);
     const validBias = rows.map(item => item.forecast.bias).filter(Number.isFinite);
     const forecastRevenue = sum(rows.map(item => item.forecast.next * item.price));
+    const upperRange = sum(rows.map(item => item.forecast.high));
+    const replenishNow = rows.filter(item => item.planningSignal === "Replenish now").length;
+    const stockoutRisks = rows.map(item => item.stockoutProbability).filter(Number.isFinite);
+    const revenueAtRisk = sum(rows.map(item => item.revenueAtRisk));
     const projectedCover = next > 0 ? sum(rows.map(item => item.stock)) / next : Infinity;
     renderKpis("forecast-kpis", [
       ["Next-month forecast", formatNumber(next), "Selected models"],
       ["Forecast net revenue", formatMoney(forecastRevenue), netPriceCoverageText(rows)],
-      ["Three-month forecast", formatNumber(three), "Selected methods combined"],
+      ["P80 upper demand", formatNumber(upperRange), `Base 3M forecast ${formatNumber(three)}`],
       ["High-confidence models", formatNumber(high), `${percent.format(rows.length ? high / rows.length : 0)} of selected models`, high ? "good" : "warn"],
       ["Median backtest WAPE", validWapes.length ? percent.format(median(validWapes)) : "—", "Lower is better"],
+      ["Median sMAPE", validSmapes.length ? percent.format(median(validSmapes)) : "—", "Scale-balanced forecast error"],
+      ["Median MASE", validMases.length ? decimal.format(median(validMases)) : "—", "Below 1 beats naive forecast"],
       ["Median forecast bias", validBias.length ? percent.format(median(validBias)) : "—", "Positive indicates over-forecast"],
-      ["Projected portfolio cover", formatCover(projectedCover), "Stock ÷ next-month forecast", projectedCover > 4 ? "warn" : "good"],
-      ["Methods selected", formatNumber(unique(rows.map(item => item.forecast.method)).length), "Chosen model by model"]
+      ["Replenish-now models", formatNumber(replenishNow), "Stock below P80 forecast floor", replenishNow ? "risk" : "good"],
+      ["Median stockout risk", stockoutRisks.length ? percent.format(median(stockoutRisks)) : "—", "Residual-error probability model"],
+      ["Revenue opportunity at risk", formatMoney(revenueAtRisk), "Suggested units valued at NetPrice", revenueAtRisk > 0 ? "risk" : "good"],
+      ["Projected portfolio cover", formatCover(projectedCover), "Stock ÷ next-month forecast", projectedCover > 4 ? "warn" : "good"]
     ]);
-    drawGroupedBars("forecast-chart", rows.slice(0,14).map(item => ({ key: item.model, filterValue: item.key, "9M average": item.avg9, Forecast: item.forecast.next })), [
-      { key: "9M average", color: COLORS.teal }, { key: "Forecast", color: COLORS.purple }
+    drawGroupedBars("forecast-chart", rows.slice(0,14).map(item => ({ key: item.model, filterValue: item.key, "9M average": item.avg9, Forecast: item.forecast.next, "P80 high": item.forecast.high })), [
+      { key: "9M average", color: COLORS.teal }, { key: "Forecast", color: COLORS.purple }, { key: "P80 high", color: COLORS.orange }
     ], value => formatNumber(value), "model");
     drawDonut("accuracy-chart", ["High","Medium","Low"].map(key => ({ key, value: rows.filter(item => item.forecast.confidence === key).length })), "Confidence", value => integer.format(value), [COLORS.green, COLORS.orange, COLORS.red], "forecastConfidence");
+    drawHorizontalBars("stockout-risk-chart", rows.filter(item => item.stockoutProbability > 0).sort((a,b) => b.stockoutProbability-a.stockoutProbability).slice(0,18).map(item => ({ key:item.model, filterValue:item.key, value:item.stockoutProbability })), value => percent.format(value), COLORS.red, { domain:[0,1], filterType:"model", emptyMessage:"No modeled stockout risk is present for this selection." });
     $("forecast-row-count").textContent = tableCount(rows);
-    $("forecast-table").innerHTML = rows.slice(0,350).map(item => `<tr class="linked-row" role="button" tabindex="0" data-filter-type="model" data-filter-value="${escapeHtml(item.key)}" data-filter-label="Model ${escapeHtml(item.model)}"><td class="model-cell">${escapeHtml(item.model)}</td><td>${escapeHtml(item.brand)}</td><td class="title-cell">${escapeHtml(item.title)}</td><td>${escapeHtml(item.demandPattern)}</td><td>${escapeHtml(item.forecast.method)}</td><td>${confidenceBadge(item.forecast.confidence)}</td><td class="num">${integer.format(item.forecast.observations)}</td><td class="num">${formatNumber(item.avg9)}</td><td class="num">${formatNumber(item.forecast.next)}</td><td class="num">${formatMoney(item.forecast.next*item.price)}</td><td class="num">${formatNumber(item.forecast.threeMonth)}</td><td class="num">${item.forecast.wape == null ? "—" : percent.format(item.forecast.wape)}</td><td class="num">${item.forecast.bias == null ? "—" : percent.format(item.forecast.bias)}</td><td class="num">${formatNumber(item.stock)}</td><td class="num">${formatCover(item.projectedCover)}</td></tr>`).join("") || emptyTable(15);
+    $("forecast-table").innerHTML = rows.slice(0,350).map(item => `<tr class="linked-row" role="button" tabindex="0" data-filter-type="model" data-filter-value="${escapeHtml(item.key)}" data-filter-label="Model ${escapeHtml(item.model)}"><td class="model-cell">${escapeHtml(item.model)}</td><td>${escapeHtml(item.brand)}</td><td class="title-cell">${escapeHtml(item.title)}</td><td>${escapeHtml(item.demandPattern)}</td><td>${escapeHtml(item.forecast.method)}</td><td>${confidenceBadge(item.forecast.confidence)}</td><td>${conditionBadge(item.planningSignal)}</td><td class="num">${integer.format(item.forecast.observations)}</td><td class="num">${formatNumber(item.avg9)}</td><td class="num">${formatNumber(item.forecast.next)}</td><td class="num">${formatNumber(item.forecast.low)}</td><td class="num">${formatNumber(item.forecast.high)}</td><td class="num">${formatMoney(item.forecast.next*item.price)}</td><td class="num">${formatNumber(item.forecast.threeMonth)}</td><td class="num">${item.forecast.wape == null ? "—" : percent.format(item.forecast.wape)}</td><td class="num">${item.forecast.smape == null ? "—" : percent.format(item.forecast.smape)}</td><td class="num">${item.forecast.mase == null ? "—" : decimal.format(item.forecast.mase)}</td><td class="num">${item.forecast.bias == null ? "—" : percent.format(item.forecast.bias)}</td><td class="num">${formatNumber(item.stock)}</td><td class="num">${percent.format(item.stockoutProbability)}</td><td class="num">${formatMoney(item.revenueAtRisk)}</td><td class="num">${formatCover(item.projectedCover)}</td></tr>`).join("") || emptyTable(22);
   }
 
   function renderData(items) {
@@ -967,6 +1092,7 @@
     }));
     const portfolioUnits = sum(raw.map(row => row.units));
     const portfolioRevenue = sum(raw.map(row => row.revenue));
+    const portfolioGrossMargin = sum(raw.map(row => row.grossMargin));
     const brandUnits = groupTotals(raw, row => row.brand, row => row.units);
     const brandRevenue = groupTotals(raw, row => row.brand, row => row.revenue);
     raw.sort((a,b) => b.units - a.units || a.model.localeCompare(b.model));
@@ -974,14 +1100,17 @@
     unique(raw.map(row => row.brand)).forEach(brand => {
       raw.filter(row => row.brand === brand).sort((a,b) => b.units - a.units).forEach((row,index) => brandRanks.set(`${brand}|${row.model}`, index + 1));
     });
+    const marginRanks = new Map(raw.slice().sort((a,b) => b.grossMargin - a.grossMargin).map((row,index) => [row.key,index+1]));
     return raw.map((row,index) => ({
       ...row,
       portfolioRank: index + 1,
       brandRank: brandRanks.get(`${row.brand}|${row.model}`),
+      marginRank: marginRanks.get(row.key),
       brandUnitShare: brandUnits.get(row.brand) ? row.units / brandUnits.get(row.brand) : 0,
       brandRevenueShare: brandRevenue.get(row.brand) ? row.revenue / brandRevenue.get(row.brand) : null,
       portfolioUnitShare: portfolioUnits ? row.units / portfolioUnits : 0,
-      portfolioRevenueShare: portfolioRevenue ? row.revenue / portfolioRevenue : null
+      portfolioRevenueShare: portfolioRevenue ? row.revenue / portfolioRevenue : null,
+      portfolioGrossMarginShare: portfolioGrossMargin ? row.grossMargin / portfolioGrossMargin : 0
     }));
   }
 
@@ -1050,7 +1179,7 @@
     const container = $(id);
     clearChart(container);
     const filtered = data.filter(item => Number.isFinite(item.value) && item.value !== 0);
-    if (!filtered.length) return chartEmpty(container, state.filters.metric === "revenue" ? "Upload or match prices to view revenue." : "No values are available for this selection.");
+    if (!filtered.length) return chartEmpty(container, options.emptyMessage || (state.filters.metric === "revenue" ? "Upload or match prices to view revenue." : "No values are available for this selection."));
     const width = Math.max(500, container.clientWidth || 900), rowHeight = 25;
     const height = Math.max(310, filtered.length * rowHeight + 62);
     const margin = { top: 12, right: 48, bottom: 34, left: Math.min(220, Math.max(115, width * .22)) };
@@ -1202,10 +1331,10 @@
       add("MONTHLY ANALYSIS", periodSummary(items,periods).map(row => ({ Period: row.period, Month: periodLabel(row.period), Year: row.period.slice(0,4), "Models Selling": row.modelsSelling, "Net Units": row.netUnits, "Demand Units": row.demandUnits, "Net Revenue": row.revenue, COGS: row.cogs, "Gross Margin": row.grossMargin, "Margin %": row.revenue ? row.grossMargin / row.revenue : "" })), [12,16,10,16,16,16,20,18,18,14]);
       add("YEAR ANALYSIS", annualSummary(items,analysis.periods).map(row => ({ Year: row.year, "Net Units": row.netUnits, "Demand Units": row.demandUnits, "Net Revenue": row.revenue, COGS: row.cogs, "Gross Margin": row.grossMargin, "Margin %": row.revenue ? row.grossMargin / row.revenue : "" })), [12,18,18,22,18,18,14]);
     }
-    if (wants("stock")) add("STOCK HEALTH", stockExport(items), [20,20,55,15,16,16,16,16,16,16,16,16,18,18,18,18]);
-    if (wants("tiers")) add("SELLER TIERS", tierExport(items), [12,10,20,20,55,18,16,16,18,18,18,18,18,16,16]);
-    if (wants("contribution")) add("MODEL CONTRIBUTION", contributionExport(contributionRows(items,periods)), [14,12,20,20,55,16,20,20,20,16,20,20,20,20]);
-    if (wants("forecast")) add("DEMAND FORECAST", forecastExport(items), [20,20,55,18,20,14,16,16,16,18,16,16,18,16,16,18]);
+    if (wants("stock")) add("STOCK HEALTH", stockExport(items), [20,20,55,15,16,18,16,16,18,16,16,16,16,16,16,16,16,16,18,18]);
+    if (wants("tiers")) add("SELLER TIERS", tierExport(items), [12,12,18,10,20,20,55,16,16,16,18,18,16,18,18,18,16,16,16]);
+    if (wants("contribution")) add("MODEL CONTRIBUTION", contributionExport(contributionRows(items,periods)), [14,12,12,20,20,55,16,20,20,16,18,20,20,20,20]);
+    if (wants("forecast")) add("DEMAND FORECAST", forecastExport(items), [20,20,55,18,20,14,18,16,16,16,16,16,18,16,16,16,16,18,16,16,16,16,18]);
     if (wants("data")) add("VALIDATED SOURCE", sourceExport(items,analysis), [20,14,20,55,14,16,14,16,16,18,18,18]);
     if (section === "all") {
       add("PRICE LIST", (current().prices?.rows || []).map(row => ({ "Model#": row.model, "Item ID": row.itemId, NetPrice: row.netPrice, Cost: row.cost })), [22,16,16,16]);
@@ -1217,15 +1346,16 @@
   function executiveExport(items,periods) {
     const periodRows=periodSummary(items,periods), currentStock=sum(items.map(item=>item.stock)), monthly=sum(items.map(item=>item.avg9));
     const revenue=sum(periodRows.map(row=>row.revenue)), cogs=sum(periodRows.map(row=>row.cogs)), margin=revenue-cogs;
-    return [[`Sales Intelligence - ${REGION_NAMES[state.region]}`,""],["Analysis scope",state.filters.year === "ALL" ? "All available years" : state.filters.year],["Brand scope","Active brands only"],["Eligible statuses","Live, Fashion, Backorder"],["Models",items.length],["Net sales units",sum(periodRows.map(row=>row.netUnits))],["Net revenue (NetPrice)",revenue],["COGS",cogs],["Gross margin",margin],["Gross margin %",revenue?margin/revenue:""],["Current stock",currentStock],["Current inventory cost",sum(items.map(item=>item.inventoryCost))],["Nine-month average monthly demand",monthly],["Portfolio months of cover",monthly?currentStock/monthly:""],["Dead-stock models",items.filter(item=>item.deadStock).length],["Dead-stock cost",sum(items.map(item=>item.deadStockCost))],["Excess units",sum(items.map(item=>item.excessUnits))],["Excess inventory cost",sum(items.map(item=>item.excessCost))],["Generated",new Date().toISOString()]];
+    const recent=sum(items.map(item=>item.recentAvg3)), prior=sum(items.map(item=>item.priorAvg3));
+    return [[`Sales Intelligence - ${REGION_NAMES[state.region]}`,""],["Analysis scope",state.filters.year === "ALL" ? "All available years" : state.filters.year],["Brand scope","Active brands only"],["Eligible statuses","Live, Fashion, Backorder"],["Models",items.length],["Net sales units",sum(periodRows.map(row=>row.netUnits))],["Net revenue (NetPrice)",revenue],["COGS",cogs],["Gross margin",margin],["Gross margin %",revenue?margin/revenue:""],["Current stock",currentStock],["Current inventory cost",sum(items.map(item=>item.inventoryCost))],["Nine-month average monthly demand",monthly],["Three-month demand trend",prior?(recent-prior)/prior:recent?1:0],["Portfolio months of cover",monthly?currentStock/monthly:""],["Suggested replenishment",sum(items.map(item=>item.suggestedQty))],["Replenish-now models",items.filter(item=>item.planningSignal==="Replenish now").length],["Dead-stock models",items.filter(item=>item.deadStock).length],["Dead-stock cost",sum(items.map(item=>item.deadStockCost))],["Excess units",sum(items.map(item=>item.excessUnits))],["Excess inventory cost",sum(items.map(item=>item.excessCost))],["Generated",new Date().toISOString()]];
   }
 
-  function stockExport(items) { return items.map(item=>({"Model#":item.model,Brand:item.brand,"Item Title":item.title,Status:item.status,Condition:item.stockCondition,"Current Stock":item.stock,"9M Demand":item.demand9,"Average Per Month":item.avg9,"Months Cover":Number.isFinite(item.monthsCover)?item.monthsCover:"No demand","Two-Month Target":item.target2,"Excess Units":item.excessUnits,"Unit Cost":item.cost||"","Inventory Cost":item.inventoryCost||"","Excess Cost":item.excessCost||"","Dead-stock Cost":item.deadStockCost||"","Dead Stock":item.deadStock?"YES":"NO"})); }
-  function tierExport(items) { return items.slice().sort((a,b)=>a.rank-b.rank).map(item=>{const revenue=item.demand9*item.price,cogs=item.demand9*item.cost,margin=revenue-cogs;return {Tier:item.tier,Rank:item.rank,"Model#":item.model,Brand:item.brand,"Item Title":item.title,"Demand Pattern":item.demandPattern,"9M Demand":item.demand9,"Average Per Month":item.avg9,"Unit Contribution":item.unitContribution9,"Cumulative Contribution":item.cumulativeContribution9,"Net Revenue":revenue,"Gross Margin":margin,"Margin %":revenue?margin/revenue:"",ADI:item.demandAdi,"Demand CV":item.demandCv};}); }
-  function contributionExport(rows) { return rows.map(row=>({"Portfolio Rank":row.portfolioRank,"Brand Rank":row.brandRank,"Model#":row.model,Brand:row.brand,"Item Title":row.title,Units:row.units,"Net Revenue":row.revenue,"Gross Margin":row.grossMargin,"Margin %":row.revenue?row.grossMargin/row.revenue:"","Share of Brand Units":row.brandUnitShare,"Share of Brand Revenue":row.brandRevenueShare??"","Share of Total Units":row.portfolioUnitShare,"Share of Total Revenue":row.portfolioRevenueShare??""})); }
-  function forecastExport(items) { return items.slice().sort((a,b)=>b.forecast.next-a.forecast.next).map(item=>({"Model#":item.model,Brand:item.brand,"Item Title":item.title,"Demand Pattern":item.demandPattern,"Selected Method":item.forecast.method,Confidence:item.forecast.confidence,"History Months":item.forecast.observations,"9M Average":item.avg9,"Next Month Forecast":item.forecast.next,"Forecast Net Revenue":item.forecast.next*item.price,"3M Forecast":item.forecast.threeMonth,"Backtest WAPE":item.forecast.wape??"","Forecast Bias":item.forecast.bias??"","Backtest MAE":item.forecast.mae??"","Current Stock":item.stock,"Projected Months Cover":Number.isFinite(item.projectedCover)?item.projectedCover:"No forecast demand"})); }
+  function stockExport(items) { return items.map(item=>({"Model#":item.model,Brand:item.brand,"Item Title":item.title,Status:item.status,Condition:item.stockCondition,"Planning Signal":item.planningSignal,"Current Stock":item.stock,"Unit Cost":item.cost||"","Inventory Cost":item.inventoryCost||"","9M Demand":item.demand9,"Average Per Month":item.avg9,"Demand Trend":item.demandTrend,"Months Cover":Number.isFinite(item.monthsCover)?item.monthsCover:"No demand","Stockout Probability":item.stockoutProbability,"Safety Stock":item.safetyStock,"Reorder Point":item.reorderPoint,"Suggested Quantity":item.suggestedQty,"Revenue at Risk":item.revenueAtRisk,"Margin at Risk":item.marginAtRisk,"Two-Month Target":item.target2,"Excess Units":item.excessUnits,"Excess Cost":item.excessCost||"","Dead-stock Cost":item.deadStockCost||""})); }
+  function tierExport(items) { return items.slice().sort((a,b)=>a.rank-b.rank).map(item=>{const revenue=item.demand9*item.price,cogs=item.demand9*item.cost,margin=revenue-cogs;return {Tier:item.tier,"ABC-XYZ":item.abcXyz,"Demand Pattern":item.demandPattern,Rank:item.rank,"Model#":item.model,Brand:item.brand,"Item Title":item.title,"9M Demand":item.demand9,"Average Per Month":item.avg9,"Demand Trend":item.demandTrend,"Unit Contribution":item.unitContribution9,"Cumulative Contribution":item.cumulativeContribution9,"Revenue Contribution":item.revenueContribution9,"Net Revenue":revenue,"Gross Margin":margin,"Margin %":revenue?margin/revenue:"",ADI:item.demandAdi,"Demand CV":item.demandCv,"Zero-demand Rate":item.zeroDemandRate};}); }
+  function contributionExport(rows) { return rows.map(row=>({"Portfolio Rank":row.portfolioRank,"Brand Rank":row.brandRank,"Margin Rank":row.marginRank,"Model#":row.model,Brand:row.brand,"Item Title":row.title,Units:row.units,"Net Revenue":row.revenue,"Gross Margin":row.grossMargin,"Margin %":row.revenue?row.grossMargin/row.revenue:"","Gross-margin Share":row.portfolioGrossMarginShare,"Share of Brand Units":row.brandUnitShare,"Share of Brand Revenue":row.brandRevenueShare??"","Share of Total Units":row.portfolioUnitShare,"Share of Total Revenue":row.portfolioRevenueShare??""})); }
+  function forecastExport(items) { return items.slice().sort((a,b)=>b.forecast.next-a.forecast.next).map(item=>({"Model#":item.model,Brand:item.brand,"Item Title":item.title,"Demand Pattern":item.demandPattern,"Selected Method":item.forecast.method,Confidence:item.forecast.confidence,"Planning Signal":item.planningSignal,"History Months":item.forecast.observations,"Backtest Periods":item.forecast.backtestTests,"9M Average":item.avg9,"Next Month Forecast":item.forecast.next,"P80 Low":item.forecast.low,"P80 High":item.forecast.high,"Forecast Net Revenue":item.forecast.next*item.price,"3M Forecast":item.forecast.threeMonth,"Backtest WAPE":item.forecast.wape??"","Backtest sMAPE":item.forecast.smape??"","Backtest MASE":item.forecast.mase??"","Forecast Bias":item.forecast.bias??"","Backtest MAE":item.forecast.mae??"","Backtest RMSE":item.forecast.rmse??"","Selection Score":item.forecast.selectionScore??"","Current Stock":item.stock,"Stockout Probability":item.stockoutProbability,"Safety Stock":item.safetyStock,"Suggested Quantity":item.suggestedQty,"Revenue at Risk":item.revenueAtRisk,"Margin at Risk":item.marginAtRisk,"Projected Months Cover":Number.isFinite(item.projectedCover)?item.projectedCover:"No forecast demand"})); }
   function sourceExport(items,analysis) { return items.map(item=>({"Model#":item.model,"Item ID":item.itemId,Brand:item.brand,"Item Title":item.title,Status:item.status,"Active Brand":"YES","Current Stock":item.stock,"Monthly Periods":Object.keys(item.monthly).length,NetPrice:item.price||"",Cost:item.cost||"","Price Match":item.priceSource,"Latest Complete Period":analysis.completePeriods[analysis.completePeriods.length-1]})); }
-  function methodologyExport(analysis) { return [["Method","Definition"],["Brand scope","Only brands marked active in the selected region's Active Brands page are analyzed. If no brand configuration exists yet, all uploaded brands remain eligible."],["Eligible statuses","Only Live, Fashion and Backorder rows are analyzed."],["Period interpretation","A header in YYYYMM format is treated as a calendar month; 202509 is September 2025 and 202601 is January 2026."],["Partial month",analysis.latestIsPartial?`${analysis.latestPeriod} matches the current calendar month and is excluded from the nine-month baseline and forecast training.`:"The latest uploaded period is treated as complete."],["Nine-month demand","Sum of non-negative model demand across the last nine complete periods."],["Average monthly demand","Nine-month demand divided by the number of available complete baseline months, up to nine."],["Revenue","Monthly model net units multiplied by NetPrice from the price list, matched by ItemID first and Model# second."],["Cost and gross margin","COGS uses demand units multiplied by Cost. Gross margin equals NetPrice revenue minus COGS."],["Dead stock","Current stock is positive and nine-month demand is zero. Dead-stock exposure equals current stock multiplied by Cost."],["Months coverage","Current stock divided by average monthly demand. Positive stock with zero demand is reported as no-demand/infinite coverage."],["Excess stock","Current stock above two months of average demand. Excess units = max(0, current stock - 2 x average monthly demand); excess exposure equals excess units multiplied by Cost."],["Demand pattern","ADI and squared demand variability classify demand as Smooth, Erratic, Intermittent or Lumpy; zero demand is classified separately."],["Seller tiers","High sellers form the first 80% of cumulative nine-month demand, medium sellers the next 15%, and low sellers the remainder. Zero-demand models are low sellers."],["Forecast method selection","Each model is rolling-backtested using last month, 3-month average, 6-month weighted average, damped trend, seasonal naive when sufficient history exists, and Croston SBA for intermittent demand."],["Forecast accuracy","The method with the lowest backtest WAPE is selected. MAE and signed bias are also reported; forecasts are constrained to non-negative, historically plausible values."],["Regional separation",`${REGION_NAMES[state.region]} data is stored and analyzed independently in this browser.`]]; }
+  function methodologyExport(analysis) { return [["Method","Definition"],["Brand scope","Only brands marked active in the selected region's Active Brands page are analyzed. If no brand configuration exists yet, all uploaded brands remain eligible."],["Eligible statuses","Only Live, Fashion and Backorder rows are analyzed."],["Period interpretation","A header in YYYYMM format is treated as a calendar month; 202509 is September 2025 and 202601 is January 2026."],["Partial month",analysis.latestIsPartial?`${analysis.latestPeriod} matches the current calendar month and is excluded from the nine-month baseline and forecast training.`:"The latest uploaded period is treated as complete."],["Nine-month demand","Sum of non-negative model demand across the last nine complete periods."],["Average monthly demand","Nine-month demand divided by the number of available complete baseline months, up to nine."],["Demand trend","Latest three-month average demand compared with the preceding three-month average."],["Revenue","Monthly model net units multiplied by NetPrice from the price list, matched by ItemID first and Model# second."],["Cost and gross margin","COGS uses monthly net units multiplied by Cost. Gross margin equals NetPrice revenue minus COGS."],["Dead stock","Current stock is positive and nine-month demand is zero. Dead-stock exposure equals current stock multiplied by Cost."],["Months coverage","Current stock divided by average monthly demand. Positive stock with zero demand is reported as no-demand/infinite coverage."],["Excess stock","Current stock above two months of average demand. Excess units = max(0, current stock - 2 x average monthly demand); excess exposure equals excess units multiplied by Cost."],["Demand pattern","ADI and squared demand variability classify demand as Smooth, Erratic, Intermittent or Lumpy; zero demand is classified separately."],["ABC-XYZ matrix","ABC is cumulative nine-month NetPrice revenue: A to 80%, B to 95%, C the remainder. X is smooth demand, Y erratic, and Z intermittent, lumpy or no demand."],["Seller tiers","High sellers form the first 80% of cumulative nine-month demand, medium sellers the next 15%, and low sellers the remainder. Zero-demand models are low sellers."],["Forecast method selection","Each model is rolling-backtested using last month, 3-month average, 6-month weighted average, adaptive exponential smoothing, damped trend, seasonal naive, Croston SBA where appropriate, and a robust median ensemble. Selection balances WAPE, sMAPE, MASE and signed bias."],["Forecast range","The P80 range is the selected forecast plus or minus 1.28 times the model's rolling backtest MAE, constrained to non-negative plausible demand."],["Safety stock and reorder point","Safety stock uses 1.65 times rolling backtest MAE as an approximate one-sided 95% one-month demand buffer. Reorder point equals next-month forecast plus safety stock; suggested quantity is the positive gap versus current stock."],["Stockout probability","A normal residual-error approximation compares current stock with the selected next-month forecast using model-level RMSE. It is a planning risk indicator, not a guaranteed service level."],["Revenue and margin at risk","Suggested replenishment quantity is valued at NetPrice for revenue opportunity and positive NetPrice-minus-Cost for margin opportunity."],["Forecast accuracy","WAPE measures portfolio-weighted absolute error; sMAPE is scale-balanced percentage error; MASE below 1 outperforms a naive benchmark; signed bias above zero indicates over-forecasting."],["Regional separation",`${REGION_NAMES[state.region]} data is stored and analyzed independently in this browser.`]]; }
 
   function metricPeriod(row) { return state.filters.metric === "revenue" ? row.revenue : row.netUnits; }
   function metricItem(item, periods) { return periods.reduce((total,period)=>total+(state.filters.metric === "revenue"?finiteNumber(item.monthly[period])*item.price:finiteNumber(item.monthly[period])),0); }
@@ -1233,9 +1363,9 @@
   function shortMetric(value) { return state.filters.metric === "revenue" ? shortMoney(value) : shortNumber(value); }
   function tierRollup(items,valueFn) { return ["High","Medium","Low"].map(key=>({key,value:sum(items.filter(item=>item.tier===key).map(valueFn))})); }
   function rollupItems(items,keyFn,valueFn,limit=Infinity) { return Array.from(d3.rollup(items,rows=>sum(rows.map(valueFn)),keyFn),([key,value])=>({key,value})).sort((a,b)=>b.value-a.value).slice(0,limit); }
-  function groupTotals(items,keyFn,valueFn) { return d3.rollup(items,rows=>sum(rows.map(valueFn)),keyFn); }
+  function groupTotals(items,keyFn,valueFn) { const totals=new Map(); items.forEach(item=>{const key=keyFn(item);totals.set(key,finiteNumber(totals.get(key))+finiteNumber(valueFn(item)));}); return totals; }
   function topBy(items,valueFn,limit) { return items.slice().sort((a,b)=>valueFn(b)-valueFn(a)).slice(0,limit); }
-  function stockPriority(item) { return (item.deadStock?1e15:0)+(item.deadStockCost+item.excessCost)*1e5+item.excessUnits*1e3+(Number.isFinite(item.monthsCover)?item.monthsCover:1e6); }
+  function stockPriority(item) { const signal={"Replenish now":6,"Liquidate":5,"Replenish":4,"Reduce":3,"Healthy":1}[item.planningSignal]||0; return signal*1e15+(item.deadStockCost+item.excessCost)*1e5+item.suggestedQty*1e4+item.excessUnits*1e3+(Number.isFinite(item.monthsCover)?item.monthsCover:1e6); }
 
   function statusBadge(status) { return `<span class="status-badge">${escapeHtml(status)}</span>`; }
   function tierBadge(tier) { return `<span class="tier-badge tier-${tier.toLowerCase()}">${escapeHtml(tier)}</span>`; }
@@ -1259,6 +1389,8 @@
   function sum(values) { return values.reduce((total,value)=>total+finiteNumber(value),0); }
   function mean(values) { return values.length?sum(values)/values.length:0; }
   function standardDeviation(values) { const average=mean(values); return values.length?Math.sqrt(mean(values.map(value=>(value-average)**2))):0; }
+  function clamp(value, minimum, maximum) { return Math.min(maximum, Math.max(minimum, finiteNumber(value))); }
+  function normalCdf(value) { const sign=value<0?-1:1,x=Math.abs(value)/Math.sqrt(2),t=1/(1+.3275911*x),a1=.254829592,a2=-.284496736,a3=1.421413741,a4=-1.453152027,a5=1.061405429; const erf=sign*(1-(((((a5*t+a4)*t)+a3)*t+a2)*t+a1)*t*Math.exp(-x*x)); return .5*(1+erf); }
   function median(values) { if(!values.length)return 0; const sorted=values.slice().sort((a,b)=>a-b); const mid=Math.floor(sorted.length/2); return sorted.length%2?sorted[mid]:(sorted[mid-1]+sorted[mid])/2; }
   function unique(values) { return Array.from(new Set(values.filter(value=>value!==""&&value!=null))); }
   function titleCase(value) { return String(value||"").toLowerCase().replace(/\b\w/g,letter=>letter.toUpperCase()); }

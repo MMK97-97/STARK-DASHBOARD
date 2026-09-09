@@ -205,7 +205,7 @@ h3 { margin: 0; font: 700 17px/1.25 "Manrope", sans-serif; }
 
 .filter-bar {
   display: grid;
-  grid-template-columns: repeat(5, minmax(120px, .75fr)) minmax(240px, 1.5fr) auto;
+  grid-template-columns: repeat(6, minmax(110px, .72fr)) minmax(220px, 1.35fr) auto;
   align-items: end;
   gap: 10px;
   padding: 16px;
@@ -303,6 +303,10 @@ tbody tr:hover td { background: #eaf7f6; }
 .tier-medium, .confidence-medium, .condition-low-cover { color: #a96600; background: #fff3db; }
 .tier-low, .confidence-low, .condition-dead, .condition-excess { color: var(--red); background: #fdebed; }
 .condition-excess { color: #9254b8; background: #f4eafa; }
+.condition-healthy { color: var(--green); background: #e7f6ef; }
+.condition-replenish { color: #a96600; background: #fff3db; }
+.condition-replenish-now, .condition-liquidate { color: var(--red); background: #fdebed; }
+.condition-reduce { color: #9254b8; background: #f4eafa; }
 
 .toast { position: fixed; z-index: 80; right: 22px; bottom: 22px; max-width: min(420px, calc(100% - 44px)); padding: 12px 15px; border-radius: 11px; color: white; background: var(--navy); box-shadow: 0 16px 36px rgba(16,36,63,.22); opacity: 0; transform: translateY(12px); pointer-events: none; transition: opacity .2s ease, transform .2s ease; }
 .toast.show { opacity: 1; transform: none; }
