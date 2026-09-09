@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Advanced regional sales, inventory health and demand forecasting for Stark Premium.">
+  <title>Sales Intelligence | Stark Premium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/sales-analysis.css">
+  <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" defer></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
+  <script src="assets/sales-analysis.js" defer></script>
+</head>
+<body>
+  <a class="skip-link" href="#sales-main">Skip to analysis</a>
+
+  <header class="sales-header">
+    <a class="brand" href="index.html" aria-label="Stark Premium home">
+      <span class="brand-mark">S</span>
+      <span><small>Stark Premium</small><strong>Sales Intelligence</strong></span>
+    </a>
+    <div class="header-actions">
+      <span class="local-note"><i></i> Files stay in this browser</span>
+      <button class="button button-primary" id="export-workbook" type="button" disabled>Export analysis workbook</button>
+    </div>
+  </header>
+
+  <main id="sales-main">
+    <nav class="page-nav" aria-label="Sales workspace navigation">
+      <a class="button button-secondary" id="workspace-link" href="index.html?workspace=US">&larr; US workspace</a>
+      <div class="region-tabs" role="tablist" aria-label="Reporting region">
+        <button class="region-tab active" type="button" role="tab" data-region="US"><span>US</span><small id="region-status-US">No data</small></button>
+        <button class="region-tab" type="button" role="tab" data-region="EU"><span>EU</span><small id="region-status-EU">No data</small></button>
+        <button class="region-tab" type="button" role="tab" data-region="CA"><span>Canada</span><small id="region-status-CA">No data</small></button>
+      </div>
+    </nav>
+
+    <section class="hero">
+      <div>
+        <p class="eyebrow">Advanced commercial planning &bull; <span id="hero-region">United States</span></p>
+        <h1>Sales and Demand Intelligence</h1>
+        <p>Year-level sales analysis, nine-month demand behavior, inventory coverage, excess exposure and model-level forecasting in one decision workspace.</p>
+      </div>
+      <div class="hero-status">
+        <span>Analysis scope</span>
+        <strong>LIVE &bull; FASHION &bull; BACKORDER</strong>
+        <small id="hero-data-state">Upload a sales report to begin</small>
+      </div>
+    </section>
+
+    <section class="upload-section" aria-labelledby="upload-heading">
+      <div class="section-heading">
+        <div><p class="eyebrow">Regional data center</p><h2 id="upload-heading">Build the analysis</h2></div>
+        <p>Upload the monthly item stock sales report first. Add a price list to calculate estimated revenue, stock value and excess value.</p>
+      </div>
+      <div class="upload-grid">
+        <article class="upload-card">
+          <div class="card-top"><span class="step">01</span><span class="file-state" id="sales-file-state">Required</span></div>
+          <h3>Sales and stock report</h3>
+          <p>Supports model-level monthly columns such as 202509 and 202601, plus current stock and item status.</p>
+          <label class="button button-secondary upload-button" for="sales-file">Upload sales report</label>
+          <input id="sales-file" type="file" accept=".xlsx,.xls,.csv,.tsv" hidden>
+          <small class="file-detail" id="sales-file-detail">Excel, XLS, CSV or TSV</small>
+        </article>
+
+        <article class="upload-card">
+          <div class="card-top"><span class="step">02</span><span class="file-state optional" id="price-file-state">Optional</span></div>
+          <h3>Price list</h3>
+          <p>Match by Model# or Item ID. Recognizes Price, Unit Price, Selling Price, List Price, MSRP and Retail.</p>
+          <label class="button button-secondary upload-button" for="price-file">Upload price list</label>
+          <input id="price-file" type="file" accept=".xlsx,.xls,.csv,.tsv" hidden>
+          <small class="file-detail" id="price-file-detail">Revenue remains unavailable until prices are matched</small>
+        </article>
+
+        <article class="upload-card readiness-card">
+          <div class="card-top"><span class="step">03</span><span class="file-state ready" id="analysis-state">Waiting</span></div>
+          <h3>Decision analysis</h3>
+          <p id="analysis-copy">The engine validates periods, filters eligible statuses and selects a forecast method by model.</p>
+          <button class="button button-primary" id="analyze-button" type="button" disabled>Generate advanced analysis</button>
+          <button class="text-button" id="clear-region" type="button" disabled>Clear this region</button>
+        </article>
+      </div>
+    </section>
+
+    <section class="empty-state" id="empty-state">
+      <span class="empty-icon">↗</span>
+      <h2>No sales analysis yet</h2>
+      <p>Upload the monthly sales and stock report above. The page will preserve each region independently in this browser.</p>
+    </section>
+
+    <section class="analysis hidden" id="analysis" aria-live="polite">
+      <div class="analysis-topline">
+        <div>
+          <p class="eyebrow" id="analysis-region-label">United States portfolio</p>
+          <h2>Decision dashboard</h2>
+          <p id="analysis-summary">Analysis ready</p>
+        </div>
+        <div class="quality-pills">
+          <span id="period-pill">0 periods</span>
+          <span id="eligible-pill">0 eligible models</span>
+          <span id="price-pill">No prices</span>
+        </div>
+      </div>
+
+      <section class="filter-bar" aria-label="Analysis filters">
+        <label><span>Analysis year</span><select id="year-filter"><option value="ALL">All years</option></select></label>
+        <label><span>Brand</span><select id="brand-filter"><option value="ALL">All brands</option></select></label>
+        <label><span>Seller tier</span><select id="tier-filter"><option value="ALL">All tiers</option><option value="High">High sellers</option><option value="Medium">Medium sellers</option><option value="Low">Low sellers</option></select></label>
+        <label><span>Stock condition</span><select id="stock-filter"><option value="ALL">All conditions</option><option value="Dead">Dead stock</option><option value="Excess">Excess stock</option><option value="Balanced">Balanced stock</option><option value="Low Cover">Under 1 month</option></select></label>
+        <label><span>Chart metric</span><select id="metric-filter"><option value="units">Sales units</option><option value="revenue">Estimated revenue</option></select></label>
+        <label class="search-field"><span>Model or item</span><input id="search-filter" type="search" placeholder="Search model, title or item ID"></label>
+        <button class="button button-ghost" id="reset-filters" type="button">Reset</button>
+      </section>
+      <p class="filter-result" id="filter-result"></p>
+
+      <nav class="analysis-tabs" role="tablist" aria-label="Sales analysis sections">
+        <button class="analysis-tab active" type="button" role="tab" aria-selected="true" data-tab="overview">Overview</button>
+        <button class="analysis-tab" type="button" role="tab" aria-selected="false" data-tab="year">Year analysis</button>
+        <button class="analysis-tab" type="button" role="tab" aria-selected="false" data-tab="stock">Stock health</button>
+        <button class="analysis-tab" type="button" role="tab" aria-selected="false" data-tab="tiers">Seller tiers</button>
+        <button class="analysis-tab" type="button" role="tab" aria-selected="false" data-tab="contribution">Model contribution</button>
+        <button class="analysis-tab" type="button" role="tab" aria-selected="false" data-tab="forecast">Forecast</button>
+        <button class="analysis-tab" type="button" role="tab" aria-selected="false" data-tab="data">Data quality</button>
+      </nav>
+
+      <section class="tab-panel active" id="overview-panel" data-panel="overview">
+        <div class="panel-toolbar"><div><p class="eyebrow">Executive view</p><h2>Portfolio overview</h2></div><button class="button button-secondary export-section" data-export="overview" type="button">Export overview</button></div>
+        <div class="kpi-grid" id="overview-kpis"></div>
+        <div class="chart-grid">
+          <article class="panel panel-wide"><div class="panel-heading"><div><span>Sales velocity</span><h3>Monthly performance</h3></div><small>YYYYMM interpreted as calendar month</small></div><div class="chart chart-tall" id="monthly-trend-chart"></div></article>
+          <article class="panel"><div class="panel-heading"><div><span>Portfolio mix</span><h3>Seller contribution</h3></div></div><div class="chart chart-tall" id="seller-mix-chart"></div></article>
+          <article class="panel"><div class="panel-heading"><div><span>Brand concentration</span><h3>Top brands</h3></div></div><div class="chart" id="brand-chart"></div></article>
+          <article class="panel panel-wide"><div class="panel-heading"><div><span>Inventory exposure</span><h3>Stock versus two-month demand</h3></div></div><div class="chart" id="overview-stock-chart"></div></article>
+        </div>
+      </section>
+
+      <section class="tab-panel" id="year-panel" data-panel="year" hidden>
+        <div class="panel-toolbar"><div><p class="eyebrow">Calendar performance</p><h2>Individual year analysis</h2></div><button class="button button-secondary export-section" data-export="year" type="button">Export year analysis</button></div>
+        <div class="kpi-grid" id="year-kpis"></div>
+        <div class="chart-grid">
+          <article class="panel panel-wide"><div class="panel-heading"><div><span>Month by month</span><h3 id="year-monthly-title">Monthly sales</h3></div></div><div class="chart chart-tall" id="year-monthly-chart"></div></article>
+          <article class="panel"><div class="panel-heading"><div><span>Annual comparison</span><h3>Sales by year</h3></div></div><div class="chart chart-tall" id="annual-chart"></div></article>
+          <article class="panel panel-full"><div class="panel-heading"><div><span>Brand performance</span><h3>Sales contribution by brand</h3></div></div><div class="chart" id="year-brand-chart"></div></article>
+        </div>
+        <article class="panel table-panel"><div class="panel-heading"><div><span>Period register</span><h3>Monthly analysis detail</h3></div><small id="year-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Period</th><th>Year</th><th class="num">Models selling</th><th class="num">Net units</th><th class="num">Demand units</th><th class="num">Estimated revenue</th><th class="num">Change vs prior month</th></tr></thead><tbody id="year-table"></tbody></table></div></article>
+      </section>
+
+      <section class="tab-panel" id="stock-panel" data-panel="stock" hidden>
+        <div class="panel-toolbar"><div><p class="eyebrow">Nine-month demand baseline</p><h2>Stock health and excess</h2></div><button class="button button-secondary export-section" data-export="stock" type="button">Export stock health</button></div>
+        <div class="method-note">Dead stock has positive current stock and zero demand in the last nine complete months. Excess stock is current stock above two months of average demand.</div>
+        <div class="kpi-grid" id="stock-kpis"></div>
+        <div class="chart-grid">
+          <article class="panel"><div class="panel-heading"><div><span>Coverage risk</span><h3>Models by months of cover</h3></div></div><div class="chart chart-tall" id="coverage-chart"></div></article>
+          <article class="panel panel-wide"><div class="panel-heading"><div><span>Capital exposure</span><h3>Excess inventory by brand</h3></div></div><div class="chart chart-tall" id="excess-brand-chart"></div></article>
+          <article class="panel panel-full"><div class="panel-heading"><div><span>Model exceptions</span><h3>Largest excess and dead-stock positions</h3></div></div><div class="chart" id="stock-model-chart"></div></article>
+        </div>
+        <article class="panel table-panel"><div class="panel-heading"><div><span>Action register</span><h3>Model-level stock analysis</h3></div><small id="stock-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Model#</th><th>Brand</th><th>Item title</th><th>Status</th><th>Condition</th><th class="num">Current stock</th><th class="num">9M demand</th><th class="num">Avg/month</th><th class="num">Months cover</th><th class="num">2M target</th><th class="num">Excess units</th><th class="num">Excess value</th></tr></thead><tbody id="stock-table"></tbody></table></div></article>
+      </section>
+
+      <section class="tab-panel" id="tiers-panel" data-panel="tiers" hidden>
+        <div class="panel-toolbar"><div><p class="eyebrow">Velocity segmentation</p><h2>High medium and low sellers</h2></div><button class="button button-secondary export-section" data-export="tiers" type="button">Export seller tiers</button></div>
+        <div class="method-note">High sellers build the first 80% of nine-month demand, medium sellers the next 15%, and low sellers the remaining contribution.</div>
+        <div class="kpi-grid" id="tier-kpis"></div>
+        <div class="chart-grid">
+          <article class="panel"><div class="panel-heading"><div><span>Demand contribution</span><h3>Units by seller tier</h3></div></div><div class="chart chart-tall" id="tier-contribution-chart"></div></article>
+          <article class="panel"><div class="panel-heading"><div><span>Portfolio breadth</span><h3>Models by seller tier</h3></div></div><div class="chart chart-tall" id="tier-count-chart"></div></article>
+          <article class="panel panel-full"><div class="panel-heading"><div><span>Brand quality</span><h3>High seller contribution by brand</h3></div></div><div class="chart" id="tier-brand-chart"></div></article>
+        </div>
+        <article class="panel table-panel"><div class="panel-heading"><div><span>Seller register</span><h3>Velocity and contribution detail</h3></div><small id="tier-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Tier</th><th>Rank</th><th>Model#</th><th>Brand</th><th>Item title</th><th class="num">9M demand</th><th class="num">Avg/month</th><th class="num">Unit contribution</th><th class="num">Cumulative contribution</th><th class="num">Revenue contribution</th></tr></thead><tbody id="tier-table"></tbody></table></div></article>
+      </section>
+
+      <section class="tab-panel" id="contribution-panel" data-panel="contribution" hidden>
+        <div class="panel-toolbar"><div><p class="eyebrow">Brand and model economics</p><h2>Model contribution</h2></div><button class="button button-secondary export-section" data-export="contribution" type="button">Export contribution</button></div>
+        <div class="kpi-grid" id="contribution-kpis"></div>
+        <div class="chart-grid">
+          <article class="panel panel-wide"><div class="panel-heading"><div><span>Portfolio contribution</span><h3>Top models</h3></div></div><div class="chart chart-tall" id="model-contribution-chart"></div></article>
+          <article class="panel"><div class="panel-heading"><div><span>Brand contribution</span><h3>Sales mix</h3></div></div><div class="chart chart-tall" id="brand-contribution-chart"></div></article>
+        </div>
+        <article class="panel table-panel"><div class="panel-heading"><div><span>Contribution register</span><h3>Model share within brand and portfolio</h3></div><small id="contribution-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Portfolio rank</th><th>Brand rank</th><th>Model#</th><th>Brand</th><th>Item title</th><th class="num">Units</th><th class="num">Estimated revenue</th><th class="num">Share of brand units</th><th class="num">Share of brand revenue</th><th class="num">Share of total units</th><th class="num">Share of total revenue</th></tr></thead><tbody id="contribution-table"></tbody></table></div></article>
+      </section>
+
+      <section class="tab-panel" id="forecast-panel" data-panel="forecast" hidden>
+        <div class="panel-toolbar"><div><p class="eyebrow">Model-selected demand planning</p><h2>Demand forecast</h2></div><button class="button button-secondary export-section" data-export="forecast" type="button">Export forecast</button></div>
+        <div class="method-note">Each model is back-tested across naive, moving-average, weighted, trend, seasonal and intermittent-demand methods. The lowest historical error method is selected and extreme projections are constrained.</div>
+        <div class="kpi-grid" id="forecast-kpis"></div>
+        <div class="chart-grid">
+          <article class="panel panel-wide"><div class="panel-heading"><div><span>Next month outlook</span><h3>Average demand versus selected forecast</h3></div></div><div class="chart chart-tall" id="forecast-chart"></div></article>
+          <article class="panel"><div class="panel-heading"><div><span>Model confidence</span><h3>Forecast confidence mix</h3></div></div><div class="chart chart-tall" id="accuracy-chart"></div></article>
+        </div>
+        <article class="panel table-panel"><div class="panel-heading"><div><span>Forecast register</span><h3>Model-level forecast and accuracy</h3></div><small id="forecast-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Model#</th><th>Brand</th><th>Item title</th><th>Selected method</th><th>Confidence</th><th class="num">History months</th><th class="num">9M avg</th><th class="num">Next month</th><th class="num">3M forecast</th><th class="num">Backtest WAPE</th><th class="num">Current stock</th><th class="num">Projected cover</th></tr></thead><tbody id="forecast-table"></tbody></table></div></article>
+      </section>
+
+      <section class="tab-panel" id="data-panel" data-panel="data" hidden>
+        <div class="panel-toolbar"><div><p class="eyebrow">Validation and lineage</p><h2>Data quality</h2></div><button class="button button-secondary export-section" data-export="data" type="button">Export validated data</button></div>
+        <div class="kpi-grid" id="data-kpis"></div>
+        <article class="panel table-panel"><div class="panel-heading"><div><span>Eligible source</span><h3>Normalized model records</h3></div><small id="data-row-count"></small></div><div class="table-wrap data-table"><table><thead><tr><th>Model#</th><th>Item ID</th><th>Brand</th><th>Item title</th><th>Status</th><th class="num">Current stock</th><th class="num">Periods</th><th class="num">Price</th><th>Price match</th><th>Latest complete period</th></tr></thead><tbody id="data-table"></tbody></table></div></article>
+      </section>
+    </section>
+  </main>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <div class="tooltip" id="tooltip" role="tooltip" hidden></div>
+</body>
+</html>
