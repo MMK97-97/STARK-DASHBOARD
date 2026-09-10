@@ -420,6 +420,60 @@
       letter-spacing: 0;
     }
 
+    .precision-controls {
+      grid-column: span 2;
+      margin-top: 8px;
+      border: 1px solid var(--line);
+      border-radius: 14px;
+      background: #f8fbfd;
+    }
+
+    .precision-controls summary {
+      min-height: 52px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      padding: 0 15px;
+      color: var(--ink);
+      cursor: pointer;
+      font-size: 14px;
+      font-weight: 800;
+      list-style: none;
+    }
+
+    .precision-controls summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .precision-controls summary::after {
+      content: "+";
+      width: 28px;
+      height: 28px;
+      display: grid;
+      place-items: center;
+      border-radius: 9px;
+      color: var(--teal);
+      background: #e3f5f3;
+      font-size: 18px;
+    }
+
+    .precision-controls[open] summary::after {
+      content: "−";
+    }
+
+    .precision-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 13px;
+      padding: 0 15px 15px;
+      border-top: 1px solid var(--line);
+    }
+
+    .precision-grid label {
+      margin-top: 14px;
+    }
+
     .item-actions,
     .calculate-bar {
       display: flex;
@@ -638,6 +692,60 @@
       font: 800 17px/1.2 "Manrope";
     }
 
+    .scenario-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 10px;
+    }
+
+    .scenario {
+      position: relative;
+      min-height: 154px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 13px;
+      background: #f8fbfd;
+    }
+
+    .scenario.recommended {
+      border-color: rgba(11, 158, 150, .55);
+      background: linear-gradient(145deg, #ecfbf8, #f8fcff);
+      box-shadow: inset 0 0 0 1px rgba(11, 158, 150, .08);
+    }
+
+    .scenario-badge {
+      display: inline-flex;
+      align-items: center;
+      min-height: 25px;
+      padding: 0 9px;
+      border-radius: 999px;
+      color: #0b6d67;
+      background: #dff6f2;
+      font-size: 11px;
+      font-weight: 800;
+      letter-spacing: .05em;
+      text-transform: uppercase;
+    }
+
+    .scenario h4 {
+      margin: 10px 0 4px;
+      font: 800 18px/1.2 "Manrope";
+    }
+
+    .scenario p {
+      margin: 0;
+      color: var(--muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+
+    .scenario strong {
+      display: block;
+      margin-top: 12px;
+      color: var(--ink);
+      font-size: 13px;
+    }
+
     .status-line {
       display: flex;
       align-items: center;
@@ -847,12 +955,15 @@
       }
 
       .form-grid,
-      .result-grid {
+      .result-grid,
+      .precision-grid,
+      .scenario-grid {
         grid-template-columns: 1fr;
       }
 
       .span-2,
       .section-label,
+      .precision-controls,
       .result-card.full {
         grid-column: span 1;
       }
@@ -1346,6 +1457,11 @@
               <input id="keep-upright" type="checkbox">
               <span>Keep this side up</span>
             </label>
+
+            <label class="check-row span-2">
+              <input id="item-stackable" type="checkbox" checked>
+              <span>Cartons may be stacked on a pallet</span>
+            </label>
           </div>
 
           <div class="item-actions">
@@ -1403,6 +1519,27 @@
               </select>
             </label>
 
+            <label>
+              Carton sizing
+              <select id="carton-sizing">
+                <option value="custom" selected>Right-sized custom carton</option>
+                <option value="stock">Nearest stocked carton</option>
+              </select>
+            </label>
+
+            <label>
+              Outer-box allowance (in)
+              <input
+                id="carton-allowance"
+                type="number"
+                min="0"
+                max="2"
+                step="0.05"
+                value="0.25"
+              >
+              <small class="input-note">Adds corrugate and measurement tolerance.</small>
+            </label>
+
             <div class="section-label">Pallet rules</div>
 
             <label>
@@ -1452,6 +1589,89 @@
               <input id="allow-mixed-pallets" type="checkbox">
               <span>Allow different SKUs to share pallets</span>
             </label>
+
+            <details class="precision-controls">
+              <summary>Advanced accuracy controls</summary>
+
+              <div class="precision-grid">
+                <label>
+                  Measurement quality
+                  <select id="measurement-quality">
+                    <option value="exact" selected>Exact packed measurement</option>
+                    <option value="manufacturer">Manufacturer specification</option>
+                    <option value="estimate">Planning estimate</option>
+                  </select>
+                </label>
+
+                <label>
+                  Pallet edge clearance (in)
+                  <input
+                    id="pallet-clearance"
+                    type="number"
+                    min="0"
+                    max="4"
+                    step="0.25"
+                    value="0.5"
+                  >
+                </label>
+
+                <label>
+                  Freight class
+                  <select id="freight-class-override">
+                    <option value="auto" selected>Auto — density guidance</option>
+                    <option value="50">50</option>
+                    <option value="55">55</option>
+                    <option value="60">60</option>
+                    <option value="65">65</option>
+                    <option value="70">70</option>
+                    <option value="77.5">77.5</option>
+                    <option value="85">85</option>
+                    <option value="92.5">92.5</option>
+                    <option value="100">100</option>
+                    <option value="110">110</option>
+                    <option value="125">125</option>
+                    <option value="150">150</option>
+                    <option value="175">175</option>
+                    <option value="200">200</option>
+                    <option value="250">250</option>
+                    <option value="300">300</option>
+                    <option value="400">400</option>
+                    <option value="500">500</option>
+                  </select>
+                </label>
+
+                <label>
+                  Trailer pallet positions
+                  <input
+                    id="trailer-positions"
+                    type="number"
+                    min="1"
+                    max="30"
+                    step="1"
+                    value="26"
+                  >
+                </label>
+
+                <label>
+                  Trailer payload (lb)
+                  <input
+                    id="trailer-payload"
+                    type="number"
+                    min="1000"
+                    max="80000"
+                    step="500"
+                    value="45000"
+                  >
+                </label>
+
+                <label>
+                  FedEx DIM divisor
+                  <select id="fedex-divisor">
+                    <option value="139" selected>139 — U.S. package</option>
+                  </select>
+                </label>
+              </div>
+            </details>
           </div>
 
           <div class="calculate-bar">
@@ -1537,6 +1757,11 @@
           <div class="kpis" id="kpis"></div>
 
           <div class="result-grid">
+            <article class="result-card full">
+              <h3>Mode comparison</h3>
+              <div class="scenario-grid" id="mode-scenarios"></div>
+            </article>
+
             <article class="result-card">
               <h3>Carrier qualification</h3>
               <div id="carrier-results"></div>
@@ -1565,6 +1790,7 @@
                       <th>Actual / box</th>
                       <th>UPS DIM</th>
                       <th>FedEx DIM</th>
+                      <th>Cube use</th>
                       <th>Parcel status</th>
                     </tr>
                   </thead>
@@ -1609,13 +1835,14 @@
       <h3>Calculation standard</h3>
 
       <p>
-        U.S. parcel screening uses a conservative 150 lb, 108 in longest-side
-        and 165 in length-plus-girth limit. Shipping-box dimensions are
-        rounded up before DIM-weight screening; billable weight is the greater
-        of rounded actual or dimensional weight. Pallet calculations test
-        carton orientations, layer utilization, loaded height and weight.
-        Freight class uses the 2025 NMFC density scale and must still be
-        verified against the commodity's current NMFC item and carrier tariff.
+        U.S. parcel screening applies carrier-specific package limits and
+        measurement rounding. Billable weight is the greater of rounded actual
+        or dimensional weight using the selected divisor. Cartonization tests
+        all allowed item orientations, cushioning, corrugate allowance, weight
+        limits and either right-sized or stocked boxes. Pallet calculations test
+        mixed layer patterns, edge clearance, stackability, height and weight.
+        Density class remains planning guidance unless a verified NMFC class is
+        selected; current commodity rules and carrier tariffs still control.
       </p>
     </section>
 
@@ -1641,10 +1868,40 @@
 
       const TRAILER = {
         positions: 26,
-        payload: 45000
+        payload: 45000,
+        insideLength: 636,
+        insideWidth: 100
       };
 
       const PALLET_BASE_HEIGHT = 6;
+
+      /* Common U.S. corrugated stock sizes, in inches. */
+      const STOCK_CARTONS = [
+        [6, 6, 4], [8, 6, 4], [8, 8, 6], [10, 8, 6],
+        [10, 10, 8], [12, 9, 6], [12, 10, 8], [12, 12, 8],
+        [12, 12, 12], [14, 10, 8], [14, 12, 10], [15, 12, 10],
+        [16, 12, 10], [16, 14, 12], [18, 12, 12], [18, 14, 12],
+        [18, 18, 16], [20, 16, 12], [20, 20, 16], [22, 18, 16],
+        [24, 18, 18], [24, 20, 20], [24, 24, 20], [28, 20, 20],
+        [30, 24, 24], [36, 24, 24], [40, 24, 24], [48, 24, 24]
+      ].map(dimensions => dimensions.sort((a, b) => b - a));
+
+      const CARRIER_RULES = {
+        UPS: {
+          maximumWeight: 150,
+          maximumLength: 108,
+          maximumLengthAndGirth: 165,
+          oversizeLength: 96,
+          oversizeLengthAndGirth: 130
+        },
+        FedEx: {
+          maximumWeight: 150,
+          maximumLength: 119,
+          maximumLengthAndGirth: 165,
+          oversizeLength: 96,
+          oversizeLengthAndGirth: 130
+        }
+      };
 
       const state = {
         items: [],
@@ -1731,15 +1988,40 @@
         ]);
       }
 
-      function roundedDimensions(dimensions) {
-        return dimensions
-          .map(Math.ceil)
-          .sort((a, b) => b - a);
+      function sortedDimensions(dimensions) {
+        return [...dimensions].sort((a, b) => b - a);
       }
 
-      function lengthAndGirth(dimensions) {
+      function roundedDimensions(dimensions, carrierName = "UPS") {
+        const round = carrierName === "FedEx"
+          ? value => Math.max(1, Math.round(value))
+          : value => Math.max(1, Math.ceil(value));
+
+        return sortedDimensions(dimensions.map(round));
+      }
+
+      function quarterInchDimensions(dimensions) {
+        return sortedDimensions(
+          dimensions.map(value => Math.ceil(value * 4) / 4)
+        );
+      }
+
+      function nearestStockCarton(requiredDimensions) {
+        const required = sortedDimensions(requiredDimensions);
+
+        return STOCK_CARTONS
+          .filter(carton => carton.every(
+            (measurement, index) => measurement >= required[index]
+          ))
+          .sort((a, b) =>
+            a.reduce((total, value) => total * value, 1) -
+            b.reduce((total, value) => total * value, 1)
+          )[0] || null;
+      }
+
+      function lengthAndGirth(dimensions, carrierName) {
         const [length, width, height] =
-          roundedDimensions(dimensions);
+          roundedDimensions(dimensions, carrierName);
 
         return length + 2 * (width + height);
       }
@@ -1749,32 +2031,51 @@
         actualWeight,
         carrierName
       ) {
-        const [length] =
-          roundedDimensions(dimensions);
+        const rules = CARRIER_RULES[carrierName];
+        const ratedDimensions = roundedDimensions(
+          dimensions,
+          carrierName
+        );
+        const [length, width] = ratedDimensions;
 
         const combinedSize =
-          lengthAndGirth(dimensions);
-
-        /* Conservative U.S. Ground screen for both listed carriers. */
-        const maximumLength = 108;
+          lengthAndGirth(dimensions, carrierName);
 
         const eligible =
-          actualWeight <= 150 &&
-          length <= maximumLength &&
-          combinedSize <= 165 &&
-          Boolean(carrierName);
+          Boolean(rules) &&
+          actualWeight <= rules.maximumWeight &&
+          length <= rules.maximumLength &&
+          combinedSize <= rules.maximumLengthAndGirth;
 
         return {
           eligible,
           oversize:
-            length > 96 ||
-            combinedSize > 130,
+            length > rules.oversizeLength ||
+            combinedSize > rules.oversizeLengthAndGirth,
+          handlingReview:
+            actualWeight > 50 ||
+            length > 48 ||
+            width > 30,
           length,
-          combinedSize
+          combinedSize,
+          ratedDimensions
         };
       }
 
-      function findBestShippingBox(item, units) {
+      function dimensionalWeight(
+        dimensions,
+        divisor,
+        carrierName
+      ) {
+        const ratedVolume = roundedDimensions(
+          dimensions,
+          carrierName
+        ).reduce((total, measurement) => total * measurement, 1);
+
+        return Math.ceil(ratedVolume / divisor);
+      }
+
+      function findBestShippingBox(item, units, settings) {
         let best = null;
 
         const padding =
@@ -1801,17 +2102,29 @@
               const availableSlots =
                 columns * rows * layers;
 
-              const dimensions =
-                roundedDimensions([
+              const requiredDimensions =
+                sortedDimensions([
                   orientation[0] * columns +
-                    padding * 2,
+                    padding * 2 +
+                    settings.cartonAllowance,
 
                   orientation[1] * rows +
-                    padding * 2,
+                    padding * 2 +
+                    settings.cartonAllowance,
 
                   orientation[2] * layers +
-                    padding * 2
+                    padding * 2 +
+                    settings.cartonAllowance
                 ]);
+
+              const stockCarton =
+                settings.cartonSizing === "stock"
+                  ? nearestStockCarton(requiredDimensions)
+                  : null;
+
+              const dimensions = stockCarton
+                ? [...stockCarton]
+                : quarterInchDimensions(requiredDimensions);
 
               const volume =
                 dimensions[0] *
@@ -1826,13 +2139,23 @@
                 dimensions[0] /
                 Math.max(1, dimensions[2]);
 
+              const itemCube =
+                item.length *
+                item.width *
+                item.height *
+                units;
+
+              const cubeUtilization =
+                Math.min(1, itemCube / volume);
+
               const score =
                 volume *
                 (
                   1 +
                   unusedRatio * 0.06 +
                   Math.max(0, aspectRatio - 5) *
-                    0.015
+                    0.015 +
+                  Math.max(0, .55 - cubeUtilization) * .08
                 );
 
               if (!best || score < best.score) {
@@ -1843,6 +2166,12 @@
                     rows,
                     layers
                   ],
+                  source: stockCarton
+                    ? "Stock carton"
+                    : settings.cartonSizing === "stock"
+                      ? "Custom — no stock fit"
+                      : "Right-sized carton",
+                  cubeUtilization,
                   score
                 };
               }
@@ -1887,7 +2216,7 @@
           units += 1
         ) {
           const box =
-            findBestShippingBox(item, units);
+            findBestShippingBox(item, units, settings);
 
           const actualWeight =
             item.weight * units +
@@ -1921,15 +2250,21 @@
           const upsBillable =
             Math.max(
               Math.ceil(actualWeight),
-              Math.ceil(
-                volume / settings.upsDivisor
+              dimensionalWeight(
+                box.dimensions,
+                settings.upsDivisor,
+                "UPS"
               )
             );
 
           const fedexBillable =
             Math.max(
               Math.ceil(actualWeight),
-              Math.ceil(volume / 139)
+              dimensionalWeight(
+                box.dimensions,
+                settings.fedexDivisor,
+                "FedEx"
+              )
             );
 
           const bestBillable =
@@ -2010,7 +2345,8 @@
           const box =
             findBestShippingBox(
               item,
-              group.units
+              group.units,
+              settings
             );
 
           const dimensions =
@@ -2030,12 +2366,18 @@
             );
 
           const upsDim =
-            Math.ceil(
-              volume / settings.upsDivisor
+            dimensionalWeight(
+              dimensions,
+              settings.upsDivisor,
+              "UPS"
             );
 
           const fedexDim =
-            Math.ceil(volume / 139);
+            dimensionalWeight(
+              dimensions,
+              settings.fedexDivisor,
+              "FedEx"
+            );
 
           return {
             key: `${item.id}-${group.units}`,
@@ -2044,6 +2386,8 @@
             count: group.count,
             dimensions,
             volume,
+            source: box.source,
+            cubeUtilization: box.cubeUtilization,
             actualWeight,
             upsDim,
             fedexDim,
@@ -2074,7 +2418,8 @@
                 "FedEx"
               ),
 
-            upright: item.upright
+            upright: item.upright,
+            stackable: item.stackable
           };
         });
       }
@@ -2189,8 +2534,16 @@
           orientation => {
             const boxesPerLayer =
               maximumBoxesPerLayer(
-                settings.palletLength,
-                settings.palletWidth,
+                Math.max(
+                  1,
+                  settings.palletLength -
+                    settings.palletClearance * 2
+                ),
+                Math.max(
+                  1,
+                  settings.palletWidth -
+                    settings.palletClearance * 2
+                ),
                 orientation[0],
                 orientation[1]
               );
@@ -2200,12 +2553,14 @@
             }
 
             const layersByHeight =
-              Math.floor(
-                (
-                  settings.palletHeight -
-                  PALLET_BASE_HEIGHT
-                ) / orientation[2]
-              );
+              plan.stackable
+                ? Math.floor(
+                    (
+                      settings.palletHeight -
+                      PALLET_BASE_HEIGHT
+                    ) / orientation[2]
+                  )
+                : 1;
 
             const boxesByWeight =
               Math.floor(
@@ -2324,16 +2679,20 @@
       function estimatedFreightClass(density) {
         if (density < 1) return 400;
         if (density < 2) return 300;
-        if (density < 4) return 250;
-        if (density < 6) return 175;
-        if (density < 8) return 125;
-        if (density < 10) return 100;
-        if (density < 12) return 92.5;
-        if (density < 15) return 85;
-        if (density < 22.5) return 70;
-        if (density < 30) return 65;
-        if (density < 35) return 60;
-        if (density < 50) return 55;
+        if (density < 3) return 250;
+        if (density < 4) return 200;
+        if (density < 5) return 175;
+        if (density < 6) return 150;
+        if (density < 7) return 125;
+        if (density < 8) return 110;
+        if (density < 9) return 100;
+        if (density < 10.5) return 92.5;
+        if (density < 12) return 85;
+        if (density < 13.5) return 77.5;
+        if (density < 15) return 70;
+        if (density < 22.5) return 65;
+        if (density < 30) return 60;
+        if (density < 35) return 55;
 
         return 50;
       }
@@ -2356,8 +2715,17 @@
           cartonTare:
             numericValue("carton-tare"),
 
+          cartonSizing:
+            $("carton-sizing").value,
+
+          cartonAllowance:
+            numericValue("carton-allowance"),
+
           upsDivisor:
             numericValue("ups-divisor"),
+
+          fedexDivisor:
+            numericValue("fedex-divisor"),
 
           optimization:
             $("optimization").value,
@@ -2373,6 +2741,21 @@
 
           palletTare:
             numericValue("pallet-tare"),
+
+          palletClearance:
+            numericValue("pallet-clearance"),
+
+          measurementQuality:
+            $("measurement-quality").value,
+
+          freightClassOverride:
+            $("freight-class-override").value,
+
+          trailerPositions:
+            numericValue("trailer-positions"),
+
+          trailerPayload:
+            numericValue("trailer-payload"),
 
           allowMixed:
             $("allow-mixed-pallets")
@@ -2422,7 +2805,10 @@
               ),
 
             upright:
-              $("keep-upright").checked
+              $("keep-upright").checked,
+
+            stackable:
+              $("item-stackable").checked
           };
 
         if (
@@ -2487,6 +2873,7 @@
                         : ""
                     }
                     ${item.upright ? " • Upright" : ""}
+                    ${item.stackable === false ? " • Do not stack" : ""}
                   </small>
                 </div>
 
@@ -2566,6 +2953,8 @@
           ) ||
           settings.maxCartonWeight > 150 ||
           settings.cartonTare < 0 ||
+          settings.cartonAllowance < 0 ||
+          settings.cartonAllowance > 2 ||
           settings.cartonTare >=
             settings.maxCartonWeight ||
           !isPositive(
@@ -2575,10 +2964,20 @@
             settings.palletWeight
           ) ||
           settings.palletTare < 0 ||
+          settings.palletClearance < 0 ||
+          settings.palletClearance * 2 >=
+            Math.min(
+              settings.palletLength,
+              settings.palletWidth
+            ) ||
           settings.palletHeight <=
             PALLET_BASE_HEIGHT ||
           settings.palletTare >=
-            settings.palletWeight;
+            settings.palletWeight ||
+          !isPositive(settings.upsDivisor) ||
+          !isPositive(settings.fedexDivisor) ||
+          !isPositive(settings.trailerPositions) ||
+          !isPositive(settings.trailerPayload);
 
         if (invalidSettings) {
           showToast(
@@ -2633,6 +3032,22 @@
             0
           ) / 1728;
 
+        const totalItemCube =
+          state.items.reduce(
+            (total, item) =>
+              total +
+              item.length *
+              item.width *
+              item.height *
+              item.quantity,
+            0
+          ) / 1728;
+
+        const cartonCubeUtilization =
+          totalBoxCube > 0
+            ? Math.min(100, totalItemCube / totalBoxCube * 100)
+            : 0;
+
         const totalUpsBillable =
           boxPlans.reduce(
             (total, plan) =>
@@ -2666,6 +3081,13 @@
             plan =>
               plan.ups.oversize ||
               plan.fedex.oversize
+          );
+
+        const handlingReview =
+          boxPlans.some(
+            plan =>
+              plan.ups.handlingReview ||
+              plan.fedex.handlingReview
           );
 
         const palletRows =
@@ -2714,10 +3136,21 @@
           validPalletRows.length > 1 &&
           totalPallets > 1
         ) {
+          const usableFootprint =
+            Math.max(
+              1,
+              settings.palletLength -
+                settings.palletClearance * 2
+            ) *
+            Math.max(
+              1,
+              settings.palletWidth -
+                settings.palletClearance * 2
+            );
+
           const usablePalletCube =
             (
-              settings.palletLength *
-              settings.palletWidth *
+              usableFootprint *
               (
                 settings.palletHeight -
                 PALLET_BASE_HEIGHT
@@ -2759,11 +3192,23 @@
               totalPallets *
               settings.palletTare;
 
+            const averageCargoHeight =
+              Math.min(
+                settings.palletHeight - PALLET_BASE_HEIGHT,
+                totalBoxCube * 1728 /
+                  Math.max(1, totalPallets) /
+                  usableFootprint /
+                  .82
+              );
+
             palletCube =
               totalPallets *
               settings.palletLength *
               settings.palletWidth *
-              settings.palletHeight /
+              (
+                PALLET_BASE_HEIGHT +
+                averageCargoHeight
+              ) /
               1728;
           }
         }
@@ -2774,21 +3219,53 @@
               palletCube
             : 0;
 
-        const freightClass =
+        const densityClass =
           density > 0
-            ? estimatedFreightClass(
-                density
-              )
+            ? estimatedFreightClass(density)
             : "—";
+
+        const freightClass =
+          settings.freightClassOverride === "auto"
+            ? densityClass
+            : Number(settings.freightClassOverride);
+
+        const classSource =
+          settings.freightClassOverride === "auto"
+            ? "Density guidance"
+            : "Manual NMFC override";
 
         const trailerUtilization =
           Math.max(
             totalPallets /
-              TRAILER.positions,
+              settings.trailerPositions,
 
             freightWeight /
-              TRAILER.payload
+              settings.trailerPayload
           ) * 100;
+
+        const linearFeet = Math.min(
+          Math.ceil(
+            totalPallets /
+            Math.max(1, Math.floor(TRAILER.insideWidth / settings.palletWidth))
+          ) * settings.palletLength / 12,
+          Math.ceil(
+            totalPallets /
+            Math.max(1, Math.floor(TRAILER.insideWidth / settings.palletLength))
+          ) * settings.palletWidth / 12
+        );
+
+        const bestParcelBillable = Math.min(
+          totalUpsBillable,
+          totalFedexBillable
+        );
+
+        const dimensionalUplift =
+          actualShipmentWeight > 0
+            ? Math.max(
+                0,
+                (bestParcelBillable / actualShipmentWeight - 1) * 100
+              )
+            : 0;
 
         const urgency =
           $("urgency").value;
@@ -2803,7 +3280,7 @@
           reason =
             "At least one shipping box cannot fit the selected pallet footprint, height or weight limit without overhang.";
         } else if (
-          totalPallets >= 18 ||
+          totalPallets >= Math.ceil(settings.trailerPositions * .7) ||
           freightWeight >= 30000
         ) {
           mode = "FTL";
@@ -2811,7 +3288,7 @@
           reason =
             "Estimated pallet positions or shipment weight are in a range where dedicated truckload service should be quoted.";
         } else if (
-          totalPallets >= 8 ||
+          totalPallets >= Math.ceil(settings.trailerPositions * .3) ||
           freightWeight >= 10000
         ) {
           mode = "VOLUME";
@@ -2868,14 +3345,26 @@
             "The estimated shipping boxes pass FedEx screening but do not pass the UPS screening used here.";
         }
 
-        let confidence = 96;
+        let confidence = 98;
         const planningNotes = [];
+
+        if (settings.measurementQuality === "manufacturer") {
+          confidence -= 4;
+          planningNotes.push(
+            "Manufacturer dimensions may differ from the final packed outer dimensions. Verify a production carton before tender."
+          );
+        } else if (settings.measurementQuality === "estimate") {
+          confidence -= 12;
+          planningNotes.push(
+            "Planning-estimate measurements materially reduce accuracy. Recalculate with scale weight and packed outer dimensions."
+          );
+        }
 
         if (
           !$("origin").value.trim() ||
           !$("destination").value.trim()
         ) {
-          confidence -= 7;
+          confidence -= 5;
 
           planningNotes.push(
             "Add origin and destination postal codes before requesting live carrier prices."
@@ -2889,7 +3378,7 @@
               "packed"
           )
         ) {
-          confidence -= 5;
+          confidence -= 7;
 
           planningNotes.push(
             "At least one line uses bare-product dimensions. Confirm the recommended box with a physical packed sample."
@@ -2897,7 +3386,7 @@
         }
 
         if (settings.allowMixed) {
-          confidence -= 5;
+          confidence -= 6;
 
           planningNotes.push(
             "Mixed-pallet mode consolidates by cube and weight; it is not a full mixed-SKU three-dimensional loading simulation."
@@ -2905,7 +3394,27 @@
         }
 
         if (cannotPalletize.length) {
-          confidence -= 15;
+          confidence -= 18;
+        }
+
+        if (cartonCubeUtilization < 45) {
+          confidence -= 4;
+          planningNotes.push(
+            "Estimated carton cube utilization is below 45%. A packaging engineer or stocked-box trial may identify a tighter pack."
+          );
+        }
+
+        if (
+          boxPlans.some(plan => plan.source.includes("no stock fit"))
+        ) {
+          confidence -= 4;
+          planningNotes.push(
+            "At least one item does not fit the included stocked-carton catalog; its result falls back to a right-sized custom carton."
+          );
+        }
+
+        if (state.items.some(item => item.manualUnits)) {
+          confidence -= 3;
         }
 
         if (
@@ -2920,11 +3429,13 @@
         $("mode-title").textContent = title;
         $("mode-reason").textContent = reason;
         $("mode-chip").textContent = mode;
+        const boundedConfidence = Math.max(35, confidence);
+
         $("confidence-value").textContent =
-          `${Math.max(50, confidence)}%`;
+          `${boundedConfidence}%`;
 
         $("confidence-bar").style.width =
-          `${Math.max(50, confidence)}%`;
+          `${boundedConfidence}%`;
 
         const kpis = [
           [
@@ -2944,12 +3455,7 @@
           ],
           [
             "Best parcel billable",
-            `${formatNumber(
-              Math.min(
-                totalUpsBillable,
-                totalFedexBillable
-              )
-            )} lb`,
+            `${formatNumber(bestParcelBillable)} lb`,
             totalUpsBillable <=
               totalFedexBillable
               ? "UPS estimate"
@@ -2973,9 +3479,24 @@
             `Class guidance ${freightClass}`
           ],
           [
+            "Carton cube use",
+            `${formatNumber(cartonCubeUtilization, 1)}%`,
+            "Product cube / box cube"
+          ],
+          [
+            "DIM-weight uplift",
+            `${formatNumber(dimensionalUplift, 1)}%`,
+            "Best parcel vs actual"
+          ],
+          [
+            "Linear floor space",
+            `${formatNumber(linearFeet, 1)} ft`,
+            "Estimated pallet footprint"
+          ],
+          [
             "Trailer use",
             `${formatNumber(trailerUtilization, 1)}%`,
-            "26 positions / 45,000 lb"
+            `${settings.trailerPositions} positions / ${formatNumber(settings.trailerPayload)} lb`
           ]
         ];
 
@@ -2987,6 +3508,43 @@
               <small>${kpi[2]}</small>
             </article>
           `).join("");
+
+        const parcelPreferred = ["PARCEL", "UPS", "FEDEX", "COMPARE"].includes(mode);
+        const ltlPreferred = ["LTL", "VOLUME", "COMPARE", "SPECIAL"].includes(mode);
+        const ftlPreferred = ["FTL", "VOLUME"].includes(mode);
+
+        $("mode-scenarios").innerHTML = [
+          {
+            title: "Parcel",
+            preferred: parcelPreferred,
+            badge: upsEligible || fedexEligible ? "Eligible" : "Not eligible",
+            copy: `${formatNumber(totalBoxes)} boxes • ${formatNumber(bestParcelBillable)} lb best billable`,
+            detail: oversizeExposure
+              ? "Oversize exposure requires a parcel-versus-LTL quote check."
+              : "Screened against UPS and FedEx U.S. package limits."
+          },
+          {
+            title: "LTL / volume",
+            preferred: ltlPreferred,
+            badge: cannotPalletize.length ? "Review" : "Ready to quote",
+            copy: `${formatNumber(totalPallets)} pallets • ${formatNumber(linearFeet, 1)} linear ft`,
+            detail: `${formatNumber(freightWeight, 1)} lb • ${formatNumber(density, 1)} lb/ft³ • Class ${freightClass}`
+          },
+          {
+            title: "FTL",
+            preferred: ftlPreferred,
+            badge: trailerUtilization >= 70 ? "Strong candidate" : "Available",
+            copy: `${formatNumber(trailerUtilization, 1)}% planning utilization`,
+            detail: `${formatNumber(totalPallets)} of ${formatNumber(settings.trailerPositions)} positions • ${formatNumber(freightWeight, 1)} lb`
+          }
+        ].map(scenario => `
+          <article class="scenario ${scenario.preferred ? "recommended" : ""}">
+            <span class="scenario-badge">${scenario.preferred ? "Recommended set" : scenario.badge}</span>
+            <h4>${scenario.title}</h4>
+            <p>${scenario.copy}</p>
+            <strong>${scenario.detail}</strong>
+          </article>
+        `).join("");
 
         $("carrier-results").innerHTML =
           statusLine(
@@ -3017,6 +3575,11 @@
               : "ok"
           ) +
           statusLine(
+            "Additional handling screen",
+            handlingReview ? "REVIEW" : "NONE",
+            handlingReview ? "warn" : "ok"
+          ) +
+          statusLine(
             "UPS billable total",
             `${formatNumber(totalUpsBillable)} lb`
           ) +
@@ -3032,17 +3595,21 @@
           ) +
           statusLine(
             "Density class guidance",
-            String(freightClass)
+            `${freightClass} • ${classSource}`
           ) +
           statusLine(
             "Pallet positions",
-            `${formatNumber(totalPallets)} of 26`
+            `${formatNumber(totalPallets)} of ${formatNumber(settings.trailerPositions)}`
+          ) +
+          statusLine(
+            "Estimated linear feet",
+            `${formatNumber(linearFeet, 1)} ft`
           ) +
           statusLine(
             "Weight utilization",
             `${formatNumber(
               freightWeight /
-              TRAILER.payload *
+              settings.trailerPayload *
               100,
               1
             )}%`
@@ -3096,6 +3663,10 @@
                 <td>${formatNumber(plan.actualWeight, 1)} lb</td>
                 <td>${formatNumber(plan.upsDim)} lb</td>
                 <td>${formatNumber(plan.fedexDim)} lb</td>
+                <td>
+                  ${formatNumber(plan.cubeUtilization * 100, 1)}%
+                  • ${escapeHtml(plan.source)}
+                </td>
                 <td class="${parcelClass}">
                   ${parcelStatus}
                 </td>
@@ -3198,6 +3769,13 @@
           ]);
         }
 
+        if (handlingReview) {
+          alerts.push([
+            "At least one carton crosses a weight or dimension handling screen. Confirm current UPS/FedEx additional-handling rules and your contract before tender.",
+            ""
+          ]);
+        }
+
         if (cannotPalletize.length) {
           alerts.push([
             "One or more shipping boxes cannot fit the selected pallet footprint, height or capacity without overhang.",
@@ -3231,14 +3809,32 @@
           ]);
         }
 
+        if (
+          state.items.some(item => item.stackable === false)
+        ) {
+          alerts.push([
+            "Non-stackable cartons are limited to one pallet layer. Ask the carrier whether non-stackable or excessive-length accessorials apply.",
+            ""
+          ]);
+        }
+
+        if (settings.freightClassOverride !== "auto") {
+          alerts.push([
+            `Freight class ${freightClass} is a manual override and is used instead of density guidance in this plan.`,
+            "good"
+          ]);
+        }
+
         planningNotes.forEach(note => {
           alerts.push([note, ""]);
         });
 
-        alerts.push([
-          "Freight class is a density-based estimate. Confirm the commodity’s current NMFC item, liability, handling and stowability.",
-          ""
-        ]);
+        if (settings.freightClassOverride === "auto") {
+          alerts.push([
+            "Freight class is density guidance only. Confirm the commodity’s current NMFC item, liability, handling and stowability, or select a verified class override.",
+            ""
+          ]);
+        }
 
         alerts.push([
           "This estimator does not calculate carrier price. Use exact packed measurements, accessorials, service date and negotiated rates when obtaining live quotes.",
@@ -3268,6 +3864,10 @@
           `Palletized weight: ${formatNumber(freightWeight, 1)} lb`,
           `Density: ${density ? formatNumber(density, 1) : "—"} lb/ft³`,
           `Freight class guidance: ${freightClass}`,
+          `Freight class source: ${classSource}`,
+          `Carton cube utilization: ${formatNumber(cartonCubeUtilization, 1)}%`,
+          `DIM-weight uplift: ${formatNumber(dimensionalUplift, 1)}%`,
+          `Estimated linear feet: ${formatNumber(linearFeet, 1)} ft`,
           `Trailer utilization: ${formatNumber(trailerUtilization, 1)}%`,
           `Reason: ${reason}`
         ].join("\n");
@@ -3300,7 +3900,8 @@
               dimensionType: "product",
               protection: "standard",
               manualUnits: 4,
-              upright: false
+              upright: false,
+              stackable: true
             },
             {
               id: Date.now() + 2,
@@ -3313,7 +3914,8 @@
               dimensionType: "packed",
               protection: "minimal",
               manualUnits: 12,
-              upright: false
+              upright: false,
+              stackable: true
             }
           ];
 
