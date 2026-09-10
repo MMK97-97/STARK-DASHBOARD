@@ -347,10 +347,29 @@
 
   function resetPageState() {
     navigationInProgress = false;
-    if (document.body) document.body.classList.remove("inventory-fallback-leaving");
+    if (document.body) {
+      document.body.classList.remove("inventory-fallback-leaving", "page-leaving");
+      document.body.style.removeProperty("opacity");
+      document.body.style.removeProperty("transform");
+      document.body.style.removeProperty("filter");
+      document.body.style.removeProperty("pointer-events");
+      if (typeof document.body.getAnimations === "function") {
+        document.body.getAnimations().forEach(function (animation) {
+          animation.cancel();
+        });
+      }
+    }
     document.querySelectorAll(".tab-pressed").forEach(function (link) { link.classList.remove("tab-pressed"); });
     completeProgress();
     normalizeActiveTab();
+  }
+
+  function handlePageHide() {
+    resetPageState();
+  }
+
+  function handleVisibilityRestore() {
+    if (document.visibilityState === "visible") resetPageState();
   }
 
   function initialize() {
@@ -361,7 +380,8 @@
     document.addEventListener("pointerover", handlePrefetchIntent, { passive: true, capture: true });
     document.addEventListener("focusin", handlePrefetchIntent, true);
     window.addEventListener("pageshow", resetPageState);
-    window.addEventListener("pagehide", completeProgress);
+    window.addEventListener("pagehide", handlePageHide);
+    document.addEventListener("visibilitychange", handleVisibilityRestore);
   }
 
   installStyles();

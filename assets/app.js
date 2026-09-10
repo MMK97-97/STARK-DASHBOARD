@@ -15,9 +15,28 @@
   const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 1 });
   const monthLabel = d3.timeFormat("%b %Y");
 
+  function restorePageVisibility() {
+    if (!document.body) return;
+    document.body.classList.remove("page-leaving", "inventory-fallback-leaving");
+    document.body.style.removeProperty("opacity");
+    document.body.style.removeProperty("transform");
+    document.body.style.removeProperty("filter");
+    document.body.style.removeProperty("pointer-events");
+    if (typeof document.body.getAnimations === "function") {
+      document.body.getAnimations().forEach(animation => animation.cancel());
+    }
+  }
+
+  window.addEventListener("pageshow", restorePageVisibility);
+  window.addEventListener("pagehide", restorePageVisibility);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") restorePageVisibility();
+  });
+
   document.addEventListener("DOMContentLoaded", init);
 
   function init() {
+    restorePageVisibility();
     bindEvents();
     const query = new URLSearchParams(location.search);
     const requestedWorkspace = query.get("workspace");
