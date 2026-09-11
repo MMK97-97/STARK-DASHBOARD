@@ -11,7 +11,7 @@
   <link rel="stylesheet" href="assets/sales-analysis.css">
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" defer></script>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
-  <script src="assets/sales-analysis.js" defer></script>
+  <script src="assets/sales-analysis.js?v=20260911-1" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#sales-main">Skip to analysis</a>
@@ -180,6 +180,7 @@
         <div class="chart-grid">
           <article class="panel panel-wide"><div class="panel-heading"><div><span>Portfolio contribution</span><h3>Top models</h3></div></div><div class="chart chart-tall" id="model-contribution-chart"></div></article>
           <article class="panel"><div class="panel-heading"><div><span>Brand contribution</span><h3>Sales mix</h3></div></div><div class="chart chart-tall" id="brand-contribution-chart"></div></article>
+          <article class="panel panel-full"><div class="panel-heading"><div><span>Low-velocity detail</span><h3>Lowest sales models</h3></div><small>Positive net sales only</small></div><div class="chart chart-tall" id="lowest-sales-chart"></div></article>
         </div>
         <article class="panel table-panel"><div class="panel-heading"><div><span>Contribution register</span><h3>Model share within brand and portfolio</h3></div><small id="contribution-row-count"></small></div><div class="table-wrap"><table><thead><tr><th>Portfolio rank</th><th>Brand rank</th><th>Margin rank</th><th>Model#</th><th>Brand</th><th>Item title</th><th class="num">Units</th><th class="num">Net revenue</th><th class="num">Gross margin</th><th class="num">Margin %</th><th class="num">Gross-margin share</th><th class="num">Share of brand units</th><th class="num">Share of brand revenue</th><th class="num">Share of total units</th><th class="num">Share of total revenue</th></tr></thead><tbody id="contribution-table"></tbody></table></div></article>
       </section>

@@ -685,12 +685,12 @@
         { type: "priceSales", value: "1", label },
         { type: "costPriceSales", value: "1", label },
         { type: "costPriceSales", value: "1", label },
-        { type: "trendPositive", value: "1", label },
+        { type: "trendContributor", value: "1", label },
         { type: "costStock", value: "1", label },
-        { type: "finiteCoverage", value: "1", label },
+        { type: "coverageContributor", value: "1", label },
         { type: "suggestedPositive", value: "1", label },
         { type: "revenueAtRisk", value: "1", label },
-        { type: "stock", value: "Excess", label }
+        { type: "excessStock", value: "1", label }
       ][index] || action;
     } else if (group === "year-kpis") {
       const best = periodRows.slice().sort((a, b) => metricPeriod(b) - metricPeriod(a))[0];
@@ -702,23 +702,21 @@
         { type: "costPriceSales", value: "1", label },
         { type: "costPriceSales", value: "1", label },
         { type: "period", value: best?.period || "", label: best ? `${label}: ${periodLabel(best.period)}` : label },
-        { type: "increased", value: prior && latest ? `${prior.period}|${latest.period}` : "", label },
-        { type: "hasSales", value: "1", label }
+        { type: "momentumContributor", value: prior && latest ? `${prior.period}|${latest.period}` : "", label },
+        { type: "positiveSales", value: "1", label }
       ][index] || action;
     } else if (group === "stock-kpis") {
-      const finiteCovers = items.map(item => item.monthsCover).filter(Number.isFinite);
-      const sellThrough = items.map(item => item.sellThrough9).filter(Number.isFinite);
       action = [
         { type: "stock", value: "Dead", label },
         { type: "stock", value: "Dead", label },
-        { type: "stock", value: "Excess", label },
-        { type: "stock", value: "Excess", label },
+        { type: "excessStock", value: "1", label },
+        { type: "excessStock", value: "1", label },
         { type: "planningSignal", value: "Replenish now", label },
         { type: "suggestedPositive", value: "1", label },
         { type: "revenueAtRisk", value: "1", label },
         { type: "costStock", value: "1", label },
-        { type: "coverAtLeast", value: String(median(finiteCovers)), label },
-        { type: "sellThroughAtMost", value: String(median(sellThrough)), label }
+        { type: "finiteCoverageMetric", value: "1", label },
+        { type: "finiteSellThrough", value: "1", label }
       ][index] || action;
     } else if (group === "tier-kpis") {
       action = [
@@ -729,8 +727,8 @@
         { type: "hasDemand", value: "1", label },
         { type: "zeroDemand", value: "1", label },
         { type: "hasDemand", value: "1", label },
-        { type: "priceSales", value: "1", label },
-        { type: "costPriceSales", value: "1", label }
+        { type: "priceDemand", value: "1", label },
+        { type: "costPriceDemand", value: "1", label }
       ][index] || action;
     } else if (group === "contribution-kpis") {
       const rows = contributionRows(items, periods);
@@ -742,27 +740,22 @@
         { type: "all", value: "ALL", label },
         { type: "model", value: rows[0]?.key || "", label },
         { type: "modelKeys", value: rows.slice(0, 10).map(row => row.key).join("\u001f"), label },
-        { type: "hasSales", value: "1", label }
+        { type: "positiveSelectedUnits", value: "1", label }
       ][index] || action;
     } else if (group === "forecast-kpis") {
-      const wapes = items.map(item => item.forecast.wape).filter(Number.isFinite);
-      const smapes = items.map(item => item.forecast.smape).filter(Number.isFinite);
-      const mases = items.map(item => item.forecast.mase).filter(Number.isFinite);
-      const biases = items.map(item => Math.abs(item.forecast.bias)).filter(Number.isFinite);
-      const risks = items.map(item => item.stockoutProbability).filter(Number.isFinite);
       action = [
         { type: "hasForecast", value: "1", label },
-        { type: "hasForecast", value: "1", label },
-        { type: "hasForecast", value: "1", label },
+        { type: "forecastRevenueContributor", value: "1", label },
+        { type: "forecastUpperContributor", value: "1", label },
         { type: "forecastConfidence", value: "High", label },
-        { type: "wapeAtMost", value: String(median(wapes)), label },
-        { type: "smapeAtMost", value: String(median(smapes)), label },
-        { type: "maseAtMost", value: String(median(mases)), label },
-        { type: "absoluteBiasAtMost", value: String(median(biases)), label },
+        { type: "finiteWape", value: "1", label },
+        { type: "finiteSmape", value: "1", label },
+        { type: "finiteMase", value: "1", label },
+        { type: "finiteBias", value: "1", label },
         { type: "planningSignal", value: "Replenish now", label },
-        { type: "stockoutAtLeast", value: String(median(risks)), label },
+        { type: "finiteStockoutRisk", value: "1", label },
         { type: "revenueAtRisk", value: "1", label },
-        { type: "finiteProjectedCover", value: "1", label },
+        { type: "portfolioForecastContributor", value: "1", label },
       ][index] || action;
     } else if (group === "data-kpis") {
       action = [
@@ -789,6 +782,7 @@
   function matchesCrossFilter(item, filter) {
     const periods = selectedPeriodsWithoutCross();
     const hasSales = periods.some(period => finiteNumber(item.monthly[period]) !== 0);
+    const selectedUnits = sum(periods.map(period => finiteNumber(item.monthly[period])));
     switch (filter.type) {
       case "all": return true;
       case "none": return false;
@@ -799,37 +793,47 @@
       case "demandPattern": return item.demandPattern === filter.value;
       case "abcXyz": return item.abcXyz === filter.value;
       case "stock": return item.stockCondition === filter.value;
+      case "excessStock": return item.excessStock;
       case "planningSignal": return item.planningSignal === filter.value;
       case "model": return item.key === filter.value;
       case "modelKeys": return filter.value.split("\u001f").includes(item.key);
       case "priceMatched": return item.price > 0;
       case "hasSales": return hasSales;
+      case "positiveSales": return periods.some(period => finiteNumber(item.monthly[period]) > 0);
+      case "positiveSelectedUnits": return selectedUnits > 0;
       case "priceSales": return item.price > 0 && hasSales;
       case "costPriceSales": return item.price > 0 && item.cost > 0 && hasSales;
+      case "priceDemand": return item.price > 0 && item.demand9 > 0;
+      case "costPriceDemand": return item.price > 0 && item.cost > 0 && item.demand9 > 0;
       case "hasDemand": return item.demand9 > 0;
-      case "trendPositive": return item.demandTrend > 0;
+      case "trendContributor": return item.recentAvg3 !== 0 || item.priorAvg3 !== 0;
       case "zeroDemand": return item.demand9 === 0;
       case "hasStock": return item.stock > 0;
       case "costStock": return item.stock > 0 && item.cost > 0;
       case "costMatched": return item.cost > 0;
-      case "suggestedPositive": return item.suggestedQty > .5;
+      case "suggestedPositive": return item.suggestedQty > 1e-9;
       case "revenueAtRisk": return item.revenueAtRisk > 0;
       case "stockoutAtLeast": return item.stockoutProbability >= finiteNumber(filter.value);
-      case "finiteCoverage": return Number.isFinite(item.monthsCover) && item.monthsCover > 0;
+      case "coverageContributor": return item.stock > 0 || item.avg9 > 0;
+      case "finiteCoverageMetric": return Number.isFinite(item.monthsCover);
+      case "finiteSellThrough": return Number.isFinite(item.sellThrough9);
       case "coverAtLeast": return Number.isFinite(item.monthsCover) && item.monthsCover >= finiteNumber(filter.value);
       case "sellThroughAtMost": return item.sellThrough9 <= finiteNumber(filter.value);
       case "coverageBand": return matchesCoverageBand(item, filter.value);
-      case "increased": {
+      case "momentumContributor": {
         const [prior, latest] = filter.value.split("|");
-        return latest && finiteNumber(item.monthly[latest]) > finiteNumber(item.monthly[prior]);
+        return Boolean(latest) && (finiteNumber(item.monthly[latest]) !== 0 || finiteNumber(item.monthly[prior]) !== 0);
       }
       case "forecastConfidence": return item.forecast.confidence === filter.value;
       case "hasForecast": return item.forecast.next > 0;
-      case "wapeAtMost": return Number.isFinite(item.forecast.wape) && item.forecast.wape <= finiteNumber(filter.value);
-      case "smapeAtMost": return Number.isFinite(item.forecast.smape) && item.forecast.smape <= finiteNumber(filter.value);
-      case "maseAtMost": return Number.isFinite(item.forecast.mase) && item.forecast.mase <= finiteNumber(filter.value);
-      case "absoluteBiasAtMost": return Number.isFinite(item.forecast.bias) && Math.abs(item.forecast.bias) <= finiteNumber(filter.value);
-      case "finiteProjectedCover": return Number.isFinite(item.projectedCover);
+      case "forecastRevenueContributor": return item.forecast.next > 0 && item.price > 0;
+      case "forecastUpperContributor": return item.forecast.high > 0;
+      case "finiteWape": return Number.isFinite(item.forecast.wape);
+      case "finiteSmape": return Number.isFinite(item.forecast.smape);
+      case "finiteMase": return Number.isFinite(item.forecast.mase);
+      case "finiteBias": return Number.isFinite(item.forecast.bias);
+      case "finiteStockoutRisk": return Number.isFinite(item.stockoutProbability);
+      case "portfolioForecastContributor": return item.stock > 0 || item.forecast.next > 0;
       default: return true;
     }
   }
@@ -848,6 +852,7 @@
     const netUnits = sum(periodRows.map(row => row.netUnits));
     const revenue = sum(periodRows.map(row => row.revenue));
     const grossMargin = sum(periodRows.map(row => row.grossMargin));
+    const marginRevenue = sum(periodRows.map(row => row.marginRevenue));
     const currentStock = sum(items.map(item => item.stock));
     const inventoryCost = sum(items.map(item => item.inventoryCost));
     const monthlyDemand = sum(items.map(item => item.avg9));
@@ -862,7 +867,7 @@
       ["Net sales units", formatNumber(netUnits), `${periods.length} selected periods`],
       ["Net revenue", formatMoney(revenue), netPriceCoverageText(items)],
       ["Gross margin", formatMoney(grossMargin), "Net revenue less product cost"],
-      ["Gross margin %", revenue ? percent.format(grossMargin / revenue) : "—", costCoverageText(items)],
+      ["Gross margin %", marginRevenue ? percent.format(grossMargin / marginRevenue) : "—", costCoverageText(items)],
       ["Three-month demand trend", percent.format(demandTrend), "Latest 3M average versus prior 3M", demandTrend < 0 ? "risk" : "good"],
       ["Inventory cost", formatMoney(inventoryCost), costCoverageText(items)],
       ["Portfolio coverage", formatCover(coverage), "Current stock ÷ monthly demand", coverage > 4 ? "warn" : "good"],
@@ -884,6 +889,7 @@
     const units = sum(rows.map(row => row.netUnits));
     const revenue = sum(rows.map(row => row.revenue));
     const grossMargin = sum(rows.map(row => row.grossMargin));
+    const marginRevenue = sum(rows.map(row => row.marginRevenue));
     const average = rows.length ? units / rows.length : 0;
     const best = rows.slice().sort((a, b) => metricPeriod(b) - metricPeriod(a))[0];
     const prior = rows.length > 1 ? rows[rows.length - 2] : null;
@@ -893,7 +899,7 @@
       ["Selected-period units", formatNumber(units), state.filters.year === "ALL" ? "All available years" : state.filters.year],
       ["Net revenue", formatMoney(revenue), netPriceCoverageText(items)],
       ["Gross margin", formatMoney(grossMargin), "NetPrice less Cost"],
-      ["Gross margin %", revenue ? percent.format(grossMargin / revenue) : "—", costCoverageText(items)],
+      ["Gross margin %", marginRevenue ? percent.format(grossMargin / marginRevenue) : "—", costCoverageText(items)],
       ["Best month", best ? periodLabel(best.period) : "—", best ? metricFormatter()(metricPeriod(best)) : "No activity"],
       ["Latest momentum", momentum == null ? "—" : percent.format(momentum), "Versus previous selected month", momentum != null && momentum < 0 ? "risk" : "good"],
       ["Active models", formatNumber(unique(rows.flatMap(row => row.activeModels)).length), "Models with positive sales"]
@@ -906,7 +912,7 @@
     $("year-table").innerHTML = rows.map((row, index) => {
       const priorRow = rows[index - 1];
       const change = priorRow && priorRow.netUnits !== 0 ? (row.netUnits - priorRow.netUnits) / Math.abs(priorRow.netUnits) : null;
-      return `<tr class="linked-row" role="button" tabindex="0" data-filter-type="period" data-filter-value="${escapeHtml(row.period)}" data-filter-label="${escapeHtml(periodLabel(row.period))}"><td><strong>${escapeHtml(periodLabel(row.period))}</strong>${row.period === current().analysis.latestPeriod && current().analysis.latestIsPartial ? " <small>(partial)</small>" : ""}</td><td>${row.period.slice(0,4)}</td><td class="num">${integer.format(row.modelsSelling)}</td><td class="num">${formatNumber(row.netUnits)}</td><td class="num">${formatNumber(row.demandUnits)}</td><td class="num">${formatMoney(row.revenue)}</td><td class="num">${formatMoney(row.cogs)}</td><td class="num">${formatMoney(row.grossMargin)}</td><td class="num">${row.revenue ? percent.format(row.grossMargin/row.revenue) : "—"}</td><td class="num">${change == null ? "—" : percent.format(change)}</td></tr>`;
+      return `<tr class="linked-row" role="button" tabindex="0" data-filter-type="period" data-filter-value="${escapeHtml(row.period)}" data-filter-label="${escapeHtml(periodLabel(row.period))}"><td><strong>${escapeHtml(periodLabel(row.period))}</strong>${row.period === current().analysis.latestPeriod && current().analysis.latestIsPartial ? " <small>(partial)</small>" : ""}</td><td>${row.period.slice(0,4)}</td><td class="num">${integer.format(row.modelsSelling)}</td><td class="num">${formatNumber(row.netUnits)}</td><td class="num">${formatNumber(row.demandUnits)}</td><td class="num">${formatMoney(row.revenue)}</td><td class="num">${formatMoney(row.cogs)}</td><td class="num">${formatMoney(row.grossMargin)}</td><td class="num">${row.marginRevenue ? percent.format(row.grossMargin/row.marginRevenue) : "—"}</td><td class="num">${change == null ? "—" : percent.format(change)}</td></tr>`;
     }).join("") || emptyTable(10);
   }
 
@@ -962,7 +968,7 @@
       ["Zero-demand models", formatNumber(items.filter(item => item.demand9 === 0).length), "Included in low sellers", items.some(item => item.demand9 === 0) ? "risk" : "good"],
       ["9M demand", formatNumber(total), "Active-brand eligible models"],
       ["9M net revenue", formatMoney(sum(items.map(item => item.demand9 * item.price))), netPriceCoverageText(items)],
-      ["9M gross margin", formatMoney(sum(items.map(item => item.demand9 * (item.price - item.cost)))), costCoverageText(items)]
+      ["9M gross margin", formatMoney(sum(items.filter(item => item.price > 0 && item.cost > 0).map(item => item.demand9 * (item.price - item.cost)))), costCoverageText(items)]
     ]));
     drawDonut("tier-contribution-chart", groups.map(group => ({ key: group.tier, value: sum(group.items.map(item => item.demand9)) })), "Demand", value => formatNumber(value), [COLORS.green, COLORS.orange, COLORS.red], "tier");
     drawColumns("tier-count-chart", groups.map(group => ({ key: group.tier, value: group.items.length })), value => integer.format(value), COLORS.teal, true, "tier");
@@ -977,7 +983,7 @@
     const sorted = items.slice().sort((a,b) => a.rank - b.rank);
     const totalRevenue = sum(items.map(item => item.demand9 * item.price));
     $("tier-row-count").textContent = tableCount(sorted);
-    $("tier-table").innerHTML = sorted.slice(0,350).map(item => { const netRevenue=item.demand9*item.price, grossMargin=item.demand9*(item.price-item.cost); return `<tr class="linked-row" role="button" tabindex="0" data-filter-type="model" data-filter-value="${escapeHtml(item.key)}" data-filter-label="Model ${escapeHtml(item.model)}"><td>${tierBadge(item.tier)}</td><td><span class="status-badge">${escapeHtml(item.abcXyz)}</span></td><td>${escapeHtml(item.demandPattern)}</td><td class="num">${integer.format(item.rank)}</td><td class="model-cell">${escapeHtml(item.model)}</td><td>${escapeHtml(item.brand)}</td><td class="title-cell">${escapeHtml(item.title)}</td><td class="num">${formatNumber(item.demand9)}</td><td class="num">${formatNumber(item.avg9)}</td><td class="num">${percent.format(item.demandCv)}</td><td class="num">${formatMoney(netRevenue)}</td><td class="num">${formatMoney(grossMargin)}</td><td class="num">${netRevenue ? percent.format(grossMargin/netRevenue) : "—"}</td><td class="num">${percent.format(item.unitContribution9)}</td><td class="num">${percent.format(item.cumulativeContribution9)}</td><td class="num">${totalRevenue && item.price ? percent.format(netRevenue / totalRevenue) : "—"}</td></tr>`; }).join("") || emptyTable(16);
+    $("tier-table").innerHTML = sorted.slice(0,350).map(item => { const netRevenue=item.demand9*item.price, marginEligible=item.price>0&&item.cost>0, marginRevenue=marginEligible?netRevenue:0, grossMargin=marginEligible?item.demand9*(item.price-item.cost):0; return `<tr class="linked-row" role="button" tabindex="0" data-filter-type="model" data-filter-value="${escapeHtml(item.key)}" data-filter-label="Model ${escapeHtml(item.model)}"><td>${tierBadge(item.tier)}</td><td><span class="status-badge">${escapeHtml(item.abcXyz)}</span></td><td>${escapeHtml(item.demandPattern)}</td><td class="num">${integer.format(item.rank)}</td><td class="model-cell">${escapeHtml(item.model)}</td><td>${escapeHtml(item.brand)}</td><td class="title-cell">${escapeHtml(item.title)}</td><td class="num">${formatNumber(item.demand9)}</td><td class="num">${formatNumber(item.avg9)}</td><td class="num">${percent.format(item.demandCv)}</td><td class="num">${formatMoney(netRevenue)}</td><td class="num">${marginEligible?formatMoney(grossMargin):"—"}</td><td class="num">${marginRevenue ? percent.format(grossMargin/marginRevenue) : "—"}</td><td class="num">${percent.format(item.unitContribution9)}</td><td class="num">${percent.format(item.cumulativeContribution9)}</td><td class="num">${totalRevenue && item.price ? percent.format(netRevenue / totalRevenue) : "—"}</td></tr>`; }).join("") || emptyTable(16);
   }
 
   function renderContribution(items, periods) {
@@ -985,6 +991,7 @@
     const totalUnits = sum(rows.map(row => row.units));
     const totalRevenue = sum(rows.map(row => row.revenue));
     const totalGrossMargin = sum(rows.map(row => row.grossMargin));
+    const totalMarginRevenue = sum(rows.map(row => row.marginRevenue));
     const topModel = rows[0];
     const brandCount = unique(rows.map(row => row.brand)).length;
     const top10Share = totalUnits ? sum(rows.slice(0,10).map(row => row.units)) / totalUnits : 0;
@@ -992,7 +999,7 @@
       ["Selected units", formatNumber(totalUnits), `${periods.length} periods`],
       ["Net revenue", formatMoney(totalRevenue), netPriceCoverageText(items)],
       ["Gross margin", formatMoney(totalGrossMargin), "Net revenue less product cost"],
-      ["Gross margin %", totalRevenue ? percent.format(totalGrossMargin / totalRevenue) : "—", costCoverageText(items)],
+      ["Gross margin %", totalMarginRevenue ? percent.format(totalGrossMargin / totalMarginRevenue) : "—", costCoverageText(items)],
       ["Contributing brands", formatNumber(brandCount), "Selected model set"],
       ["Top model", topModel ? topModel.model : "—", topModel ? `${percent.format(topModel.portfolioUnitShare)} of units` : "No sales"],
       ["Top 10 concentration", percent.format(top10Share), "Share of selected units", top10Share > .6 ? "warn" : "good"],
@@ -1000,8 +1007,10 @@
     ]);
     drawHorizontalBars("model-contribution-chart", rows.slice(0,18).map(row => ({ key: row.model, filterValue: row.key, value: state.filters.metric === "revenue" ? row.revenue : row.units })), metricFormatter(), COLORS.blue, { filterType: "model" });
     drawDonut("brand-contribution-chart", rollupItems(items, item => item.brand, item => metricItem(item, periods), 8), "Brand mix", metricFormatter(), [COLORS.teal, COLORS.blue, COLORS.purple, COLORS.orange, COLORS.green, COLORS.red, "#5f6f84", "#9bb3c7"], "brand");
+    const lowest = rows.filter(row => row.units > 0).sort((a,b) => a.units - b.units || a.model.localeCompare(b.model)).slice(0,18);
+    drawHorizontalBars("lowest-sales-chart", lowest.map(row => ({ key: row.model, filterValue: row.key, value: row.units })), formatNumber, COLORS.orange, { filterType: "model", emptyMessage: "No positive-sales models match the current filters." });
     $("contribution-row-count").textContent = tableCount(rows);
-    $("contribution-table").innerHTML = rows.slice(0,350).map(row => `<tr class="linked-row" role="button" tabindex="0" data-filter-type="model" data-filter-value="${escapeHtml(row.key)}" data-filter-label="Model ${escapeHtml(row.model)}"><td class="num">${row.portfolioRank}</td><td class="num">${row.brandRank}</td><td class="num">${row.marginRank}</td><td class="model-cell">${escapeHtml(row.model)}</td><td>${escapeHtml(row.brand)}</td><td class="title-cell">${escapeHtml(row.title)}</td><td class="num">${formatNumber(row.units)}</td><td class="num">${formatMoney(row.revenue)}</td><td class="num">${formatMoney(row.grossMargin)}</td><td class="num">${row.revenue ? percent.format(row.grossMargin/row.revenue) : "—"}</td><td class="num">${percent.format(row.portfolioGrossMarginShare)}</td><td class="num">${percent.format(row.brandUnitShare)}</td><td class="num">${row.brandRevenueShare == null ? "—" : percent.format(row.brandRevenueShare)}</td><td class="num">${percent.format(row.portfolioUnitShare)}</td><td class="num">${row.portfolioRevenueShare == null ? "—" : percent.format(row.portfolioRevenueShare)}</td></tr>`).join("") || emptyTable(15);
+    $("contribution-table").innerHTML = rows.slice(0,350).map(row => `<tr class="linked-row" role="button" tabindex="0" data-filter-type="model" data-filter-value="${escapeHtml(row.key)}" data-filter-label="Model ${escapeHtml(row.model)}"><td class="num">${row.portfolioRank}</td><td class="num">${row.brandRank}</td><td class="num">${row.marginRank}</td><td class="model-cell">${escapeHtml(row.model)}</td><td>${escapeHtml(row.brand)}</td><td class="title-cell">${escapeHtml(row.title)}</td><td class="num">${formatNumber(row.units)}</td><td class="num">${formatMoney(row.revenue)}</td><td class="num">${row.marginRevenue?formatMoney(row.grossMargin):"—"}</td><td class="num">${row.marginRevenue ? percent.format(row.grossMargin/row.marginRevenue) : "—"}</td><td class="num">${row.marginRevenue?percent.format(row.portfolioGrossMarginShare):"—"}</td><td class="num">${percent.format(row.brandUnitShare)}</td><td class="num">${row.brandRevenueShare == null ? "—" : percent.format(row.brandRevenueShare)}</td><td class="num">${percent.format(row.portfolioUnitShare)}</td><td class="num">${row.portfolioRevenueShare == null ? "—" : percent.format(row.portfolioRevenueShare)}</td></tr>`).join("") || emptyTable(15);
   }
 
   function renderForecast(items) {
@@ -1062,13 +1071,15 @@
   function periodSummary(items, periods) {
     return periods.map(period => {
       const values = items.map(item => finiteNumber(item.monthly[period]));
+      const marginEligible = items.filter(item => item.price > 0 && item.cost > 0);
       return {
         period,
         netUnits: sum(values),
         demandUnits: sum(values.map(value => Math.max(0, value))),
         revenue: sum(items.map(item => finiteNumber(item.monthly[period]) * item.price)),
         cogs: sum(items.map(item => finiteNumber(item.monthly[period]) * item.cost)),
-        grossMargin: sum(items.map(item => finiteNumber(item.monthly[period]) * (item.price - item.cost))),
+        marginRevenue: sum(marginEligible.map(item => finiteNumber(item.monthly[period]) * item.price)),
+        grossMargin: sum(marginEligible.map(item => finiteNumber(item.monthly[period]) * (item.price - item.cost))),
         modelsSelling: values.filter(value => value > 0).length,
         activeModels: items.filter(item => finiteNumber(item.monthly[period]) > 0).map(item => item.model)
       };
@@ -1078,18 +1089,23 @@
   function annualSummary(items, periods) {
     return unique(periods.map(period => period.slice(0,4))).map(year => {
       const rows = periodSummary(items, periods.filter(period => period.startsWith(year)));
-      return { year, netUnits: sum(rows.map(row => row.netUnits)), demandUnits: sum(rows.map(row => row.demandUnits)), revenue: sum(rows.map(row => row.revenue)), cogs: sum(rows.map(row => row.cogs)), grossMargin: sum(rows.map(row => row.grossMargin)) };
+      return { year, netUnits: sum(rows.map(row => row.netUnits)), demandUnits: sum(rows.map(row => row.demandUnits)), revenue: sum(rows.map(row => row.revenue)), cogs: sum(rows.map(row => row.cogs)), marginRevenue: sum(rows.map(row => row.marginRevenue)), grossMargin: sum(rows.map(row => row.grossMargin)) };
     });
   }
 
   function contributionRows(items, periods) {
-    const raw = items.map(item => ({
-      key: item.key, model: item.model, brand: item.brand, title: item.title,
-      units: sum(periods.map(period => finiteNumber(item.monthly[period]))),
-      revenue: sum(periods.map(period => finiteNumber(item.monthly[period]) * item.price)),
-      cogs: sum(periods.map(period => finiteNumber(item.monthly[period]) * item.cost)),
-      grossMargin: sum(periods.map(period => finiteNumber(item.monthly[period]) * (item.price - item.cost)))
-    }));
+    const raw = items.map(item => {
+      const units = sum(periods.map(period => finiteNumber(item.monthly[period])));
+      const marginEligible = item.price > 0 && item.cost > 0;
+      return {
+        key: item.key, model: item.model, brand: item.brand, title: item.title,
+        units,
+        revenue: units * item.price,
+        cogs: units * item.cost,
+        marginRevenue: marginEligible ? units * item.price : 0,
+        grossMargin: marginEligible ? units * (item.price - item.cost) : 0
+      };
+    });
     const portfolioUnits = sum(raw.map(row => row.units));
     const portfolioRevenue = sum(raw.map(row => row.revenue));
     const portfolioGrossMargin = sum(raw.map(row => row.grossMargin));
@@ -1328,8 +1344,8 @@
 
     if (wants("overview")) add("EXECUTIVE SUMMARY", executiveExport(items,periods), [34,22,80]);
     if (wants("year")) {
-      add("MONTHLY ANALYSIS", periodSummary(items,periods).map(row => ({ Period: row.period, Month: periodLabel(row.period), Year: row.period.slice(0,4), "Models Selling": row.modelsSelling, "Net Units": row.netUnits, "Demand Units": row.demandUnits, "Net Revenue": row.revenue, COGS: row.cogs, "Gross Margin": row.grossMargin, "Margin %": row.revenue ? row.grossMargin / row.revenue : "" })), [12,16,10,16,16,16,20,18,18,14]);
-      add("YEAR ANALYSIS", annualSummary(items,analysis.periods).map(row => ({ Year: row.year, "Net Units": row.netUnits, "Demand Units": row.demandUnits, "Net Revenue": row.revenue, COGS: row.cogs, "Gross Margin": row.grossMargin, "Margin %": row.revenue ? row.grossMargin / row.revenue : "" })), [12,18,18,22,18,18,14]);
+      add("MONTHLY ANALYSIS", periodSummary(items,periods).map(row => ({ Period: row.period, Month: periodLabel(row.period), Year: row.period.slice(0,4), "Models Selling": row.modelsSelling, "Net Units": row.netUnits, "Demand Units": row.demandUnits, "Net Revenue": row.revenue, COGS: row.cogs, "Gross Margin": row.grossMargin, "Margin %": row.marginRevenue ? row.grossMargin / row.marginRevenue : "" })), [12,16,10,16,16,16,20,18,18,14]);
+      add("YEAR ANALYSIS", annualSummary(items,analysis.periods).map(row => ({ Year: row.year, "Net Units": row.netUnits, "Demand Units": row.demandUnits, "Net Revenue": row.revenue, COGS: row.cogs, "Gross Margin": row.grossMargin, "Margin %": row.marginRevenue ? row.grossMargin / row.marginRevenue : "" })), [12,18,18,22,18,18,14]);
     }
     if (wants("stock")) add("STOCK HEALTH", stockExport(items), [20,20,55,15,16,18,16,16,18,16,16,16,16,16,16,16,16,16,18,18]);
     if (wants("tiers")) add("SELLER TIERS", tierExport(items), [12,12,18,10,20,20,55,16,16,16,18,18,16,18,18,18,16,16,16]);
@@ -1345,17 +1361,17 @@
 
   function executiveExport(items,periods) {
     const periodRows=periodSummary(items,periods), currentStock=sum(items.map(item=>item.stock)), monthly=sum(items.map(item=>item.avg9));
-    const revenue=sum(periodRows.map(row=>row.revenue)), cogs=sum(periodRows.map(row=>row.cogs)), margin=revenue-cogs;
+    const revenue=sum(periodRows.map(row=>row.revenue)), cogs=sum(periodRows.map(row=>row.cogs)), marginRevenue=sum(periodRows.map(row=>row.marginRevenue)), margin=sum(periodRows.map(row=>row.grossMargin));
     const recent=sum(items.map(item=>item.recentAvg3)), prior=sum(items.map(item=>item.priorAvg3));
-    return [[`Sales Intelligence - ${REGION_NAMES[state.region]}`,""],["Analysis scope",state.filters.year === "ALL" ? "All available years" : state.filters.year],["Brand scope","Active brands only"],["Eligible statuses","Live, Fashion, Backorder"],["Models",items.length],["Net sales units",sum(periodRows.map(row=>row.netUnits))],["Net revenue (NetPrice)",revenue],["COGS",cogs],["Gross margin",margin],["Gross margin %",revenue?margin/revenue:""],["Current stock",currentStock],["Current inventory cost",sum(items.map(item=>item.inventoryCost))],["Nine-month average monthly demand",monthly],["Three-month demand trend",prior?(recent-prior)/prior:recent?1:0],["Portfolio months of cover",monthly?currentStock/monthly:""],["Suggested replenishment",sum(items.map(item=>item.suggestedQty))],["Replenish-now models",items.filter(item=>item.planningSignal==="Replenish now").length],["Dead-stock models",items.filter(item=>item.deadStock).length],["Dead-stock cost",sum(items.map(item=>item.deadStockCost))],["Excess units",sum(items.map(item=>item.excessUnits))],["Excess inventory cost",sum(items.map(item=>item.excessCost))],["Generated",new Date().toISOString()]];
+    return [[`Sales Intelligence - ${REGION_NAMES[state.region]}`,""],["Analysis scope",state.filters.year === "ALL" ? "All available years" : state.filters.year],["Brand scope","Active brands only"],["Eligible statuses","Live, Fashion, Backorder"],["Models",items.length],["Net sales units",sum(periodRows.map(row=>row.netUnits))],["Net revenue (NetPrice)",revenue],["COGS",cogs],["Gross margin",margin],["Gross margin %",marginRevenue?margin/marginRevenue:""],["Current stock",currentStock],["Current inventory cost",sum(items.map(item=>item.inventoryCost))],["Nine-month average monthly demand",monthly],["Three-month demand trend",prior?(recent-prior)/prior:recent?1:0],["Portfolio months of cover",monthly?currentStock/monthly:""],["Suggested replenishment",sum(items.map(item=>item.suggestedQty))],["Replenish-now models",items.filter(item=>item.planningSignal==="Replenish now").length],["Dead-stock models",items.filter(item=>item.deadStock).length],["Dead-stock cost",sum(items.map(item=>item.deadStockCost))],["Excess units",sum(items.map(item=>item.excessUnits))],["Excess inventory cost",sum(items.map(item=>item.excessCost))],["Generated",new Date().toISOString()]];
   }
 
   function stockExport(items) { return items.map(item=>({"Model#":item.model,Brand:item.brand,"Item Title":item.title,Status:item.status,Condition:item.stockCondition,"Planning Signal":item.planningSignal,"Current Stock":item.stock,"Unit Cost":item.cost||"","Inventory Cost":item.inventoryCost||"","9M Demand":item.demand9,"Average Per Month":item.avg9,"Demand Trend":item.demandTrend,"Months Cover":Number.isFinite(item.monthsCover)?item.monthsCover:"No demand","Stockout Probability":item.stockoutProbability,"Safety Stock":item.safetyStock,"Reorder Point":item.reorderPoint,"Suggested Quantity":item.suggestedQty,"Revenue at Risk":item.revenueAtRisk,"Margin at Risk":item.marginAtRisk,"Two-Month Target":item.target2,"Excess Units":item.excessUnits,"Excess Cost":item.excessCost||"","Dead-stock Cost":item.deadStockCost||""})); }
-  function tierExport(items) { return items.slice().sort((a,b)=>a.rank-b.rank).map(item=>{const revenue=item.demand9*item.price,cogs=item.demand9*item.cost,margin=revenue-cogs;return {Tier:item.tier,"ABC-XYZ":item.abcXyz,"Demand Pattern":item.demandPattern,Rank:item.rank,"Model#":item.model,Brand:item.brand,"Item Title":item.title,"9M Demand":item.demand9,"Average Per Month":item.avg9,"Demand Trend":item.demandTrend,"Unit Contribution":item.unitContribution9,"Cumulative Contribution":item.cumulativeContribution9,"Revenue Contribution":item.revenueContribution9,"Net Revenue":revenue,"Gross Margin":margin,"Margin %":revenue?margin/revenue:"",ADI:item.demandAdi,"Demand CV":item.demandCv,"Zero-demand Rate":item.zeroDemandRate};}); }
-  function contributionExport(rows) { return rows.map(row=>({"Portfolio Rank":row.portfolioRank,"Brand Rank":row.brandRank,"Margin Rank":row.marginRank,"Model#":row.model,Brand:row.brand,"Item Title":row.title,Units:row.units,"Net Revenue":row.revenue,"Gross Margin":row.grossMargin,"Margin %":row.revenue?row.grossMargin/row.revenue:"","Gross-margin Share":row.portfolioGrossMarginShare,"Share of Brand Units":row.brandUnitShare,"Share of Brand Revenue":row.brandRevenueShare??"","Share of Total Units":row.portfolioUnitShare,"Share of Total Revenue":row.portfolioRevenueShare??""})); }
+  function tierExport(items) { return items.slice().sort((a,b)=>a.rank-b.rank).map(item=>{const revenue=item.demand9*item.price,marginEligible=item.price>0&&item.cost>0,cogs=marginEligible?item.demand9*item.cost:"",margin=marginEligible?revenue-cogs:"";return {Tier:item.tier,"ABC-XYZ":item.abcXyz,"Demand Pattern":item.demandPattern,Rank:item.rank,"Model#":item.model,Brand:item.brand,"Item Title":item.title,"9M Demand":item.demand9,"Average Per Month":item.avg9,"Demand Trend":item.demandTrend,"Unit Contribution":item.unitContribution9,"Cumulative Contribution":item.cumulativeContribution9,"Revenue Contribution":item.revenueContribution9,"Net Revenue":revenue,"Gross Margin":margin,"Margin %":marginEligible&&revenue?margin/revenue:"",ADI:item.demandAdi,"Demand CV":item.demandCv,"Zero-demand Rate":item.zeroDemandRate};}); }
+  function contributionExport(rows) { return rows.map(row=>({"Portfolio Rank":row.portfolioRank,"Brand Rank":row.brandRank,"Margin Rank":row.marginRank,"Model#":row.model,Brand:row.brand,"Item Title":row.title,Units:row.units,"Net Revenue":row.revenue,"Gross Margin":row.marginRevenue?row.grossMargin:"","Margin %":row.marginRevenue?row.grossMargin/row.marginRevenue:"","Gross-margin Share":row.marginRevenue?row.portfolioGrossMarginShare:"","Share of Brand Units":row.brandUnitShare,"Share of Brand Revenue":row.brandRevenueShare??"","Share of Total Units":row.portfolioUnitShare,"Share of Total Revenue":row.portfolioRevenueShare??""})); }
   function forecastExport(items) { return items.slice().sort((a,b)=>b.forecast.next-a.forecast.next).map(item=>({"Model#":item.model,Brand:item.brand,"Item Title":item.title,"Demand Pattern":item.demandPattern,"Selected Method":item.forecast.method,Confidence:item.forecast.confidence,"Planning Signal":item.planningSignal,"History Months":item.forecast.observations,"Backtest Periods":item.forecast.backtestTests,"9M Average":item.avg9,"Next Month Forecast":item.forecast.next,"P80 Low":item.forecast.low,"P80 High":item.forecast.high,"Forecast Net Revenue":item.forecast.next*item.price,"3M Forecast":item.forecast.threeMonth,"Backtest WAPE":item.forecast.wape??"","Backtest sMAPE":item.forecast.smape??"","Backtest MASE":item.forecast.mase??"","Forecast Bias":item.forecast.bias??"","Backtest MAE":item.forecast.mae??"","Backtest RMSE":item.forecast.rmse??"","Selection Score":item.forecast.selectionScore??"","Current Stock":item.stock,"Stockout Probability":item.stockoutProbability,"Safety Stock":item.safetyStock,"Suggested Quantity":item.suggestedQty,"Revenue at Risk":item.revenueAtRisk,"Margin at Risk":item.marginAtRisk,"Projected Months Cover":Number.isFinite(item.projectedCover)?item.projectedCover:"No forecast demand"})); }
   function sourceExport(items,analysis) { return items.map(item=>({"Model#":item.model,"Item ID":item.itemId,Brand:item.brand,"Item Title":item.title,Status:item.status,"Active Brand":"YES","Current Stock":item.stock,"Monthly Periods":Object.keys(item.monthly).length,NetPrice:item.price||"",Cost:item.cost||"","Price Match":item.priceSource,"Latest Complete Period":analysis.completePeriods[analysis.completePeriods.length-1]})); }
-  function methodologyExport(analysis) { return [["Method","Definition"],["Brand scope","Only brands marked active in the selected region's Active Brands page are analyzed. If no brand configuration exists yet, all uploaded brands remain eligible."],["Eligible statuses","Only Live, Fashion and Backorder rows are analyzed."],["Period interpretation","A header in YYYYMM format is treated as a calendar month; 202509 is September 2025 and 202601 is January 2026."],["Partial month",analysis.latestIsPartial?`${analysis.latestPeriod} matches the current calendar month and is excluded from the nine-month baseline and forecast training.`:"The latest uploaded period is treated as complete."],["Nine-month demand","Sum of non-negative model demand across the last nine complete periods."],["Average monthly demand","Nine-month demand divided by the number of available complete baseline months, up to nine."],["Demand trend","Latest three-month average demand compared with the preceding three-month average."],["Revenue","Monthly model net units multiplied by NetPrice from the price list, matched by ItemID first and Model# second."],["Cost and gross margin","COGS uses monthly net units multiplied by Cost. Gross margin equals NetPrice revenue minus COGS."],["Dead stock","Current stock is positive and nine-month demand is zero. Dead-stock exposure equals current stock multiplied by Cost."],["Months coverage","Current stock divided by average monthly demand. Positive stock with zero demand is reported as no-demand/infinite coverage."],["Excess stock","Current stock above two months of average demand. Excess units = max(0, current stock - 2 x average monthly demand); excess exposure equals excess units multiplied by Cost."],["Demand pattern","ADI and squared demand variability classify demand as Smooth, Erratic, Intermittent or Lumpy; zero demand is classified separately."],["ABC-XYZ matrix","ABC is cumulative nine-month NetPrice revenue: A to 80%, B to 95%, C the remainder. X is smooth demand, Y erratic, and Z intermittent, lumpy or no demand."],["Seller tiers","High sellers form the first 80% of cumulative nine-month demand, medium sellers the next 15%, and low sellers the remainder. Zero-demand models are low sellers."],["Forecast method selection","Each model is rolling-backtested using last month, 3-month average, 6-month weighted average, adaptive exponential smoothing, damped trend, seasonal naive, Croston SBA where appropriate, and a robust median ensemble. Selection balances WAPE, sMAPE, MASE and signed bias."],["Forecast range","The P80 range is the selected forecast plus or minus 1.28 times the model's rolling backtest MAE, constrained to non-negative plausible demand."],["Safety stock and reorder point","Safety stock uses 1.65 times rolling backtest MAE as an approximate one-sided 95% one-month demand buffer. Reorder point equals next-month forecast plus safety stock; suggested quantity is the positive gap versus current stock."],["Stockout probability","A normal residual-error approximation compares current stock with the selected next-month forecast using model-level RMSE. It is a planning risk indicator, not a guaranteed service level."],["Revenue and margin at risk","Suggested replenishment quantity is valued at NetPrice for revenue opportunity and positive NetPrice-minus-Cost for margin opportunity."],["Forecast accuracy","WAPE measures portfolio-weighted absolute error; sMAPE is scale-balanced percentage error; MASE below 1 outperforms a naive benchmark; signed bias above zero indicates over-forecasting."],["Regional separation",`${REGION_NAMES[state.region]} data is stored and analyzed independently in this browser.`]]; }
+  function methodologyExport(analysis) { return [["Method","Definition"],["Brand scope","Only brands marked active in the selected region's Active Brands page are analyzed. If no brand configuration exists yet, all uploaded brands remain eligible."],["Eligible statuses","Only Live, Fashion and Backorder rows are analyzed."],["Period interpretation","A header in YYYYMM format is treated as a calendar month; 202509 is September 2025 and 202601 is January 2026."],["Partial month",analysis.latestIsPartial?`${analysis.latestPeriod} matches the current calendar month and is excluded from the nine-month baseline and forecast training.`:"The latest uploaded period is treated as complete."],["Nine-month demand","Sum of non-negative model demand across the last nine complete periods."],["Average monthly demand","Nine-month demand divided by the number of available complete baseline months, up to nine."],["Demand trend","Latest three-month average demand compared with the preceding three-month average."],["Revenue","Monthly model net units multiplied by NetPrice from the price list, matched by ItemID first and Model# second."],["Cost and gross margin","COGS uses monthly net units multiplied by Cost. Gross margin and margin percentage include only models with both matched NetPrice and Cost; missing Cost is never treated as zero cost."],["Dead stock","Current stock is positive and nine-month demand is zero. Dead-stock exposure equals current stock multiplied by Cost."],["Months coverage","Current stock divided by average monthly demand. Positive stock with zero demand is reported as no-demand/infinite coverage."],["Excess stock","Current stock above two months of average demand. Excess units = max(0, current stock - 2 x average monthly demand); excess exposure equals excess units multiplied by Cost."],["Demand pattern","ADI and squared demand variability classify demand as Smooth, Erratic, Intermittent or Lumpy; zero demand is classified separately."],["ABC-XYZ matrix","ABC is cumulative nine-month NetPrice revenue: A to 80%, B to 95%, C the remainder. X is smooth demand, Y erratic, and Z intermittent, lumpy or no demand."],["Seller tiers","High sellers form the first 80% of cumulative nine-month demand, medium sellers the next 15%, and low sellers the remainder. Zero-demand models are low sellers."],["Forecast method selection","Each model is rolling-backtested using last month, 3-month average, 6-month weighted average, adaptive exponential smoothing, damped trend, seasonal naive, Croston SBA where appropriate, and a robust median ensemble. Selection balances WAPE, sMAPE, MASE and signed bias."],["Forecast range","The P80 range is the selected forecast plus or minus 1.28 times the model's rolling backtest MAE, constrained to non-negative plausible demand."],["Safety stock and reorder point","Safety stock uses 1.65 times rolling backtest MAE as an approximate one-sided 95% one-month demand buffer. Reorder point equals next-month forecast plus safety stock; suggested quantity is the positive gap versus current stock."],["Stockout probability","A normal residual-error approximation compares current stock with the selected next-month forecast using model-level RMSE. It is a planning risk indicator, not a guaranteed service level."],["Revenue and margin at risk","Suggested replenishment quantity is valued at NetPrice for revenue opportunity and positive NetPrice-minus-Cost for margin opportunity."],["Forecast accuracy","WAPE measures portfolio-weighted absolute error; sMAPE is scale-balanced percentage error; MASE below 1 outperforms a naive benchmark; signed bias above zero indicates over-forecasting."],["Regional separation",`${REGION_NAMES[state.region]} data is stored and analyzed independently in this browser.`]]; }
 
   function metricPeriod(row) { return state.filters.metric === "revenue" ? row.revenue : row.netUnits; }
   function metricItem(item, periods) { return periods.reduce((total,period)=>total+(state.filters.metric === "revenue"?finiteNumber(item.monthly[period])*item.price:finiteNumber(item.monthly[period])),0); }

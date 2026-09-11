@@ -13,19 +13,7 @@
     .report-table-panel .wide-reorder-table {
       border-collapse: collapse;
       border-spacing: 0;
-      table-layout: fixed;
-      width: 100%;
-      min-width: 0 !important;
-    }
-
-    .report-table-panel .inventory-table-wrap {
-      overflow-x: hidden;
-    }
-
-    .report-table-panel .reorder-title,
-    .report-table-panel .reorder-note {
-      white-space: normal;
-      overflow-wrap: anywhere;
+      min-width: 1450px;
     }
 
     .report-table-panel .wide-reorder-table th,
@@ -33,13 +21,6 @@
       border: 1px solid #c9d8e5 !important;
       text-align: center !important;
       vertical-align: middle !important;
-      white-space: normal !important;
-      overflow-wrap: anywhere;
-      word-break: normal;
-      padding: 8px 5px !important;
-      font-size: clamp(0.69rem, 0.72vw, 0.82rem);
-      line-height: 1.25;
-      min-width: 0 !important;
     }
 
     .report-table-panel .wide-reorder-table th {
@@ -59,15 +40,6 @@
     .report-table-panel .wide-reorder-table th.num {
       text-align: center !important;
     }
-
-    .report-table-panel .wide-reorder-table th:nth-child(1),
-    .report-table-panel .wide-reorder-table td:nth-child(1) { width: 8%; }
-    .report-table-panel .wide-reorder-table th:nth-child(2),
-    .report-table-panel .wide-reorder-table td:nth-child(2) { width: 8%; }
-    .report-table-panel .wide-reorder-table th:nth-child(3),
-    .report-table-panel .wide-reorder-table td:nth-child(3) { width: 17%; }
-    .report-table-panel .wide-reorder-table th:nth-child(9),
-    .report-table-panel .wide-reorder-table td:nth-child(9) { width: 12%; }
   </style>
 
   <script
@@ -81,12 +53,12 @@
   ></script>
 
   <script
-    src="assets/inventory-core-us.js?v=20260911-1"
+    src="assets/inventory-core-us.js"
     defer
   ></script>
 
   <script
-    src="assets/inventory-pages-us.js?v=20260911-1"
+    src="assets/inventory-pages-us.js"
     defer
   ></script>
   <script src="assets/inventory-transitions.js?v=20260910-1" defer></script>
@@ -235,7 +207,6 @@
           Recommended quantity =
           ((On Hand + Open Supplier Qty − Open Orders From Client)
           × Lead Time from Active Brands) + Avg/Month.
-          It will never be lower than uncovered client orders.
           Negative results are set to zero and quantities are rounded up.
         </div>
 
