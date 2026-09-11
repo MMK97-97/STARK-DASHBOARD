@@ -2492,6 +2492,32 @@
           `index.html?workspace=${workspaceRegion}&module=sales`;
       }
 
+      function restorePageVisibility() {
+        document.body.classList.remove(
+          "page-leaving",
+          "inventory-fallback-leaving"
+        );
+
+        ["opacity", "transform", "filter", "pointer-events"]
+          .forEach((property) => {
+            document.body.style.removeProperty(property);
+          });
+
+        if (typeof document.body.getAnimations === "function") {
+          document.body.getAnimations().forEach((animation) => {
+            animation.cancel();
+          });
+        }
+      }
+
+      window.addEventListener("pageshow", restorePageVisibility);
+      window.addEventListener("pagehide", restorePageVisibility);
+      document.addEventListener("visibilitychange", () => {
+        if (document.visibilityState === "visible") {
+          restorePageVisibility();
+        }
+      });
+
       function navigateWithTransition(url) {
         document.body.classList.add("page-leaving");
 
@@ -3740,6 +3766,7 @@
       };
 
       async function initialize() {
+        restorePageVisibility();
         configurePage();
         normalizeEvents();
         bindEvents();

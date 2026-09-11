@@ -321,7 +321,8 @@
       const upcomingAvailability = row.stockQty - row.openClient;
       const supplierDueQty = Number.isFinite(row.supplierDueQty) ? row.supplierDueQty : (Number.isFinite(daysUntil) && daysUntil <= 30 ? row.openSupplier : 0);
       const calculatedRecommendation = (row.stockQty + row.openSupplier - row.openClient) * leadTimeMonths + row.avg3;
-      const recommended = reorderRequired ? Math.max(0, Math.ceil(calculatedRecommendation)) : 0;
+      const uncoveredClientOrders = row.openClient - row.stockQty - row.openSupplier;
+      const recommended = reorderRequired ? Math.max(0, Math.ceil(Math.max(calculatedRecommendation, uncoveredClientOrders))) : 0;
       return { ...row, actualAvailable, upcomingAvailability, supplierDueQty, activeBrand, eligible, excluded, daysUntil, leadTime, leadTimeMonths, reorderRequired, reorderReason: reasons.join(" | "), recommended, monthsCover: row.avg3 > 0 ? row.available / row.avg3 : null, abc: "C", rank: 0, contribution: 0, cumulative: 0 };
     });
     const ranked = items.slice().sort((a, b) => b.vol3 - a.vol3), total = ranked.reduce((sum, item) => sum + Math.max(0, item.vol3), 0); let cumulative = 0;

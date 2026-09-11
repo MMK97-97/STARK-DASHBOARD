@@ -13,7 +13,19 @@
     .report-table-panel .wide-reorder-table {
       border-collapse: collapse;
       border-spacing: 0;
-      min-width: 1450px;
+      table-layout: fixed;
+      width: 100%;
+      min-width: 0 !important;
+    }
+
+    .report-table-panel .inventory-table-wrap {
+      overflow-x: hidden;
+    }
+
+    .report-table-panel .reorder-title,
+    .report-table-panel .reorder-note {
+      white-space: normal;
+      overflow-wrap: anywhere;
     }
 
     .report-table-panel .wide-reorder-table th,
@@ -21,6 +33,13 @@
       border: 1px solid #c9d8e5 !important;
       text-align: center !important;
       vertical-align: middle !important;
+      white-space: normal !important;
+      overflow-wrap: anywhere;
+      word-break: normal;
+      padding: 8px 4px !important;
+      font-size: clamp(0.65rem, 0.66vw, 0.78rem);
+      line-height: 1.22;
+      min-width: 0 !important;
     }
 
     .report-table-panel .wide-reorder-table th {
@@ -40,6 +59,17 @@
     .report-table-panel .wide-reorder-table th.num {
       text-align: center !important;
     }
+
+    .report-table-panel .wide-reorder-table th:nth-child(1),
+    .report-table-panel .wide-reorder-table td:nth-child(1) { width: 7%; }
+    .report-table-panel .wide-reorder-table th:nth-child(2),
+    .report-table-panel .wide-reorder-table td:nth-child(2) { width: 7%; }
+    .report-table-panel .wide-reorder-table th:nth-child(3),
+    .report-table-panel .wide-reorder-table td:nth-child(3) { width: 14%; }
+    .report-table-panel .wide-reorder-table th:nth-child(13),
+    .report-table-panel .wide-reorder-table td:nth-child(13) { width: 10%; }
+    .report-table-panel .wide-reorder-table th:nth-child(17),
+    .report-table-panel .wide-reorder-table td:nth-child(17) { width: 7%; }
   </style>
 
   <script
@@ -53,15 +83,15 @@
   ></script>
 
   <script
-    src="assets/inventory-core-eu.js"
+    src="assets/inventory-core-eu.js?v=20260911-1"
     defer
   ></script>
 
   <script
-    src="assets/inventory-pages-eu.js"
+    src="assets/inventory-pages-eu.js?v=20260911-1"
     defer
   ></script>
-  <script src="assets/inventory-transitions.js" defer></script>
+  <script src="assets/inventory-transitions.js?v=20260910-1" defer></script>
 </head>
 <body data-page="reorder">
   <header class="inventory-header">
@@ -208,6 +238,8 @@
           Recommended quantity =
           ((On Hand + Open Supplier Qty − Open Orders From Client)
           × Lead Time from Active Brands) + Avg/Month.
+          It will never be lower than client orders not covered by On Hand,
+          ATS and supplier quantity due within 30 days.
           Negative results are set to zero and quantities are rounded up.
         </div>
 
