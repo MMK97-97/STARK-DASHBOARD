@@ -353,14 +353,7 @@
     const items = rows.map(row => {
       const statusUpper = String(row.status).trim().toUpperCase(), excluded = ["FEEDS ONLY", "INTERNAL USE", "PRESENTATION"].some(value => statusUpper.includes(value)), eligible = ["LIVE", "FASHION", "BACKORDER"].includes(statusUpper), activeBrand = brands[row.brand] ? brands[row.brand].active !== false : true;
       const onHand = nonNegative(row.stockQty), openClient = nonNegative(row.openClient), openSupplier = nonNegative(row.openSupplier), avgMonthly = nonNegative(row.avg3), available = finite(toNumber(row.available));
-      const supplierDate = region === "EU" ? (reviveDate(row.supplierStart) || reviveDate(row.supplierEnd)) : reviveDate(row.supplierEnd), daysUntil = supplierDate ? calendarDayDifference(today, supplierDate) : null, reasons = [];
-      if (activeBrand && eligible && !excluded) {
-        if (available + openSupplier <= settings.critical) reasons.push(`Available + supplier qty <= ${settings.critical}`);
-        if (openClient > available) reasons.push("Open client orders exceed available stock");
-        if (Number.isFinite(daysUntil) && daysUntil > settings.delay) reasons.push(`Supplier delivery exceeds ${settings.delay} days`);
-        if (avgMonthly > available + openSupplier) reasons.push("Average monthly sales exceed available + supplier qty");
-      }
-      const reorderRequired = reasons.length > 0;
+      const supplierDate = region === "EU" ? (reviveDate(row.supplierStart) || reviveDate(row.supplierEnd)) : reviveDate(row.supplierEnd), daysUntil = supplierDate ? calendarDayDifference(today, supplierDate) : null;
       const leadTime = brands[row.brand]?.leadTime || "";
       const leadTimeMonths = leadTimeInMonths(leadTime);
       const actualAvailable = onHand + nonNegative(row.ats);
@@ -368,8 +361,9 @@
       const supplierDueQty = Number.isFinite(toNumber(row.supplierDueQty)) ? nonNegative(row.supplierDueQty) : (Number.isFinite(daysUntil) && daysUntil <= 30 ? openSupplier : 0);
       const netInventoryPosition = onHand + openSupplier - openClient;
       const calculatedRecommendation = netInventoryPosition * leadTimeMonths + avgMonthly;
-      const recommended = reorderRequired ? stableCeil(calculatedRecommendation) : 0;
-      return { ...row, stockQty: onHand, available, openClient, openSupplier, avg3: avgMonthly, actualAvailable, upcomingAvailability, supplierDueQty, netInventoryPosition, calculatedRecommendation, activeBrand, eligible, excluded, daysUntil, leadTime, leadTimeMonths, reorderRequired, reorderReason: reasons.join(" | "), recommended, monthsCover: avgMonthly > 0 ? available / avgMonthly : null, abc: "C", rank: 0, contribution: 0, cumulative: 0 };
+      const recommended = activeBrand && eligible && !excluded ? stableCeil(calculatedRecommendation) : 0;
+      const reorderRequired = recommended > 0;
+      return { ...row, stockQty: onHand, available, openClient, openSupplier, avg3: avgMonthly, actualAvailable, upcomingAvailability, supplierDueQty, netInventoryPosition, calculatedRecommendation, activeBrand, eligible, excluded, daysUntil, leadTime, leadTimeMonths, reorderRequired, reorderReason: reorderRequired ? "Formula recommendation" : "", recommended, monthsCover: avgMonthly > 0 ? available / avgMonthly : null, abc: "C", rank: 0, contribution: 0, cumulative: 0 };
     });
     const ranked = items.slice().sort((a, b) => b.vol3 - a.vol3 || String(a.brand).localeCompare(String(b.brand)) || String(a.model).localeCompare(String(b.model))), total = ranked.reduce((sum, item) => sum + Math.max(0, item.vol3), 0); let cumulative = 0;
     ranked.forEach((item, index) => { const prior = cumulative, contribution = total ? Math.max(0, item.vol3) / total : 0; cumulative += contribution; item.rank = index + 1; item.contribution = contribution; item.cumulative = cumulative; item.abc = prior < settings.a / 100 ? "A" : prior < settings.b / 100 ? "B" : "C"; });
