@@ -5,6 +5,9 @@
   const DB_NAME = "stark-regional-inventory-ca";
   const STORE_NAME = "datasets";
   const VERSION = 1;
+  const SYNC_CHANNEL = "stark-analytics-sync-v1";
+  const SYNC_PULSE_KEY = "stark-analytics-sync-pulse";
+  let syncChannel = null;
   const REGION_NAMES = { US: "United States", EU: "European Union", Canada: "Canada" };
   const DEFAULT_SETTINGS = { critical: 3, coverage: 1, delay: 15, a: 80, b: 95 };
   const ITEM_ALIASES = {
@@ -96,16 +99,25 @@
     });
   }
 
-  async function saveDataset(region, dataset) { try { return await databaseAction("readwrite", store => store.put(dataset, region)); } catch (_) { sessionStorage.setItem(`stark-inventory-${region}`, JSON.stringify(dataset)); return true; } }
+  function publishSync(type, region) {
+    const message = { source: "inventory", type, region: regionCode(region), timestamp: Date.now(), nonce: `${Date.now()}-${Math.random().toString(36).slice(2)}` };
+    try {
+      syncChannel = syncChannel || ("BroadcastChannel" in global ? new BroadcastChannel(SYNC_CHANNEL) : null);
+      syncChannel?.postMessage(message);
+    } catch (_) {}
+    try { localStorage.setItem(SYNC_PULSE_KEY, JSON.stringify(message)); } catch (_) {}
+  }
+
+  async function saveDataset(region, dataset) { try { const result = await databaseAction("readwrite", store => store.put(dataset, region)); publishSync("inventory-data", region); return result; } catch (_) { sessionStorage.setItem(`stark-inventory-${region}`, JSON.stringify(dataset)); publishSync("inventory-data", region); return true; } }
   async function loadDataset(region) { try { return (await databaseAction("readonly", store => store.get(region))) || null; } catch (_) { const raw = sessionStorage.getItem(`stark-inventory-${region}`); return raw ? JSON.parse(raw) : null; } }
-  async function clearDataset(region) { try { await databaseAction("readwrite", store => store.delete(region)); } catch (_) { sessionStorage.removeItem(`stark-inventory-${region}`); } }
+  async function clearDataset(region) { try { await databaseAction("readwrite", store => store.delete(region)); } catch (_) { sessionStorage.removeItem(`stark-inventory-${region}`); } publishSync("inventory-data", region); }
 
   function settingsKey(region) { return `stark-inventory-settings-${region}`; }
   function brandKey(region) { return `stark-active-brands-${region}`; }
   function loadSettings(region) { try { return { ...DEFAULT_SETTINGS, ...JSON.parse(localStorage.getItem(settingsKey(region)) || "{}") }; } catch (_) { return { ...DEFAULT_SETTINGS }; } }
-  function saveSettings(region, settings) { localStorage.setItem(settingsKey(region), JSON.stringify({ ...DEFAULT_SETTINGS, ...settings })); }
+  function saveSettings(region, settings) { const value = JSON.stringify({ ...DEFAULT_SETTINGS, ...settings }); if (localStorage.getItem(settingsKey(region)) === value) return; localStorage.setItem(settingsKey(region), value); publishSync("inventory-settings", region); }
   function loadBrandSettings(region) { try { return JSON.parse(localStorage.getItem(brandKey(region)) || "{}"); } catch (_) { return {}; } }
-  function saveBrandSettings(region, settings) { localStorage.setItem(brandKey(region), JSON.stringify(settings)); }
+  function saveBrandSettings(region, settings) { const value = JSON.stringify(settings); if (localStorage.getItem(brandKey(region)) === value) return; localStorage.setItem(brandKey(region), value); publishSync("brand-settings", region); }
   function ensureBrandSettings(region, rows) {
     const saved = loadBrandSettings(region);
     unique(rows.map(row => row.brand)).forEach(brand => { if (!saved[brand]) saved[brand] = { active: true, leadTime: "" }; });

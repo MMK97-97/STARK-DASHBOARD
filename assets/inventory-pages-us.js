@@ -5,7 +5,10 @@
   const page = document.body.dataset.page || "inventory";
   const region = "US";
   SI.initFrame(page);
-  let dataset = null, items = [], dashboardFilter = "all";
+  let dataset = null, items = [], dashboardFilter = "all", dashboardCrossFilter = null;
+  let syncChannel = null, syncTimer = 0, lastSyncNonce = "";
+  const SYNC_CHANNEL = "stark-analytics-sync-v1";
+  const SYNC_PULSE_KEY = "stark-analytics-sync-pulse";
   const number = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
   const decimal = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
   const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 1 });
@@ -18,6 +21,7 @@
     items = dataset ? SI.analyze(dataset.rows, region) : [];
     renderDataNote();
     initPageTransitions();
+    initLiveSync();
     if (page === "dashboard") initDashboard();
     if (page === "raw") initRaw();
     if (page === "reorder") initReorder();
@@ -36,13 +40,14 @@
   function initDashboard() {
     const clearButton = el("clear-inventory-data"), settings = SI.loadSettings(region);
     ["critical", "coverage", "delay", "a", "b"].forEach(key => { const input = el(`setting-${key}`); if (input) input.value = settings[key]; });
-    clearButton.addEventListener("click", async () => { if (!confirm(`Clear the ${SI.regionName(region)} inventory report stored in this browser?`)) return; await SI.clearDataset(region); dataset = null; items = []; renderDataNote(); renderDashboard(); });
+    clearButton.addEventListener("click", async () => { if (!confirm(`Clear the ${SI.regionName(region)} inventory report stored in this browser?`)) return; await SI.clearDataset(region); dataset = null; items = []; dashboardCrossFilter = null; renderDataNote(); renderDashboard(); });
     el("save-inventory-settings").addEventListener("click", () => {
       const next = {}; ["critical", "coverage", "delay", "a", "b"].forEach(key => next[key] = Number(el(`setting-${key}`).value));
       if (next.a <= 0 || next.a >= next.b || next.b > 100) return alert("ABC thresholds must satisfy A < B and B ≤ 100.");
       SI.saveSettings(region, next); items = dataset ? SI.analyze(dataset.rows, region) : []; renderDashboard();
     });
     renderDashboard();
+    refreshSalesSnapshot();
   }
 
   function renderDashboard() {
@@ -57,10 +62,14 @@
       ["Recommended units", number.format(reorderUnits), "Based on average monthly sales", "recommended"],
       ["Inactive-brand items", number.format(inactive.length), "Excluded from reorder", "inactive"]
     ]);
-    const filtered = dashboardRows(active, inactive), filteredReorders = filtered.filter(item => item.reorderRequired);
-    renderAbcSummary(filtered);
-    const byBrand = rollup(filteredReorders, item => item.brand, item => item.recommended, 10);
+    const kpiRows = dashboardRows(active, inactive), filtered = applyDashboardCrossFilter(kpiRows), filteredReorders = filtered.filter(item => item.reorderRequired);
+    renderDashboardFilterStatus(filtered.length, kpiRows.length);
+    renderAbcSummary(dashboardCrossFilter?.type === "abc" ? kpiRows : filtered);
+    const brandChartRows = dashboardCrossFilter?.type === "brand" ? kpiRows : filtered;
+    const byBrand = rollup(brandChartRows.filter(item => item.reorderRequired), item => item.brand, item => item.recommended, 10);
     renderBarList("reorder-brand-bars", byBrand, value => number.format(value));
+    renderCoverageChart(dashboardCrossFilter?.type === "coverage" ? kpiRows : filtered);
+    renderInventoryPositionChart(brandChartRows);
     const attention = filteredReorders.slice().sort((a, b) => b.recommended - a.recommended || String(a.brand).localeCompare(String(b.brand)) || String(a.model).localeCompare(String(b.model))).slice(0, 8);
     el("attention-table").innerHTML = attention.map(item => `<tr><td>${SI.escapeHtml(item.model)}</td><td>${SI.escapeHtml(item.brand)}</td><td>${SI.escapeHtml(item.product)}</td><td class="num">${number.format(item.available)}</td><td class="num">${decimal.format(item.avg3)}</td><td class="num">${number.format(item.recommended)}</td><td>${SI.escapeHtml(item.reorderReason)}</td></tr>`).join("") || emptyRow(7);
   }
@@ -72,6 +81,28 @@
     if (dashboardFilter === "recommended") return active.filter(item => item.recommended > 0);
     if (dashboardFilter === "inactive") return inactive;
     return active;
+  }
+
+  function applyDashboardCrossFilter(rows) {
+    if (!dashboardCrossFilter) return rows;
+    if (dashboardCrossFilter.type === "abc") return rows.filter(item => (item.dashboardAbc || item.abc) === dashboardCrossFilter.value);
+    if (dashboardCrossFilter.type === "brand") return rows.filter(item => item.brand === dashboardCrossFilter.value);
+    if (dashboardCrossFilter.type === "coverage") return rows.filter(item => coverageBucket(item).key === dashboardCrossFilter.value);
+    return rows;
+  }
+
+  function setDashboardCrossFilter(type, value) {
+    dashboardCrossFilter = dashboardCrossFilter?.type === type && dashboardCrossFilter.value === value ? null : { type, value };
+    renderDashboard();
+  }
+
+  function renderDashboardFilterStatus(visible, total) {
+    const node = el("dashboard-filter-status");
+    if (!node) return;
+    const kpiLabel = { all: "All active items", stock: "Items with stock", demand: "Items with demand", reorder: "Reorder items", recommended: "Items with recommended units", inactive: "Inactive-brand items" }[dashboardFilter];
+    const chartLabel = dashboardCrossFilter ? `${dashboardCrossFilter.type === "abc" ? "ABC class" : dashboardCrossFilter.type === "brand" ? "Brand" : "Coverage"}: ${dashboardCrossFilter.value}` : "";
+    node.innerHTML = `<span><i></i><strong>${SI.escapeHtml(kpiLabel)}</strong>${chartLabel ? ` <b>+</b> ${SI.escapeHtml(chartLabel)}` : ""} <small>${number.format(visible)} of ${number.format(total)} models shown</small></span>${dashboardCrossFilter ? '<button type="button" id="clear-dashboard-chart-filter">Clear chart filter</button>' : ""}`;
+    el("clear-dashboard-chart-filter")?.addEventListener("click", () => { dashboardCrossFilter = null; renderDashboard(); });
   }
 
   function assignDashboardAbc(rows) {
@@ -86,9 +117,40 @@
 
   function renderAbcSummary(rows) {
     const counts = ["A", "B", "C"].map(code => ({ code, value: rows.filter(item => (item.dashboardAbc || item.abc) === code).length })), total = counts.reduce((sumValue, item) => sumValue + item.value, 0) || 1;
-    el("abc-summary").innerHTML = counts.map(item => `<div class="abc-summary-row"><span class="class-badge class-${item.code.toLowerCase()}">${item.code}</span><div><strong>${number.format(item.value)} items</strong><small>${percent.format(item.value / total)} of active items</small></div></div>`).join("");
+    el("abc-summary").innerHTML = counts.map(item => `<button type="button" class="abc-summary-row${dashboardCrossFilter?.type === "abc" && dashboardCrossFilter.value === item.code ? " is-selected" : ""}" data-abc-filter="${item.code}" aria-pressed="${dashboardCrossFilter?.type === "abc" && dashboardCrossFilter.value === item.code}"><span class="class-badge class-${item.code.toLowerCase()}">${item.code}</span><div><strong>${number.format(item.value)} items</strong><small>${percent.format(item.value / total)} of visible items</small></div></button>`).join("");
+    el("abc-summary").querySelectorAll("[data-abc-filter]").forEach(button => button.addEventListener("click", () => setDashboardCrossFilter("abc", button.dataset.abcFilter)));
     el("abc-donut-css").style.background = `conic-gradient(#0b8f87 0 ${counts[0].value / total * 100}%, #f59e0b ${counts[0].value / total * 100}% ${(counts[0].value + counts[1].value) / total * 100}%, #dc5a64 ${(counts[0].value + counts[1].value) / total * 100}% 100%)`;
     el("abc-donut-total").textContent = number.format(total === 1 && !rows.length ? 0 : total);
+  }
+
+  function coverageBucket(item) {
+    const demand = Math.max(0, Number(item.avg3) || 0), available = Math.max(0, Number(item.available) || 0), months = demand > 0 ? available / demand : available > 0 ? Infinity : 0;
+    if (demand <= 0 && available > 0) return { key: "No demand", order: 4 };
+    if (months < 1) return { key: "Under 1 month", order: 0 };
+    if (months < 2) return { key: "1–2 months", order: 1 };
+    if (months <= 4) return { key: "2–4 months", order: 2 };
+    return { key: "Over 4 months", order: 3 };
+  }
+
+  function renderCoverageChart(rows) {
+    const buckets = ["Under 1 month", "1–2 months", "2–4 months", "Over 4 months", "No demand"].map(key => ({ key, value: rows.filter(item => coverageBucket(item).key === key).length }));
+    const max = Math.max(1, ...buckets.map(bucket => bucket.value));
+    el("coverage-bars").innerHTML = buckets.map(bucket => `<button type="button" class="coverage-row${dashboardCrossFilter?.type === "coverage" && dashboardCrossFilter.value === bucket.key ? " is-selected" : ""}" data-coverage-filter="${bucket.key}" aria-pressed="${dashboardCrossFilter?.type === "coverage" && dashboardCrossFilter.value === bucket.key}"><span>${bucket.key}</span><div><i style="width:${bucket.value / max * 100}%"></i></div><strong>${number.format(bucket.value)}</strong></button>`).join("");
+    el("coverage-bars").querySelectorAll("[data-coverage-filter]").forEach(button => button.addEventListener("click", () => setDashboardCrossFilter("coverage", button.dataset.coverageFilter)));
+  }
+
+  function renderInventoryPositionChart(rows) {
+    const byBrand = new Map();
+    rows.forEach(item => {
+      const current = byBrand.get(item.brand) || { key: item.brand, available: 0, demand: 0 };
+      current.available += Math.max(0, Number(item.available) || 0);
+      current.demand += Math.max(0, Number(item.avg3) || 0);
+      byBrand.set(item.brand, current);
+    });
+    const values = Array.from(byBrand.values()).sort((a, b) => b.demand - a.demand || b.available - a.available || a.key.localeCompare(b.key)).slice(0, 8);
+    const max = Math.max(1, ...values.flatMap(row => [row.available, row.demand]));
+    el("inventory-position-bars").innerHTML = values.map(row => `<button type="button" class="position-row${dashboardCrossFilter?.type === "brand" && dashboardCrossFilter.value === row.key ? " is-selected" : ""}" data-brand-filter="${SI.escapeHtml(row.key)}" aria-pressed="${dashboardCrossFilter?.type === "brand" && dashboardCrossFilter.value === row.key}"><span>${SI.escapeHtml(row.key)}</span><div class="position-track"><i class="stock" style="width:${row.available / max * 100}%"></i><em>${number.format(row.available)} available</em></div><div class="position-track"><i class="demand" style="width:${row.demand / max * 100}%"></i><em>${decimal.format(row.demand)} demand/mo</em></div></button>`).join("") || '<div class="empty-box">No supply and demand data to display.</div>';
+    el("inventory-position-bars").querySelectorAll("[data-brand-filter]").forEach(button => button.addEventListener("click", () => setDashboardCrossFilter("brand", button.dataset.brandFilter)));
   }
 
   function initRaw() {
@@ -159,14 +221,78 @@
     el(id).querySelectorAll("[data-dashboard-filter]").forEach(button => button.addEventListener("click", () => {
       const next = button.dataset.dashboardFilter;
       dashboardFilter = next !== "all" && dashboardFilter === next ? "all" : next;
+      dashboardCrossFilter = null;
       renderDashboard();
     }));
   }
-  function renderBarList(id, rows, formatter) { const max = Math.max(1, ...rows.map(row => row.value)); el(id).innerHTML = rows.map(row => `<div class="bar-list-row"><span>${SI.escapeHtml(row.key)}</span><div><i style="width:${row.value / max * 100}%"></i></div><strong>${formatter(row.value)}</strong></div>`).join("") || '<div class="empty-box">No reorder units to display.</div>'; }
+  function renderBarList(id, rows, formatter) { const max = Math.max(1, ...rows.map(row => row.value)); el(id).innerHTML = rows.map(row => `<button type="button" class="bar-list-row${dashboardCrossFilter?.type === "brand" && dashboardCrossFilter.value === row.key ? " is-selected" : ""}" data-brand-filter="${SI.escapeHtml(row.key)}" aria-pressed="${dashboardCrossFilter?.type === "brand" && dashboardCrossFilter.value === row.key}"><span>${SI.escapeHtml(row.key)}</span><div><i style="width:${row.value / max * 100}%"></i></div><strong>${formatter(row.value)}</strong></button>`).join("") || '<div class="empty-box">No reorder units to display.</div>'; el(id).querySelectorAll("[data-brand-filter]").forEach(button => button.addEventListener("click", () => setDashboardCrossFilter("brand", button.dataset.brandFilter))); }
   function rollup(rows, keyFn, valueFn, limit) { const map = new Map(); rows.forEach(row => map.set(keyFn(row), (map.get(keyFn(row)) || 0) + valueFn(row))); return Array.from(map, ([key, value]) => ({ key, value })).sort((a, b) => b.value - a.value || String(a.key).localeCompare(String(b.key))).slice(0, limit); }
   function sum(rows, accessor) { return rows.reduce((total, row) => total + (Number(accessor(row)) || 0), 0); }
   function fillSelect(id, values, label) { el(id).innerHTML = `<option value="">${label}</option>` + values.map(value => `<option value="${SI.escapeHtml(value)}">${SI.escapeHtml(value)}</option>`).join(""); }
   function emptyRow(columns, message) { return `<tr><td colspan="${columns}">${message || "No data matches the current filters."}</td></tr>`; }
+
+  async function refreshSalesSnapshot() {
+    if (page !== "dashboard" || !el("sales-sync-detail")) return;
+    const snapshot = await loadSalesSnapshot(SI.regionCode(region));
+    const analysis = snapshot?.analysis;
+    const bridge = el("sales-sync-card");
+    bridge?.classList.toggle("is-connected", Boolean(analysis));
+    el("bridge-sales-units").textContent = analysis ? number.format(sum(analysis.items || [], item => item.demand9)) : "—";
+    el("bridge-forecast").textContent = analysis ? decimal.format(sum(analysis.items || [], item => item.forecast?.next)) : "—";
+    el("bridge-replenishment").textContent = analysis ? decimal.format(sum(analysis.items || [], item => item.suggestedQty)) : "—";
+    el("sales-sync-detail").textContent = analysis
+      ? `${snapshot.sales?.fileName || "Sales report"} • ${number.format((analysis.items || []).length)} active-brand models • Live sync on`
+      : "No linked Sales Analysis is available for this region yet.";
+  }
+
+  async function loadSalesSnapshot(regionCode) {
+    if (!window.indexedDB) return null;
+    return new Promise(resolve => {
+      const request = indexedDB.open("stark-sales-intelligence-v1", 1);
+      request.onerror = () => resolve(null);
+      request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains("regional-sales")) request.result.createObjectStore("regional-sales"); };
+      request.onsuccess = () => {
+        const db = request.result;
+        try {
+          const tx = db.transaction("regional-sales", "readonly"), get = tx.objectStore("regional-sales").get(regionCode);
+          get.onsuccess = () => { resolve(get.result || null); db.close(); };
+          get.onerror = () => { resolve(null); db.close(); };
+        } catch (_) { resolve(null); db.close(); }
+      };
+    });
+  }
+
+  function initLiveSync() {
+    const receive = message => {
+      if (!message || message.nonce === lastSyncNonce || message.region !== SI.regionCode(region)) return;
+      lastSyncNonce = message.nonce || "";
+      clearTimeout(syncTimer);
+      syncTimer = window.setTimeout(() => refreshLinkedData(message), 80);
+    };
+    try {
+      if ("BroadcastChannel" in window) {
+        syncChannel = new BroadcastChannel(SYNC_CHANNEL);
+        syncChannel.addEventListener("message", event => receive(event.data));
+      }
+    } catch (_) {}
+    window.addEventListener("storage", event => {
+      if (event.key !== SYNC_PULSE_KEY || !event.newValue) return;
+      try { receive(JSON.parse(event.newValue)); } catch (_) {}
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden && page === "dashboard") refreshLinkedData({ source: "visibility", region: SI.regionCode(region) });
+    });
+  }
+
+  async function refreshLinkedData(message) {
+    if (page !== "dashboard") return;
+    if (message.source === "sales") { await refreshSalesSnapshot(); return; }
+    dataset = await SI.loadDataset(region);
+    items = dataset ? SI.analyze(dataset.rows, region) : [];
+    renderDataNote();
+    renderDashboard();
+    await refreshSalesSnapshot();
+  }
 
   function initPageTransitions() {
     document.querySelectorAll(".inventory-nav a, .workspace-back").forEach(link => {

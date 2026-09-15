@@ -7,6 +7,8 @@
   const DB_NAME = "stark-sales-intelligence-v1";
   const DB_STORE = "regional-sales";
   const DB_VERSION = 1;
+  const SYNC_CHANNEL = "stark-analytics-sync-v1";
+  const SYNC_PULSE_KEY = "stark-analytics-sync-pulse";
   const COLORS = {
     navy: "#164f78", teal: "#109990", blue: "#3978d6", purple: "#7658d9",
     orange: "#e8942f", red: "#d94e62", green: "#198764", muted: "#65758b", line: "#d6e1eb"
@@ -26,6 +28,9 @@
   const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 1 });
   let toastTimer = 0;
   let resizeTimer = 0;
+  let syncChannel = null;
+  let syncTimer = 0;
+  let lastSyncNonce = "";
 
   document.addEventListener("DOMContentLoaded", init);
 
@@ -34,6 +39,7 @@
     await Promise.all(Object.keys(state.regions).map(loadRegion));
     updateRegionStatus();
     selectRegion(state.region, false);
+    initLiveSync();
   }
 
   function emptyRegion() {
@@ -551,10 +557,12 @@
     $("analysis-region-label").textContent = `${REGION_NAMES[state.region]} portfolio`;
     $("workspace-link").href = `index.html?workspace=${state.region === "CA" ? "Canada" : state.region}`;
     $("workspace-link").textContent = `← ${state.region === "CA" ? "Canada" : state.region} workspace`;
+    $("inventory-dashboard-link").href = `inventory-dashboard-${state.region.toLowerCase()}.html`;
     if (updateUrl) history.replaceState(null, "", `sales-analysis.html?region=${state.region}`);
     if (current().sales) current().analysis = analyze(current().sales, current().prices, state.region);
     initializeFilters();
     updateUploadUI();
+    refreshInventoryLinkState();
     if (current().analysis) renderAll();
   }
 
@@ -1429,6 +1437,79 @@
   function showToast(message,error=false) { clearTimeout(toastTimer); const toast=$("toast"); toast.textContent=message; toast.className=`toast show${error?" error":""}`; toastTimer=setTimeout(()=>toast.className="toast",4200); }
   function setBusy(busy) { document.body.classList.toggle("busy",busy); }
 
+  function publishSync(type, region) {
+    const message = { source: "sales", type, region, timestamp: Date.now(), nonce: `${Date.now()}-${Math.random().toString(36).slice(2)}` };
+    try {
+      syncChannel = syncChannel || ("BroadcastChannel" in window ? new BroadcastChannel(SYNC_CHANNEL) : null);
+      syncChannel?.postMessage(message);
+    } catch (_) {}
+    try { localStorage.setItem(SYNC_PULSE_KEY, JSON.stringify(message)); } catch (_) {}
+  }
+
+  function initLiveSync() {
+    const receive = message => {
+      if (!message || message.nonce === lastSyncNonce || normalizeRegion(message.region) !== state.region) return;
+      lastSyncNonce = message.nonce || "";
+      clearTimeout(syncTimer);
+      syncTimer = setTimeout(() => handleLiveSync(message), 90);
+    };
+    try {
+      if ("BroadcastChannel" in window) {
+        syncChannel = syncChannel || new BroadcastChannel(SYNC_CHANNEL);
+        syncChannel.addEventListener("message", event => receive(event.data));
+      }
+    } catch (_) {}
+    window.addEventListener("storage", event => {
+      if (event.key !== SYNC_PULSE_KEY || !event.newValue) return;
+      try { receive(JSON.parse(event.newValue)); } catch (_) {}
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) handleLiveSync({ source: "visibility", region: state.region });
+    });
+  }
+
+  async function handleLiveSync(message) {
+    if (message.source === "inventory" && message.type === "brand-settings" && current().sales) {
+      current().analysis = analyze(current().sales, current().prices, state.region);
+      await persistRegion(state.region);
+      initializeFilters();
+      updateUploadUI();
+      updateRegionStatus();
+      renderAll();
+      showToast("Active-brand changes synchronized with Sales Analysis.");
+    }
+    await refreshInventoryLinkState();
+  }
+
+  async function refreshInventoryLinkState() {
+    const node = $("inventory-sync-state");
+    if (!node) return;
+    const inventoryRegion = state.region === "CA" ? "Canada" : state.region;
+    const dbName = state.region === "US" ? "stark-regional-inventory" : state.region === "EU" ? "stark-regional-inventory-eu" : "stark-regional-inventory-ca";
+    const snapshot = await loadInventorySnapshot(dbName, inventoryRegion);
+    node.textContent = snapshot?.rows?.length
+      ? `Inventory linked • ${integer.format(snapshot.rows.length)} items • live sync on`
+      : "Inventory Dashboard linked • no regional report loaded";
+    node.classList.toggle("is-connected", Boolean(snapshot?.rows?.length));
+  }
+
+  function loadInventorySnapshot(dbName, inventoryRegion) {
+    if (!window.indexedDB) return Promise.resolve(null);
+    return new Promise(resolve => {
+      const request = indexedDB.open(dbName, 1);
+      request.onerror = () => resolve(null);
+      request.onupgradeneeded = () => { if (!request.result.objectStoreNames.contains("datasets")) request.result.createObjectStore("datasets"); };
+      request.onsuccess = () => {
+        const db = request.result;
+        try {
+          const tx = db.transaction("datasets", "readonly"), get = tx.objectStore("datasets").get(inventoryRegion);
+          get.onsuccess = () => { resolve(get.result || null); db.close(); };
+          get.onerror = () => { resolve(null); db.close(); };
+        } catch (_) { resolve(null); db.close(); }
+      };
+    });
+  }
+
   function openDatabase() {
     return new Promise((resolve,reject)=>{
       const request=indexedDB.open(DB_NAME,DB_VERSION);
@@ -1438,6 +1519,6 @@
     });
   }
   async function loadRegion(region) { try { const db=await openDatabase(); const value=await new Promise((resolve,reject)=>{const tx=db.transaction(DB_STORE,"readonly");const request=tx.objectStore(DB_STORE).get(region);request.onsuccess=()=>resolve(request.result);request.onerror=()=>reject(request.error);}); db.close(); if(value)state.regions[region]=value; if(value?.sales)value.analysis=analyze(value.sales,value.prices,region); } catch(error) { console.warn("Sales data could not be restored.",error); } }
-  async function persistRegion(region) { try { const db=await openDatabase(); await new Promise((resolve,reject)=>{const tx=db.transaction(DB_STORE,"readwrite");tx.objectStore(DB_STORE).put(state.regions[region],region);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);}); db.close(); } catch(error) { console.warn("Sales data could not be saved.",error); } }
-  async function deleteStoredRegion(region) { try { const db=await openDatabase(); await new Promise((resolve,reject)=>{const tx=db.transaction(DB_STORE,"readwrite");tx.objectStore(DB_STORE).delete(region);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);}); db.close(); } catch(error) { console.warn("Sales data could not be cleared.",error); } }
+  async function persistRegion(region) { try { const db=await openDatabase(); await new Promise((resolve,reject)=>{const tx=db.transaction(DB_STORE,"readwrite");tx.objectStore(DB_STORE).put(state.regions[region],region);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);}); db.close(); publishSync("sales-data",region); } catch(error) { console.warn("Sales data could not be saved.",error); } }
+  async function deleteStoredRegion(region) { try { const db=await openDatabase(); await new Promise((resolve,reject)=>{const tx=db.transaction(DB_STORE,"readwrite");tx.objectStore(DB_STORE).delete(region);tx.oncomplete=resolve;tx.onerror=()=>reject(tx.error);}); db.close(); publishSync("sales-data",region); } catch(error) { console.warn("Sales data could not be cleared.",error); } }
 })();

@@ -11,8 +11,8 @@
   <link rel="stylesheet" href="assets/sales-analysis.css">
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" defer></script>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
-  <script src="assets/sales-analysis.js?v=20260911-1" defer></script>
-  <link rel="stylesheet" href="assets/world-class-ui.css?v=20260915-3">
+  <script src="assets/sales-analysis.js?v=20260915-4" defer></script>
+  <link rel="stylesheet" href="assets/world-class-ui.css?v=20260915-4">
 </head>
 <body>
   <a class="skip-link" href="#sales-main">Skip to analysis</a>
@@ -31,6 +31,7 @@
   <main id="sales-main">
     <nav class="page-nav" aria-label="Sales workspace navigation">
       <a class="button button-secondary" id="workspace-link" href="index.html?workspace=US">&larr; US workspace</a>
+      <a class="button button-secondary inventory-bridge-link" id="inventory-dashboard-link" href="inventory-dashboard-us.html">Open Inventory Dashboard</a>
       <div class="region-tabs" role="tablist" aria-label="Reporting region">
         <button class="region-tab active" type="button" role="tab" data-region="US"><span>US</span><small id="region-status-US">No data</small></button>
         <button class="region-tab" type="button" role="tab" data-region="EU"><span>EU</span><small id="region-status-EU">No data</small></button>
@@ -48,6 +49,7 @@
         <span>Analysis scope</span>
         <strong>ACTIVE BRANDS &bull; LIVE &bull; FASHION &bull; BACKORDER</strong>
         <small id="hero-data-state">Upload a sales report to begin</small>
+        <small class="inventory-sync-state" id="inventory-sync-state">Checking linked inventory…</small>
       </div>
     </section>
 
