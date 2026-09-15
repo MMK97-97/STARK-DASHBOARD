@@ -5,7 +5,7 @@
   const page = document.body.dataset.page || "inventory";
   const region = "Canada";
   SI.initFrame(page);
-  let dataset = null, items = [];
+  let dataset = null, items = [], dashboardFilter = "all";
   const number = new Intl.NumberFormat("en-US", { maximumFractionDigits: 0 });
   const decimal = new Intl.NumberFormat("en-US", { maximumFractionDigits: 1 });
   const percent = new Intl.NumberFormat("en-US", { style: "percent", maximumFractionDigits: 1 });
@@ -46,24 +46,46 @@
   }
 
   function renderDashboard() {
-    const active = items.filter(item => item.activeBrand), reorders = active.filter(item => item.reorderRequired), totalAvailable = sum(active, item => item.available), totalDemand = sum(active, item => item.avg3), reorderUnits = sum(reorders, item => item.recommended);
+    const active = items.filter(item => item.activeBrand && item.eligible && !item.excluded), inactive = items.filter(item => !item.activeBrand && item.eligible && !item.excluded), reorders = active.filter(item => item.reorderRequired), totalAvailable = sum(active, item => item.available), totalDemand = sum(active, item => item.avg3), reorderUnits = sum(reorders, item => item.recommended);
+    assignDashboardAbc(active);
+    assignDashboardAbc(inactive);
     renderKpis("dashboard-kpis", [
-      ["Items", number.format(active.length), `${SI.unique(active.map(item => item.brand)).length} active brands`],
-      ["Stock available", number.format(totalAvailable), "Current available inventory"],
-      ["Average monthly demand", number.format(totalDemand), "Past three-month run rate"],
-      ["Reorder items", number.format(reorders.length), "Live, Fashion and Backorder"],
-      ["Recommended units", number.format(reorderUnits), "Based on average monthly sales"],
-      ["Inactive-brand items", number.format(items.filter(item => !item.activeBrand).length), "Excluded from reorder"]
+      ["Items", number.format(active.length), `${SI.unique(active.map(item => item.brand)).length} active brands`, "all"],
+      ["Stock available", number.format(totalAvailable), "Current available inventory", "stock"],
+      ["Average monthly demand", decimal.format(totalDemand), "Past three-month run rate", "demand"],
+      ["Reorder items", number.format(reorders.length), "Live, Fashion and Backorder", "reorder"],
+      ["Recommended units", number.format(reorderUnits), "Based on average monthly sales", "recommended"],
+      ["Inactive-brand items", number.format(inactive.length), "Excluded from reorder", "inactive"]
     ]);
-    renderAbcSummary(active);
-    const byBrand = rollup(reorders, item => item.brand, item => item.recommended, 10);
+    const filtered = dashboardRows(active, inactive), filteredReorders = filtered.filter(item => item.reorderRequired);
+    renderAbcSummary(filtered);
+    const byBrand = rollup(filteredReorders, item => item.brand, item => item.recommended, 10);
     renderBarList("reorder-brand-bars", byBrand, value => number.format(value));
-    const attention = reorders.slice().sort((a, b) => b.recommended - a.recommended).slice(0, 8);
+    const attention = filteredReorders.slice().sort((a, b) => b.recommended - a.recommended || String(a.brand).localeCompare(String(b.brand)) || String(a.model).localeCompare(String(b.model))).slice(0, 8);
     el("attention-table").innerHTML = attention.map(item => `<tr><td>${SI.escapeHtml(item.model)}</td><td>${SI.escapeHtml(item.brand)}</td><td>${SI.escapeHtml(item.product)}</td><td class="num">${number.format(item.available)}</td><td class="num">${decimal.format(item.avg3)}</td><td class="num">${number.format(item.recommended)}</td><td>${SI.escapeHtml(item.reorderReason)}</td></tr>`).join("") || emptyRow(7);
   }
 
+  function dashboardRows(active, inactive) {
+    if (dashboardFilter === "stock") return active.filter(item => item.available > 0);
+    if (dashboardFilter === "demand") return active.filter(item => item.avg3 > 0);
+    if (dashboardFilter === "reorder") return active.filter(item => item.reorderRequired);
+    if (dashboardFilter === "recommended") return active.filter(item => item.recommended > 0);
+    if (dashboardFilter === "inactive") return inactive;
+    return active;
+  }
+
+  function assignDashboardAbc(rows) {
+    const stored = SI.loadSettings(region), a = Number.isFinite(Number(stored.a)) ? Math.min(98, Math.max(1, Number(stored.a))) : 80, b = Number.isFinite(Number(stored.b)) ? Math.min(100, Math.max(a + 1, Number(stored.b))) : 95, ranked = rows.slice().sort((left, right) => right.vol3 - left.vol3 || String(left.brand).localeCompare(String(right.brand)) || String(left.model).localeCompare(String(right.model))), total = sum(ranked, item => Math.max(0, item.vol3));
+    let cumulative = 0;
+    ranked.forEach(item => {
+      const prior = cumulative, contribution = total > 0 ? Math.max(0, item.vol3) / total : 0;
+      cumulative += contribution;
+      item.dashboardAbc = prior < a / 100 ? "A" : prior < b / 100 ? "B" : "C";
+    });
+  }
+
   function renderAbcSummary(rows) {
-    const counts = ["A", "B", "C"].map(code => ({ code, value: rows.filter(item => item.abc === code).length })), total = counts.reduce((sumValue, item) => sumValue + item.value, 0) || 1;
+    const counts = ["A", "B", "C"].map(code => ({ code, value: rows.filter(item => (item.dashboardAbc || item.abc) === code).length })), total = counts.reduce((sumValue, item) => sumValue + item.value, 0) || 1;
     el("abc-summary").innerHTML = counts.map(item => `<div class="abc-summary-row"><span class="class-badge class-${item.code.toLowerCase()}">${item.code}</span><div><strong>${number.format(item.value)} items</strong><small>${percent.format(item.value / total)} of active items</small></div></div>`).join("");
     el("abc-donut-css").style.background = `conic-gradient(#0b8f87 0 ${counts[0].value / total * 100}%, #f59e0b ${counts[0].value / total * 100}% ${(counts[0].value + counts[1].value) / total * 100}%, #dc5a64 ${(counts[0].value + counts[1].value) / total * 100}% 100%)`;
     el("abc-donut-total").textContent = number.format(total === 1 && !rows.length ? 0 : total);
@@ -132,9 +154,16 @@
   function setAllBrands(active) { const settings = SI.loadBrandSettings(region); allBrandNames().forEach(brand => { settings[brand] = settings[brand] || { active: true, leadTime: "" }; settings[brand].active = active; }); SI.saveBrandSettings(region, settings); items = SI.analyze(dataset.rows, region); renderBrands(); }
   function exportBrands() { const rows = brandRows(); SI.downloadCsv([["Active Brand", "Included", "Lead Time", "Item Count"], ...rows.map(row => [row.brand, row.active !== false ? "Yes" : "No", row.leadTime, row.items])], `Active Brands ${SI.regionCode(region)}.csv`); }
 
-  function renderKpis(id, cards) { el(id).innerHTML = cards.map(card => `<article class="inventory-kpi"><span>${card[0]}</span><strong>${card[1]}</strong><small>${card[2]}</small></article>`).join(""); }
+  function renderKpis(id, cards) {
+    el(id).innerHTML = cards.map(card => `<button class="inventory-kpi${dashboardFilter === card[3] ? " is-active" : ""}" type="button" data-dashboard-filter="${card[3]}" aria-pressed="${dashboardFilter === card[3]}" title="Filter all dashboard visuals by ${SI.escapeHtml(card[0])}"><span>${card[0]}</span><strong>${card[1]}</strong><small>${card[2]}</small><em>${dashboardFilter === card[3] ? "Filtering dashboard" : "Use as filter"}</em></button>`).join("");
+    el(id).querySelectorAll("[data-dashboard-filter]").forEach(button => button.addEventListener("click", () => {
+      const next = button.dataset.dashboardFilter;
+      dashboardFilter = next !== "all" && dashboardFilter === next ? "all" : next;
+      renderDashboard();
+    }));
+  }
   function renderBarList(id, rows, formatter) { const max = Math.max(1, ...rows.map(row => row.value)); el(id).innerHTML = rows.map(row => `<div class="bar-list-row"><span>${SI.escapeHtml(row.key)}</span><div><i style="width:${row.value / max * 100}%"></i></div><strong>${formatter(row.value)}</strong></div>`).join("") || '<div class="empty-box">No reorder units to display.</div>'; }
-  function rollup(rows, keyFn, valueFn, limit) { const map = new Map(); rows.forEach(row => map.set(keyFn(row), (map.get(keyFn(row)) || 0) + valueFn(row))); return Array.from(map, ([key, value]) => ({ key, value })).sort((a, b) => b.value - a.value).slice(0, limit); }
+  function rollup(rows, keyFn, valueFn, limit) { const map = new Map(); rows.forEach(row => map.set(keyFn(row), (map.get(keyFn(row)) || 0) + valueFn(row))); return Array.from(map, ([key, value]) => ({ key, value })).sort((a, b) => b.value - a.value || String(a.key).localeCompare(String(b.key))).slice(0, limit); }
   function sum(rows, accessor) { return rows.reduce((total, row) => total + (Number(accessor(row)) || 0), 0); }
   function fillSelect(id, values, label) { el(id).innerHTML = `<option value="">${label}</option>` + values.map(value => `<option value="${SI.escapeHtml(value)}">${SI.escapeHtml(value)}</option>`).join(""); }
   function emptyRow(columns, message) { return `<tr><td colspan="${columns}">${message || "No data matches the current filters."}</td></tr>`; }

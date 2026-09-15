@@ -8,12 +8,14 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/styles-ca.css">
+  <link rel="stylesheet" href="assets/styles-ca.css?v=20260915-2">
   <style>
     .report-table-panel .wide-reorder-table {
       border-collapse: collapse;
       border-spacing: 0;
-      min-width: 1450px;
+      width: 100%;
+      min-width: 0 !important;
+      table-layout: fixed;
     }
 
     .report-table-panel .wide-reorder-table th,
@@ -21,6 +23,8 @@
       border: 1px solid #c9d8e5 !important;
       text-align: center !important;
       vertical-align: middle !important;
+      white-space: normal !important;
+      overflow-wrap: anywhere;
     }
 
     .report-table-panel .wide-reorder-table th {
@@ -40,6 +44,11 @@
     .report-table-panel .wide-reorder-table th.num {
       text-align: center !important;
     }
+
+    .report-table-panel .wide-reorder-table td:nth-child(3),
+    .report-table-panel .wide-reorder-table td:last-child {
+      min-width: 0 !important;
+    }
   </style>
 
   <script
@@ -53,12 +62,12 @@
   ></script>
 
   <script
-    src="assets/inventory-core-ca.js"
+    src="assets/inventory-core-ca.js?v=20260915-2"
     defer
   ></script>
 
   <script
-    src="assets/inventory-pages-ca.js"
+    src="assets/inventory-pages-ca.js?v=20260915-2"
     defer
   ></script>
   <script src="assets/inventory-transitions.js?v=20260910-1" defer></script>

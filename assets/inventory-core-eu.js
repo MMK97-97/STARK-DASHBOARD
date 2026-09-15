@@ -23,6 +23,7 @@
   function normalizeHeader(value) { return cleanText(value).toLowerCase().replace(/[_-]+/g, " ").replace(/[^a-z0-9#% ]/g, "").replace(/\s+/g, " ").trim(); }
   function textValue(value, fallback) { return cleanText(value) || (fallback || ""); }
   function finite(value) { return Number.isFinite(value) ? value : 0; }
+  function nonNegative(value) { return Math.max(0, finite(toNumber(value))); }
   function toNumber(value) { if (typeof value === "number") return value; const raw = String(value == null ? "" : value).trim(); if (!raw) return NaN; const negative = /^\(.*\)$/.test(raw); const result = Number(raw.replace(/[,$%()]/g, "").replace(/\s/g, "")); return negative ? -result : result; }
   function parseDate(value) { if (value instanceof Date && !isNaN(value)) return value; const raw = cleanText(value); if (!raw) return null; const parsed = new Date(/^\d{4}-\d{1,2}$/.test(raw) ? `${raw}-01T00:00:00` : raw); return isNaN(parsed) ? null : parsed; }
   function dateIso(date) { return date instanceof Date && !isNaN(date) ? date.toISOString() : ""; }
@@ -33,15 +34,46 @@
   function unique(values) { return Array.from(new Set(values.filter(Boolean))).sort((a, b) => String(a).localeCompare(String(b))); }
 
   function leadTimeInMonths(value) {
-    const text = cleanText(value).toLowerCase();
-    if (!text) return 0;
-    const match = text.match(/-?\d+(?:\.\d+)?/);
-    if (!match) return 0;
-    const amount = Math.max(0, Number(match[0]) || 0);
-    if (/day/.test(text)) return amount / 30.4375;
-    if (/week|wk/.test(text)) return amount / 4.345;
-    if (/year|yr/.test(text)) return amount * 12;
+    const text = cleanText(value).toLowerCase().replace(/[–—]/g, "-");
+    if (!text || /^\s*-/.test(text)) return 0;
+    const values = Array.from(text.matchAll(/\d+(?:\.\d+)?/g), match => Number(match[0])).filter(Number.isFinite);
+    if (!values.length) return 0;
+    const hasRange = values.length > 1 && /\d\s*(?:-|to)\s*\d/.test(text);
+    const amount = Math.max(0, hasRange ? Math.max(values[0], values[1]) : values[0]);
+    if (/business\s*day|working\s*day/.test(text)) return amount / 21.74;
+    if (/day|\bd\b/.test(text)) return amount / (365.2425 / 12);
+    if (/week|\bwk/.test(text)) return amount / (365.2425 / 7 / 12);
+    if (/quarter|\bqtr\b/.test(text)) return amount * 3;
+    if (/year|\byr\b/.test(text)) return amount * 12;
     return amount;
+  }
+
+  function sanitizedSettings(region) {
+    const stored = loadSettings(region), bounded = (value, fallback, min, max) => {
+      const parsed = toNumber(value);
+      return Number.isFinite(parsed) ? Math.min(max, Math.max(min, parsed)) : fallback;
+    };
+    const a = bounded(stored.a, DEFAULT_SETTINGS.a, 1, 98);
+    const b = bounded(stored.b, DEFAULT_SETTINGS.b, a + 1, 100);
+    return {
+      critical: bounded(stored.critical, DEFAULT_SETTINGS.critical, 0, Number.MAX_SAFE_INTEGER),
+      coverage: bounded(stored.coverage, DEFAULT_SETTINGS.coverage, 0, 120),
+      delay: bounded(stored.delay, DEFAULT_SETTINGS.delay, 0, 3650),
+      a,
+      b
+    };
+  }
+
+  function calendarDayDifference(from, to) {
+    if (!(from instanceof Date) || isNaN(from) || !(to instanceof Date) || isNaN(to)) return null;
+    const fromDay = Date.UTC(from.getFullYear(), from.getMonth(), from.getDate());
+    const toDay = Date.UTC(to.getFullYear(), to.getMonth(), to.getDate());
+    return Math.round((toDay - fromDay) / 86400000);
+  }
+
+  function stableCeil(value) {
+    const amount = finite(value);
+    return Math.max(0, Math.ceil(amount - 1e-9));
   }
 
   function openDb() {
@@ -307,29 +339,31 @@
   }
 
   function analyze(rows, region) {
-    const settings = loadSettings(region), brands = ensureBrandSettings(region, rows), atsSettings = loadAtsSettings(region), today = new Date(); today.setHours(0, 0, 0, 0);
+    const settings = sanitizedSettings(region), brands = ensureBrandSettings(region, rows), atsSettings = loadAtsSettings(region), today = new Date();
     const items = rows.map(row => {
       const statusUpper = String(row.status).trim().toUpperCase(), excluded = ["FEEDS ONLY", "INTERNAL USE", "PRESENTATION"].some(value => statusUpper.includes(value)), eligible = ["LIVE", "FASHION", "BACKORDER"].includes(statusUpper), activeBrand = brands[row.brand] ? brands[row.brand].active !== false : true;
-      const supplierDate = region === "EU" ? (reviveDate(row.supplierStart) || reviveDate(row.supplierEnd)) : reviveDate(row.supplierEnd), daysUntil = supplierDate ? Math.ceil((supplierDate - today) / 86400000) : null, reasons = [];
+      const onHand = nonNegative(row.stockQty), openClient = nonNegative(row.openClient), openSupplier = nonNegative(row.openSupplier), avgMonthly = nonNegative(row.avg3), available = finite(toNumber(row.available));
+      const supplierDate = region === "EU" ? (reviveDate(row.supplierStart) || reviveDate(row.supplierEnd)) : reviveDate(row.supplierEnd), daysUntil = supplierDate ? calendarDayDifference(today, supplierDate) : null, reasons = [];
       if (activeBrand && eligible && !excluded) {
-        if (row.available + row.openSupplier <= settings.critical) reasons.push(`Available + supplier qty <= ${settings.critical}`);
-        if (row.openClient > row.available) reasons.push("Open client orders exceed available stock");
+        if (available + openSupplier <= settings.critical) reasons.push(`Available + supplier qty <= ${settings.critical}`);
+        if (openClient > available) reasons.push("Open client orders exceed available stock");
         if (Number.isFinite(daysUntil) && daysUntil > settings.delay) reasons.push(`Supplier delivery exceeds ${settings.delay} days`);
-        if (row.avg3 > row.available + row.openSupplier) reasons.push("Average monthly sales exceed available + supplier qty");
+        if (avgMonthly > available + openSupplier) reasons.push("Average monthly sales exceed available + supplier qty");
       }
       const reorderRequired = reasons.length > 0;
       const leadTime = brands[row.brand]?.leadTime || "";
       const leadTimeMonths = leadTimeInMonths(leadTime);
       const modelKey = cleanText(row.model).toUpperCase();
-      const savedAts = Object.prototype.hasOwnProperty.call(atsSettings, modelKey) ? finite(toNumber(atsSettings[modelKey])) : finite(row.ats);
-      const actualAvailable = row.stockQty + savedAts;
-      const upcomingAvailability = row.stockQty - row.openClient;
-      const supplierDueQty = Number.isFinite(row.supplierDueQty) ? row.supplierDueQty : (Number.isFinite(daysUntil) && daysUntil <= 30 ? row.openSupplier : 0);
-      const calculatedRecommendation = (row.stockQty + row.openSupplier - row.openClient) * leadTimeMonths + row.avg3;
-      const recommended = reorderRequired ? Math.max(0, Math.ceil(calculatedRecommendation)) : 0;
-      return { ...row, ats: savedAts, actualAvailable, upcomingAvailability, supplierDueQty, activeBrand, eligible, excluded, daysUntil, leadTime, leadTimeMonths, reorderRequired, reorderReason: reasons.join(" | "), recommended, monthsCover: row.avg3 > 0 ? row.available / row.avg3 : null, abc: "C", rank: 0, contribution: 0, cumulative: 0 };
+      const savedAts = Object.prototype.hasOwnProperty.call(atsSettings, modelKey) ? nonNegative(atsSettings[modelKey]) : nonNegative(row.ats);
+      const actualAvailable = onHand + savedAts;
+      const upcomingAvailability = onHand - openClient;
+      const supplierDueQty = Number.isFinite(toNumber(row.supplierDueQty)) ? nonNegative(row.supplierDueQty) : (Number.isFinite(daysUntil) && daysUntil <= 30 ? openSupplier : 0);
+      const netInventoryPosition = onHand + openSupplier - openClient;
+      const calculatedRecommendation = netInventoryPosition * leadTimeMonths + avgMonthly;
+      const recommended = reorderRequired ? stableCeil(calculatedRecommendation) : 0;
+      return { ...row, stockQty: onHand, available, openClient, openSupplier, avg3: avgMonthly, ats: savedAts, actualAvailable, upcomingAvailability, supplierDueQty, netInventoryPosition, calculatedRecommendation, activeBrand, eligible, excluded, daysUntil, leadTime, leadTimeMonths, reorderRequired, reorderReason: reasons.join(" | "), recommended, monthsCover: avgMonthly > 0 ? available / avgMonthly : null, abc: "C", rank: 0, contribution: 0, cumulative: 0 };
     });
-    const ranked = items.slice().sort((a, b) => b.vol3 - a.vol3), total = ranked.reduce((sum, item) => sum + Math.max(0, item.vol3), 0); let cumulative = 0;
+    const ranked = items.slice().sort((a, b) => b.vol3 - a.vol3 || String(a.brand).localeCompare(String(b.brand)) || String(a.model).localeCompare(String(b.model))), total = ranked.reduce((sum, item) => sum + Math.max(0, item.vol3), 0); let cumulative = 0;
     ranked.forEach((item, index) => { const prior = cumulative, contribution = total ? Math.max(0, item.vol3) / total : 0; cumulative += contribution; item.rank = index + 1; item.contribution = contribution; item.cumulative = cumulative; item.abc = prior < settings.a / 100 ? "A" : prior < settings.b / 100 ? "B" : "C"; });
     return items;
   }
