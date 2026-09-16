@@ -72,6 +72,7 @@
     $("clear-region").addEventListener("click", clearRegion);
     $("export-workbook").addEventListener("click", () => exportWorkbook("all"));
     $("reset-filters").addEventListener("click", resetFilters);
+    $("header-region-select")?.addEventListener("change", event => selectRegion(event.target.value));
     document.querySelectorAll(".region-tab").forEach(button => button.addEventListener("click", () => selectRegion(button.dataset.region)));
     document.querySelectorAll(".analysis-tab").forEach(button => button.addEventListener("click", () => activateTab(button.dataset.tab)));
     document.querySelectorAll(".export-section").forEach(button => button.addEventListener("click", () => exportWorkbook(button.dataset.export)));
@@ -79,6 +80,10 @@
       $(id).addEventListener("change", updateFilters);
     });
     $("search-filter").addEventListener("input", debounce(updateFilters, 150));
+    $("global-sales-search")?.addEventListener("input", debounce(event => {
+      $("search-filter").value = event.target.value;
+      updateFilters(event);
+    }, 150));
     $("analysis").addEventListener("click", handleLinkedClick);
     $("analysis").addEventListener("keydown", handleLinkedKeydown);
     window.addEventListener("resize", () => {
@@ -553,6 +558,8 @@
       button.classList.toggle("active", active);
       button.setAttribute("aria-selected", String(active));
     });
+    if ($("header-region-select")) $("header-region-select").value = state.region;
+    if ($("hero-market-state")) $("hero-market-state").textContent = `${state.region === "CA" ? "Canada" : state.region} Market`;
     $("hero-region").textContent = REGION_NAMES[state.region];
     $("analysis-region-label").textContent = `${REGION_NAMES[state.region]} portfolio`;
     $("workspace-link").href = `index.html?workspace=${state.region === "CA" ? "Canada" : state.region}`;
@@ -577,6 +584,7 @@
     $("stock-filter").value = state.filters.stock;
     $("metric-filter").value = state.filters.metric;
     $("search-filter").value = state.filters.search;
+    if ($("global-sales-search")) $("global-sales-search").value = state.filters.search;
   }
 
   function updateFilters(event) {
@@ -588,6 +596,7 @@
     state.filters.stock = $("stock-filter").value;
     state.filters.metric = $("metric-filter").value;
     state.filters.search = cleanText($("search-filter").value).toLowerCase();
+    if ($("global-sales-search") && $("global-sales-search").value !== $("search-filter").value) $("global-sales-search").value = $("search-filter").value;
     if (state.filters.metric === "revenue" && current().analysis?.priceMatches === 0) {
       state.filters.metric = "units";
       $("metric-filter").value = "units";
@@ -640,6 +649,7 @@
       : "";
     $("filter-result").innerHTML = `${integer.format(items.length)} of ${integer.format(analysis.items.length)} eligible models • ${periods.length} period${periods.length === 1 ? "" : "s"} in the selected year scope ${linkedFilter}`;
     updateAnalysisPills();
+    if (state.tab !== "overview") renderOverviewKpis(items, periods);
     renderActivePanel();
     $("analysis").classList.remove("hidden");
     $("empty-state").classList.add("hidden");
@@ -855,7 +865,7 @@
     return true;
   }
 
-  function renderOverview(items, periods) {
+  function renderOverviewKpis(items, periods) {
     const periodRows = periodSummary(items, periods);
     const netUnits = sum(periodRows.map(row => row.netUnits));
     const revenue = sum(periodRows.map(row => row.revenue));
@@ -883,6 +893,11 @@
       ["Revenue opportunity at risk", formatMoney(revenueAtRisk), "Suggested units valued at NetPrice", revenueAtRisk > 0 ? "risk" : "good"],
       ["Excess inventory cost", formatMoney(excessCost), "Cost above two months of demand", excessCost > 0 ? "risk" : "good"]
     ]);
+  }
+
+  function renderOverview(items, periods) {
+    const periodRows = periodSummary(items, periods);
+    renderOverviewKpis(items, periods);
     drawLine("monthly-trend-chart", periodRows.map(row => ({ key: periodLabel(row.period), value: metricPeriod(row), filterValue: row.period })), metricFormatter(), "period");
     drawDonut("seller-mix-chart", tierRollup(items, item => metricItem(item, current().analysis.baselinePeriods)), "Contribution", metricFormatter(), [COLORS.green, COLORS.orange, COLORS.red], "tier");
     drawHorizontalBars("brand-chart", rollupItems(items, item => item.brand, item => metricItem(item, periods), 12), metricFormatter(), COLORS.teal, { filterType: "brand" });
@@ -1306,6 +1321,9 @@
     $("analysis-state").textContent = analysis ? "Ready" : region.sales ? "Ready to run" : "Waiting";
     $("analysis-copy").textContent = analysis ? `${integer.format(analysis.items.length)} models across ${integer.format(analysis.activeBrandCount)} active brands analyzed over ${analysis.periods.length} monthly periods.` : "The engine applies active-brand and eligible-status rules, validates periods and selects a forecast method by model.";
     $("hero-data-state").textContent = analysis ? `${region.sales.fileName} • ${integer.format(analysis.items.length)} models` : region.sales ? "Sales report ready to analyze" : "Upload a sales report to begin";
+    if ($("hero-models")) $("hero-models").textContent = analysis ? integer.format(analysis.items.length) : region.sales ? integer.format(region.sales.eligibleRowCount) : "—";
+    if ($("hero-brands")) $("hero-brands").textContent = analysis ? integer.format(analysis.activeBrandCount) : "—";
+    if ($("hero-sources")) $("hero-sources").textContent = String((region.sales ? 1 : 0) + (region.prices ? 1 : 0));
     $("analysis").classList.toggle("hidden",!analysis);
     $("empty-state").classList.toggle("hidden",Boolean(analysis));
     $("export-workbook").disabled = !analysis;
@@ -1491,6 +1509,7 @@
       ? `Inventory linked • ${integer.format(snapshot.rows.length)} items • live sync on`
       : "Inventory Dashboard linked • no regional report loaded";
     node.classList.toggle("is-connected", Boolean(snapshot?.rows?.length));
+    if ($("hero-sources")) $("hero-sources").textContent = String((current().sales ? 1 : 0) + (current().prices ? 1 : 0) + (snapshot?.rows?.length ? 1 : 0));
   }
 
   function loadInventorySnapshot(dbName, inventoryRegion) {

@@ -8,12 +8,12 @@
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
-  <link rel="stylesheet" href="assets/sales-analysis.css">
   <script src="https://cdn.jsdelivr.net/npm/d3@7.9.0/dist/d3.min.js" defer></script>
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
-  <script src="assets/sales-analysis.js?v=20260915-4" defer></script>
-  <link rel="stylesheet" href="assets/world-class-ui.css?v=20260916-5">
-  <script src="assets/premium-shell.js?v=20260916-1" defer></script>
+  <script src="assets/sales-analysis.js?v=20260916-5" defer></script>
+  <link rel="stylesheet" href="assets/world-class-ui.css?v=20260916-7">
+  <link rel="stylesheet" href="assets/sales-analysis.css?v=20260916-6">
+  <script src="assets/premium-shell.js?v=20260916-3" defer></script>
 </head>
 <body>
   <a class="skip-link" href="#sales-main">Skip to analysis</a>
@@ -23,8 +23,12 @@
       <span class="brand-mark">S</span>
       <span><small>Stark Premium</small><strong>Sales Intelligence</strong></span>
     </a>
+    <label class="sales-header-search" for="global-sales-search">
+      <svg viewBox="0 0 24 24" aria-hidden="true"><circle cx="11" cy="11" r="7"></circle><path d="m16 16 4 4"></path></svg>
+      <input id="global-sales-search" type="search" placeholder="Search products, brands, models, or reports…" autocomplete="off">
+    </label>
     <div class="header-actions">
-      <span class="local-note"><i></i> Files stay in this browser</span>
+      <label class="header-region-picker"><span>Market</span><select id="header-region-select" aria-label="Reporting market"><option value="US">🇺🇸 US</option><option value="EU">🇪🇺 EU</option><option value="CA">🇨🇦 Canada</option></select></label>
       <button class="button button-primary" id="export-workbook" type="button" disabled>Export analysis workbook</button>
     </div>
   </header>
@@ -47,10 +51,15 @@
         <p>Year-level sales analysis, nine-month demand behavior, inventory coverage, excess exposure and model-level forecasting in one decision workspace.</p>
       </div>
       <div class="hero-status">
-        <span>Analysis scope</span>
-        <strong>ACTIVE BRANDS &bull; LIVE &bull; FASHION &bull; BACKORDER</strong>
-        <small id="hero-data-state">Upload a sales report to begin</small>
-        <small class="inventory-sync-state" id="inventory-sync-state">Checking linked inventory…</small>
+        <div class="hero-live-card">
+          <i aria-hidden="true">▥</i>
+          <div><span>Active brands &bull; live data</span><strong id="hero-market-state">US Market</strong><small id="hero-data-state">Upload a sales report to begin</small><small class="inventory-sync-state" id="inventory-sync-state">Checking linked inventory…</small></div>
+        </div>
+        <div class="hero-metrics" aria-label="Sales analysis scope">
+          <div><strong id="hero-models">—</strong><span>Models monitored</span></div>
+          <div><strong id="hero-brands">—</strong><span>Active brands</span></div>
+          <div><strong id="hero-sources">0</strong><span>Data sources</span></div>
+        </div>
       </div>
     </section>
 
@@ -62,6 +71,7 @@
       <div class="upload-grid">
         <article class="upload-card">
           <div class="card-top"><span class="step">01</span><span class="file-state" id="sales-file-state">Required</span></div>
+          <span class="upload-card-icon" aria-hidden="true">▤</span>
           <h3>Sales and stock report</h3>
           <p>Supports model-level monthly columns such as 202509 and 202601, plus current stock and item status.</p>
           <label class="button button-secondary upload-button" for="sales-file">Upload sales report</label>
@@ -71,6 +81,7 @@
 
         <article class="upload-card">
           <div class="card-top"><span class="step">02</span><span class="file-state optional" id="price-file-state">Optional</span></div>
+          <span class="upload-card-icon price-icon" aria-hidden="true">◉</span>
           <h3>NetPrice and cost list</h3>
           <p>Matches the All Items report by ItemID first, then Model#. NetPrice drives revenue and contribution; Cost drives inventory exposure.</p>
           <label class="button button-secondary upload-button" for="price-file">Upload price list</label>
@@ -80,6 +91,7 @@
 
         <article class="upload-card readiness-card">
           <div class="card-top"><span class="step">03</span><span class="file-state ready" id="analysis-state">Waiting</span></div>
+          <span class="upload-card-icon analysis-icon" aria-hidden="true">↗</span>
           <h3>Decision analysis</h3>
           <p id="analysis-copy">The engine validates periods, applies active-brand rules, segments demand and back-tests multiple forecast methods by model.</p>
           <button class="button button-primary" id="analyze-button" type="button" disabled>Generate advanced analysis</button>
@@ -120,6 +132,8 @@
       </section>
       <p class="filter-result" id="filter-result"></p>
 
+      <div class="kpi-grid overview-summary-strip" id="overview-kpis" aria-label="Portfolio KPI filters"></div>
+
       <nav class="analysis-tabs" role="tablist" aria-label="Sales analysis sections">
         <button class="analysis-tab active" type="button" role="tab" aria-selected="true" data-tab="overview">Overview</button>
         <button class="analysis-tab" type="button" role="tab" aria-selected="false" data-tab="year">Year analysis</button>
@@ -132,7 +146,6 @@
 
       <section class="tab-panel active" id="overview-panel" data-panel="overview">
         <div class="panel-toolbar"><div><p class="eyebrow">Executive view</p><h2>Portfolio overview</h2></div><button class="button button-secondary export-section" data-export="overview" type="button">Export overview</button></div>
-        <div class="kpi-grid" id="overview-kpis"></div>
         <div class="chart-grid">
           <article class="panel panel-wide"><div class="panel-heading"><div><span>Sales velocity</span><h3>Monthly performance</h3></div><small>YYYYMM interpreted as calendar month</small></div><div class="chart chart-tall" id="monthly-trend-chart"></div></article>
           <article class="panel"><div class="panel-heading"><div><span>Portfolio mix</span><h3>Seller contribution</h3></div></div><div class="chart chart-tall" id="seller-mix-chart"></div></article>
