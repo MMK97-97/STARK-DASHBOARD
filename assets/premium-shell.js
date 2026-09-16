@@ -36,7 +36,7 @@
     "instructions-us.html", "instructions-eu.html", "instructions-ca.html", "ats-eu.html"
   ]);
   const supported = inventoryPages.has(path) || [
-    "index.html", "sales-analysis.html", "events.html", "freight-estimator.html", "shipment-tracking.html"
+    "index.html", "sales-analysis.html", "events.html", "freight-estimator.html", "freight-consolidate.html", "shipment-tracking.html"
   ].includes(path);
   if (!supported) return;
 
@@ -47,7 +47,7 @@
           : path.startsWith("instructions") ? "instructions"
             : path === "sales-analysis.html" ? "sales"
               : path === "events.html" ? "events"
-                : path === "freight-estimator.html" && location.hash === "#consolidator" ? "consolidate"
+                : path === "freight-consolidate.html" ? "consolidate"
                   : path === "freight-estimator.html" ? "freight"
                     : path === "shipment-tracking.html" ? "tracking"
                       : "";
@@ -63,7 +63,7 @@
     ["sales", "Sales Analysis", `sales-analysis.html?region=${regionCode}`, icons.sales],
     ["events", "Events", `events.html?region=${regionCode}`, icons.events],
     ["freight", "Freight Estimator", "freight-estimator.html", icons.freight],
-    ["consolidate", "Freight Consolidate", "freight-estimator.html#consolidator", icons.consolidate],
+    ["consolidate", "Freight Consolidate", "freight-consolidate.html", icons.consolidate],
     ["tracking", "Tracking", "shipment-tracking.html", icons.tracking]
   ];
   const navLink = ([key, label, href, glyph], submenu = false) => `<a href="${href}" data-premium-nav="${key}" class="${submenu ? "premium-nav-subitem " : ""}${key === activeKey ? "active" : ""}" ${key === activeKey ? 'aria-current="page"' : ""}>${glyph}<span>${label}</span></a>`;
@@ -104,17 +104,6 @@
   rail.addEventListener("click", event => {
     if (event.target.closest("a")) closeRail();
   });
-  const syncFreightHash = () => {
-    if (path !== "freight-estimator.html") return;
-    const key = location.hash === "#consolidator" ? "consolidate" : "freight";
-    rail.querySelectorAll("[data-premium-nav]").forEach(link => {
-      const selected = link.dataset.premiumNav === key;
-      link.classList.toggle("active", selected);
-      if (selected) link.setAttribute("aria-current", "page");
-      else link.removeAttribute("aria-current");
-    });
-  };
-  window.addEventListener("hashchange", syncFreightHash);
   let navigationInProgress = false;
   const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
   const resetTransitionState = () => {

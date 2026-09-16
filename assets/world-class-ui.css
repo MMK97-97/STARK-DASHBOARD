@@ -1171,11 +1171,13 @@ body[data-page="freight"] .app-header {
   background: rgba(255, 255, 255, .9);
   backdrop-filter: blur(16px);
 }
-body[data-page="freight"] .shell { width: min(1540px, calc(100% - 34px)); padding-top: 18px; }
+body[data-page="freight"] .shell { width: min(1580px, calc(100% - 28px)); padding: 14px 0 40px; }
 body[data-page="freight"] .hero {
-  min-height: 172px;
+  min-height: 154px;
   align-items: center;
-  padding: clamp(28px, 3vw, 46px);
+  margin-bottom: 12px;
+  padding: clamp(25px, 2.6vw, 38px);
+  border-radius: 22px;
   background:
     linear-gradient(90deg, rgba(5, 43, 78, .96), rgba(12, 89, 119, .84) 58%, rgba(11, 151, 141, .84)),
     radial-gradient(circle at 76% 20%, rgba(130, 241, 231, .24), transparent 35%);
@@ -1217,7 +1219,7 @@ body[data-page="freight"] .freight-hero-callout small { display: block; }
 body[data-page="freight"] .freight-hero-callout strong { font: 800 .9rem/1.2 Manrope, sans-serif; }
 body[data-page="freight"] .freight-hero-callout small { max-width: 190px; margin-top: 4px; color: rgba(238,251,253,.75); font-size: .68rem; line-height: 1.4; }
 body[data-page="freight"] .workspace {
-  grid-template-columns: minmax(510px, .96fr) minmax(570px, 1.04fr);
+  grid-template-columns: minmax(510px, .98fr) minmax(570px, 1.02fr);
   align-items: start;
   gap: 14px;
   margin-top: 14px;
@@ -1232,6 +1234,7 @@ body[data-page="freight"] .workspace > .panel > .panel-head {
   display: flex;
   align-items: center;
   padding: 17px 20px 17px 66px;
+  background: linear-gradient(180deg, rgba(252,254,255,.98), rgba(245,250,253,.82));
 }
 body[data-page="freight"] .workspace > .panel > .panel-head::before {
   content: "1";
@@ -1252,6 +1255,14 @@ body[data-page="freight"] .workspace > .panel:nth-child(2) > .panel-head::before
 body[data-page="freight"] .workspace > .panel > .panel-head .eyebrow { display: none; }
 body[data-page="freight"] .workspace > .panel > .panel-head h2 { margin: 0; font-size: 1.2rem; }
 body[data-page="freight"] .workspace > .panel > .panel-head p { margin-top: 3px; font-size: .72rem; }
+body[data-page="freight"] .workspace > .panel > .panel-head > .button {
+  min-height: 36px;
+  padding-inline: 13px;
+  border-radius: 9px;
+  color: #075f86;
+  background: #fff;
+  font-size: .68rem;
+}
 body[data-page="freight"] .workspace > .panel .panel-body { padding: 17px 20px 20px; }
 body[data-page="freight"] .form-grid { gap: 11px 13px; }
 body[data-page="freight"] .form-grid label { font-size: .66rem; letter-spacing: .035em; }
@@ -1264,14 +1275,20 @@ body[data-page="freight"] .calculate-bar .button-primary {
   box-shadow: 0 10px 22px rgba(9, 137, 130, .2);
 }
 body[data-page="freight"] .sticky { top: 82px; }
-body[data-page="freight"] .results-empty { min-height: 535px; }
+body[data-page="freight"] .results-empty {
+  min-height: 500px;
+  margin: 12px;
+  border: 1px dashed #c4d8e5;
+  border-radius: 14px;
+  background: linear-gradient(145deg, #fbfdfe, #f4fafc);
+}
 body[data-page="freight"] .recommendation { border: 1px solid rgba(70, 192, 170, .35); background: linear-gradient(135deg, #ebfbf7, #f4fcfb) !important; box-shadow: none; }
 body[data-page="freight"] .recommendation :is(h2, p, small, span, strong) { color: #075c57; }
 body[data-page="freight"] .kpis { gap: 9px; }
 body[data-page="freight"] .kpi { min-height: 105px; border-radius: 13px; box-shadow: none; }
 body[data-page="freight"] .scenario-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); }
 body[data-page="freight"] .scenario-card { min-height: 176px; }
-body[data-page="freight"] #consolidator { scroll-margin-top: 20px; }
+body[data-page="freight"] .formula { margin-top: 13px; border-radius: 14px; box-shadow: 0 9px 24px rgba(7,42,70,.055); }
 
 /* Premium events control center — presentation only. */
 body[data-page="events"] {

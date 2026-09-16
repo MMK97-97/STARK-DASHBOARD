@@ -1,0 +1,125 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Multi-load freight consolidation planning for Stark Premium.">
+  <title>Freight Consolidator | Stark Premium</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/world-class-ui.css?v=20260916-14">
+  <link rel="stylesheet" href="assets/freight-consolidate.css?v=20260916-1">
+  <script src="assets/premium-shell.js?v=20260916-6" defer></script>
+</head>
+<body class="premium-shell-active" data-page="freight-consolidate">
+  <main class="con-shell">
+    <section class="con-hero">
+      <div class="con-hero-copy">
+        <span class="eyebrow">Network &amp; capacity planning • United States</span>
+        <h1>Freight Consolidator</h1>
+        <p>Combine compatible freight loads by lane, timing window and trailer capacity, then generate one practical consolidated shipment plan.</p>
+      </div>
+      <div class="con-hero-status" aria-label="Consolidation capability">
+        <span aria-hidden="true">⇄</span>
+        <div><strong>Optimize multiple loads</strong><small>Lane matching, schedule screening and trailer utilization</small></div>
+      </div>
+    </section>
+
+    <section class="consolidator" id="consolidator" aria-labelledby="consolidator-title">
+      <div class="consolidator-heading">
+        <div>
+          <span class="eyebrow">Multi-load planning</span>
+          <h2 id="consolidator-title">Build a consolidation plan</h2>
+          <p>Enter each shipment separately. Compatible loads are grouped automatically without changing the original shipment details.</p>
+        </div>
+        <div class="consolidator-heading-actions">
+          <a class="button" href="freight-estimator.html">Open Freight Estimator</a>
+          <button class="button" id="con-load-sample" type="button">Load sample</button>
+        </div>
+      </div>
+
+      <div class="consolidator-layout">
+        <section class="panel consolidator-builder">
+          <div class="panel-head">
+            <div>
+              <span class="eyebrow">01 • Consolidation queue</span>
+              <h2>Add freight details</h2>
+              <p>Enter the lane, schedule and physical shipment profile for each load.</p>
+            </div>
+            <span class="con-count" id="con-load-count">0 loads</span>
+          </div>
+          <div class="panel-body">
+            <div class="form-grid con-form-grid">
+              <label class="span-2">Shipment / PO reference<input id="con-reference" placeholder="PO or shipment reference"></label>
+              <label>Origin ZIP / postal<input id="con-origin" inputmode="text" placeholder="Required"></label>
+              <label>Destination ZIP / postal<input id="con-destination" inputmode="text" placeholder="Required"></label>
+              <label>Ready date<input id="con-ready" type="date"></label>
+              <label>Required delivery<input id="con-delivery" type="date"></label>
+              <label>Pallets<input id="con-pallets" type="number" min="1" step="1" value="1"></label>
+              <label>Cargo weight (lb)<input id="con-weight" type="number" min="1" step="0.1" placeholder="Required"></label>
+              <label>Palletized cube (ft³)<input id="con-cube" type="number" min="0" step="0.1" placeholder="Auto if blank"></label>
+              <label>Linear feet<input id="con-linear" type="number" min="0" max="53" step="0.1" placeholder="Auto if blank"></label>
+              <label class="check-row span-2"><input id="con-stackable" type="checkbox" checked><span>Freight is stackable</span></label>
+            </div>
+            <div class="item-actions">
+              <button class="button button-primary" id="con-add" type="button">Add freight load</button>
+              <button class="button button-danger" id="con-clear" type="button" disabled>Clear queue</button>
+            </div>
+            <div class="con-load-list" id="con-load-list"></div>
+            <div class="calculate-bar con-calculate-bar">
+              <button class="button button-primary" id="con-analyze" type="button" disabled>Calculate consolidated plan</button>
+            </div>
+          </div>
+        </section>
+
+        <section class="panel consolidator-output">
+          <div class="panel-head">
+            <div>
+              <span class="eyebrow">02 • Consolidated output</span>
+              <h2>Combined shipment details</h2>
+              <p>Capacity screening uses 26 pallet positions, 45,000 lb, 3,900 ft³ and 53 linear feet per trailer.</p>
+            </div>
+            <button class="button button-small" id="con-copy" type="button" disabled>Copy summary</button>
+          </div>
+          <div class="results-empty" id="con-results-empty">
+            <i>⇄</i>
+            <strong>Add multiple freight loads</strong>
+            <p>The consolidator will group compatible lanes and dates, check capacity, and show the combined shipping plan.</p>
+          </div>
+          <div class="panel-body hidden" id="con-results">
+            <div class="recommendation con-recommendation">
+              <div>
+                <small>Consolidation recommendation</small>
+                <h2 id="con-plan-title">—</h2>
+                <p id="con-plan-reason"></p>
+              </div>
+              <span class="mode-chip" id="con-plan-chip">—</span>
+            </div>
+            <div class="kpis con-kpis" id="con-kpis"></div>
+            <div class="result-grid">
+              <article class="result-card full">
+                <h3>Recommended consolidated shipments</h3>
+                <div class="table-wrap"><table><thead><tr><th>Plan</th><th>Strategy</th><th>Lane</th><th>Included loads</th><th>Pallets</th><th>Weight</th><th>Cube</th><th>Linear ft</th><th>Shipments</th><th>Mode</th><th>Capacity use</th></tr></thead><tbody id="con-group-table"></tbody></table></div>
+              </article>
+              <article class="result-card full">
+                <h3>Source freight details</h3>
+                <div class="table-wrap"><table><thead><tr><th>Reference</th><th>Origin</th><th>Destination</th><th>Ready</th><th>Required delivery</th><th>Pallets</th><th>Weight</th><th>Cube</th><th>Linear ft</th><th>Handling</th></tr></thead><tbody id="con-detail-table"></tbody></table></div>
+              </article>
+              <article class="result-card full"><h3>Planning controls &amp; alerts</h3><div class="warnings" id="con-alerts"></div></article>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <section class="con-method">
+      <strong>Consolidation standard</strong>
+      Loads are grouped only when lane and timing rules are compatible. The planner checks pallet positions, cargo weight, palletized cube and linear floor space; carrier quotes, appointments and accessorial requirements must still be confirmed before tender.
+    </section>
+    <footer class="footer">Stark Premium • United States freight consolidation • Calculations remain in this browser</footer>
+  </main>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+  <script src="assets/freight-consolidator.js?v=20260916-2"></script>
+</body>
+</html>

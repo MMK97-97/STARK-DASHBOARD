@@ -305,33 +305,6 @@
     $("con-results").scrollIntoView({ behavior: "smooth", block: "start" });
   }
 
-  function useCurrentPlan() {
-    if ($("results").classList.contains("hidden")) {
-      toast("Calculate a shipment plan first");
-      return;
-    }
-    const metrics = {};
-    document.querySelectorAll("#kpis .kpi").forEach(card => {
-      const label = card.querySelector("span")?.textContent.trim();
-      const value = card.querySelector("strong")?.textContent.trim();
-      if (label) metrics[label] = number(value);
-    });
-    document.querySelectorAll("#freight-results .status-line").forEach(row => {
-      const label = row.querySelector("span")?.textContent.trim();
-      const value = row.querySelector("strong")?.textContent.trim();
-      if (label) metrics[label] = number(value);
-    });
-    $("con-reference").value = $("shipment-ref").value.trim() || `Shipment ${state.loads.length + 1}`;
-    $("con-origin").value = $("origin").value.trim();
-    $("con-destination").value = $("destination").value.trim();
-    $("con-pallets").value = metrics["Estimated pallets"] || 1;
-    $("con-weight").value = metrics["Freight weight"] || "";
-    $("con-cube").value = metrics["Palletized cube"] || "";
-    $("con-linear").value = metrics["Linear floor space"] || metrics["Estimated linear feet"] || "";
-    $("consolidator").scrollIntoView({ behavior: "smooth", block: "start" });
-    toast("Current plan loaded into the consolidator");
-  }
-
   function copyPlan() {
     if (!state.plan) return;
     const { groups, total, baselineTrips, consolidatedTrips, tripsSaved } = state.plan;
@@ -351,7 +324,6 @@
   }
 
   $("con-add").addEventListener("click", () => addLoad(readForm()));
-  $("con-use-current").addEventListener("click", useCurrentPlan);
   $("con-analyze").addEventListener("click", analyze);
   $("con-copy").addEventListener("click", copyPlan);
   $("con-clear").addEventListener("click", () => {
@@ -391,11 +363,6 @@
     toast("Freight load removed");
   });
 
-  const resultObserver = new MutationObserver(() => {
-    $("con-use-current").disabled = $("results").classList.contains("hidden");
-  });
-  resultObserver.observe($("results"), { attributes: true, attributeFilter: ["class"] });
-  $("con-use-current").disabled = $("results").classList.contains("hidden");
   restore();
   renderLoads();
   resetResults();
