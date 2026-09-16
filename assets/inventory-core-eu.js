@@ -364,7 +364,8 @@
       const upcomingAvailability = onHand - openClient;
       const supplierDueQty = Number.isFinite(toNumber(row.supplierDueQty)) ? nonNegative(row.supplierDueQty) : (Number.isFinite(daysUntil) && daysUntil <= 30 ? openSupplier : 0);
       const netInventoryPosition = onHand + openSupplier - openClient;
-      const calculatedRecommendation = netInventoryPosition * leadTimeMonths + avgMonthly;
+      const calculatedRecommendation =
+        avgMonthly * (leadTimeMonths + 1) + openClient - onHand - openSupplier;
       const recommended = activeBrand && eligible && !excluded ? stableCeil(calculatedRecommendation) : 0;
       const reorderRequired = recommended > 0;
       return { ...row, stockQty: onHand, available, openClient, openSupplier, avg3: avgMonthly, ats: savedAts, actualAvailable, upcomingAvailability, supplierDueQty, netInventoryPosition, calculatedRecommendation, activeBrand, eligible, excluded, daysUntil, leadTime, leadTimeMonths, reorderRequired, reorderReason: reorderRequired ? "Formula recommendation" : "", recommended, monthsCover: avgMonthly > 0 ? available / avgMonthly : null, abc: "C", rank: 0, contribution: 0, cumulative: 0 };
