@@ -11,6 +11,7 @@
   let syncChannel = null;
   const REGION_NAMES = { US: "United States", EU: "European Union", Canada: "Canada" };
   const DEFAULT_SETTINGS = { critical: 3, coverage: 1, delay: 15, a: 80, b: 95 };
+  const MIN_CARRYING_STOCK = 3;
   const ITEM_ALIASES = {
     brand: ["brand"], itemid: ["itemid", "item id"], model: ["model#", "model", "model number", "sku"], product: ["item title", "product", "item name", "description"], status: ["status"], eta: ["eta"],
     vol3: ["vol past 3m", "volume past 3m", "past 3 months", "3 month sales", "3m units"], last30: ["vol last 30 days", "last 30 days", "30 day sales", "30d units"], avg3: ["avg/perm past 3m", "avg per m past 3m", "average per month past 3m", "avg monthly sales"],
@@ -361,7 +362,7 @@
       const supplierDueQty = Number.isFinite(toNumber(row.supplierDueQty)) ? nonNegative(row.supplierDueQty) : (Number.isFinite(daysUntil) && daysUntil <= 30 ? openSupplier : 0);
       const netInventoryPosition = onHand + openSupplier - openClient;
       const calculatedRecommendation =
-        avgMonthly * (leadTimeMonths + 1) + openClient - onHand - openSupplier;
+        avgMonthly * (leadTimeMonths + 1) + MIN_CARRYING_STOCK + openClient - onHand - openSupplier;
       const recommended = activeBrand && eligible && !excluded ? stableCeil(calculatedRecommendation) : 0;
       const reorderRequired = recommended > 0;
       return { ...row, stockQty: onHand, available, openClient, openSupplier, avg3: avgMonthly, actualAvailable, upcomingAvailability, supplierDueQty, netInventoryPosition, calculatedRecommendation, activeBrand, eligible, excluded, daysUntil, leadTime, leadTimeMonths, reorderRequired, reorderReason: reorderRequired ? "Formula recommendation" : "", recommended, monthsCover: avgMonthly > 0 ? available / avgMonthly : null, abc: "C", rank: 0, contribution: 0, cumulative: 0 };

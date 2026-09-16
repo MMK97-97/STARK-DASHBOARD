@@ -1104,25 +1104,57 @@ body.premium-shell-active:not(:has(.tv-app)) :is(.kpi, .inventory-kpi) {
     border-radius: 10px;
     font-size: .68rem;
   }
-  body[data-page="dashboard"] .inventory-dashboard-grid { gap: 8px; }
+  body[data-page="dashboard"] .inventory-dashboard-grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-areas:
+      "abc reorder coverage position"
+      "table table table table";
+    gap: 8px;
+    align-items: stretch;
+  }
+  body[data-page="dashboard"] .inventory-dashboard-grid > .inventory-panel:nth-child(-n + 4) {
+    height: 100%;
+    min-height: 338px;
+  }
   body[data-page="dashboard"] .inventory-panel { padding: 11px 12px; border-radius: 14px; }
   body[data-page="dashboard"] .inventory-panel .panel-heading { margin-bottom: 7px; }
   body[data-page="dashboard"] .inventory-panel .panel-heading .eyebrow { display: none; }
   body[data-page="dashboard"] .inventory-panel .panel-heading h2 { font-size: .9rem; }
   body[data-page="dashboard"] .inventory-panel .panel-heading small,
   body[data-page="dashboard"] .chart-legend { font-size: .58rem; }
-  body[data-page="dashboard"] .abc-layout { gap: 10px; }
+  body[data-page="dashboard"] .abc-layout { min-height: 276px; gap: 8px; }
   body[data-page="dashboard"] .abc-donut-css { width: 126px; height: 126px; }
   body[data-page="dashboard"] .abc-summary-row { padding: 5px 7px; }
   body[data-page="dashboard"] .abc-summary-row strong { font-size: .7rem; }
   body[data-page="dashboard"] .abc-summary-row small { font-size: .58rem; }
-  body[data-page="dashboard"] .bar-list-row { padding: 3px 5px; }
+  body[data-page="dashboard"] .bar-list { min-height: 276px; gap: 4px; }
+  body[data-page="dashboard"] .bar-list-row {
+    grid-template-columns: minmax(70px, 1fr) minmax(42px, 1.25fr) 32px;
+    gap: 6px;
+    padding: 3px 5px;
+    font-size: .66rem;
+  }
   body[data-page="dashboard"] .coverage-bars,
   body[data-page="dashboard"] .position-bars { gap: 3px; }
-  body[data-page="dashboard"] .coverage-row { padding: 5px 6px; }
-  body[data-page="dashboard"] .position-row { padding: 4px 6px; }
+  body[data-page="dashboard"] .coverage-row {
+    grid-template-columns: minmax(78px, .9fr) minmax(44px, 1.15fr) 30px;
+    gap: 6px;
+    padding: 5px 6px;
+    font-size: .66rem;
+  }
+  body[data-page="dashboard"] .position-row {
+    grid-template-columns: minmax(68px, .72fr) minmax(0, 1fr) minmax(0, 1fr);
+    gap: 5px;
+    padding: 4px 5px;
+    font-size: .64rem;
+  }
   body[data-page="dashboard"] .position-track { height: 22px; }
-  body[data-page="dashboard"] .position-track em { padding: 4px 6px; font-size: .58rem; }
+  body[data-page="dashboard"] .position-track em {
+    overflow: hidden;
+    padding: 4px 5px;
+    font-size: .54rem;
+    text-overflow: ellipsis;
+  }
   body[data-page="dashboard"] .inventory-panel-full .inventory-table-wrap table { font-size: .66rem; }
   body[data-page="dashboard"] .inventory-panel-full .inventory-table-wrap :is(th, td) { padding: 5px 7px; }
 }
