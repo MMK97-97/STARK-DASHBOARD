@@ -21,6 +21,7 @@
     reorder: icon('<path d="M4 7h16M4 12h16M4 17h10"/><path d="m17 15 3 3-3 3"/>'),
     brands: icon('<path d="M12 3 4 7v10l8 4 8-4V7z"/><path d="m4 7 8 4 8-4M12 11v10"/>'),
     sales: icon('<path d="M4 19V9M10 19V5M16 19v-7M3 19h18"/><path d="m15 7 3-3 3 3"/>'),
+    events: icon('<path d="M5 5h14v15H5zM8 3v4M16 3v4M5 10h14"/><path d="m9 15 2 2 4-4"/>'),
     freight: icon('<path d="M3 7h11v9H3zM14 10h4l3 3v3h-7z"/><circle cx="7" cy="18" r="2"/><circle cx="18" cy="18" r="2"/>'),
     consolidate: icon('<path d="M4 5h6v6H4zM14 5h6v6h-6zM9 16h6v4H9zM7 11v2.5h10V11M12 13.5V16"/>'),
     tracking: icon('<circle cx="12" cy="12" r="8"/><path d="M12 8v5l3 2"/>'),
@@ -45,10 +46,11 @@
         : path.startsWith("active-brands") ? "brands"
           : path.startsWith("instructions") ? "instructions"
             : path === "sales-analysis.html" ? "sales"
-              : path === "freight-estimator.html" && location.hash === "#consolidator" ? "consolidate"
-                : path === "freight-estimator.html" ? "freight"
-                  : path === "shipment-tracking.html" ? "tracking"
-                    : "";
+              : path === "events.html" ? "events"
+                : path === "freight-estimator.html" && location.hash === "#consolidator" ? "consolidate"
+                  : path === "freight-estimator.html" ? "freight"
+                    : path === "shipment-tracking.html" ? "tracking"
+                      : "";
 
   const inventoryItems = [
     ["dashboard", "Inventory Dashboard", regional("inventory-dashboard"), icons.dashboard],
@@ -59,6 +61,7 @@
   ];
   const primaryItems = [
     ["sales", "Sales Analysis", `sales-analysis.html?region=${regionCode}`, icons.sales],
+    ["events", "Events", `events.html?region=${regionCode}`, icons.events],
     ["freight", "Freight Estimator", "freight-estimator.html", icons.freight],
     ["consolidate", "Freight Consolidate", "freight-estimator.html#consolidator", icons.consolidate],
     ["tracking", "Tracking", "shipment-tracking.html", icons.tracking]
@@ -112,6 +115,39 @@
     });
   };
   window.addEventListener("hashchange", syncFreightHash);
+  let navigationInProgress = false;
+  const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+  const resetTransitionState = () => {
+    navigationInProgress = false;
+    body.classList.remove("premium-content-leaving", "page-leaving", "inventory-fallback-leaving");
+  };
+  document.addEventListener("click", event => {
+    const target = event.target instanceof Element ? event.target : event.target?.parentElement;
+    const link = target?.closest("a[href]");
+    if (!link || event.defaultPrevented || event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey || event.altKey) return;
+    if (link.target === "_blank" || link.hasAttribute("download")) return;
+    const destination = new URL(link.href, location.href);
+    if (destination.origin !== location.origin || destination.protocol !== location.protocol) return;
+    const sameDocument = destination.pathname === location.pathname && destination.search === location.search;
+    if (sameDocument && destination.hash !== location.hash) return;
+    if (destination.href === location.href || navigationInProgress) {
+      if (destination.href === location.href) event.preventDefault();
+      return;
+    }
+    event.preventDefault();
+    navigationInProgress = true;
+    closeRail();
+    if (reducedMotion.matches) {
+      location.assign(destination.href);
+      return;
+    }
+    body.classList.add("premium-content-leaving");
+    window.setTimeout(() => location.assign(destination.href), 135);
+  }, true);
+  window.addEventListener("pageshow", resetTransitionState);
+  document.addEventListener("visibilitychange", () => {
+    if (document.visibilityState === "visible") resetTransitionState();
+  });
   document.addEventListener("keydown", event => {
     if (event.key === "Escape") closeRail();
   });

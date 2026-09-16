@@ -14,7 +14,7 @@
 
   const transitionStyles = `
     @view-transition {
-      navigation: auto;
+      navigation: none;
     }
 
     .inventory-nav {
@@ -96,8 +96,8 @@
 
     body.inventory-fallback-leaving ${CONTENT_SELECTOR} {
       opacity: 0;
-      filter: blur(2px);
-      transform: translateY(8px) scale(.997);
+      filter: none;
+      transform: translateY(3px);
     }
 
     body.inventory-fallback-leaving .inventory-nav a.tab-pressed {
@@ -153,12 +153,12 @@
     }
 
     ::view-transition-old(root) {
-      animation: stark-page-out 210ms cubic-bezier(.4,0,1,1) both;
+      animation: none;
       mix-blend-mode: normal;
     }
 
     ::view-transition-new(root) {
-      animation: stark-page-in 460ms cubic-bezier(.22,1,.36,1) both;
+      animation: none;
       mix-blend-mode: normal;
     }
 
