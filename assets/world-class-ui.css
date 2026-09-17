@@ -216,6 +216,30 @@ body:not(:has(.tv-app)) table tbody tr:hover { background: rgba(221, 244, 241, .
 
 /* Home and regional command center */
 body:has(#home-screen) .app-header { padding-block: 12px; }
+body:has(#home-screen:not(.hidden)) {
+  background:
+    linear-gradient(125deg, rgba(244, 250, 252, .74), rgba(239, 247, 250, .86)),
+    url("home-port-background.png?v=20260918-2") center / cover fixed no-repeat;
+}
+body:has(#module-screen:not(.hidden)) {
+  background:
+    linear-gradient(125deg, rgba(241, 248, 253, .78), rgba(235, 246, 252, .89)),
+    url("workspace-logistics-background.png?v=20260918-2") center / cover fixed no-repeat;
+}
+body:has(#home-screen:not(.hidden))::after,
+body:has(#module-screen:not(.hidden))::after { opacity: .16; }
+body:has(#home-screen) .brand-mark-image {
+  overflow: hidden;
+  padding: 0;
+  border-color: rgba(10, 55, 82, .18);
+  background: #fff;
+}
+body:has(#home-screen) .brand-mark-image img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+}
 body:has(#home-screen) :is(.home-screen, .module-screen) { width: min(1380px, calc(100% - 48px)); }
 body:has(#home-screen) .home-copy { max-width: 820px; }
 body:has(#home-screen) .home-copy h2 {
@@ -786,7 +810,8 @@ body.premium-shell-active.premium-content-leaving > main {
   color: #fff;
   text-decoration: none;
 }
-.premium-rail-brand > span {
+.premium-rail-brand > span,
+.premium-rail-brand > img {
   width: 40px;
   height: 40px;
   display: grid;
@@ -797,6 +822,11 @@ body.premium-shell-active.premium-content-leaving > main {
   background: linear-gradient(145deg, #0879b7, #0a9a92);
   box-shadow: 0 9px 20px rgba(0, 18, 34, .28), inset 0 1px rgba(255, 255, 255, .2);
   font: 800 .92rem/1 Manrope, sans-serif;
+}
+.premium-rail-brand > img {
+  display: block;
+  object-fit: cover;
+  background: #fff;
 }
 .premium-rail-brand small,
 .premium-rail-brand strong { display: block; }

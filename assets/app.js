@@ -94,6 +94,7 @@
   function rememberRegion(code) {
     const value = code === "Canada" ? "CA" : code;
     try { localStorage.setItem("stark-selected-region", value); } catch (_) {}
+    window.dispatchEvent(new CustomEvent("stark:region-change", { detail: { region: value } }));
   }
 
   function openRegion(code) {

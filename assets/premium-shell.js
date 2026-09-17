@@ -11,8 +11,11 @@
   const region = suffixMatch
     ? suffixMatch[1].toLowerCase()
     : String(queryRegion || storedRegion || "US").toLowerCase().replace("canada", "ca");
-  const regionCode = region === "eu" ? "EU" : region === "ca" ? "CA" : "US";
-  const regional = name => `${name}-${region}.html`;
+  const normalizeRegionCode = value => {
+    const normalized = String(value || "").trim().toUpperCase();
+    return normalized === "EU" ? "EU" : normalized === "CA" || normalized === "CANADA" ? "CA" : "US";
+  };
+  const regionCode = normalizeRegionCode(region);
 
   if (suffixMatch || queryRegion) {
     try { localStorage.setItem("stark-selected-region", regionCode); } catch (_) {}
@@ -58,37 +61,49 @@
                     : path === "shipment-tracking.html" ? "tracking"
                       : "";
 
-  const inventoryItems = [
-    ["dashboard", "Inventory Dashboard", regional("inventory-dashboard"), icons.dashboard],
-    ["raw", "Raw Report", regional("raw-report"), icons.raw],
-    ["reorder", "Reorder Report", regional("reorder-report"), icons.reorder],
-    ["brands", "Active Brands", regional("active-brands"), icons.brands],
-    ...(regionCode === "EU" ? [["ats", "ATS", "ats-eu.html", icons.ats]] : []),
-    ["instructions", "Instructions", regional("instructions"), icons.instructions]
-  ];
-  const primaryItems = [
-    ["sales", "Sales Analysis", `sales-analysis.html?region=${regionCode}`, icons.sales],
-    ["events", "Events", `events.html?region=${regionCode}`, icons.events],
-    ["freight", "Freight Estimator", "freight-estimator.html", icons.freight],
-    ["consolidate", "Freight Consolidate", "freight-consolidate.html", icons.consolidate],
-    ["tracking", "Tracking", "shipment-tracking.html", icons.tracking]
-  ];
   const navLink = ([key, label, href, glyph], submenu = false) => `<a href="${href}" data-premium-nav="${key}" class="${submenu ? "premium-nav-subitem " : ""}${key === activeKey ? "active" : ""}" ${key === activeKey ? 'aria-current="page"' : ""}>${glyph}<span>${label}</span></a>`;
 
   const rail = document.createElement("aside");
   rail.className = "premium-side-rail";
   rail.setAttribute("aria-label", "Primary workspace navigation");
-  rail.innerHTML = `
-    <a class="premium-rail-brand" href="index.html" aria-label="Stark Premium home"><span>S</span><div><small>Stark Premium</small><strong>Supply Chain Intelligence</strong></div></a>
-    <div class="premium-rail-region"><span>${regionCode}</span><div><small>Regional workspace</small><strong>${regionCode === "US" ? "United States" : regionCode === "EU" ? "European Union" : "Canada"}</strong></div></div>
-    <nav>
-      <section class="premium-nav-group" aria-label="Inventory analysis">
-        <div class="premium-nav-parent">${icons.dashboard}<span>Inventory Analysis</span></div>
-        <div class="premium-nav-submenu">${inventoryItems.map(item => navLink(item, true)).join("")}</div>
-      </section>
-      <div class="premium-nav-separator" aria-hidden="true"></div>
-      ${primaryItems.map(item => navLink(item)).join("")}
-    </nav>`;
+  let currentRegionCode = "";
+  const renderRail = value => {
+    const nextRegionCode = normalizeRegionCode(value);
+    const regionSlug = nextRegionCode.toLowerCase();
+    const regional = name => `${name}-${regionSlug}.html`;
+    const inventoryItems = [
+      ["dashboard", "Inventory Dashboard", regional("inventory-dashboard"), icons.dashboard],
+      ["raw", "Raw Report", regional("raw-report"), icons.raw],
+      ["reorder", "Reorder Report", regional("reorder-report"), icons.reorder],
+      ["brands", "Active Brands", regional("active-brands"), icons.brands],
+      ...(nextRegionCode === "EU" ? [["ats", "ATS", "ats-eu.html", icons.ats]] : []),
+      ["instructions", "Instructions", regional("instructions"), icons.instructions]
+    ];
+    const primaryItems = [
+      ["sales", "Sales Analysis", `sales-analysis.html?region=${nextRegionCode}`, icons.sales],
+      ["events", "Events", `events.html?region=${nextRegionCode}`, icons.events],
+      ["freight", "Freight Estimator", "freight-estimator.html", icons.freight],
+      ["consolidate", "Freight Consolidate", "freight-consolidate.html", icons.consolidate],
+      ["tracking", "Tracking", "shipment-tracking.html", icons.tracking]
+    ];
+    rail.innerHTML = `
+      <a class="premium-rail-brand" href="index.html" aria-label="Stark Premium home"><img src="assets/supply-chain-logo.png?v=20260918-2" alt=""><div><small>Stark Premium</small><strong>Supply Chain Intelligence</strong></div></a>
+      <div class="premium-rail-region"><span>${nextRegionCode}</span><div><small>Regional workspace</small><strong>${nextRegionCode === "US" ? "United States" : nextRegionCode === "EU" ? "European Union" : "Canada"}</strong></div></div>
+      <nav>
+        <section class="premium-nav-group" aria-label="Inventory analysis">
+          <div class="premium-nav-parent">${icons.dashboard}<span>Inventory Analysis</span></div>
+          <div class="premium-nav-submenu">${inventoryItems.map(item => navLink(item, true)).join("")}</div>
+        </section>
+        <div class="premium-nav-separator" aria-hidden="true"></div>
+        ${primaryItems.map(item => navLink(item)).join("")}
+      </nav>`;
+    currentRegionCode = nextRegionCode;
+  };
+  renderRail(regionCode);
+  window.addEventListener("stark:region-change", event => {
+    const nextRegionCode = normalizeRegionCode(event.detail?.region);
+    if (nextRegionCode !== currentRegionCode) renderRail(nextRegionCode);
+  });
 
   const toggle = document.createElement("button");
   toggle.className = "premium-rail-toggle";
@@ -153,6 +168,12 @@
       body.classList.add("premium-shell-active");
       return;
     }
+    const visibleRegion = document.documentElement.dataset.region
+      || document.getElementById("module-region-pill")?.textContent
+      || localStorage.getItem("stark-selected-region")
+      || regionCode;
+    const nextRegionCode = normalizeRegionCode(visibleRegion);
+    if (nextRegionCode !== currentRegionCode) renderRail(nextRegionCode);
     const moduleScreen = document.getElementById("module-screen");
     const regionalApp = document.getElementById("regional-app");
     const active = (moduleScreen && !moduleScreen.classList.contains("hidden")) || (regionalApp && !regionalApp.classList.contains("hidden"));
@@ -163,5 +184,6 @@
   if (path === "index.html") {
     const observer = new MutationObserver(syncIndexMode);
     [document.getElementById("module-screen"), document.getElementById("regional-app")].filter(Boolean).forEach(node => observer.observe(node, {attributes: true, attributeFilter: ["class"]}));
+    observer.observe(document.documentElement, {attributes: true, attributeFilter: ["data-region"]});
   }
 })();
