@@ -123,10 +123,17 @@
   function loadAtsSettings(region) { try { return JSON.parse(localStorage.getItem(atsKey(region)) || "{}"); } catch (_) { return {}; } }
   function saveAtsSettings(region, settings) { const value = JSON.stringify(settings || {}); if (localStorage.getItem(atsKey(region)) === value) return; localStorage.setItem(atsKey(region), value); publishSync("inventory-ats", region); }
   function ensureBrandSettings(region, rows) {
-    const saved = loadBrandSettings(region);
-    unique(rows.map(row => row.brand)).forEach(brand => { if (!saved[brand]) saved[brand] = { active: true, leadTime: "" }; });
-    saveBrandSettings(region, saved);
-    return saved;
+    const saved = loadBrandSettings(region), rowBrands = unique(rows.map(row => cleanText(row.brand)).filter(Boolean));
+    const canonicalByKey = new Map();
+    rowBrands.forEach(brand => canonicalByKey.set(brand.toLocaleLowerCase(), brand));
+    Object.keys(saved).forEach(brand => { const key = cleanText(brand).toLocaleLowerCase(); if (key && !canonicalByKey.has(key)) canonicalByKey.set(key, cleanText(brand)); });
+    const merged = {};
+    canonicalByKey.forEach((brand, key) => {
+      const exact = saved[brand], fallbackKey = Object.keys(saved).find(name => cleanText(name).toLocaleLowerCase() === key), source = exact || (fallbackKey ? saved[fallbackKey] : null) || {};
+      merged[brand] = { active: source.active !== false, leadTime: cleanText(source.leadTime) };
+    });
+    saveBrandSettings(region, merged);
+    return merged;
   }
 
   async function readReportFile(file, region = "US") {
@@ -329,7 +336,7 @@
       if (!item.supplierLines.length) return delete item.supplierLines;
       const validLines = item.supplierLines.filter(line => line.qty || line.po || line.windowText), windows = validLines.map(line => line.windowText).filter(Boolean), range = windowRange(windows);
       item.openSupplier = validLines.reduce((sum, line) => sum + finite(line.qty), 0);
-      item.supplierDueQty = validLines.reduce((sum, line) => { const start = windowRange([line.windowText]).start; return sum + (start && start <= cutoff ? finite(line.qty) : 0); }, 0);
+      item.supplierDueQty = validLines.reduce((sum, line) => { const start = windowRange([line.windowText]).start; return sum + (start && start >= today && start <= cutoff ? finite(line.qty) : 0); }, 0);
       item.supplierPOs = unique(validLines.map(line => line.po)).join(", ");
       item.supplierWindow = windows.join(" | "); item.supplierStart = dateIso(range.start); item.supplierEnd = dateIso(range.end); delete item.supplierLines;
     });
@@ -354,19 +361,20 @@
   function analyze(rows, region) {
     const settings = sanitizedSettings(region), brands = ensureBrandSettings(region, rows), atsSettings = loadAtsSettings(region), today = new Date();
     const items = rows.map(row => {
-      const statusUpper = String(row.status).trim().toUpperCase(), excluded = ["FEEDS ONLY", "INTERNAL USE", "PRESENTATION"].some(value => statusUpper.includes(value)), eligible = ["LIVE", "FASHION", "BACKORDER"].includes(statusUpper), activeBrand = brands[row.brand] ? brands[row.brand].active !== false : true;
+      const brandName = cleanText(row.brand), brandMatch = brands[brandName] || brands[Object.keys(brands).find(name => cleanText(name).toLocaleLowerCase() === brandName.toLocaleLowerCase())] || {};
+      const statusUpper = String(row.status).trim().toUpperCase(), excluded = ["FEEDS ONLY", "INTERNAL USE", "PRESENTATION"].some(value => statusUpper.includes(value)), eligible = ["LIVE", "FASHION", "BACKORDER"].includes(statusUpper), activeBrand = brandMatch.active !== false;
       const onHand = nonNegative(row.stockQty), openClient = nonNegative(row.openClient), openSupplier = nonNegative(row.openSupplier), avgMonthly = nonNegative(row.avg3), available = finite(toNumber(row.available));
       const supplierDate = region === "EU" ? (reviveDate(row.supplierStart) || reviveDate(row.supplierEnd)) : reviveDate(row.supplierEnd), daysUntil = supplierDate ? calendarDayDifference(today, supplierDate) : null;
-      const leadTime = brands[row.brand]?.leadTime || "";
+      const leadTime = brandMatch.leadTime || "";
       const leadTimeMonths = leadTimeInMonths(leadTime);
       const modelKey = cleanText(row.model).toUpperCase();
       const savedAts = Object.prototype.hasOwnProperty.call(atsSettings, modelKey) ? nonNegative(atsSettings[modelKey]) : nonNegative(row.ats);
       const actualAvailable = onHand + savedAts;
       const upcomingAvailability = onHand - openClient;
-      const supplierDueQty = Number.isFinite(toNumber(row.supplierDueQty)) ? nonNegative(row.supplierDueQty) : (Number.isFinite(daysUntil) && daysUntil <= 30 ? openSupplier : 0);
+      const supplierDueQty = Number.isFinite(toNumber(row.supplierDueQty)) ? nonNegative(row.supplierDueQty) : (Number.isFinite(daysUntil) && daysUntil >= 0 && daysUntil <= 30 ? openSupplier : 0);
       const netInventoryPosition = onHand + openSupplier - openClient;
       const calculatedRecommendation =
-        avgMonthly * (leadTimeMonths + 1) + MIN_CARRYING_STOCK + openClient - onHand - openSupplier;
+        avgMonthly * (leadTimeMonths + 1) + MIN_CARRYING_STOCK + openClient - onHand - supplierDueQty;
       const recommended = activeBrand && eligible && !excluded ? stableCeil(calculatedRecommendation) : 0;
       const reorderRequired = recommended > 0;
       return { ...row, stockQty: onHand, available, openClient, openSupplier, avg3: avgMonthly, ats: savedAts, actualAvailable, upcomingAvailability, supplierDueQty, netInventoryPosition, calculatedRecommendation, activeBrand, eligible, excluded, daysUntil, leadTime, leadTimeMonths, reorderRequired, reorderReason: reorderRequired ? "Formula recommendation" : "", recommended, monthsCover: avgMonthly > 0 ? available / avgMonthly : null, abc: "C", rank: 0, contribution: 0, cumulative: 0 };

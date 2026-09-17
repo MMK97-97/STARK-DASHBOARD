@@ -3,8 +3,8 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <meta name="description" content="Regional sales, demand forecasting, ABC and inventory planning dashboard.">
-  <title>Stark Regional Inventory Intelligence</title>
+  <meta name="description" content="Global supply chain, sales, demand forecasting, ABC and inventory planning intelligence.">
+  <title>Stark Supply Chain Intelligence</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
@@ -13,6 +13,7 @@
   <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
   <script src="assets/app.js?v=20260918-2" defer></script>
   <link rel="stylesheet" href="assets/world-class-ui.css?v=20260918-2">
+  <link rel="stylesheet" href="assets/global-news.css?v=20260918-1">
   <script src="assets/premium-shell.js?v=20260918-2" defer></script>
 </head>
 <body>
@@ -20,7 +21,7 @@
   <header class="app-header">
     <div class="brand-lockup">
       <div class="brand-mark brand-mark-image"><img src="assets/supply-chain-logo.png?v=20260918-2" alt=""></div>
-      <div><p class="eyebrow">Stark Premium</p><h1>Regional Inventory Intelligence</h1></div>
+      <div><p class="eyebrow">Stark Premium</p><h1>Supply Chain Intelligence</h1></div>
     </div>
     <div class="header-actions">
       <span class="privacy-note"><span aria-hidden="true">●</span> Files stay in this browser</span>
@@ -31,23 +32,72 @@
 
   <main id="main">
     <section class="home-screen" id="home-screen" aria-labelledby="home-title">
-      <div class="home-copy">
-        <p class="eyebrow">Regional analytics platform</p>
-        <h2 id="home-title">Choose a market to begin</h2>
-        <p>Each region keeps its Sales Report, Item Sales Report, demand forecast, ABC classification, and inventory output separate.</p>
+      <div class="home-layout">
+        <div class="market-stage">
+          <div class="home-copy">
+            <p class="eyebrow">Supply chain intelligence platform</p>
+            <h2 id="home-title">Choose a market to begin</h2>
+            <p>Each region keeps its Sales Report, Item Sales Report, demand forecast, ABC classification, and inventory output separate.</p>
+          </div>
+          <div class="country-grid">
+            <button class="country-button country-us" type="button" data-country="US" aria-label="Open United States dashboard">
+              <span class="country-code">US</span><strong>United States</strong><small>Open regional workspace</small><i aria-hidden="true">→</i>
+            </button>
+            <button class="country-button country-eu" type="button" data-country="EU" aria-label="Open European Union dashboard">
+              <span class="country-code">EU</span><strong>European Union</strong><small>Open regional workspace</small><i aria-hidden="true">→</i>
+            </button>
+            <button class="country-button country-ca" type="button" data-country="Canada" aria-label="Open Canada dashboard">
+              <span class="country-code">CA</span><strong>Canada</strong><small>Open regional workspace</small><i aria-hidden="true">→</i>
+            </button>
+          </div>
+          <div class="supply-chain-benefits" aria-label="Supply chain intelligence coverage">
+            <div><span aria-hidden="true">◎</span><strong>Global updates</strong><small>Trade and logistics developments</small></div>
+            <div><span aria-hidden="true">◇</span><strong>Policy changes</strong><small>Import and regulatory signals</small></div>
+            <div><span aria-hidden="true">⇄</span><strong>Supply chain risk</strong><small>Disruption and capacity updates</small></div>
+            <div><span aria-hidden="true">↗</span><strong>Market impact</strong><small>Context for inventory decisions</small></div>
+          </div>
+          <div class="home-note"><span aria-hidden="true">●</span> All uploaded files are processed locally in your browser.</div>
+        </div>
+
+        <aside class="global-news-panel" aria-labelledby="global-news-title">
+          <div class="global-news-heading">
+            <div class="global-news-heading-copy">
+              <span class="global-news-icon" aria-hidden="true">◎</span>
+              <div><p class="eyebrow">Official sources</p><h3 id="global-news-title">Global Supply Chain Updates</h3></div>
+            </div>
+            <a href="https://www.wto.org/english/news_e/news_e.htm" target="_blank" rel="noopener noreferrer">View all <span aria-hidden="true">→</span></a>
+          </div>
+          <p class="global-news-intro">Current trade, regulation and logistics developments that can affect global supply chains.</p>
+          <div class="global-news-list">
+            <a class="global-news-item" href="https://ustr.gov/about/policy-offices/press-office/press-releases/2026/september/ustr-convenes-over-50-trading-partners-provide-training-related-imposing-and-enforcing-forced-labor" target="_blank" rel="noopener noreferrer">
+              <span class="news-region news-region-us">US</span>
+              <span class="news-body"><span class="news-meta"><b>Trade compliance</b><time datetime="2026-09-15">15 Sep 2026</time></span><strong>Import controls expand across major markets</strong><small>USTR reports wider adoption of forced-labor import prohibitions and aligned enforcement.</small></span>
+              <span class="news-arrow" aria-hidden="true">›</span>
+            </a>
+            <a class="global-news-item" href="https://ustr.gov/about/policy-offices/press-office/press-releases/2026/september/ustr-seeks-public-comment-foreign-trade-barriers-2027-national-trade-estimate-report" target="_blank" rel="noopener noreferrer">
+              <span class="news-region news-region-global">NTE</span>
+              <span class="news-body"><span class="news-meta"><b>Trade policy</b><time datetime="2026-09-14">14 Sep 2026</time></span><strong>2027 foreign trade barrier review opens</strong><small>Public input is requested on customs, market-access and export barriers.</small></span>
+              <span class="news-arrow" aria-hidden="true">›</span>
+            </a>
+            <a class="global-news-item" href="https://ustr.gov/about/policy-offices/press-office/press-releases/2026/september/ustr-commerce-and-uk-government-convene-10th-united-states-united-kingdom-small-and-medium" target="_blank" rel="noopener noreferrer">
+              <span class="news-region news-region-uk">UK</span>
+              <span class="news-body"><span class="news-meta"><b>Trade dialogue</b><time datetime="2026-09-09">9 Sep 2026</time></span><strong>US–UK SMEs focus on resilient supply chains</strong><small>Dialogue covered manufacturing, digital trade, innovation and bilateral supply chains.</small></span>
+              <span class="news-arrow" aria-hidden="true">›</span>
+            </a>
+            <a class="global-news-item" href="https://www.wto.org/english/res_e/statis_e/hormuz_global_trade_e.htm" target="_blank" rel="noopener noreferrer">
+              <span class="news-region news-region-wto">WTO</span>
+              <span class="news-body"><span class="news-meta"><b>Logistics risk</b><time datetime="2026-09-04">4 Sep 2026</time></span><strong>Strait of Hormuz global trade monitor</strong><small>Trade-flow data tracks disruption risk around a critical maritime chokepoint.</small></span>
+              <span class="news-arrow" aria-hidden="true">›</span>
+            </a>
+            <a class="global-news-item" href="https://taxation-customs.ec.europa.eu/news_en" target="_blank" rel="noopener noreferrer">
+              <span class="news-region news-region-eu">EU</span>
+              <span class="news-body"><span class="news-meta"><b>Regulatory update</b><time datetime="2026-09-03">3 Sep 2026</time></span><strong>Cross-border e-commerce VAT update</strong><small>EU customs reports broader use of simplified VAT collection rules after five years.</small></span>
+              <span class="news-arrow" aria-hidden="true">›</span>
+            </a>
+          </div>
+          <div class="global-news-footer"><span aria-hidden="true">●</span> Curated from WTO, USTR and European Commission updates</div>
+        </aside>
       </div>
-      <div class="country-grid">
-        <button class="country-button country-us" type="button" data-country="US" aria-label="Open United States dashboard">
-          <span class="country-code">US</span><strong>United States</strong><small>Open regional workspace</small><i aria-hidden="true">→</i>
-        </button>
-        <button class="country-button country-eu" type="button" data-country="EU" aria-label="Open European Union dashboard">
-          <span class="country-code">EU</span><strong>European Union</strong><small>Open regional workspace</small><i aria-hidden="true">→</i>
-        </button>
-        <button class="country-button country-ca" type="button" data-country="Canada" aria-label="Open Canada dashboard">
-          <span class="country-code">CA</span><strong>Canada</strong><small>Open regional workspace</small><i aria-hidden="true">→</i>
-        </button>
-      </div>
-      <div class="home-note"><span aria-hidden="true">●</span> All uploaded files are processed locally in your browser.</div>
     </section>
 
     <section class="module-screen hidden" id="module-screen" aria-labelledby="module-title">

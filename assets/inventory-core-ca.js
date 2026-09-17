@@ -120,10 +120,17 @@
   function loadBrandSettings(region) { try { return JSON.parse(localStorage.getItem(brandKey(region)) || "{}"); } catch (_) { return {}; } }
   function saveBrandSettings(region, settings) { const value = JSON.stringify(settings); if (localStorage.getItem(brandKey(region)) === value) return; localStorage.setItem(brandKey(region), value); publishSync("brand-settings", region); }
   function ensureBrandSettings(region, rows) {
-    const saved = loadBrandSettings(region);
-    unique(rows.map(row => row.brand)).forEach(brand => { if (!saved[brand]) saved[brand] = { active: true, leadTime: "" }; });
-    saveBrandSettings(region, saved);
-    return saved;
+    const saved = loadBrandSettings(region), rowBrands = unique(rows.map(row => cleanText(row.brand)).filter(Boolean));
+    const canonicalByKey = new Map();
+    rowBrands.forEach(brand => canonicalByKey.set(brand.toLocaleLowerCase(), brand));
+    Object.keys(saved).forEach(brand => { const key = cleanText(brand).toLocaleLowerCase(); if (key && !canonicalByKey.has(key)) canonicalByKey.set(key, cleanText(brand)); });
+    const merged = {};
+    canonicalByKey.forEach((brand, key) => {
+      const exact = saved[brand], fallbackKey = Object.keys(saved).find(name => cleanText(name).toLocaleLowerCase() === key), source = exact || (fallbackKey ? saved[fallbackKey] : null) || {};
+      merged[brand] = { active: source.active !== false, leadTime: cleanText(source.leadTime) };
+    });
+    saveBrandSettings(region, merged);
+    return merged;
   }
 
   async function readReportFile(file, region = "US") {
@@ -351,10 +358,11 @@
   function analyze(rows, region) {
     const settings = sanitizedSettings(region), brands = ensureBrandSettings(region, rows), today = new Date();
     const items = rows.map(row => {
-      const statusUpper = String(row.status).trim().toUpperCase(), excluded = ["FEEDS ONLY", "INTERNAL USE", "PRESENTATION"].some(value => statusUpper.includes(value)), eligible = ["LIVE", "FASHION", "BACKORDER"].includes(statusUpper), activeBrand = brands[row.brand] ? brands[row.brand].active !== false : true;
+      const brandName = cleanText(row.brand), brandMatch = brands[brandName] || brands[Object.keys(brands).find(name => cleanText(name).toLocaleLowerCase() === brandName.toLocaleLowerCase())] || {};
+      const statusUpper = String(row.status).trim().toUpperCase(), excluded = ["FEEDS ONLY", "INTERNAL USE", "PRESENTATION"].some(value => statusUpper.includes(value)), eligible = ["LIVE", "FASHION", "BACKORDER"].includes(statusUpper), activeBrand = brandMatch.active !== false;
       const onHand = nonNegative(row.stockQty), openClient = nonNegative(row.openClient), openSupplier = nonNegative(row.openSupplier), avgMonthly = nonNegative(row.avg3), available = finite(toNumber(row.available));
       const supplierDate = region === "EU" ? (reviveDate(row.supplierStart) || reviveDate(row.supplierEnd)) : reviveDate(row.supplierEnd), daysUntil = supplierDate ? calendarDayDifference(today, supplierDate) : null;
-      const leadTime = brands[row.brand]?.leadTime || "";
+      const leadTime = brandMatch.leadTime || "";
       const leadTimeMonths = leadTimeInMonths(leadTime);
       const actualAvailable = onHand + nonNegative(row.ats);
       const upcomingAvailability = onHand - openClient;
