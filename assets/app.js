@@ -43,6 +43,7 @@
     const requestedModule = query.get("module");
     if (["US", "EU", "Canada"].includes(requestedWorkspace)) {
       state.region = requestedWorkspace;
+      rememberRegion(requestedWorkspace);
       el("home-screen").classList.add("hidden");
       if (requestedModule === "sales") {
         openModule("sales");
@@ -90,8 +91,14 @@
 
   function current() { return regions[state.region]; }
 
+  function rememberRegion(code) {
+    const value = code === "Canada" ? "CA" : code;
+    try { localStorage.setItem("stark-selected-region", value); } catch (_) {}
+  }
+
   function openRegion(code) {
     state.region = code;
+    rememberRegion(code);
     el("home-screen").classList.add("hidden");
     el("regional-app").classList.add("hidden");
     el("module-screen").classList.remove("hidden");
@@ -175,6 +182,7 @@
 
   function selectRegion(code) {
     state.region = code;
+    rememberRegion(code);
     updateModuleScreen();
     updateRegionUI();
   }
