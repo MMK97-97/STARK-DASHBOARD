@@ -1,0 +1,68 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="description" content="Advanced regional inventory analysis and decision report">
+  <title>Inventory Analysis Report | Stark Supply Chain Intelligence</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="assets/styles-eu.css?v=20260915-4">
+  <link rel="stylesheet" href="assets/world-class-ui.css?v=20260918-2">
+  <link rel="stylesheet" href="assets/inventory-analysis-report.css?v=20260918-1">
+  <script src="assets/jszip.min.js" defer></script>
+  <script src="https://cdn.sheetjs.com/xlsx-0.20.3/package/dist/xlsx.full.min.js" defer></script>
+  <script src="assets/inventory-analysis-seed.js?v=20260918-1" defer></script>
+  <script src="assets/inventory-analysis-report.js?v=20260918-2" defer></script>
+  <script src="assets/premium-shell.js?v=20260918-3" defer></script>
+</head>
+<body data-page="analysis-report" data-region="EU">
+  <main class="analysis-report-page">
+    <section class="analysis-hero">
+      <div><p class="eyebrow">Inventory decision intelligence • <span data-region-label>United States</span></p><h1>Inventory Analysis Report</h1><p>Forecast demand, measure stock risk, prioritize replenishment, and audit every result across connected inventory and sales sources.</p></div>
+      <div class="analysis-live"><strong><i></i><span id="analysis-live-title">Analysis engine ready</span></strong><span id="analysis-live-detail">Validating source coverage and model joins</span></div>
+    </section>
+
+    <section class="analysis-section upload-section">
+      <div class="section-heading"><div><p class="eyebrow">Source control</p><h2>Individual report uploads</h2><p>Each source is validated, stored only in this regional workspace, and can be replaced independently.</p></div><div class="button-row"><button class="iar-button" id="export-analysis" type="button">Export data + charts</button><button class="iar-button danger" id="clear-analysis" type="button">Clear regional data</button></div></div>
+      <div class="upload-grid">
+        <label class="upload-card required"><span class="upload-icon">▦</span><span><h3>Item stock & sales history</h3><p>SKU status, current stock, and YYYYMM unit demand.</p></span><span class="upload-action">Upload</span><input type="file" data-upload="itemStock" accept=".xlsx,.xls,.csv,.tsv"><span class="upload-status" data-source-status="itemStock">Not loaded</span></label>
+        <label class="upload-card required"><span class="upload-icon">⇄</span><span><h3>Average item & commitments</h3><p>ATS, client orders, supplier POs, and delivery windows.</p></span><span class="upload-action">Upload</span><input type="file" data-upload="average" accept=".xls,.xlsx,.html,.csv"><span class="upload-status" data-source-status="average">Not loaded</span></label>
+        <label class="upload-card required"><span class="upload-icon">↗</span><span><h3>Brand sales by SKU</h3><p>Monthly Net sales revenue by client, brand, and model.</p></span><span class="upload-action">Upload</span><input type="file" data-upload="skuSales" accept=".xls,.xlsx,.csv,.tsv"><span class="upload-status" data-source-status="skuSales">Not loaded</span></label>
+        <label class="upload-card"><span class="upload-icon">◇</span><span><h3>Brand sales summary</h3><p>Monthly brand revenue for reconciliation and contribution.</p></span><span class="upload-action">Upload</span><input type="file" data-upload="brandSales" accept=".xls,.xlsx,.csv,.tsv"><span class="upload-status" data-source-status="brandSales">Not loaded</span></label>
+        <label class="upload-card"><span class="upload-icon">◎</span><span><h3>Sales by customer</h3><p>Monthly customer revenue, concentration, and trend.</p></span><span class="upload-action">Upload</span><input type="file" data-upload="customerSales" accept=".xls,.xlsx,.csv,.tsv"><span class="upload-status" data-source-status="customerSales">Not loaded</span></label>
+        <label class="upload-card"><span class="upload-icon">⌖</span><span><h3>Sales by state</h3><p>Geographic demand and concentration by state.</p></span><span class="upload-action">Upload</span><input type="file" data-upload="stateSales" accept=".xls,.xlsx,.csv,.tsv"><span class="upload-status" data-source-status="stateSales">Not loaded</span></label>
+        <label class="upload-card"><span class="upload-icon">$</span><span><h3>Price & cost list</h3><p>Optional Cost and NetPrice for financial exposure.</p></span><span class="upload-action">Upload</span><input type="file" data-upload="priceCost" accept=".xls,.xlsx,.csv,.tsv"><span class="upload-status" data-source-status="priceCost">Optional</span></label>
+        <label class="upload-card"><span class="upload-icon">＋</span><span><h3>Program pipeline</h3><p>Optional confirmed and probability-weighted future demand.</p></span><span class="upload-action">Upload</span><input type="file" data-upload="pipeline" accept=".xls,.xlsx,.csv,.tsv"><span class="upload-status" data-source-status="pipeline">Optional</span></label>
+      </div>
+      <div class="data-readiness" id="data-readiness"><strong>Readiness:</strong><span>Waiting for validation.</span></div>
+    </section>
+
+    <section class="analysis-section filter-section">
+      <div class="filter-bar">
+        <label>Brand<select id="filter-brand"><option value="">All brands</option></select></label>
+        <label>Status<select id="filter-status"><option value="">All eligible statuses</option></select></label>
+        <label>ABC class<select id="filter-abc"><option value="">All classes</option><option>A</option><option>B</option><option>C</option></select></label>
+        <label>XYZ class<select id="filter-xyz"><option value="">All variability</option><option>X</option><option>Y</option><option>Z</option></select></label>
+        <label>Model or item<input id="filter-search" type="search" placeholder="Search model, item ID, title…"></label>
+        <button class="iar-button" id="reset-analysis-filters" type="button">Reset</button>
+      </div>
+      <div class="kpi-grid" id="analysis-kpis"></div>
+    </section>
+
+    <nav class="analysis-tabs" aria-label="Inventory analysis views">
+      <button class="active" data-view="overview" type="button">Overview</button><button data-view="forecast" type="button">Demand & forecast</button><button data-view="inventory" type="button">Inventory health</button><button data-view="brands" type="button">Brand & SKU</button><button data-view="customers" type="button">Customers</button><button data-view="geography" type="button">Geography</button><button data-view="quality" type="button">Data quality</button>
+    </nav>
+
+    <section class="analysis-view active" data-analysis-view="overview"><div class="analysis-grid"><article class="analysis-card"><div class="card-head"><div><h3>Demand history and selected forecast</h3><small>Complete months only; current partial month excluded</small></div></div><div id="trend-chart"></div></article><article class="analysis-card"><div class="card-head"><div><h3>Exception portfolio</h3><small>Click a status to focus the report</small></div></div><div id="exception-chart"></div></article><article class="analysis-card"><div class="card-head"><div><h3>Top demand brands</h3><small>Forecast units for the next 30 days</small></div></div><div class="bar-chart" id="brand-demand-chart"></div></article><article class="analysis-card"><div class="card-head"><div><h3>ABC / XYZ portfolio</h3><small>Value contribution × demand variability</small></div></div><div id="abc-xyz-chart"></div></article><article class="analysis-card wide"><div class="card-head"><div><h3>Priority exceptions</h3><small>Highest stockout and replenishment risk first</small></div><button class="iar-button" data-export-table="exceptions" type="button">Export with charts</button></div><div class="analysis-table-wrap"><table class="analysis-table"><thead><tr><th>Model</th><th>Brand</th><th>Item</th><th>Status</th><th class="num">Forecast 30D</th><th class="num">Projected available</th><th class="num">Safety stock</th><th class="num">Reorder</th><th class="num">MOS</th><th>Exception</th></tr></thead><tbody id="exception-table"></tbody></table></div></article></div></section>
+    <section class="analysis-view" data-analysis-view="forecast"><div class="analysis-grid"><article class="analysis-card third"><div class="card-head"><h3>Forecast method mix</h3></div><div id="method-chart"></div></article><article class="analysis-card third"><div class="card-head"><h3>Backtest accuracy</h3></div><div id="accuracy-chart"></div></article><article class="analysis-card third"><div class="card-head"><h3>Demand variability</h3></div><div id="variability-chart"></div></article><article class="analysis-card wide"><div class="card-head"><div><h3>SKU demand forecast</h3><small>Best method selected by rolling one-step error</small></div><button class="iar-button" data-export-table="forecast" type="button">Export with charts</button></div><div class="analysis-table-wrap"><table class="analysis-table"><thead><tr><th>Model</th><th>Brand</th><th>ABC/XYZ</th><th>Method</th><th class="num">3M avg</th><th class="num">6M avg</th><th class="num">Forecast 30D</th><th class="num">Forecast 90D</th><th class="num">WAPE</th><th class="num">Bias</th></tr></thead><tbody id="forecast-table"></tbody></table></div></article></div></section>
+    <section class="analysis-view" data-analysis-view="inventory"><div class="analysis-grid"><article class="analysis-card"><div class="card-head"><h3>Months of supply</h3></div><div id="mos-chart"></div></article><article class="analysis-card"><div class="card-head"><h3>Inventory action units</h3></div><div id="action-chart"></div></article><article class="analysis-card wide"><div class="card-head"><div><h3>Inventory action report</h3><small>Demand during lead time + safety stock − projected available</small></div><button class="iar-button" data-export-table="inventory" type="button">Export with charts</button></div><div class="analysis-table-wrap"><table class="analysis-table"><thead><tr><th>Model</th><th>Brand</th><th>Item</th><th class="num">On hand</th><th class="num">Committed</th><th class="num">Inbound in lead time</th><th class="num">Projected available</th><th class="num">ROP</th><th class="num">Target</th><th class="num">Recommended PO</th><th>Action</th></tr></thead><tbody id="inventory-table"></tbody></table></div></article></div></section>
+    <section class="analysis-view" data-analysis-view="brands"><div class="analysis-grid"><article class="analysis-card"><div class="card-head"><h3>Brand revenue contribution</h3></div><div class="bar-chart" id="brand-revenue-chart"></div></article><article class="analysis-card"><div class="card-head"><h3>SKU revenue contribution</h3></div><div class="bar-chart" id="sku-revenue-chart"></div></article><article class="analysis-card wide"><div class="card-head"><h3>Brand decision summary</h3></div><div class="analysis-table-wrap"><table class="analysis-table"><thead><tr><th>Brand</th><th class="num">SKUs</th><th class="num">Revenue</th><th class="num">Forecast 30D</th><th class="num">Stock</th><th class="num">Reorder units</th><th class="num">Excess units</th><th class="num">Risk SKUs</th></tr></thead><tbody id="brand-table"></tbody></table></div></article></div></section>
+    <section class="analysis-view" data-analysis-view="customers"><div class="analysis-grid"><article class="analysis-card"><div class="card-head"><h3>Customer revenue concentration</h3></div><div class="bar-chart" id="customer-chart"></div></article><article class="analysis-card"><div class="card-head"><h3>Monthly customer revenue</h3></div><div id="customer-trend"></div></article><article class="analysis-card wide"><div class="card-head"><h3>Customer contribution</h3></div><div class="analysis-table-wrap"><table class="analysis-table"><thead><tr><th>Customer</th><th class="num">Total revenue</th><th class="num">Contribution</th><th class="num">YTD rank</th></tr></thead><tbody id="customer-table"></tbody></table></div></article></div></section>
+    <section class="analysis-view" data-analysis-view="geography"><div class="analysis-card wide"><div class="card-head"><div><h3>Geographic demand</h3><small>Requires a Sales by State file containing a State column</small></div></div><div id="geography-content"></div></div></section>
+    <section class="analysis-view" data-analysis-view="quality"><div class="analysis-grid"><article class="analysis-card"><div class="card-head"><h3>Source validation</h3></div><div class="dq-list" id="source-quality"></div></article><article class="analysis-card"><div class="card-head"><h3>Join and metric coverage</h3></div><div class="dq-list" id="join-quality"></div></article><article class="analysis-card wide"><div class="card-head"><h3>Calculation methodology</h3></div><div id="methodology"></div></article></div></section>
+  </main>
+  <div class="toast" id="analysis-toast" role="status" aria-live="polite"></div>
+</body>
+</html>

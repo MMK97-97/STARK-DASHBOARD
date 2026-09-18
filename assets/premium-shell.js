@@ -24,6 +24,7 @@
   const icon = paths => `<svg viewBox="0 0 24 24" aria-hidden="true">${paths}</svg>`;
   const icons = {
     dashboard: icon('<path d="M4 13h6V4H4zM14 20h6V11h-6zM4 20h6v-4H4zM14 8h6V4h-6z"/>'),
+    analysis: icon('<path d="M4 19V9M10 19V5M16 19v-7M3 19h18"/><path d="m14 9 3-3 3 3"/>'),
     raw: icon('<path d="M5 3h10l4 4v14H5z"/><path d="M15 3v5h5M8 12h8M8 16h8"/>'),
     reorder: icon('<path d="M4 7h16M4 12h16M4 17h10"/><path d="m17 15 3 3-3 3"/>'),
     brands: icon('<path d="M12 3 4 7v10l8 4 8-4V7z"/><path d="m4 7 8 4 8-4M12 11v10"/>'),
@@ -38,6 +39,7 @@
 
   const inventoryPages = new Set([
     "inventory-dashboard-us.html", "inventory-dashboard-eu.html", "inventory-dashboard-ca.html",
+    "inventory-analysis-report-us.html", "inventory-analysis-report-eu.html", "inventory-analysis-report-ca.html",
     "raw-report-us.html", "raw-report-eu.html", "raw-report-ca.html",
     "reorder-report-us.html", "reorder-report-eu.html", "reorder-report-ca.html",
     "active-brands-us.html", "active-brands-eu.html", "active-brands-ca.html",
@@ -49,6 +51,7 @@
   if (!supported) return;
 
   const activeKey = path.startsWith("inventory-dashboard") ? "dashboard"
+    : path.startsWith("inventory-analysis-report") ? "analysis"
     : path.startsWith("raw-report") ? "raw"
       : path.startsWith("reorder-report") ? "reorder"
         : path.startsWith("active-brands") ? "brands"
@@ -73,6 +76,7 @@
     const regional = name => `${name}-${regionSlug}.html`;
     const inventoryItems = [
       ["dashboard", "Inventory Dashboard", regional("inventory-dashboard"), icons.dashboard],
+      ["analysis", "Analysis Report", regional("inventory-analysis-report"), icons.analysis],
       ["raw", "Raw Report", regional("raw-report"), icons.raw],
       ["reorder", "Reorder Report", regional("reorder-report"), icons.reorder],
       ["brands", "Active Brands", regional("active-brands"), icons.brands],
