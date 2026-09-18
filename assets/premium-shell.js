@@ -50,6 +50,17 @@
   ].includes(path);
   if (!supported) return;
 
+  const loadSharedAsset = file => {
+    if (document.querySelector(`script[data-shared-asset="${file}"]`)) return;
+    const script = document.createElement("script");
+    script.src = `assets/${file}?v=20260918-1`;
+    script.async = false;
+    script.dataset.sharedAsset = file;
+    document.head.appendChild(script);
+  };
+  loadSharedAsset("production-runtime.js");
+  loadSharedAsset("report-export.js");
+
   const activeKey = path.startsWith("inventory-dashboard") ? "dashboard"
     : path.startsWith("inventory-analysis-report") ? "analysis"
     : path.startsWith("raw-report") ? "raw"
