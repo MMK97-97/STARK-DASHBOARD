@@ -17,3 +17,69 @@
 @media(max-width:1100px){.upload-grid{grid-template-columns:repeat(2,1fr)}.filter-bar{grid-template-columns:repeat(3,1fr)}.kpi-grid{grid-template-columns:repeat(2,1fr)}.analysis-card,.analysis-card.third{grid-column:span 12}}
 @media(max-width:700px){.analysis-report-page{padding:14px 12px 36px}.analysis-hero{align-items:flex-start;flex-direction:column;padding:23px}.analysis-live{width:100%;min-width:0}.upload-grid,.filter-bar,.kpi-grid{grid-template-columns:1fr}.upload-card{grid-template-columns:40px 1fr}.upload-action{grid-column:2}.donut-wrap{grid-template-columns:1fr}.section-heading{flex-direction:column}.analysis-card{padding:13px}.bar-row{grid-template-columns:100px 1fr 54px}}
 @media print{.premium-side-rail,.premium-rail-toggle,.upload-section,.filter-section,.analysis-tabs,.button-row{display:none!important}.analysis-report-page{max-width:none;padding:0}.analysis-hero{min-height:auto}.analysis-view{display:block!important;break-inside:avoid}.analysis-card{break-inside:avoid;box-shadow:none}}
+
+/* Compact single-page decision workspace. Detailed audit tables remain in the Excel export. */
+body[data-page="analysis-report"] .analysis-report-page{max-width:1800px;padding:14px 18px 28px}
+body[data-page="analysis-report"] .analysis-hero{min-height:112px;padding:20px 26px;border-radius:19px}
+body[data-page="analysis-report"] .analysis-hero h1{font-size:clamp(30px,3.2vw,46px)}
+body[data-page="analysis-report"] .analysis-hero p{max-width:860px;margin-top:7px;font-size:13px;line-height:1.42}
+body[data-page="analysis-report"] .analysis-live{min-width:250px;padding:13px 15px;border-radius:14px}
+body[data-page="analysis-report"] .analysis-section{margin-top:9px;padding:11px 13px;border-radius:15px}
+body[data-page="analysis-report"] .upload-section .section-heading{align-items:center;margin:0}
+body[data-page="analysis-report"] .upload-section .section-heading .eyebrow{display:none}
+body[data-page="analysis-report"] .upload-section .section-heading h2{font-size:15px}
+body[data-page="analysis-report"] .upload-section .section-heading p{margin-top:2px;font-size:10px}
+body[data-page="analysis-report"] .upload-section .iar-button{min-height:34px;padding-inline:12px}
+body[data-page="analysis-report"] .upload-grid{margin-top:12px;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+body[data-page="analysis-report"] .upload-grid[hidden]{display:none!important}
+body[data-page="analysis-report"] .upload-card{min-height:78px;padding:10px;grid-template-columns:34px 1fr auto;gap:8px}
+body[data-page="analysis-report"] .upload-icon{width:34px;height:34px}
+body[data-page="analysis-report"] .data-readiness{margin-top:7px;padding:7px 10px;font-size:10px}
+body[data-page="analysis-report"] .filter-section{padding:10px 12px}
+body[data-page="analysis-report"] .filter-bar{grid-template-columns:repeat(4,minmax(120px,1fr)) 1.55fr auto;gap:7px}
+body[data-page="analysis-report"] .filter-bar label{gap:3px;font-size:9px}
+body[data-page="analysis-report"] .filter-bar :is(select,input){height:34px;border-radius:8px;font-size:11px}
+body[data-page="analysis-report"] .filter-bar .iar-button{min-height:34px}
+body[data-page="analysis-report"] .kpi-grid{grid-template-columns:repeat(8,minmax(0,1fr));gap:7px;margin-top:9px}
+body[data-page="analysis-report"] .iar-kpi{min-height:72px;padding:10px;border-radius:11px}
+body[data-page="analysis-report"] .iar-kpi small{font-size:8px}
+body[data-page="analysis-report"] .iar-kpi strong{margin:6px 0 2px;font-size:20px}
+body[data-page="analysis-report"] .iar-kpi span{display:block;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;font-size:8px}
+body[data-page="analysis-report"] .analysis-tabs{display:none!important}
+body[data-page="analysis-report"] .analysis-view{margin-top:8px}
+body[data-page="analysis-report"] .analysis-view:not([data-analysis-view="overview"]){display:none!important}
+body[data-page="analysis-report"] .advanced-insights{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:7px;margin-bottom:8px}
+body[data-page="analysis-report"] .insight-card{display:grid;grid-template-columns:34px 1fr;gap:9px;align-items:center;min-height:54px;padding:8px 10px;border:1px solid var(--iar-line);border-radius:11px;background:linear-gradient(145deg,#fff,#f4fafc)}
+body[data-page="analysis-report"] .insight-card i{display:grid;place-items:center;width:32px;height:32px;border-radius:9px;background:#e1f8f4;color:#087f77;font-size:15px;font-style:normal;font-weight:800}
+body[data-page="analysis-report"] .insight-card.risk i{background:#ffe7ec;color:#c83f59}
+body[data-page="analysis-report"] .insight-card.warn i{background:#fff0d6;color:#a96c15}
+body[data-page="analysis-report"] .insight-card strong{display:block;margin-bottom:2px;font-size:11px}
+body[data-page="analysis-report"] .insight-card span{display:block;color:var(--iar-muted);font-size:9px;line-height:1.3}
+body[data-page="analysis-report"] [data-analysis-view="overview"] .analysis-grid{grid-template-columns:repeat(12,minmax(0,1fr));gap:8px}
+body[data-page="analysis-report"] [data-analysis-view="overview"] .analysis-card:not(.wide){grid-column:span 3;min-height:205px;padding:11px;border-radius:13px}
+body[data-page="analysis-report"] [data-analysis-view="overview"] .analysis-card.wide{grid-column:span 12;min-height:0;padding:11px}
+body[data-page="analysis-report"] .card-head{margin-bottom:7px}
+body[data-page="analysis-report"] .card-head h3{font-size:12px}
+body[data-page="analysis-report"] .card-head small{font-size:8px}
+body[data-page="analysis-report"] .trend-svg{height:150px}
+body[data-page="analysis-report"] .donut-wrap{grid-template-columns:110px 1fr;gap:7px}
+body[data-page="analysis-report"] .donut{width:105px;height:105px}
+body[data-page="analysis-report"] .donut:after{inset:24px}
+body[data-page="analysis-report"] .donut-center strong{font-size:17px}
+body[data-page="analysis-report"] .legend-list{gap:4px}
+body[data-page="analysis-report"] .legend-item{grid-template-columns:8px 1fr auto;gap:5px;font-size:8px;padding:0;border:0;background:transparent;text-align:left}
+body[data-page="analysis-report"] .legend-item i{width:7px;height:7px}
+body[data-page="analysis-report"] .legend-item strong{font-size:8px}
+body[data-page="analysis-report"] .bar-chart{gap:5px}
+body[data-page="analysis-report"] .bar-row{grid-template-columns:minmax(70px,1.15fr) 2fr 50px;gap:6px;min-height:22px}
+body[data-page="analysis-report"] .bar-row span:first-child{font-size:9px}
+body[data-page="analysis-report"] .bar-track{height:8px}
+body[data-page="analysis-report"] .bar-row b{font-size:9px}
+body[data-page="analysis-report"] .analysis-table-wrap{max-height:222px;border-radius:9px}
+body[data-page="analysis-report"] .analysis-table{font-size:9px}
+body[data-page="analysis-report"] .analysis-table th{padding:7px 8px;font-size:8px}
+body[data-page="analysis-report"] .analysis-table td{padding:6px 8px}
+body[data-page="analysis-report"] .status-pill{padding:3px 6px;font-size:8px}
+
+@media(max-width:1180px){body[data-page="analysis-report"] .kpi-grid{grid-template-columns:repeat(4,1fr)}body[data-page="analysis-report"] [data-analysis-view="overview"] .analysis-card:not(.wide){grid-column:span 6}body[data-page="analysis-report"] .upload-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:760px){body[data-page="analysis-report"] .analysis-report-page{padding:10px}body[data-page="analysis-report"] .analysis-hero{min-height:auto}body[data-page="analysis-report"] .kpi-grid{grid-template-columns:repeat(2,1fr)}body[data-page="analysis-report"] .advanced-insights{grid-template-columns:1fr}body[data-page="analysis-report"] [data-analysis-view="overview"] .analysis-card:not(.wide){grid-column:span 12}body[data-page="analysis-report"] .filter-bar,body[data-page="analysis-report"] .upload-grid{grid-template-columns:1fr}}
