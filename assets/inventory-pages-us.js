@@ -43,8 +43,10 @@
     clearButton.addEventListener("click", async () => { if (!confirm(`Clear the ${SI.regionName(region)} inventory report stored in this browser?`)) return; await SI.clearDataset(region); dataset = null; items = []; dashboardCrossFilter = null; renderDataNote(); renderDashboard(); });
     el("save-inventory-settings").addEventListener("click", () => {
       const next = {}; ["critical", "coverage", "delay", "a", "b"].forEach(key => next[key] = Number(el(`setting-${key}`).value));
+      if (![next.critical, next.coverage, next.delay, next.a, next.b].every(Number.isFinite) || next.critical < 0 || next.coverage < 0 || next.delay < 0) return alert("Critical stock, coverage months, and supplier delay days must be valid zero-or-greater numbers.");
       if (next.a <= 0 || next.a >= next.b || next.b > 100) return alert("ABC thresholds must satisfy A < B and B ≤ 100.");
-      SI.saveSettings(region, next); items = dataset ? SI.analyze(dataset.rows, region) : []; renderDashboard();
+      SI.saveSettings(region, next); items = dataset ? SI.analyze(dataset.rows, region) : []; dashboardCrossFilter = null; renderDashboard();
+      const button = el("save-inventory-settings"), original = button.textContent; button.textContent = "Saved ✓"; button.disabled = true; window.setTimeout(() => { button.textContent = original; button.disabled = false; }, 1400);
     });
     renderDashboard();
     refreshSalesSnapshot();
@@ -179,10 +181,12 @@
     if (!dataset) return;
     const reorders = items.filter(item => item.reorderRequired);
     if (region === "EU") renderEuReorderView();
+    const note = document.querySelector(".reorder-note"); if (note) note.textContent = reorderFormulaText();
     fillSelect("reorder-brand", SI.unique(reorders.map(item => item.brand)), "All brands"); el("reorder-brand").addEventListener("change", renderReorder); el("reorder-search").addEventListener("input", renderReorder); el("export-reorder-csv").addEventListener("click", exportReorderCsv); el("export-reorder-xlsx").addEventListener("click", exportReorderXlsx); renderReorder();
   }
   const standardReorderHeaders = ["Model#", "Brand", "Item Title", "Status", "Open Orders From Client", "On Hand", "Stock Available", "Open Supplier Qty", "Supplier Delivery Window", "Days Until Supplier Delivery", "Recommended Reorder Qty", "Reorder Status"];
-  const euReorderHeaders = ["Model#", "Brand", "Item Title", "Status", "Avg Sales/Month (3M)", "Open Orders From Client", "On Hand", "ATS", "Actual Available", "Upcoming Availability", "Open Supplier Qty <=30 Days", "Total Open Supplier Qty", "Supplier Delivery Window", "Days Until Supplier Delivery", "Recommended Reorder Qty", "Reorder Status", "PO#"];
+  const euReorderHeaders = ["Model#", "Brand", "Item Title", "Status", "Avg Sales/Month (3M)", "Open Orders From Client", "On Hand", "ATS", "Actual Available", "Upcoming Availability", "Open Supplier Qty in Window", "Total Open Supplier Qty", "Supplier Delivery Window", "Days Until Supplier Delivery", "Recommended Reorder Qty", "Reorder Status", "PO#"];
+  function reorderFormulaText() { const settings = SI.loadSettings(region); return `Recommended quantity = (Avg/Month × (Lead Time from Active Brands + ${settings.coverage} coverage month${settings.coverage === 1 ? "" : "s"})) + ${settings.critical} critical/minimum carrying units + Open Orders From Client − On Hand − eligible Open Supplier Qty arriving within ${settings.delay} days. Results at or below zero are set to zero and positive quantities are rounded up.`; }
   function currentReorderHeaders() { return region === "EU" ? euReorderHeaders : standardReorderHeaders; }
   function renderEuReorderView() {
     const head = document.querySelector(".wide-reorder-table thead tr");
@@ -190,17 +194,17 @@
     const title = document.querySelector(".reorder-title");
     const note = document.querySelector(".reorder-note");
     if (title) title.textContent = "Reorder Report — EU Active Brands / Status: LIVE, FASHION, BACKORDER / Reorder Required Only";
-    if (note) note.textContent = "Lead time is maintained on Active Brands and used in the recommended quantity calculation, but is hidden from the EU report. A fixed three-unit minimum carrying stock is included. Reorder Reason, Raw Row and Sort Rank are also hidden.";
+    if (note) note.textContent = "Lead time and dashboard planning settings are used in the recommended quantity calculation but hidden from the EU table. Reorder Reason, Raw Row and Sort Rank are also hidden.";
   }
   function filteredReorders() { const brand = el("reorder-brand").value, search = el("reorder-search").value.trim().toLowerCase(); return items.filter(item => item.reorderRequired).filter(item => (!brand || item.brand === brand) && (!search || `${item.model} ${item.product}`.toLowerCase().includes(search))).sort((a, b) => b.recommended - a.recommended || a.rawRow - b.rawRow); }
   function reorderArray(rows) {
     return rows.map(item => region === "EU"
-      ? [item.model, item.brand, item.product, item.status, item.avg3, item.openClient, item.stockQty, item.ats, item.actualAvailable, item.upcomingAvailability, item.supplierDueQty, item.openSupplier, item.supplierWindow, item.daysUntil == null ? "" : item.daysUntil, item.recommended, "REORDER", item.supplierPOs]
+      ? [item.model, item.brand, item.product, item.status, item.avg3, item.openClient, item.stockQty, item.ats, item.actualAvailable, item.upcomingAvailability, item.planningSupplierQty, item.openSupplier, item.supplierWindow, item.daysUntil == null ? "" : item.daysUntil, item.recommended, "REORDER", item.supplierPOs]
       : [item.model, item.brand, item.product, item.status, item.openClient, item.stockQty, item.available, item.openSupplier, item.supplierWindow, item.daysUntil == null ? "" : item.daysUntil, item.recommended, "REORDER"]);
   }
   function renderReorder() { const rows = filteredReorders(), data = reorderArray(rows), numeric = region === "EU" ? [4,5,6,7,8,9,10,11,13,14] : [4,5,6,7,9,10], statusIndex = region === "EU" ? 15 : 11; el("reorder-result-count").textContent = `${number.format(rows.length)} reorder items • ${number.format(sum(rows, item => item.recommended))} recommended units`; el("reorder-table").innerHTML = data.map(row => `<tr>${row.map((value, index) => `<td${numeric.includes(index) ? ' class="num"' : ""}>${index === statusIndex ? '<span class="status status-risk">REORDER</span>' : SI.escapeHtml(value)}</td>`).join("")}</tr>`).join("") || emptyRow(currentReorderHeaders().length, "No reorder-required items match the filters."); }
   function exportReorderCsv() { SI.downloadCsv([currentReorderHeaders(), ...reorderArray(filteredReorders())], `Reorder Report ${SI.regionCode(region)}.csv`); }
-  function exportReorderXlsx() { if (!window.XLSX) return alert("The Excel exporter did not load."); const workbook = XLSX.utils.book_new(), data = reorderArray(filteredReorders()), headers = currentReorderHeaders(), rows = [["Reorder Report - Active Brands / Status: LIVE, FASHION, BACKORDER / Reorder Required Only"], ["Lead time is maintained on the Active Brands page and is used in the recommended reorder calculation. A minimum carrying stock of 3 units is included for every eligible item."], headers, ...data], sheet = XLSX.utils.aoa_to_sheet(rows), lastColumn = XLSX.utils.encode_col(headers.length - 1); sheet["!cols"] = headers.map((header, index) => ({ wch: index === 2 ? 48 : Math.max(12, Math.min(28, header.length + 3)) })); sheet["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: headers.length - 1 } }, { s: { r: 1, c: 0 }, e: { r: 1, c: headers.length - 1 } }]; sheet["!autofilter"] = { ref: `A3:${lastColumn}${Math.max(3, data.length + 3)}` }; XLSX.utils.book_append_sheet(workbook, sheet, "REORDER REPORT"); XLSX.writeFile(workbook, `Reorder Report ${SI.regionCode(region)}.xlsx`, { compression: true }); }
+  function exportReorderXlsx() { if (!window.XLSX) return alert("The Excel exporter did not load."); const workbook = XLSX.utils.book_new(), data = reorderArray(filteredReorders()), headers = currentReorderHeaders(), rows = [["Reorder Report - Active Brands / Status: LIVE, FASHION, BACKORDER / Reorder Required Only"], [reorderFormulaText()], headers, ...data], sheet = XLSX.utils.aoa_to_sheet(rows), lastColumn = XLSX.utils.encode_col(headers.length - 1); sheet["!cols"] = headers.map((header, index) => ({ wch: index === 2 ? 48 : Math.max(12, Math.min(28, header.length + 3)) })); sheet["!merges"] = [{ s: { r: 0, c: 0 }, e: { r: 0, c: headers.length - 1 } }, { s: { r: 1, c: 0 }, e: { r: 1, c: headers.length - 1 } }]; sheet["!autofilter"] = { ref: `A3:${lastColumn}${Math.max(3, data.length + 3)}` }; XLSX.utils.book_append_sheet(workbook, sheet, "REORDER REPORT"); XLSX.writeFile(workbook, `Reorder Report ${SI.regionCode(region)}.xlsx`, { compression: true }); }
 
   function initBrands() {
     if (!dataset) return;

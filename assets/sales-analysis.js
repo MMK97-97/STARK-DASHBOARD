@@ -1154,7 +1154,9 @@
   }
 
   function renderKpis(id, cards) {
-    $(id).innerHTML = cards.map(([label, value, meta, tone], index) => `<article class="kpi-card linked-control${state.crossFilter?.label === `Linked filter: ${label}` ? " is-selected" : ""}" role="button" tabindex="0" data-kpi-group="${escapeHtml(id)}" data-kpi-index="${index}" aria-label="Filter analysis by ${escapeHtml(label)}"><div class="kpi-label">${escapeHtml(label)}</div><div class="kpi-value ${tone ? `tone-${tone}` : ""}">${escapeHtml(value)}</div><p class="kpi-meta">${escapeHtml(meta || "")}</p><span class="filter-cue" aria-hidden="true">Filter</span></article>`).join("");
+    const container = $(id);
+    if (!container) return;
+    container.innerHTML = cards.map(([label, value, meta, tone], index) => `<article class="kpi-card linked-control${state.crossFilter?.label === `Linked filter: ${label}` ? " is-selected" : ""}" role="button" tabindex="0" data-kpi-group="${escapeHtml(id)}" data-kpi-index="${index}" aria-label="Filter analysis by ${escapeHtml(label)}"><div class="kpi-label">${escapeHtml(label)}</div><div class="kpi-value ${tone ? `tone-${tone}` : ""}">${escapeHtml(value)}</div><p class="kpi-meta">${escapeHtml(meta || "")}</p><span class="filter-cue" aria-hidden="true">Filter</span></article>`).join("");
   }
 
   function decorateMarks(selection, filterType, valueFn, labelFn) {

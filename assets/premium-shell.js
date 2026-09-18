@@ -50,10 +50,23 @@
   ].includes(path);
   if (!supported) return;
 
+  const exportEnabled = inventoryPages.has(path) || [
+    "sales-analysis.html", "events.html", "freight-estimator.html", "freight-consolidate.html", "shipment-tracking.html"
+  ].includes(path);
+  if (exportEnabled && !body.querySelector(".report-export-action")) {
+    const exportButton = document.createElement("button");
+    exportButton.type = "button";
+    exportButton.className = "report-export-action";
+    exportButton.title = "Export the current report to Excel";
+    exportButton.setAttribute("aria-label", "Export current report to Excel");
+    exportButton.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3v12m0 0 4-4m-4 4-4-4M5 18v3h14v-3"/></svg><span>Export report</span>';
+    body.appendChild(exportButton);
+  }
+
   const loadSharedAsset = file => {
     if (document.querySelector(`script[data-shared-asset="${file}"]`)) return;
     const script = document.createElement("script");
-    script.src = `assets/${file}?v=20260918-1`;
+    script.src = `assets/${file}?v=20260918-2`;
     script.async = false;
     script.dataset.sharedAsset = file;
     document.head.appendChild(script);

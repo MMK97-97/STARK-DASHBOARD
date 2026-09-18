@@ -62,18 +62,18 @@
   ></script>
 
   <script
-    src="assets/inventory-core-ca.js?v=20260918-3"
+    src="assets/inventory-core-ca.js?v=20260918-4"
     defer
   ></script>
 
   <script
-    src="assets/inventory-pages-ca.js?v=20260916-1"
+    src="assets/inventory-pages-ca.js?v=20260918-2"
     defer
   ></script>
   <script src="assets/reorder-report-ui.js?v=20260916-1" defer></script>
   <script src="assets/inventory-transitions.js?v=20260916-2" defer></script>
   <link rel="stylesheet" href="assets/world-class-ui.css?v=20260918-4">
-  <script src="assets/premium-shell.js?v=20260918-4" defer></script>
+  <script src="assets/premium-shell.js?v=20260918-5" defer></script>
 </head>
 <body data-page="reorder">
   <header class="inventory-header">
@@ -216,9 +216,7 @@
         </div>
 
         <div class="reorder-note">
-          Recommended quantity = (Avg/Month × (Lead Time from Active Brands + 1 month))
-          + 3 minimum carrying units + Open Orders From Client − On Hand − Open Supplier Qty.
-          Negative results are set to zero and quantities are rounded up.
+          Recommended quantity uses average monthly demand × (brand lead time + configured coverage months), plus configured critical/minimum carrying units and client orders, less on-hand stock and eligible supplier units arriving within the configured supplier window. Results at or below zero are set to zero and positive quantities are rounded up.
         </div>
 
         <div
